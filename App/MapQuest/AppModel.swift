@@ -142,7 +142,12 @@ final class AppModel: ObservableObject {
     private static func makeModels(
         _ debug: DebugSettings, buildings: CachingBuildingSource, terrain: GridTerrain?
     ) -> (CircleDiscoveryModel, ViewshedDiscoveryModel) {
-        let ground: any TerrainModel = debug.usesTerrain ? (terrain ?? FlatTerrain.berlin) : FlatTerrain.berlin
+        let ground: any TerrainModel
+        if debug.usesTerrain, let terrain {
+            ground = terrain
+        } else {
+            ground = FlatTerrain.berlin
+        }
         return (
             CircleDiscoveryModel(radius: debug.radius),
             ViewshedDiscoveryModel(buildings: buildings, terrain: ground, configuration: debug.viewshedConfiguration)
