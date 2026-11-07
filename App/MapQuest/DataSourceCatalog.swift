@@ -1,0 +1,117 @@
+import Foundation
+import MapQuestCore
+import MapQuestSQLite
+
+/// A data source the app can show: the user's own data, another user's data,
+/// a demo dataset, or (later) a remote service.
+struct DataProfile: Codable, Hashable, Identifiable {
+    var descriptor: DataSourceDescriptor
+    /// Whether the app records the device's positions into this data source.
+    /// Only the user's own profile records; other profiles are view-only.
+    var recordsLocations: Bool
+
+    var id: String { descriptor.id }
+    var name: String { descriptor.displayName }
+}
+
+enum DataSourceError: LocalizedError {
+    case remoteNotImplemented
+
+    var errorDescription: String? {
+        switch self {
+        case .remoteNotImplemented:
+            return "Remote data sources are not implemented yet."
+        }
+    }
+}
+
+/// Knows which data sources exist and opens them. Local databases live in
+/// Application Support/MapQuest/DataSources, one SQLite file per profile.
+final class DataSourceCatalog {
+    static let ownProfileID = "me"
+
+    let directory: URL
+    private let defaults: UserDefaults
+    private static let profilesKey = "DataSourceCatalog.profiles"
+    private static let selectedKey = "DataSourceCatalog.selected"
+
+    private(set) var profiles: [DataProfile]
+
+    init(defaults: UserDefaults = .standard, fileManager: FileManager = .default) {
+        self.defaults = defaults
+        let support = (try? fileManager.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true))
+            ?? fileManager.temporaryDirectory
+        directory = support.appendingPathComponent("MapQuest/DataSources", isDirectory: true)
+        try? fileManager.createDirectory(at: directory, withIntermediateDirectories: true)
+
+        if let data = defaults.data(forKey: Self.profilesKey),
+           let stored = try? JSONDecoder().decode([DataProfile].self, from: data), !stored.isEmpty {
+            profiles = stored
+        } else {
+            profiles = []
+        }
+        if !profiles.contains(where: { $0.id == Self.ownProfileID }) {
+            profiles.insert(DataProfile(
+                descriptor: DataSourceDescriptor(
+                    id: Self.ownProfileID, displayName: "My discoveries", kind: .localDatabase(path: "me.sqlite")
+                ),
+                recordsLocations: true
+            ), at: 0)
+            save()
+        }
+    }
+
+    var selectedProfileID: String {
+        get { defaults.string(forKey: Self.selectedKey) ?? Self.ownProfileID }
+        set { defaults.set(newValue, forKey: Self.selectedKey) }
+    }
+
+    var selectedProfile: DataProfile {
+        profiles.first { $0.id == selectedProfileID } ?? profiles[0]
+    }
+
+    /// Adds (or replaces) a profile.
+    func upsert(_ profile: DataProfile) {
+        if let index = profiles.firstIndex(where: { $0.id == profile.id }) {
+            profiles[index] = profile
+        } else {
+            profiles.append(profile)
+        }
+        save()
+    }
+
+    /// Creates a new, empty local view-only profile (e.g. to import a friend's data).
+    func addLocalProfile(named name: String) -> DataProfile {
+        let id = "local-\(UUID().uuidString.prefix(8).lowercased())"
+        let profile = DataProfile(
+            descriptor: DataSourceDescriptor(id: id, displayName: name, kind: .localDatabase(path: "\(id).sqlite")),
+            recordsLocations: false
+        )
+        upsert(profile)
+        return profile
+    }
+
+    /// Opens the store behind a profile.
+    func openStore(for profile: DataProfile) throws -> any MapQuestDataStore {
+        switch profile.descriptor.kind {
+        case .localDatabase(let path):
+            return try SQLiteDataStore(fileURL: databaseURL(for: path), descriptor: profile.descriptor)
+        case .inMemory:
+            return InMemoryDataStore(descriptor: profile.descriptor)
+        case .remote:
+            throw DataSourceError.remoteNotImplemented
+        }
+    }
+
+    /// Resolves a relative database path inside the data source directory
+    /// (the app container path changes between installs).
+    func databaseURL(for path: String) -> URL {
+        path.hasPrefix("/") ? URL(fileURLWithPath: path) : directory.appendingPathComponent(path)
+    }
+
+    private func save() {
+        if let data = try? JSONEncoder().encode(profiles) {
+            defaults.set(data, forKey: Self.profilesKey)
+        }
+    }
+}

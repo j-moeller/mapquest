@@ -1,0 +1,50 @@
+# Xcode project specification for XcodeGen (https://github.com/yonaskolb/XcodeGen).
+# Generate the project with:  xcodegen generate
+name: MapQuest
+options:
+  bundleIdPrefix: com.example
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  developmentLanguage: en
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+packages:
+  MapQuestKit:
+    path: MapQuestKit
+targets:
+  MapQuest:
+    type: application
+    platform: iOS
+    sources:
+      - path: App/MapQuest
+    dependencies:
+      - package: MapQuestKit
+        products:
+          - MapQuestCore
+          - MapQuestSQLite
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.MapQuest
+        PRODUCT_NAME: MapQuest
+        INFOPLIST_FILE: App/MapQuest/Resources/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        TARGETED_DEVICE_FAMILY: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        CODE_SIGN_STYLE: Automatic
+        ENABLE_PREVIEWS: YES
+schemes:
+  MapQuest:
+    build:
+      targets:
+        MapQuest: all
+    run:
+      config: Debug
+      simulateLocation:
+        allow: true
+    archive:
+      config: Release
