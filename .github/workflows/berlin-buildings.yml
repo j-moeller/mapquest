@@ -49,6 +49,16 @@ jobs:
             "SELECT name, height FROM buildings WHERE name IS NOT NULL ORDER BY height DESC LIMIT 10;"
           sqlite3 berlin-buildings.sqlite "SELECT COUNT(*) || ' complete zoom-14 tiles' FROM downloaded_tiles;"
           ls -la berlin-buildings.sqlite
+      - name: Viewshed check on real buildings
+        working-directory: MapQuestKit
+        run: |
+          swift run -c release mapquest-import viewshed --database ../berlin-buildings.sqlite \
+            "Alexanderplatz (street)@52.52190,13.41320" \
+            "Unter den Linden (street)@52.51700,13.38880" \
+            "Kreuzberg side street@52.49720,13.42190" \
+            "Tempelhofer Feld@52.47400,13.40300" \
+            "Fernsehturm viewing deck@52.52082,13.40940,238" \
+            "Park Inn rooftop (125 m)@52.52310,13.41290,160"
       - uses: actions/upload-artifact@v4
         with:
           name: berlin-buildings
