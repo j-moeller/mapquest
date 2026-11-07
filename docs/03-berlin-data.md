@@ -66,9 +66,14 @@ download cache, so areas outside Berlin still come from Overpass.
 tiles (1 × 1 km) and writes every building and building part with its own
 ground surface: `measuredHeight` (or roof top minus ground) and the ground
 polygon in WGS84. `Tools/berlin/apply_lod2_heights.py` keeps the OSM
-footprints but gives each one the height of the LoD2 part that overlaps it
-most (at least 30 % of the footprint); such buildings get height source
-`measured`.
+footprints and gives each one the height of the **tallest LoD2 part lying
+mostly (≥ 50 %) inside it** – towers that LoD2 models as separate parts
+(Rotes Rathaus, Berliner Dom, Funkturm) would otherwise be lost. Without such a
+part, the part covering most of the footprint (≥ 30 %) is used. An explicit
+OSM `height` that is taller wins: LoD2 stops below antennas (Fernsehturm:
+229 m in LoD2, 368 m in OSM) and predates the newest towers. Such buildings
+get height source `measured`. Result: 78 % of Berlin's OSM buildings have
+measured heights (before: 1.4 % tagged, 33 % from levels, 66 % estimated).
 
 Without bundled data the app still works: the first time the
 line-of-sight layer or the 3D map needs an area, `CachingBuildingSource`

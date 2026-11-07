@@ -2,9 +2,13 @@
 
 Inputs:  buildings.jsonl  (Overpass-style elements from extract_buildings.py)
          lod2.jsonl       (footprints with heights from extract_lod2.py)
-Output:  the elements with `height` set from LoD2 and `mapquest:height_source=lod2`
-         wherever an LoD2 footprint covers at least 30 % of the OSM footprint
-         (the LoD2 part with the largest overlap wins).
+Output:  the elements with `height` set from LoD2 and `mapquest:height_source=lod2`.
+
+Rule: the LoD2 parts that lie mostly (≥ 50 %) inside an OSM footprint all belong
+to it, and the tallest of them gives the height – so towers modelled as separate
+parts (Rotes Rathaus, Berliner Dom, Funkturm) are not lost. If no part lies mostly
+inside, the part covering most of the footprint (≥ 30 % of it) is used. An explicit
+OSM `height` tag that is taller wins (antennas, buildings newer than the survey).
 
 OSM footprints are kept (stable IDs, consistent with on-demand OSM downloads at the
 city border); only their heights change.
@@ -19,6 +23,17 @@ import numpy as np
 import shapely
 
 MIN_OVERLAP = 0.3
+MOSTLY_INSIDE = 0.5
+
+
+def osm_height(tags: dict):
+    """The explicit OSM height in metres, if it is a plain number (optionally with "m")."""
+    value = (tags.get("height") or tags.get("building:height") or "").strip().lower()
+    value = value.removesuffix("m").strip().replace(",", ".")
+    try:
+        return float(value)
+    except ValueError:
+        return None
 
 
 def osm_footprint(element: dict):
@@ -57,6 +72,12 @@ def main(buildings_path: str, lod2_path: str, out_path: str) -> None:
     overlap = shapely.area(shapely.intersection(footprints[osm_index], lod2[lod2_index]))
     print(f"{len(osm_index)} candidate pairs", flush=True)
 
+    part_area = shapely.area(lod2[lod2_index])
+    inside = overlap >= MOSTLY_INSIDE * np.maximum(part_area, 1e-18)
+    # Tallest part mostly inside each footprint.
+    tallest_inside = np.full(len(elements), -np.inf)
+    np.maximum.at(tallest_inside, osm_index[inside], heights[lod2_index[inside]])
+    # Fallback: the part with the largest overlap.
     best_overlap = np.zeros(len(elements))
     best_height = np.full(len(elements), np.nan)
     order = np.argsort(overlap)  # later (larger) overlaps overwrite smaller ones
@@ -68,9 +89,16 @@ def main(buildings_path: str, lod2_path: str, out_path: str) -> None:
     assigned = 0
     with open(out_path, "w", encoding="utf-8") as out:
         for i, element in enumerate(elements):
-            if areas[i] > 0 and best_overlap[i] >= MIN_OVERLAP * areas[i] and best_height[i] >= 2:
-                tags = element.setdefault("tags", {})
-                tags["height"] = f"{best_height[i]:.1f}"
+            if np.isfinite(tallest_inside[i]):
+                height = tallest_inside[i]
+            elif areas[i] > 0 and best_overlap[i] >= MIN_OVERLAP * areas[i]:
+                height = best_height[i]
+            else:
+                height = np.nan
+            tags = element.setdefault("tags", {})
+            tagged = osm_height(tags)
+            if height >= 2 and not (tagged is not None and tagged > height):
+                tags["height"] = f"{height:.1f}"
                 tags["mapquest:height_source"] = "lod2"
                 assigned += 1
             out.write(json.dumps(element, ensure_ascii=False, separators=(",", ":")))
