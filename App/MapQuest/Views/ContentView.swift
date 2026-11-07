@@ -74,13 +74,26 @@ struct StatusPanel: View {
     @Binding var showsSettings: Bool
     /// Shows this layer's statistics without a layer picker (3D mode).
     var fixedLayer: MapLayer?
+    /// Collapsed, the panel only shows the header and the statistics (small screens).
+    @AppStorage("StatusPanel.collapsed") private var collapsed = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Label(model.profile.name, systemImage: model.profile.recordsLocations ? "person.fill" : "person.2.fill")
-                    .font(.headline)
-                Spacer()
+                Button {
+                    withAnimation(.snappy) { collapsed.toggle() }
+                } label: {
+                    HStack(spacing: 6) {
+                        Image(systemName: collapsed ? "chevron.up" : "chevron.down")
+                            .font(.caption.bold())
+                        Label(model.profile.name, systemImage: model.profile.recordsLocations ? "person.fill" : "person.2.fill")
+                            .font(.headline)
+                            .lineLimit(1)
+                    }
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(collapsed ? "Show details" : "Hide details")
+                Spacer(minLength: 4)
                 if model.isBusy { ProgressView() }
                 Toggle("Tracking", isOn: Binding(
                     get: { tracker.isTrackingEnabled },
@@ -96,7 +109,7 @@ struct StatusPanel: View {
                 }
                 .accessibilityLabel("Settings")
             }
-            if fixedLayer == nil {
+            if fixedLayer == nil && !collapsed {
                 Picker("Discovery", selection: $model.selectedLayer) {
                     ForEach(MapLayer.allCases) { layer in
                         Text(layer.title).tag(layer)
@@ -106,7 +119,7 @@ struct StatusPanel: View {
             }
             let shown = fixedLayer ?? model.selectedLayer
             let layer = model.state(shown)
-            HStack(spacing: 16) {
+            HStack(spacing: 12) {
                 Statistic(value: Formatters.area(layer.discoveredSquareMeters), label: "discovered")
                 if let fraction = model.playAreaFraction(shown) {
                     Statistic(value: Formatters.percent(fraction), label: "of \(model.playArea.name)")
@@ -114,7 +127,7 @@ struct StatusPanel: View {
                 Statistic(value: "\(layer.regionCount)", label: layer.regionCount == 1 ? "region" : "regions")
                 Statistic(value: "\(model.sampleCount)", label: "positions")
             }
-            if model.staleLayers.contains(shown) {
+            if model.staleLayers.contains(shown) && !collapsed {
                 Label("Some positions are missing in this layer (no building data). Rebuild it in Settings when online.", systemImage: "exclamationmark.triangle")
                     .font(.caption)
                     .foregroundStyle(.orange)
@@ -122,19 +135,20 @@ struct StatusPanel: View {
             if let progress = model.progress {
                 ProgressView(value: progress)
             }
-            if let summary = model.evaluationSummary, model.debug.showsEvaluation {
+            if let summary = model.evaluationSummary, model.debug.showsEvaluation, !collapsed {
                 Text(summary)
                     .font(.caption2.monospacedDigit())
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            if !model.lastOutcome.isEmpty {
+            if !model.lastOutcome.isEmpty && !collapsed {
                 Text(model.lastOutcome)
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                    .lineLimit(2)
             }
         }
-        .padding(14)
+        .padding(12)
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
     }
 }
@@ -147,6 +161,8 @@ private struct Statistic: View {
         VStack(alignment: .leading, spacing: 2) {
             Text(value)
                 .font(.title3.monospacedDigit().bold())
+                .lineLimit(1)
+                .minimumScaleFactor(0.6)
             Text(label)
                 .font(.caption2)
                 .foregroundStyle(.secondary)

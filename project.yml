@@ -40,11 +40,30 @@ targets:
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         CODE_SIGN_STYLE: Automatic
         ENABLE_PREVIEWS: YES
+  MapQuestUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: App/MapQuestUITests
+    dependencies:
+      - target: MapQuest
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.MapQuestUITests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: MapQuest
+        TARGETED_DEVICE_FAMILY: "1"
+        CODE_SIGN_STYLE: Automatic
 schemes:
   MapQuest:
     build:
       targets:
         MapQuest: all
+        MapQuestUITests: [test]
+    test:
+      config: Debug
+      targets:
+        - MapQuestUITests
     run:
       config: Debug
       simulateLocation:
