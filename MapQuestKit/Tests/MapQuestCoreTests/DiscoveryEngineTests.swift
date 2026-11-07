@@ -212,12 +212,13 @@ final class LocationRecorderTests: XCTestCase {
         // Standing still: nothing new.
         outcome = try await recorder.record(Walk.sample(east: 1, north: 1, second: 1))
         guard case .alreadyDiscovered = outcome else { return XCTFail("expected already discovered, got \(outcome)") }
-        // Walking 1 m per second along a street: only every ~8 m is stored.
+        // Walking 1 m per second along a street: fixes are evaluated every 5 m and
+        // stored about every 10 m (when ≥ 10 % of the disk is new).
         for i in 1...100 {
             _ = try await recorder.record(Walk.sample(east: Double(i), north: 0, second: Double(10 + i)))
         }
         let count = try await store.sampleCount()
-        XCTAssertGreaterThanOrEqual(count, 10)
+        XCTAssertGreaterThanOrEqual(count, 8)
         XCTAssertLessThanOrEqual(count, 16)
         // Walking back along the same street stores nothing.
         for i in stride(from: 100, through: 0, by: -1) {
@@ -314,3 +315,38 @@ final class RecorderResilienceTests: XCTestCase {
         } catch {}
     }
 }
+
+/// Counts how often it is asked for revealed area.
+final class CountingModel: DiscoveryModel, @unchecked Sendable {
+    private let lock = NSLock()
+    private var count = 0
+    var evaluations: Int { lock.lock(); defer { lock.unlock() }; return count }
+    var layer: DiscoveryLayerID { "counting" }
+    func revealedArea(for sample: LocationSample) -> [WorldPolygon] {
+        lock.lock(); count += 1; lock.unlock()
+        return CircleDiscoveryModel(radius: 50).revealedArea(for: sample)
+    }
+}
+
+final class RecorderThrottleTests: XCTestCase {
+    func testFixesCloseToTheLastEvaluatedOneAreNotEvaluated() async throws {
+        let store = InMemoryDataStore()
+        let model = CountingModel()
+        let recorder = LocationRecorder(store: store, engines: [DiscoveryEngine(model: model, store: store)])
+        _ = try await recorder.record(Walk.sample(east: 0, north: 0, second: 0))
+        // Standing still with GPS jitter.
+        for i in 1...10 {
+            _ = try await recorder.record(Walk.sample(east: Double(i % 3), north: Double(i % 2), second: Double(i)))
+        }
+        XCTAssertEqual(model.evaluations, 1, "committing reuses the evaluation")
+        // Climbing (e.g. a tower) triggers a new evaluation even without horizontal movement.
+        var high = Walk.sample(east: 0, north: 0, second: 20)
+        high.altitude += 30
+        _ = try await recorder.record(high)
+        XCTAssertEqual(model.evaluations, 2)
+        // Moving on triggers evaluations again.
+        _ = try await recorder.record(Walk.sample(east: 30, north: 0, second: 30))
+        XCTAssertEqual(model.evaluations, 3)
+    }
+}
+

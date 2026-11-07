@@ -90,6 +90,33 @@ python3 Tools/berlin/extract_buildings.py berlin.osm.pbf buildings.jsonl
 cd MapQuestKit && swift run -c release mapquest-import buildings --output ../App/MapQuest/Resources/Berlin/berlin-buildings.sqlite --complete-inside ../App/MapQuest/Resources/Berlin/berlin-boundary.geojson ../buildings.jsonl
 ```
 
+### Result (Geofabrik extract of 7 November 2026)
+
+| | |
+|---|---|
+| Buildings | 539 018 (536 385 ways, 2 613 multipolygons), 0 unreadable |
+| Height from `height` tag | 7 489 (1.4 %) |
+| Height from `building:levels` | 175 829 (32.6 %) |
+| Estimated from building type | 355 700 (66.0 %) |
+| Tallest | Fernsehturm 368 m, Funkturm 147 m, The Berlinian 146 m, EDGE East Side Tower 142 m |
+| Complete zoom-14 tiles | 321 |
+| Database | 51 MB (31 MB zipped) – too large for the git repository, hence a CI artifact |
+
+Viewsheds computed by the workflow on this data (release build on a GitHub
+runner):
+
+| Place | Eye height | Sight | Buildings seen | Visible | Time |
+|---|---|---|---|---|---|
+| Alexanderplatz (open square) | 1.7 m | 150 m | 13 | 88 % of the view disk | 37 ms |
+| Unter den Linden | 1.7 m | 150 m | 19 | 107 %¹ | 30 ms |
+| Kreuzberg side street | 1.7 m | 150 m | 14 | 16 % | 46 ms |
+| Tempelhofer Feld | 1.7 m | 150 m | 0 | 99.7 % | 28 ms |
+| Fernsehturm viewing deck | 192 m | 2 000 m | 5 419 | 5.5 km² (44 %) | 1.3 s |
+| Park Inn rooftop | 114 m | 1 830 m | 4 222 | 3.5 km² (33 %) | 0.5 s |
+
+¹ Seen buildings count with their whole footprint, which can reach beyond
+the view distance (Staatsoper, Humboldt University).
+
 **Heights.** OSM `height` tags are used where present, then
 `building:levels` × 3 m (+ roof levels), otherwise a per-type estimate (see
 `OSMBuildingHeights`). Berlin's official LoD2 model and building heights

@@ -160,13 +160,16 @@ Receives every position fix and:
 
 1. rejects invalid fixes, fixes worse than 50 m (1σ) and fixes outside the
    play area;
-2. evaluates the fix with every engine;
-3. stores the fix only if, for at least one layer, ≥ 10 % of the revealed area
+2. skips fixes within 5 m horizontally and 3 m vertically of the last
+   evaluated fix (standing still costs nothing; a viewshed from a tower takes
+   about a second);
+3. evaluates the fix with every engine;
+4. stores the fix only if, for at least one layer, ≥ 10 % of the revealed area
    or ≥ 2 000 m² is new (`RecordingPolicy`);
-4. commits every stored fix to **every** layer, so each layer always equals a
+5. commits every stored fix to **every** layer, so each layer always equals a
    rebuild from the stored samples.
 
-With a 50 m radius this stores about one fix per 8 m of *new* path and none
+With a 50 m radius this stores about one fix per 10 m of *new* path and none
 while moving through known territory.
 
 ## 3D discovery (line of sight)

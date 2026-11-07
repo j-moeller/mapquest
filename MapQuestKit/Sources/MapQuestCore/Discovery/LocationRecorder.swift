@@ -8,15 +8,32 @@ public struct RecordingPolicy: Hashable, Sendable {
     public var minimumNewAreaFraction: Double
     /// … or at least this much area (m²) is new.
     public var minimumNewAreaSquareMeters: Double
+    /// Fixes closer than this (metres) to the last evaluated fix are not evaluated again …
+    public var minimumMovement: Double
+    /// … unless the altitude changed by at least this much (metres; only with valid altitudes).
+    public var minimumClimb: Double
 
     public init(
         maximumHorizontalAccuracy: Double = 50,
         minimumNewAreaFraction: Double = 0.1,
-        minimumNewAreaSquareMeters: Double = 2_000
+        minimumNewAreaSquareMeters: Double = 2_000,
+        minimumMovement: Double = 5,
+        minimumClimb: Double = 3
     ) {
         self.maximumHorizontalAccuracy = maximumHorizontalAccuracy
         self.minimumNewAreaFraction = minimumNewAreaFraction
         self.minimumNewAreaSquareMeters = minimumNewAreaSquareMeters
+        self.minimumMovement = minimumMovement
+        self.minimumClimb = minimumClimb
+    }
+
+    /// Whether `sample` is close enough to `previous` that evaluating it again cannot reveal much.
+    public func isNegligibleMove(from previous: LocationSample, to sample: LocationSample) -> Bool {
+        guard previous.coordinate.distance(to: sample.coordinate) < minimumMovement else { return false }
+        if previous.hasValidAltitude, sample.hasValidAltitude {
+            return abs(sample.altitude - previous.altitude) < minimumClimb
+        }
+        return true
     }
 
     public func isSignificant(_ evaluation: DiscoveryEvaluation) -> Bool {
@@ -36,7 +53,8 @@ public enum RecordingOutcome: Sendable {
 
     /// The fix was not considered.
     case rejected(RejectionReason)
-    /// The fix revealed (almost) nothing new and was not stored.
+    /// The fix revealed (almost) nothing new and was not stored. The evaluations are
+    /// empty if the fix was too close to the previous one to be evaluated at all.
     case alreadyDiscovered([DiscoveryEvaluation])
     /// The fix was stored and merged into every layer.
     case recorded(LocationSample, [DiscoveryUpdate])
@@ -64,6 +82,8 @@ public actor LocationRecorder {
     public private(set) var staleLayers: Set<DiscoveryLayerID> = []
     /// The most recent evaluation error per layer.
     public private(set) var lastErrors: [DiscoveryLayerID: String] = [:]
+    /// The last fix that was evaluated (viewsheds from high points take up to a second).
+    private var lastEvaluated: LocationSample?
 
     public init(store: any LocationStore, engines: [DiscoveryEngine], policy: RecordingPolicy = RecordingPolicy(), playArea: PlayArea = .world) {
         self.store = store
@@ -81,6 +101,10 @@ public actor LocationRecorder {
         guard sample.hasValidPosition else { return .rejected(.invalidPosition) }
         guard sample.horizontalAccuracy <= policy.maximumHorizontalAccuracy else { return .rejected(.inaccurate) }
         guard playArea.contains(sample.coordinate) else { return .rejected(.outsidePlayArea) }
+        if let previous = lastEvaluated, policy.isNegligibleMove(from: previous, to: sample) {
+            return .alreadyDiscovered([])
+        }
+        lastEvaluated = sample
 
         var evaluated: [(engine: DiscoveryEngine, evaluation: DiscoveryEvaluation)] = []
         var failures: [(layer: DiscoveryLayerID, error: Error)] = []

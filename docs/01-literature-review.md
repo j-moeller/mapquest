@@ -75,7 +75,7 @@ sampling with a very cheap, very effective criterion:
 
 For a revealed disk of radius *R* moving by *d ≪ R*, the newly revealed area
 is ≈ 2·R·d. With *R* = 50 m and a threshold of 10 % of the disk area
-(785 m²) a new fix is stored about every 8 m of *previously unseen* path
+(785 m²) a new fix is stored about every 8–10 m of *previously unseen* path
 and **never** while moving through known territory. Everything a user does
 in familiar surroundings – the daily commute, sitting at home – costs zero
 storage. Because the criterion works on the discovered area, it is equally

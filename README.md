@@ -19,7 +19,8 @@ The app has three major components:
    the background). The `LocationRecorder` drops inaccurate fixes and fixes
    outside Berlin, asks every discovery layer how much *new* area the fix
    would reveal, and stores the fix only if that is ≥ 10 % (or ≥ 2 000 m²).
-   Walking through known streets stores nothing.
+   Walking through known streets stores nothing; standing still is not even
+   evaluated.
 2. **Storage** – one SQLite database per data source holds the location
    samples (lat, lon, altitude, accuracies, timestamp, tile key) *and* the
    discovered area. Everything goes through the `MapQuestDataStore`
@@ -101,7 +102,7 @@ cd MapQuestKit && swift test
 - [x] Berlin 2D data
 - [x] Location data component and discovered-area component (3D)
 - [x] 3D map presentation
-- [ ] Berlin 3D data
+- [x] Berlin 3D data (on-demand OSM downloads; full Berlin database built by CI)
 
 ## Known limitations and next steps
 
