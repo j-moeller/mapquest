@@ -52,12 +52,18 @@ public enum RecordingOutcome: Sendable {
 /// all discovery engines (2D, 3D, …).
 ///
 /// Every stored sample is merged into every layer, so each layer always equals
-/// what a rebuild from the stored samples would produce.
+/// what a rebuild from the stored samples would produce. If a layer cannot be
+/// evaluated (e.g. 3D building data is unavailable offline), the other layers
+/// still record and the failed layer is marked stale until it is rebuilt.
 public actor LocationRecorder {
     public nonisolated let store: any LocationStore
     public private(set) var engines: [DiscoveryEngine]
     public var policy: RecordingPolicy
     public private(set) var playArea: PlayArea
+    /// Layers that missed at least one stored sample and need a rebuild.
+    public private(set) var staleLayers: Set<DiscoveryLayerID> = []
+    /// The most recent evaluation error per layer.
+    public private(set) var lastErrors: [DiscoveryLayerID: String] = [:]
 
     public init(store: any LocationStore, engines: [DiscoveryEngine], policy: RecordingPolicy = RecordingPolicy(), playArea: PlayArea = .world) {
         self.store = store
@@ -76,16 +82,27 @@ public actor LocationRecorder {
         guard sample.horizontalAccuracy <= policy.maximumHorizontalAccuracy else { return .rejected(.inaccurate) }
         guard playArea.contains(sample.coordinate) else { return .rejected(.outsidePlayArea) }
 
-        var evaluations: [DiscoveryEvaluation] = []
+        var evaluated: [(engine: DiscoveryEngine, evaluation: DiscoveryEvaluation)] = []
+        var failures: [(layer: DiscoveryLayerID, error: Error)] = []
         for engine in engines {
-            evaluations.append(try await engine.evaluate(sample))
+            do {
+                evaluated.append((engine, try await engine.evaluate(sample)))
+                lastErrors[engine.layer] = nil
+            } catch {
+                failures.append((engine.layer, error))
+                lastErrors[engine.layer] = String(describing: error)
+            }
         }
-        guard evaluations.contains(where: policy.isSignificant) else {
-            return .alreadyDiscovered(evaluations)
+        if evaluated.isEmpty, let failure = failures.first {
+            throw failure.error
+        }
+        guard evaluated.contains(where: { policy.isSignificant($0.evaluation) }) else {
+            return .alreadyDiscovered(evaluated.map(\.evaluation))
         }
         try await store.addSamples([sample])
+        staleLayers.formUnion(failures.map(\.layer))
         var updates: [DiscoveryUpdate] = []
-        for (engine, evaluation) in zip(engines, evaluations) {
+        for (engine, evaluation) in evaluated {
             updates.append(try await engine.commit(evaluation))
         }
         return .recorded(sample, updates)
@@ -96,6 +113,7 @@ public actor LocationRecorder {
         let samples = try await store.samples(matching: .all)
         for engine in engines {
             try await engine.rebuild(from: samples, progress: progress)
+            staleLayers.remove(engine.layer)
         }
     }
 }

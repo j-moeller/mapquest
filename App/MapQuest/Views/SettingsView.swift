@@ -50,10 +50,13 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    LabeledContent("Discovery radius", value: "\(Int(model.circleModel.radius)) m")
-                    LabeledContent("Stored positions", value: "\(model.statistics.sampleCount)")
-                    LabeledContent("Discovered area", value: Formatters.area(model.statistics.discoveredSquareMeters))
-                    LabeledContent("Regions", value: "\(model.statistics.regionCount)")
+                    LabeledContent("Stored positions", value: "\(model.sampleCount)")
+                    LabeledContent("Radius (2D)", value: "\(Int(model.circleModel.radius)) m around each position")
+                    LabeledContent("Line of sight (3D)", value: "\(model.viewshedModel.configuration.rayCount) rays, up to \(Int(model.viewshedModel.configuration.maximumDistance)) m")
+                    ForEach(MapLayer.allCases) { layer in
+                        let state = model.state(layer)
+                        LabeledContent(layer.title, value: "\(Formatters.area(state.discoveredSquareMeters)) in \(state.regionCount) \(state.regionCount == 1 ? "region" : "regions")")
+                    }
                     Button("Rebuild discovered area") {
                         Task { await model.rebuildDiscoveredArea() }
                     }
@@ -61,7 +64,7 @@ struct SettingsView: View {
                 } header: {
                     Text("Discovery")
                 } footer: {
-                    Text("The discovered area is a cache computed from the stored positions. Rebuilding recomputes it from scratch.")
+                    Text("The discovered area is a cache computed from the stored positions. Rebuilding recomputes both layers from scratch; the line-of-sight layer downloads building data from OpenStreetMap where needed.")
                 }
 
                 Section {

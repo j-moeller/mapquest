@@ -8,10 +8,11 @@ struct ContentView: View {
 
     var body: some View {
         ZStack(alignment: .top) {
+            let layer = model.state(model.selectedLayer)
             FogMapView(
-                snapshot: model.snapshot,
-                version: model.snapshotVersion,
-                changedTiles: model.changedTiles,
+                snapshot: layer.snapshot,
+                version: layer.version,
+                changedTiles: layer.changedTiles,
                 playArea: model.playArea
             )
             .ignoresSafeArea()
@@ -64,13 +65,25 @@ struct StatusPanel: View {
                 }
                 .accessibilityLabel("Settings")
             }
+            Picker("Discovery", selection: $model.selectedLayer) {
+                ForEach(MapLayer.allCases) { layer in
+                    Text(layer.title).tag(layer)
+                }
+            }
+            .pickerStyle(.segmented)
+            let layer = model.state(model.selectedLayer)
             HStack(spacing: 16) {
-                Statistic(value: Formatters.area(model.statistics.discoveredSquareMeters), label: "discovered")
-                if let fraction = model.statistics.playAreaFraction {
+                Statistic(value: Formatters.area(layer.discoveredSquareMeters), label: "discovered")
+                if let fraction = model.playAreaFraction(model.selectedLayer) {
                     Statistic(value: Formatters.percent(fraction), label: "of \(model.playArea.name)")
                 }
-                Statistic(value: "\(model.statistics.regionCount)", label: model.statistics.regionCount == 1 ? "region" : "regions")
-                Statistic(value: "\(model.statistics.sampleCount)", label: "positions")
+                Statistic(value: "\(layer.regionCount)", label: layer.regionCount == 1 ? "region" : "regions")
+                Statistic(value: "\(model.sampleCount)", label: "positions")
+            }
+            if model.staleLayers.contains(model.selectedLayer) {
+                Label("Some positions are missing in this layer (no building data). Rebuild it in Settings when online.", systemImage: "exclamationmark.triangle")
+                    .font(.caption)
+                    .foregroundStyle(.orange)
             }
             if !model.lastOutcome.isEmpty {
                 Text(model.lastOutcome)

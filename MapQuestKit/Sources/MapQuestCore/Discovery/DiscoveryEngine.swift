@@ -247,12 +247,18 @@ public actor DiscoveryEngine {
         regionFirstDiscovered.removeAll()
         isFullyLoaded = true // start from an empty layer; nothing is read from the store
         let ordered = samples.sorted { ($0.timestamp, $0.id.uuidString) < ($1.timestamp, $1.id.uuidString) }
-        for (index, sample) in ordered.enumerated() {
-            let revealed = PolygonOps.union(try await model.revealedArea(for: sample))
-            _ = integrate(revealed, at: sample.timestamp)
-            progress?(index + 1, ordered.count)
+        do {
+            for (index, sample) in ordered.enumerated() {
+                let revealed = PolygonOps.union(try await model.revealedArea(for: sample))
+                _ = integrate(revealed, at: sample.timestamp)
+                progress?(index + 1, ordered.count)
+            }
+            try await store.replaceLayer(layer, with: cache.values.flatMap { $0 })
+        } catch {
+            // The stored layer is unchanged; drop the partial in-memory state.
+            invalidateCache()
+            throw error
         }
-        try await store.replaceLayer(layer, with: cache.values.flatMap { $0 })
     }
 
     // MARK: Algorithm

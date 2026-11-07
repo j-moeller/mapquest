@@ -169,6 +169,54 @@ Receives every position fix and:
 With a 50 m radius this stores about one fix per 8 m of *new* path and none
 while moving through known territory.
 
+## 3D discovery (line of sight)
+
+### Buildings
+
+`Building` is an LoD1 block: footprint (`WorldPolygon`, courtyards as holes),
+`height` and `minHeight` above ground, and where the height came from.
+`BuildingSource` provides buildings for a world rectangle:
+
+| Type | Role |
+|---|---|
+| `InMemoryBuildingSource` | Fixed sets (tests) |
+| `CachingBuildingSource` | Serves zoom-14 tiles (≈ 1.5 km) from a `BuildingCache`, downloads missing tiles on demand, keeps recent tiles in memory |
+| `SQLiteBuildingStore` | The persistent `BuildingCache` (shared by all data sources – it is map data, not user data); can be seeded with a bundled `berlin-buildings.sqlite` |
+| `OverpassClient` | Downloads OSM buildings (`way`/`relation` `building=*`, towers with `height`) for a box |
+
+`OSMBuildingHeights` derives heights from OSM tags: `height` →
+`building:levels` × 3 m (+ roof levels/height) → an estimate per building type
+(garage 3 m, house 8 m, apartments 17 m, …, default 12 m). `min_height` /
+`building:min_level` mark passages and bridges; `building=roof` canopies do not
+block the view.
+
+### `ViewshedDiscoveryModel`
+
+1. **Eye height**: the fix's altitude minus the terrain elevation, minus the
+   vertical accuracy and an 8 m threshold, so GNSS noise and moderate relief
+   count as street level (1.7 m). Unreliable altitudes (vertical accuracy
+   missing or > 15 m) also mean street level. `FlatTerrain.berlin` (35 m) is
+   the default terrain; a DEM can be plugged in via `TerrainModel`.
+2. **View distance**: 150 m at street level, +15 m per metre of eye height,
+   at most 2 km.
+3. **`Viewshed.compute`**: 720 rays; buildings are indexed in a 25 m grid
+   and found per ray by voxel traversal; each building crossing yields an
+   entry/exit interval; the slope sweep decides what is visible (see the
+   literature review, §4.4). The building the user stands in is seen but not
+   an obstacle.
+4. Visible ground intervals become thin wedges, which are united with the
+   footprints of all seen buildings (Clipper2) and simplified (0.5 m).
+
+The result feeds a second `DiscoveryEngine` (layer `viewshed-v1`), so the 3D
+layer gets exactly the same tiling, region merging, persistence and rebuild
+as the 2D layer. In release builds one viewshed takes ≈ 10 ms.
+
+### Failure handling
+
+If building data is unavailable (offline, never downloaded), the 3D model
+throws. The `LocationRecorder` still stores the fix and updates the 2D layer,
+marks the 3D layer as *stale*, and the app offers a rebuild once online.
+
 ## App (iOS)
 
 | File | Role |

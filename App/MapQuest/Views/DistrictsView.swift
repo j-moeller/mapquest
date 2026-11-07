@@ -33,7 +33,18 @@ struct DistrictsView: View {
             }
         }
         .navigationTitle("\(model.playArea.name) districts")
-        .task(id: model.snapshotVersion) {
+        .safeAreaInset(edge: .top) {
+            Picker("Discovery", selection: $model.selectedLayer) {
+                ForEach(MapLayer.allCases) { layer in
+                    Text(layer.title).tag(layer)
+                }
+            }
+            .pickerStyle(.segmented)
+            .padding(.horizontal)
+            .padding(.vertical, 6)
+            .background(.bar)
+        }
+        .task(id: "\(model.selectedLayer.rawValue)-\(model.state(model.selectedLayer).version)") {
             isComputing = true
             await model.computeDistrictCoverage()
             isComputing = false

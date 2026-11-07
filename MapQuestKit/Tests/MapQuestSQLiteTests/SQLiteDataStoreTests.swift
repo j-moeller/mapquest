@@ -117,3 +117,49 @@ final class SQLiteDiscoveryIntegrationTests: XCTestCase {
         XCTAssertTrue(known)
     }
 }
+
+final class SQLiteBuildingStoreTests: XCTestCase {
+    func building(_ id: Int64, lat: Double, lon: Double, size: Double = 0.0003, height: Double = 20, name: String? = nil) -> Building {
+        let ring = [
+            GeoCoordinate(latitude: lat, longitude: lon), GeoCoordinate(latitude: lat, longitude: lon + size),
+            GeoCoordinate(latitude: lat + size, longitude: lon + size), GeoCoordinate(latitude: lat + size, longitude: lon),
+        ].map(WebMercator.project)
+        return Building(id: id, footprint: WorldPolygon(exterior: ring), height: height, minHeight: 0, heightSource: .levels, name: name)
+    }
+
+    func testStoresAndQueriesBuildings() async throws {
+        let store = try SQLiteBuildingStore.inMemory()
+        let near = building(1, lat: 52.5200, lon: 13.4100, name: "Near")
+        let far = building(2, lat: 52.5300, lon: 13.4300)
+        // A very large building (≈ 1 km) whose centre lies far from the query.
+        let large = building(3, lat: 52.5150, lon: 13.4000, size: 0.012)
+        let tile = TileKey(containing: GeoCoordinate(latitude: 52.52, longitude: 13.41), zoom: 14)
+        try await store.store([near, far, large], downloadedTiles: [tile])
+
+        let rect = WebMercator.worldRect(for: GeoBoundingBox(center: GeoCoordinate(latitude: 52.5201, longitude: 13.4101), radius: 50))
+        let found = try await store.buildings(in: rect)
+        XCTAssertEqual(found.map(\.id), [1, 3])
+        XCTAssertEqual(found.first, near, "all fields round-trip")
+        let downloaded = try await store.isDownloaded(tile)
+        XCTAssertTrue(downloaded)
+        let otherTileDownloaded = try await store.isDownloaded(TileKey(zoom: 14, x: tile.x + 1, y: tile.y))
+        XCTAssertFalse(otherTileDownloaded)
+        let count = try await store.buildingCount()
+        XCTAssertEqual(count, 3)
+    }
+
+    func testViewshedOnCachedBuildings() async throws {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("buildings-\(UUID().uuidString).sqlite")
+        defer { try? FileManager.default.removeItem(at: url) }
+        let store = try SQLiteBuildingStore(fileURL: url)
+        let source = CachingBuildingSource(cache: store, download: { [self] _ in
+            [building(10, lat: 52.52020, lon: 13.40980, height: 25)]
+        })
+        let model = ViewshedDiscoveryModel(buildings: source)
+        let sample = LocationSample(latitude: 52.52000, longitude: 13.41000, altitude: 36, verticalAccuracy: 4, timestamp: Date())
+        let result = try await model.viewshed(for: sample)
+        XCTAssertEqual(result.seenBuildingIDs, [10])
+        let tiles = try await store.downloadedTiles()
+        XCTAssertFalse(tiles.isEmpty)
+    }
+}

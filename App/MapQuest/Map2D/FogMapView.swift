@@ -53,6 +53,7 @@ struct FogMapView: UIViewRepresentable {
         let fogOverlay = FogOverlay()
         private(set) var fogRenderer: FogOverlayRenderer
         private var drawnVersion = -1
+        private var drawnLayer: DiscoveryLayerID?
         private var boundaryOverlays: [MKPolyline] = []
         private var drawnPlayAreaName: String?
 
@@ -61,10 +62,11 @@ struct FogMapView: UIViewRepresentable {
         }
 
         func update(snapshot: DiscoveredAreaSnapshot, version: Int, changedTiles: Set<TileKey>?) {
-            guard version != drawnVersion else { return }
-            // Only consecutive versions may be redrawn partially.
-            let partial = version == drawnVersion + 1 ? changedTiles : nil
+            guard version != drawnVersion || snapshot.layer != drawnLayer else { return }
+            // Only consecutive versions of the same layer may be redrawn partially.
+            let partial = version == drawnVersion + 1 && snapshot.layer == drawnLayer ? changedTiles : nil
             drawnVersion = version
+            drawnLayer = snapshot.layer
             fogRenderer.update(snapshot: snapshot, changedTiles: partial)
         }
 

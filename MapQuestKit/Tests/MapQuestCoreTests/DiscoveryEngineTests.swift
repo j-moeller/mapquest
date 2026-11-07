@@ -274,3 +274,43 @@ struct SplitMix64: RandomNumberGenerator {
         return z ^ (z >> 31)
     }
 }
+
+/// A discovery model that fails, like the 3D model without building data.
+struct FailingModel: DiscoveryModel {
+    var layer: DiscoveryLayerID { "failing" }
+    func revealedArea(for sample: LocationSample) async throws -> [WorldPolygon] {
+        throw BuildingSourceError.unavailable("offline")
+    }
+}
+
+final class RecorderResilienceTests: XCTestCase {
+    func testFailingLayerDoesNotStopRecordingAndBecomesStale() async throws {
+        let store = InMemoryDataStore()
+        let circle = DiscoveryEngine(model: CircleDiscoveryModel(radius: 50), store: store)
+        let failing = DiscoveryEngine(model: FailingModel(), store: store)
+        let recorder = LocationRecorder(store: store, engines: [circle, failing])
+        let outcome = try await recorder.record(Walk.sample(east: 0, north: 0, second: 0))
+        XCTAssertTrue(outcome.isRecorded)
+        let stale = await recorder.staleLayers
+        XCTAssertEqual(stale, ["failing"])
+        let errors = await recorder.lastErrors
+        XCTAssertNotNil(errors["failing"])
+
+        // A failed rebuild leaves the stored layer untouched.
+        do {
+            try await failing.rebuild(from: [Walk.sample(east: 0, north: 0, second: 0)])
+            XCTFail("expected an error")
+        } catch {}
+        let circleRegions = try await store.regions(layer: circle.layer)
+        XCTAssertEqual(circleRegions.count, 1)
+    }
+
+    func testAllLayersFailingThrows() async {
+        let store = InMemoryDataStore()
+        let recorder = LocationRecorder(store: store, engines: [DiscoveryEngine(model: FailingModel(), store: store)])
+        do {
+            _ = try await recorder.record(Walk.sample(east: 0, north: 0, second: 0))
+            XCTFail("expected an error")
+        } catch {}
+    }
+}

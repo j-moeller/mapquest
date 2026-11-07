@@ -2,46 +2,72 @@ import Combine
 import CoreLocation
 import Foundation
 import MapQuestCore
+import MapQuestSQLite
+
+/// The discovered-area layers the app maintains for every data source.
+enum MapLayer: String, CaseIterable, Identifiable {
+    /// 2D: everything within 50 m of a position.
+    case radius
+    /// 3D: what is visible from a position between the buildings.
+    case lineOfSight
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .radius: return "Radius"
+        case .lineOfSight: return "Line of sight"
+        }
+    }
+}
+
+/// Published state of one layer.
+struct LayerState {
+    var snapshot: DiscoveredAreaSnapshot
+    /// Increments with every snapshot change.
+    var version = 0
+    /// Tiles that changed with the last update (`nil` = everything).
+    var changedTiles: Set<TileKey>?
+    var discoveredSquareMeters: Double = 0
+    var regionCount = 0
+}
 
 /// Wires the three components together: location tracking → recorder →
-/// discovered area → map. Owns the currently selected data source.
+/// discovered area (2D and 3D layers) → maps. Owns the selected data source.
 @MainActor
 final class AppModel: ObservableObject {
-    struct Statistics: Equatable {
-        var sampleCount = 0
-        var discoveredSquareMeters: Double = 0
-        var regionCount = 0
-        /// Discovered share of the play area (0…1), if the play area is bounded.
-        var playAreaFraction: Double?
-    }
-
     @Published private(set) var profile: DataProfile
     @Published private(set) var profiles: [DataProfile]
-    /// The 2D discovered area of the selected data source.
-    @Published private(set) var snapshot: DiscoveredAreaSnapshot
-    /// Increments with every snapshot change.
-    @Published private(set) var snapshotVersion = 0
-    /// Tiles that changed with the last snapshot update (`nil` = everything).
-    @Published private(set) var changedTiles: Set<TileKey>?
-    @Published private(set) var statistics = Statistics()
+    @Published private(set) var layers: [MapLayer: LayerState]
+    /// The layer shown on the 2D map.
+    @Published var selectedLayer: MapLayer {
+        didSet { UserDefaults.standard.set(selectedLayer.rawValue, forKey: Self.selectedLayerKey) }
+    }
+    /// Layers that missed samples (e.g. building data was unavailable offline) and need a rebuild.
+    @Published private(set) var staleLayers: Set<MapLayer> = []
+    @Published private(set) var sampleCount = 0
     @Published private(set) var lastOutcome: String = ""
     @Published private(set) var isBusy = false
     @Published var errorMessage: String?
     @Published private(set) var playArea: PlayArea
-    /// Discovered share per district (computed on demand).
+    /// Discovered share per district of the selected layer (computed on demand).
     @Published private(set) var districtCoverage: [AreaCoverage] = []
 
     let tracker: LocationTracker
     let catalog: DataSourceCatalog
     let circleModel: CircleDiscoveryModel
+    let viewshedModel: ViewshedDiscoveryModel
+    /// Buildings for ray casting and the 3D map (bundled, cached, or downloaded on demand).
+    let buildings: CachingBuildingSource
 
     private(set) var store: any MapQuestDataStore
-    private(set) var circleEngine: DiscoveryEngine
+    private(set) var engines: [MapLayer: DiscoveryEngine]
     private(set) var recorder: LocationRecorder
 
     private nonisolated let sampleSink: AsyncStream<LocationSample>.Continuation
     private var processingTask: Task<Void, Never>?
     private var isRebuilding = false
+    private static let selectedLayerKey = "AppModel.selectedLayer"
 
     init(catalog: DataSourceCatalog = DataSourceCatalog(), tracker: LocationTracker = LocationTracker()) {
         self.catalog = catalog
@@ -62,14 +88,19 @@ final class AppModel: ObservableObject {
             store = InMemoryDataStore()
         }
         let circleModel = CircleDiscoveryModel(radius: 50)
-        let engine = DiscoveryEngine(model: circleModel, store: store)
+        let buildings = Self.makeBuildingSource()
+        let viewshedModel = ViewshedDiscoveryModel(buildings: buildings, terrain: FlatTerrain.berlin)
+        let engines = Self.makeEngines(store: store, circle: circleModel, viewshed: viewshedModel)
         self.circleModel = circleModel
+        self.viewshedModel = viewshedModel
+        self.buildings = buildings
         self.profile = profile
         self.profiles = catalog.profiles
         self.store = store
-        self.circleEngine = engine
-        self.recorder = LocationRecorder(store: store, engines: [engine], playArea: playArea)
-        self.snapshot = .empty(layer: engine.layer)
+        self.engines = engines
+        self.recorder = LocationRecorder(store: store, engines: MapLayer.allCases.compactMap { engines[$0] }, playArea: playArea)
+        self.layers = Self.emptyLayers(engines)
+        self.selectedLayer = UserDefaults.standard.string(forKey: Self.selectedLayerKey).flatMap(MapLayer.init(rawValue:)) ?? .radius
 
         let (samples, sink) = AsyncStream<LocationSample>.makeStream(bufferingPolicy: .bufferingNewest(1_000))
         self.sampleSink = sink
@@ -93,6 +124,51 @@ final class AppModel: ObservableObject {
         sampleSink.finish()
     }
 
+    private static func makeEngines(store: any MapQuestDataStore, circle: CircleDiscoveryModel, viewshed: ViewshedDiscoveryModel) -> [MapLayer: DiscoveryEngine] {
+        [
+            .radius: DiscoveryEngine(model: circle, store: store),
+            .lineOfSight: DiscoveryEngine(model: viewshed, store: store),
+        ]
+    }
+
+    private static func emptyLayers(_ engines: [MapLayer: DiscoveryEngine]) -> [MapLayer: LayerState] {
+        engines.mapValues { LayerState(snapshot: .empty(layer: $0.layer)) }
+    }
+
+    /// The shared building database in Application Support, seeded from a bundled
+    /// `berlin-buildings.sqlite` if the app ships one, plus on-demand OSM downloads.
+    private static func makeBuildingSource() -> CachingBuildingSource {
+        let fileManager = FileManager.default
+        let directory = (try? fileManager.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true))?
+            .appendingPathComponent("MapQuest/Buildings", isDirectory: true)
+        var cache: any BuildingCache = InMemoryBuildingCache()
+        if let directory {
+            let url = directory.appendingPathComponent("buildings.sqlite")
+            if !fileManager.fileExists(atPath: url.path),
+               let bundled = Bundle.main.url(forResource: "berlin-buildings", withExtension: "sqlite") {
+                try? fileManager.createDirectory(at: directory, withIntermediateDirectories: true)
+                try? fileManager.copyItem(at: bundled, to: url)
+            }
+            if let store = try? SQLiteBuildingStore(fileURL: url) {
+                cache = store
+            }
+        }
+        let client = OverpassClient()
+        return CachingBuildingSource(cache: cache, download: { box in try await client.buildings(in: box) })
+    }
+
+    // MARK: Convenience for views
+
+    func state(_ layer: MapLayer) -> LayerState {
+        layers[layer] ?? LayerState(snapshot: .empty(layer: DiscoveryLayerID(layer.rawValue)))
+    }
+
+    /// Discovered share of the play area for a layer, if the play area is bounded.
+    func playAreaFraction(_ layer: MapLayer) -> Double? {
+        guard !playArea.isWorld, playArea.areaSquareMeters > 0 else { return nil }
+        return min(1, state(layer).discoveredSquareMeters / playArea.areaSquareMeters)
+    }
+
     // MARK: Processing
 
     private func process(_ sample: LocationSample) async {
@@ -109,9 +185,13 @@ final class AppModel: ObservableObject {
             guard recorder === self.recorder else { return } // data source changed meanwhile
             switch outcome {
             case .recorded(_, let updates):
-                statistics.sampleCount += 1
+                sampleCount += 1
                 lastOutcome = "New area discovered"
-                await refreshSnapshot(changedTiles: updates.reduce(into: Set<TileKey>()) { $0.formUnion($1.changedTiles) })
+                for update in updates {
+                    if let layer = layer(for: update.layer) {
+                        await refresh(layer, changedTiles: update.changedTiles)
+                    }
+                }
             case .alreadyDiscovered:
                 lastOutcome = "Known territory"
             case .rejected(.inaccurate):
@@ -121,24 +201,37 @@ final class AppModel: ObservableObject {
             case .rejected(.invalidPosition):
                 lastOutcome = "No valid position"
             }
+            await updateStaleLayers()
         } catch {
             errorMessage = "Could not record position: \(error.localizedDescription)"
         }
     }
 
-    private func refreshSnapshot(changedTiles: Set<TileKey>?) async {
-        let engine = circleEngine
+    private func layer(for id: DiscoveryLayerID) -> MapLayer? {
+        engines.first { $0.value.layer == id }?.key
+    }
+
+    private func updateStaleLayers() async {
+        let stale = await recorder.staleLayers
+        staleLayers = Set(stale.compactMap(layer(for:)))
+    }
+
+    private func refresh(_ layer: MapLayer, changedTiles: Set<TileKey>?) async {
+        guard let engine = engines[layer] else { return }
         let snapshot = await engine.snapshot()
-        guard engine === circleEngine else { return }
-        self.snapshot = snapshot
-        self.changedTiles = changedTiles
-        self.snapshotVersion += 1
-        statistics.discoveredSquareMeters = snapshot.totalAreaSquareMeters
-        statistics.regionCount = snapshot.regions.count
-        if !playArea.isWorld, playArea.areaSquareMeters > 0 {
-            statistics.playAreaFraction = min(1, snapshot.totalAreaSquareMeters / playArea.areaSquareMeters)
-        } else {
-            statistics.playAreaFraction = nil
+        guard engines[layer] === engine else { return }
+        var state = layers[layer] ?? LayerState(snapshot: snapshot)
+        state.snapshot = snapshot
+        state.version += 1
+        state.changedTiles = changedTiles
+        state.discoveredSquareMeters = snapshot.totalAreaSquareMeters
+        state.regionCount = snapshot.regions.count
+        layers[layer] = state
+    }
+
+    private func refreshAll() async {
+        for layer in MapLayer.allCases {
+            await refresh(layer, changedTiles: nil)
         }
     }
 
@@ -152,9 +245,12 @@ final class AppModel: ObservableObject {
             if profile.id == BerlinData.demoProfileID, try await store.sampleCount() == 0 {
                 try await importDemoData()
             }
-            try await circleEngine.loadAll()
-            statistics.sampleCount = try await store.sampleCount()
-            await refreshSnapshot(changedTiles: nil)
+            for engine in engines.values {
+                try await engine.loadAll()
+            }
+            sampleCount = try await store.sampleCount()
+            await refreshAll()
+            await updateStaleLayers()
         } catch {
             errorMessage = "Could not load data: \(error.localizedDescription)"
         }
@@ -165,14 +261,15 @@ final class AppModel: ObservableObject {
         guard profile.id != self.profile.id else { return }
         do {
             let store = try catalog.openStore(for: profile)
-            let engine = DiscoveryEngine(model: circleModel, store: store)
+            let engines = Self.makeEngines(store: store, circle: circleModel, viewshed: viewshedModel)
             self.store = store
-            self.circleEngine = engine
-            self.recorder = LocationRecorder(store: store, engines: [engine], playArea: playArea)
+            self.engines = engines
+            self.recorder = LocationRecorder(store: store, engines: MapLayer.allCases.compactMap { engines[$0] }, playArea: playArea)
             self.profile = profile
             catalog.selectedProfileID = profile.id
-            snapshot = .empty(layer: engine.layer)
-            statistics = Statistics()
+            layers = Self.emptyLayers(engines)
+            sampleCount = 0
+            staleLayers = []
             districtCoverage = []
             lastOutcome = ""
             await reload()
@@ -196,9 +293,9 @@ final class AppModel: ObservableObject {
         lastOutcome = ""
     }
 
-    /// Computes the discovered share of every district (off the main thread).
+    /// Computes the discovered share of every district for the selected layer (off the main thread).
     func computeDistrictCoverage() async {
-        let snapshot = self.snapshot
+        let snapshot = state(selectedLayer).snapshot
         let districts = playArea.subdivisions
         let coverage = await Task.detached(priority: .userInitiated) {
             DiscoveryStatistics.coverage(of: snapshot, in: districts)
@@ -206,15 +303,9 @@ final class AppModel: ObservableObject {
         districtCoverage = coverage.sorted { $0.fraction > $1.fraction }
     }
 
-    func setPlayArea(_ area: PlayArea) async {
-        playArea = area
-        await recorder.setPlayArea(area)
-        await refreshSnapshot(changedTiles: nil)
-    }
-
     // MARK: Maintenance
 
-    /// Recomputes the discovered area from the stored location samples.
+    /// Recomputes all discovered-area layers from the stored location samples.
     func rebuildDiscoveredArea() async {
         isBusy = true
         isRebuilding = true
@@ -223,11 +314,14 @@ final class AppModel: ObservableObject {
             isBusy = false
         }
         do {
+            lastOutcome = "Rebuilding discovered area…"
             try await recorder.rebuildAllLayers()
-            await refreshSnapshot(changedTiles: nil)
+            lastOutcome = "Discovered area rebuilt"
         } catch {
             errorMessage = "Rebuild failed: \(error.localizedDescription)"
         }
+        await refreshAll()
+        await updateStaleLayers()
     }
 
     /// Deletes all samples and discovered area of the selected data source.
@@ -243,10 +337,12 @@ final class AppModel: ObservableObject {
             for layer in try await store.layers() {
                 try await store.removeAllPieces(layer: layer)
             }
-            await circleEngine.invalidateCache()
-            try await circleEngine.loadAll()
-            statistics = Statistics()
-            await refreshSnapshot(changedTiles: nil)
+            for engine in engines.values {
+                await engine.invalidateCache()
+                try await engine.loadAll()
+            }
+            sampleCount = 0
+            await refreshAll()
         } catch {
             errorMessage = "Delete failed: \(error.localizedDescription)"
         }
