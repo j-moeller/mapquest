@@ -23,7 +23,11 @@ struct ContentView: View {
                     snapshot: model.state(model.selectedLayer).snapshot,
                     version: model.state(model.selectedLayer).version,
                     changedTiles: model.state(model.selectedLayer).changedTiles,
-                    playArea: model.playArea
+                    playArea: model.playArea,
+                    fogOpacity: model.debug.fogOpacity,
+                    onLongPress: model.debug.placesPositionsOnLongPress ? { coordinate in
+                        Task { await model.placeTestPosition(at: coordinate) }
+                    } : nil
                 )
                 .ignoresSafeArea()
             case .threeD:
@@ -114,6 +118,15 @@ struct StatusPanel: View {
                 Label("Some positions are missing in this layer (no building data). Rebuild it in Settings when online.", systemImage: "exclamationmark.triangle")
                     .font(.caption)
                     .foregroundStyle(.orange)
+            }
+            if let progress = model.progress {
+                ProgressView(value: progress)
+            }
+            if let summary = model.evaluationSummary, model.debug.showsEvaluation {
+                Text(summary)
+                    .font(.caption2.monospacedDigit())
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             if !model.lastOutcome.isEmpty {
                 Text(model.lastOutcome)

@@ -24,13 +24,13 @@ enum GroundTexture {
     }
 
     /// The map image (or a plain background) with fog drawn over undiscovered areas.
-    static func compose(map: UIImage?, rect: WorldRect, snapshot: DiscoveredAreaSnapshot) -> UIImage {
+    static func compose(map: UIImage?, rect: WorldRect, snapshot: DiscoveredAreaSnapshot, fogOpacity: Double) -> UIImage {
         let format = UIGraphicsImageRendererFormat()
         format.scale = 2
         let size = pointSize
         let fog = UIGraphicsImageRenderer(size: size, format: format).image { context in
             let cg = context.cgContext
-            cg.setFillColor(UIColor(red: 0.04, green: 0.06, blue: 0.12, alpha: 0.62).cgColor)
+            cg.setFillColor(UIColor(red: 0.04, green: 0.06, blue: 0.12, alpha: CGFloat(fogOpacity)).cgColor)
             cg.fill(CGRect(origin: .zero, size: size))
             cg.setBlendMode(.clear)
             let sx = Double(size.width) / Double(rect.width)

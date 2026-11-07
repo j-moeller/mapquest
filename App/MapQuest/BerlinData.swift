@@ -23,6 +23,14 @@ enum BerlinData {
         return berlin
     }
 
+    /// Berlin's terrain (ATKIS DGM, ≈ 30 m grid), if bundled.
+    static func terrain(bundle: Bundle = .main) -> GridTerrain? {
+        guard let url = bundle.url(forResource: "berlin-terrain", withExtension: "dem"),
+              let data = try? Data(contentsOf: url)
+        else { return nil }
+        return try? GridTerrain(identifier: "berlin-dgm30", data: data, fallback: FlatTerrain.berlin.elevation)
+    }
+
     /// The view-only profile holding the demo explorer's data.
     static var demoProfile: DataProfile {
         DataProfile(

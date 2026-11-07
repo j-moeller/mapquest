@@ -9,6 +9,10 @@ struct FogMapView: UIViewRepresentable {
     var version: Int
     var changedTiles: Set<TileKey>?
     var playArea: PlayArea
+    /// Opacity of the fog over undiscovered areas (0…1).
+    var fogOpacity: Double = 0.58
+    /// Called with the coordinate of a long press (debug: place a test position); `nil` disables it.
+    var onLongPress: ((GeoCoordinate) -> Void)?
 
     static let berlin = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 52.5200, longitude: 13.4050),
@@ -41,10 +45,15 @@ struct FogMapView: UIViewRepresentable {
             trackingButton.topAnchor.constraint(equalTo: map.safeAreaLayoutGuide.topAnchor, constant: 64),
         ])
         context.coordinator.updatePlayArea(playArea, on: map)
+        let press = UILongPressGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleLongPress(_:)))
+        map.addGestureRecognizer(press)
+        context.coordinator.map = map
         return map
     }
 
     func updateUIView(_ map: MKMapView, context: Context) {
+        context.coordinator.onLongPress = onLongPress
+        context.coordinator.updateFog(opacity: fogOpacity)
         context.coordinator.update(snapshot: snapshot, version: version, changedTiles: changedTiles)
         context.coordinator.updatePlayArea(playArea, on: map)
     }
@@ -56,6 +65,21 @@ struct FogMapView: UIViewRepresentable {
         private var drawnLayer: DiscoveryLayerID?
         private var boundaryOverlays: [MKPolyline] = []
         private var drawnPlayAreaName: String?
+        weak var map: MKMapView?
+        var onLongPress: ((GeoCoordinate) -> Void)?
+
+        @objc func handleLongPress(_ recognizer: UILongPressGestureRecognizer) {
+            guard recognizer.state == .began, let map, let onLongPress else { return }
+            let coordinate = map.convert(recognizer.location(in: map), toCoordinateFrom: map)
+            onLongPress(GeoCoordinate(latitude: coordinate.latitude, longitude: coordinate.longitude))
+        }
+
+        func updateFog(opacity: Double) {
+            let current = fogRenderer.fogColor.cgColor.alpha
+            guard abs(current - CGFloat(opacity)) > 0.001 else { return }
+            fogRenderer.fogColor = fogRenderer.fogColor.withAlphaComponent(CGFloat(opacity))
+            fogRenderer.setNeedsDisplay()
+        }
 
         init(snapshot: DiscoveredAreaSnapshot) {
             fogRenderer = FogOverlayRenderer(overlay: fogOverlay, snapshot: snapshot)

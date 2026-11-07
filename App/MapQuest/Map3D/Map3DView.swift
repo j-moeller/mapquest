@@ -24,6 +24,7 @@ final class Scene3DController: ObservableObject {
     private var interiorPoints: [Int64: WorldPoint] = [:]
     private var mapImage: UIImage?
     private var renderedVersion = -1
+    private var renderedOpacity = -1.0
     private var generation = 0
 
     init() {
@@ -76,7 +77,7 @@ final class Scene3DController: ObservableObject {
     }
 
     /// Loads buildings and the ground map around `center` and rebuilds the scene.
-    func load(center: GeoCoordinate, snapshot: DiscoveredAreaSnapshot, version: Int, source: CachingBuildingSource) async {
+    func load(center: GeoCoordinate, snapshot: DiscoveredAreaSnapshot, version: Int, fogOpacity: Double, source: CachingBuildingSource) async {
         generation += 1
         let token = generation
         let frame = LocalFrame(origin: WebMercator.project(center))
@@ -105,13 +106,14 @@ final class Scene3DController: ObservableObject {
         mapImage = await GroundTexture.mapImage(for: rect)
         guard token == generation else { return }
         renderedVersion = -1
-        await recolor(snapshot: snapshot, version: version)
+        await recolor(snapshot: snapshot, version: version, fogOpacity: fogOpacity)
     }
 
     /// Re-colours buildings and redraws the ground fog after the discovered area changed.
-    func recolor(snapshot: DiscoveredAreaSnapshot, version: Int) async {
-        guard let frame, version != renderedVersion else { return }
+    func recolor(snapshot: DiscoveredAreaSnapshot, version: Int, fogOpacity: Double) async {
+        guard let frame, version != renderedVersion || fogOpacity != renderedOpacity else { return }
         renderedVersion = version
+        renderedOpacity = fogOpacity
         let token = generation
         let buildings = self.buildings
         let points = self.interiorPoints
@@ -122,7 +124,7 @@ final class Scene3DController: ObservableObject {
                 points[b.id].map(snapshot.isDiscovered) ?? false
             }.map(\.id))
             let mesh = LoD1MeshBuilder.mesh(for: buildings, frame: frame) { discovered.contains($0.id) }
-            let ground = GroundTexture.compose(map: map, rect: rect, snapshot: snapshot)
+            let ground = GroundTexture.compose(map: map, rect: rect, snapshot: snapshot, fogOpacity: fogOpacity)
             return (mesh, ground)
         }.value
         guard token == generation else { return }
@@ -186,16 +188,16 @@ struct Map3DScreen: View {
         return Self.fallbackCenter
     }
 
-    private var eyeHeight: Double {
-        guard let location = tracker.lastLocation else { return model.viewshedModel.configuration.streetEyeHeight }
-        let terrain = model.viewshedModel.terrain
-        let ground = terrain.elevation(at: WebMercator.project(GeoCoordinate(
-            latitude: location.coordinate.latitude, longitude: location.coordinate.longitude
-        )))
-        return model.viewshedModel.configuration.eyeHeight(
-            altitude: location.altitude, verticalAccuracy: location.verticalAccuracy, groundElevation: ground
-        )
+    /// Eye height above the local ground and above the surrounding terrain.
+    private var heights: (eye: Double, effective: Double) {
+        guard let location = tracker.lastLocation else {
+            let street = model.viewshedModel.configuration.streetEyeHeight
+            return (street, street)
+        }
+        return model.viewshedModel.heights(for: LocationSample(location))
     }
+
+    private var eyeHeight: Double { heights.eye }
 
     var body: some View {
         let layer = model.state(.lineOfSight)
@@ -212,7 +214,7 @@ struct Map3DScreen: View {
                 }
                 Text(String(
                     format: "Eye height %.0f m · sight %.0f m · %d buildings",
-                    eyeHeight, model.viewshedModel.configuration.viewDistance(eyeHeight: eyeHeight), controller.buildingCount
+                    heights.eye, model.viewshedModel.configuration.viewDistance(eyeHeight: heights.effective), controller.buildingCount
                 ))
                 .font(.caption2.monospacedDigit())
                 .foregroundStyle(.secondary)
@@ -239,7 +241,10 @@ struct Map3DScreen: View {
             if !controller.isLoaded { await reload() }
         }
         .onChange(of: layer.version) { _, _ in
-            Task { await controller.recolor(snapshot: model.state(.lineOfSight).snapshot, version: model.state(.lineOfSight).version) }
+            Task { await recolor() }
+        }
+        .onChange(of: model.debug.fogOpacity) { _, _ in
+            Task { await recolor() }
         }
         .onReceive(tracker.$lastLocation) { location in
             controller.updateUser(location, eyeHeight: eyeHeight)
@@ -248,7 +253,15 @@ struct Map3DScreen: View {
 
     private func reload() async {
         let layer = model.state(.lineOfSight)
-        await controller.load(center: center, snapshot: layer.snapshot, version: layer.version, source: model.buildings)
+        await controller.load(
+            center: center, snapshot: layer.snapshot, version: layer.version,
+            fogOpacity: model.debug.fogOpacity, source: model.buildings
+        )
         controller.updateUser(tracker.lastLocation, eyeHeight: eyeHeight)
+    }
+
+    private func recolor() async {
+        let layer = model.state(.lineOfSight)
+        await controller.recolor(snapshot: layer.snapshot, version: layer.version, fogOpacity: model.debug.fogOpacity)
     }
 }

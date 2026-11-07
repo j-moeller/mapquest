@@ -52,13 +52,21 @@ final class AppModel: ObservableObject {
     @Published private(set) var playArea: PlayArea
     /// Discovered share per district of the selected layer (computed on demand).
     @Published private(set) var districtCoverage: [AreaCoverage] = []
+    /// Tunable parameters (Settings › Debug).
+    @Published private(set) var debug: DebugSettings
+    /// Progress (0…1) of a running rebuild.
+    @Published private(set) var progress: Double?
+    /// What the last evaluated position revealed, shown when `debug.showsEvaluation` is on.
+    @Published private(set) var evaluationSummary: String?
 
     let tracker: LocationTracker
     let catalog: DataSourceCatalog
-    let circleModel: CircleDiscoveryModel
-    let viewshedModel: ViewshedDiscoveryModel
+    private(set) var circleModel: CircleDiscoveryModel
+    private(set) var viewshedModel: ViewshedDiscoveryModel
     /// Buildings for ray casting and the 3D map (bundled, cached, or downloaded on demand).
     let buildings: CachingBuildingSource
+    /// Berlin's elevation model, if bundled.
+    let berlinTerrain: GridTerrain?
 
     private(set) var store: any MapQuestDataStore
     private(set) var engines: [MapLayer: DiscoveryEngine]
@@ -67,6 +75,8 @@ final class AppModel: ObservableObject {
     private nonisolated let sampleSink: AsyncStream<LocationSample>.Continuation
     private var processingTask: Task<Void, Never>?
     private var isRebuilding = false
+    /// Layers that could not be built during the last reload.
+    private var failedLayers: Set<MapLayer> = []
     private static let selectedLayerKey = "AppModel.selectedLayer"
 
     init(catalog: DataSourceCatalog = DataSourceCatalog(), tracker: LocationTracker = LocationTracker()) {
@@ -87,18 +97,23 @@ final class AppModel: ObservableObject {
             openError = error
             store = InMemoryDataStore()
         }
-        let circleModel = CircleDiscoveryModel(radius: 50)
+        let debug = DebugSettings.load()
         let buildings = Self.makeBuildingSource()
-        let viewshedModel = ViewshedDiscoveryModel(buildings: buildings, terrain: FlatTerrain.berlin)
+        let berlinTerrain = BerlinData.terrain()
+        let (circleModel, viewshedModel) = Self.makeModels(debug, buildings: buildings, terrain: berlinTerrain)
         let engines = Self.makeEngines(store: store, circle: circleModel, viewshed: viewshedModel)
+        self.debug = debug
         self.circleModel = circleModel
         self.viewshedModel = viewshedModel
         self.buildings = buildings
+        self.berlinTerrain = berlinTerrain
         self.profile = profile
         self.profiles = catalog.profiles
         self.store = store
         self.engines = engines
-        self.recorder = LocationRecorder(store: store, engines: MapLayer.allCases.compactMap { engines[$0] }, playArea: playArea)
+        self.recorder = LocationRecorder(
+            store: store, engines: MapLayer.allCases.compactMap { engines[$0] }, policy: debug.recordingPolicy, playArea: playArea
+        )
         self.layers = Self.emptyLayers(engines)
         self.selectedLayer = UserDefaults.standard.string(forKey: Self.selectedLayerKey).flatMap(MapLayer.init(rawValue:)) ?? .radius
 
@@ -122,6 +137,16 @@ final class AppModel: ObservableObject {
 
     deinit {
         sampleSink.finish()
+    }
+
+    private static func makeModels(
+        _ debug: DebugSettings, buildings: CachingBuildingSource, terrain: GridTerrain?
+    ) -> (CircleDiscoveryModel, ViewshedDiscoveryModel) {
+        let ground: any TerrainModel = debug.usesTerrain ? (terrain ?? FlatTerrain.berlin) : FlatTerrain.berlin
+        return (
+            CircleDiscoveryModel(radius: debug.radius),
+            ViewshedDiscoveryModel(buildings: buildings, terrain: ground, configuration: debug.viewshedConfiguration)
+        )
     }
 
     private static func makeEngines(store: any MapQuestDataStore, circle: CircleDiscoveryModel, viewshed: ViewshedDiscoveryModel) -> [MapLayer: DiscoveryEngine] {
@@ -183,6 +208,9 @@ final class AppModel: ObservableObject {
         do {
             let outcome = try await recorder.record(sample)
             guard recorder === self.recorder else { return } // data source changed meanwhile
+            if debug.showsEvaluation {
+                await summarizeEvaluation(of: sample, outcome: outcome)
+            }
             switch outcome {
             case .recorded(_, let updates):
                 sampleCount += 1
@@ -213,7 +241,7 @@ final class AppModel: ObservableObject {
 
     private func updateStaleLayers() async {
         let stale = await recorder.staleLayers
-        staleLayers = Set(stale.compactMap(layer(for:)))
+        staleLayers = Set(stale.compactMap(layer(for:))).union(failedLayers)
     }
 
     private func refresh(_ layer: MapLayer, changedTiles: Set<TileKey>?) async {
@@ -237,7 +265,8 @@ final class AppModel: ObservableObject {
 
     // MARK: Data source
 
-    /// Reloads everything from the current store.
+    /// Reloads everything from the current store. Layers that do not exist yet
+    /// (new parameters, new app version) are rebuilt from the stored positions.
     func reload() async {
         isBusy = true
         defer { isBusy = false }
@@ -245,15 +274,44 @@ final class AppModel: ObservableObject {
             if profile.id == BerlinData.demoProfileID, try await store.sampleCount() == 0 {
                 try await importDemoData()
             }
-            for engine in engines.values {
-                try await engine.loadAll()
-            }
             sampleCount = try await store.sampleCount()
+            let existing = Set(try await store.layers())
+            failedLayers = []
+            for layer in MapLayer.allCases {
+                guard let engine = engines[layer] else { continue }
+                do {
+                    if sampleCount > 0, !existing.contains(engine.layer) {
+                        try await rebuild(engine, label: layer.title)
+                    } else {
+                        try await engine.loadAll()
+                    }
+                } catch {
+                    // E.g. building data unavailable offline: keep the other layers working.
+                    failedLayers.insert(layer)
+                    lastOutcome = "\(layer.title) layer incomplete: \(error.localizedDescription)"
+                }
+            }
             await refreshAll()
             await updateStaleLayers()
         } catch {
             errorMessage = "Could not load data: \(error.localizedDescription)"
         }
+    }
+
+    /// Rebuilds one layer from the stored positions, reporting progress.
+    private func rebuild(_ engine: DiscoveryEngine, label: String) async throws {
+        isRebuilding = true
+        defer {
+            isRebuilding = false
+            progress = nil
+        }
+        lastOutcome = "Building the \(label.lowercased()) layer…"
+        progress = 0
+        let samples = try await store.samples(matching: .all)
+        try await engine.rebuild(from: samples) { done, total in
+            Task { @MainActor [weak self] in self?.progress = Double(done) / Double(max(total, 1)) }
+        }
+        lastOutcome = ""
     }
 
     /// Switches the whole app to another data source (another user, a demo, …).
@@ -303,6 +361,78 @@ final class AppModel: ObservableObject {
         districtCoverage = coverage.sorted { $0.fraction > $1.fraction }
     }
 
+    // MARK: Debug
+
+    /// Applies new debug settings. Changed discovery parameters switch to other
+    /// layers, which are rebuilt from the stored positions where needed.
+    func applyDebugSettings(_ settings: DebugSettings) async {
+        let previous = debug
+        debug = settings
+        settings.save()
+        await recorder.setPolicy(settings.recordingPolicy)
+        if !settings.showsEvaluation { evaluationSummary = nil }
+        guard settings.changesLayers(comparedTo: previous) else { return }
+        let (circle, viewshed) = Self.makeModels(settings, buildings: buildings, terrain: berlinTerrain)
+        circleModel = circle
+        viewshedModel = viewshed
+        let engines = Self.makeEngines(store: store, circle: circle, viewshed: viewshed)
+        self.engines = engines
+        recorder = LocationRecorder(
+            store: store, engines: MapLayer.allCases.compactMap { engines[$0] }, policy: settings.recordingPolicy, playArea: playArea
+        )
+        layers = Self.emptyLayers(engines)
+        await reload()
+    }
+
+    /// Records a test position at `coordinate` with the debug eye height, as if it had been tracked.
+    func placeTestPosition(at coordinate: GeoCoordinate) async {
+        let ground = viewshedModel.terrain.elevation(at: WebMercator.project(coordinate))
+        let altitude = viewshedModel.configuration.altitude(forEyeHeight: debug.testEyeHeight, groundElevation: ground, verticalAccuracy: 1)
+        let sample = LocationSample(
+            coordinate: coordinate, altitude: altitude, horizontalAccuracy: 3, verticalAccuracy: 1, timestamp: Date()
+        )
+        await process(sample)
+    }
+
+    /// Deletes cached discovered area of layers that the current settings do not use.
+    func deleteUnusedLayers() async {
+        do {
+            let used = Set(engines.values.map(\.layer))
+            for layer in try await store.layers() where !used.contains(layer) {
+                try await store.removeAllPieces(layer: layer)
+            }
+            lastOutcome = "Unused layers deleted"
+        } catch {
+            errorMessage = "Could not delete layers: \(error.localizedDescription)"
+        }
+    }
+
+    private func summarizeEvaluation(of sample: LocationSample, outcome: RecordingOutcome) async {
+        let evaluations = await recorder.lastEvaluations
+        var lines: [String] = []
+        switch outcome {
+        case .recorded: lines.append("stored")
+        case .alreadyDiscovered(let evaluated) where evaluated.isEmpty: lines.append("skipped (moved < \(Int(debug.minimumMovement)) m)")
+        case .alreadyDiscovered: lines.append("not stored")
+        case .rejected(let reason): lines.append("rejected: \(reason)")
+        }
+        for evaluation in evaluations {
+            let name = layer(for: evaluation.layer)?.title ?? evaluation.layer.rawValue
+            lines.append(String(
+                format: "%@: %.0f m² new of %.0f m² (%.0f %%)",
+                name, evaluation.newAreaSquareMeters, evaluation.revealedAreaSquareMeters, evaluation.newAreaFraction * 100
+            ))
+        }
+        let heights = viewshedModel.heights(for: sample)
+        let ground = viewshedModel.terrain.elevation(at: sample.worldPoint)
+        lines.append(String(
+            format: "altitude %.0f m (±%.0f), ground %.0f m, eye %.1f m, above surroundings %.0f m, sight %.0f m",
+            sample.altitude, sample.verticalAccuracy, ground, heights.eye, heights.effective,
+            viewshedModel.configuration.viewDistance(eyeHeight: heights.effective)
+        ))
+        evaluationSummary = lines.joined(separator: "\n")
+    }
+
     // MARK: Maintenance
 
     /// Recomputes all discovered-area layers from the stored location samples.
@@ -316,6 +446,7 @@ final class AppModel: ObservableObject {
         do {
             lastOutcome = "Rebuilding discovered area…"
             try await recorder.rebuildAllLayers()
+            failedLayers = []
             lastOutcome = "Discovered area rebuilt"
         } catch {
             errorMessage = "Rebuild failed: \(error.localizedDescription)"

@@ -86,6 +86,16 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    NavigationLink("Debug settings") {
+                        DebugSettingsView()
+                    }
+                } header: {
+                    Text("Developer")
+                } footer: {
+                    Text("Tune radius, line of sight, fog and recording on the fly, and place test positions.")
+                }
+
+                Section {
                     Button("Delete all data of “\(model.profile.name)”", role: .destructive) {
                         confirmDelete = true
                     }

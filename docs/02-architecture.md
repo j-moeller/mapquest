@@ -254,6 +254,25 @@ SceneKit was chosen for its built-in camera control; the mesh code is
 renderer-independent, so a later move to RealityKit only replaces
 `SceneKitMesh.swift` and `Map3DView.swift`.
 
+### Debug settings
+
+*Settings › Developer › Debug settings* tunes parameters on the device:
+
+| Group | Parameters | Effect |
+|---|---|---|
+| Map | fog opacity | immediate (2D overlay and 3D ground) |
+| Radius layer | radius | new layer `circle-<r>m`, rebuilt from the stored positions |
+| Line-of-sight layer | rays, sight at street level, extra sight per metre, maximum sight, street-level threshold, terrain on/off | new layer `viewshed-v2-<terrain>-<hash>`, rebuilt |
+| Recording | new-area threshold, movement before re-evaluating | immediate, for new positions |
+| Testing | long-press the 2D map to place a position, eye height of test positions, "place here", evaluation details overlay | immediate |
+
+Because discovery parameters are part of the layer ID, the cache can never
+mix results of different parameters. On every load the app rebuilds layers
+that do not exist yet (new parameters or a new app version). Old layers stay
+cached until *Delete unused cached layers*. The *Sandbox (testing)* data
+source records like the user's own one, so experiments do not touch real
+discoveries.
+
 ### Fog rendering (2D)
 
 `FogOverlayRenderer.draw(_:zoomScale:in:)` is called by MapKit for each map

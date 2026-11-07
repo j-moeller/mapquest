@@ -29,6 +29,8 @@ enum DataSourceError: LocalizedError {
 /// Application Support/MapQuest/DataSources, one SQLite file per profile.
 final class DataSourceCatalog {
     static let ownProfileID = "me"
+    /// A recording profile for experiments (test positions, debug settings).
+    static let sandboxProfileID = "sandbox"
 
     let directory: URL
     private let defaults: UserDefaults
@@ -57,6 +59,15 @@ final class DataSourceCatalog {
                 ),
                 recordsLocations: true
             ), at: 0)
+            save()
+        }
+        if !profiles.contains(where: { $0.id == Self.sandboxProfileID }) {
+            profiles.append(DataProfile(
+                descriptor: DataSourceDescriptor(
+                    id: Self.sandboxProfileID, displayName: "Sandbox (testing)", kind: .localDatabase(path: "sandbox.sqlite")
+                ),
+                recordsLocations: true
+            ))
             save()
         }
     }

@@ -84,6 +84,8 @@ public actor LocationRecorder {
     public private(set) var lastErrors: [DiscoveryLayerID: String] = [:]
     /// The last fix that was evaluated (viewsheds from high points take up to a second).
     private var lastEvaluated: LocationSample?
+    /// The evaluations of the last evaluated fix, one per layer that could be evaluated.
+    public private(set) var lastEvaluations: [DiscoveryEvaluation] = []
 
     public init(store: any LocationStore, engines: [DiscoveryEngine], policy: RecordingPolicy = RecordingPolicy(), playArea: PlayArea = .world) {
         self.store = store
@@ -117,6 +119,7 @@ public actor LocationRecorder {
                 lastErrors[engine.layer] = String(describing: error)
             }
         }
+        lastEvaluations = evaluated.map(\.evaluation)
         if evaluated.isEmpty, let failure = failures.first {
             throw failure.error
         }
