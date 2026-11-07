@@ -15,7 +15,7 @@ public struct OverpassClient: Sendable {
     public init(
         endpoint: URL = URL(string: "https://overpass-api.de/api/interpreter")!,
         userAgent: String = "MapQuest/0.1 (fog-of-war map prototype)",
-        timeout: TimeInterval = 120
+        timeout: TimeInterval = 60
     ) {
         self.endpoint = endpoint
         self.userAgent = userAgent
@@ -72,24 +72,38 @@ public protocol BuildingCache: Sendable {
 /// Serves buildings from a persistent cache and downloads missing areas on
 /// demand, one zoom-14 tile (≈ 1.5 km in Berlin) at a time. Recently used tiles
 /// are kept in memory, so repeated viewshed computations do not hit the disk.
+/// After a failed download a tile is not retried for `retryInterval`, so that
+/// being offline does not stall the processing of every position fix.
 public actor CachingBuildingSource: BuildingSource {
     public typealias Download = @Sendable (GeoBoundingBox) async throws -> [Building]
 
     public nonisolated let downloadZoom: Int
+    public nonisolated let retryInterval: TimeInterval
     private let cache: any BuildingCache
     private let download: Download?
     private let memoryLimit: Int
+    private let now: @Sendable () -> Date
     private var memory: [TileKey: [Building]] = [:]
     private var recentlyUsed: [TileKey] = []
     private var inFlight: [TileKey: Task<[Building], Error>] = [:]
+    private var failures: [TileKey: (date: Date, message: String)] = [:]
 
     /// - Parameters:
     ///   - download: Fetches buildings for a box; `nil` makes the source offline-only.
-    public init(cache: any BuildingCache, download: Download?, downloadZoom: Int = 14, memoryLimit: Int = 24) {
+    public init(
+        cache: any BuildingCache,
+        download: Download?,
+        downloadZoom: Int = 14,
+        memoryLimit: Int = 24,
+        retryInterval: TimeInterval = 120,
+        now: @escaping @Sendable () -> Date = { Date() }
+    ) {
         self.cache = cache
         self.download = download
         self.downloadZoom = downloadZoom
         self.memoryLimit = memoryLimit
+        self.retryInterval = retryInterval
+        self.now = now
     }
 
     public func buildings(in rect: WorldRect) async throws -> [Building] {
@@ -112,6 +126,9 @@ public actor CachingBuildingSource: BuildingSource {
         if let running = inFlight[tile] {
             return try await running.value
         }
+        if let failure = failures[tile], now().timeIntervalSince(failure.date) < retryInterval {
+            throw BuildingSourceError.unavailable(failure.message)
+        }
         let cache = self.cache
         let download = self.download
         let task = Task<[Building], Error> {
@@ -127,10 +144,16 @@ public actor CachingBuildingSource: BuildingSource {
         }
         inFlight[tile] = task
         defer { inFlight[tile] = nil }
-        let buildings = try await task.value
-        memory[tile] = buildings
-        touch(tile)
-        return buildings
+        do {
+            let buildings = try await task.value
+            failures[tile] = nil
+            memory[tile] = buildings
+            touch(tile)
+            return buildings
+        } catch {
+            failures[tile] = (now(), String(describing: error))
+            throw error
+        }
     }
 
     private func touch(_ tile: TileKey) {

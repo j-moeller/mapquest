@@ -115,6 +115,39 @@ final class BuildingDataTests: XCTestCase {
     }
 }
 
+final class FailingDownloadTests: XCTestCase {
+    func testFailedTilesAreNotRetriedImmediately() async throws {
+        let counter = DownloadCounter()
+        let clock = TestClock()
+        let source = CachingBuildingSource(
+            cache: InMemoryBuildingCache(),
+            download: { _ in
+                await counter.increment()
+                throw BuildingSourceError.unavailable("offline")
+            },
+            retryInterval: 60,
+            now: { clock.now }
+        )
+        let rect = WebMercator.worldRect(for: GeoBoundingBox(center: Walk.origin, radius: 50))
+        for _ in 0..<5 {
+            _ = try? await source.buildings(in: rect)
+        }
+        var downloads = await counter.value
+        XCTAssertEqual(downloads, 1, "failures are remembered")
+        clock.advance(by: 61)
+        _ = try? await source.buildings(in: rect)
+        downloads = await counter.value
+        XCTAssertEqual(downloads, 2, "retried after the interval")
+    }
+}
+
+final class TestClock: @unchecked Sendable {
+    private let lock = NSLock()
+    private var current = Date(timeIntervalSince1970: 1_700_000_000)
+    var now: Date { lock.lock(); defer { lock.unlock() }; return current }
+    func advance(by seconds: TimeInterval) { lock.lock(); current += seconds; lock.unlock() }
+}
+
 actor DownloadCounter {
     var value = 0
     func increment() { value += 1 }
