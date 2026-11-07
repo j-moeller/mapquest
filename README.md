@@ -108,11 +108,10 @@ cd MapQuestKit && swift test
 
 ## Known limitations and next steps
 
-* **Terrain** is assumed flat (35 m); on Berlin's plateaus an elevated
-  viewpoint needs ≈ 10–25 m of real height before it counts. A DEM
-  (`TerrainModel`) would fix this.
-* **Building heights** come from OSM tags or estimates; Berlin's official
-  LoD2 model would be more precise.
+* **Terrain** comes from Berlin's official 1 m terrain model at ≈ 30 m
+  resolution; outside Berlin the ground is assumed flat.
+* **Building heights** come from Berlin's LoD2 models where they match an OSM
+  footprint, otherwise from OSM tags or estimates.
 * **Remote store**: PostgreSQL behind a small REST API works for viewing
   and recording, but recording needs a connection for every stored
   position; offline-first sync is the next step (see docs/04).

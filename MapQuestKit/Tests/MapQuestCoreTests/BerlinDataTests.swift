@@ -50,4 +50,29 @@ final class BerlinDataTests: XCTestCase {
         // Mitte walks (connected at Brandenburger Tor and Friedrichstraße), Tempelhofer Feld, Bergmannstraße.
         XCTAssertEqual(regions.count, 3)
     }
+
+    func testTerrainModel() throws {
+        let terrain = try GridTerrain(identifier: "berlin-dgm30", data: load("berlin-terrain.dem"), fallback: 35)
+        func elevation(_ lat: Double, _ lon: Double) -> Double { terrain.elevation(latitude: lat, longitude: lon) }
+        XCTAssertEqual(elevation(52.5219, 13.4132), 37, accuracy: 4, "Alexanderplatz (Spree valley)")
+        XCTAssertEqual(elevation(52.4975, 13.2414), 115, accuracy: 8, "Teufelsberg summit")
+        XCTAssertEqual(elevation(52.4874, 13.3812), 63, accuracy: 6, "Kreuzberg (Viktoriapark)")
+        XCTAssertGreaterThan(elevation(52.5363, 13.4174), 45, "Prenzlauer Berg lies on the Barnim plateau")
+        XCTAssertEqual(elevation(52.3906, 13.0645), 35, "outside Berlin: fallback")
+
+        // On the Barnim plateau a street-level fix no longer counts as elevated.
+        let model = ViewshedDiscoveryModel(buildings: InMemoryBuildingSource([]), terrain: terrain)
+        let ground = elevation(52.5363, 13.4174)
+        let street = LocationSample(latitude: 52.5363, longitude: 13.4174, altitude: ground + 2, verticalAccuracy: 4, timestamp: Date())
+        XCTAssertEqual(model.heights(for: street).eye, 1.7, accuracy: 1e-9)
+        let flat = ViewshedDiscoveryModel(buildings: InMemoryBuildingSource([]))
+        XCTAssertGreaterThan(flat.heights(for: street).eye, 5, "with flat terrain it looked like a high point")
+
+        // Teufelsberg: street level, but far above the surroundings.
+        let summit = LocationSample(latitude: 52.4975, longitude: 13.2414, altitude: elevation(52.4975, 13.2414) + 2, verticalAccuracy: 4, timestamp: Date())
+        let heights = model.heights(for: summit)
+        XCTAssertEqual(heights.eye, 1.7, accuracy: 1e-9)
+        XCTAssertGreaterThan(heights.effective, 25)
+    }
 }
+

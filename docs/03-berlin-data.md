@@ -52,7 +52,7 @@ picked from Xcode's *Debug › Simulate Location* menu.
 | Building footprints (LoD1) | OpenStreetMap, [Geofabrik Berlin extract](https://download.geofabrik.de/europe/germany/berlin.html) | ODbL 1.0 | bundled `berlin-buildings.sqlite.deflate` |
 | Building heights | Berlin's official [LoD2 building models](https://gdi.berlin.de/data/a_lod2/atom) (Geoportal Berlin), else OSM tags/estimates | dl-de/zero-2-0 | same database |
 | Buildings anywhere else | OpenStreetMap via the Overpass API, downloaded on demand | ODbL 1.0 | App cache `Application Support/MapQuest/Buildings/buildings.sqlite` |
-| Terrain | Flat, 35 m above sea level (`FlatTerrain.berlin`) | – | – |
+| Terrain | ATKIS® DGM 1 m ([Geoportal Berlin](https://gdi.berlin.de/data/dgm1/atom)), averaged to a ≈ 30 m grid | dl-de/zero-2-0 | `App/MapQuest/Resources/Berlin/berlin-terrain.dem` (3.8 MB) |
 
 **Bundled database.** The app ships the whole of Berlin as
 `App/MapQuest/Resources/Berlin/berlin-buildings.sqlite.deflate` (raw DEFLATE,
@@ -140,8 +140,18 @@ the view distance (Staatsoper, Humboldt University).
 (Geoportal Berlin, dl-de/zero-2-0) would be a more precise source and can be
 imported into the same schema later.
 
-**Terrain.** Berlin's relief is modest (Spree valley ≈ 34 m, Barnim and
-Teltow plateaus 45–60 m, Teufelsberg 120 m). The viewshed treats the ground
-as flat at 35 m and only counts heights more than 8 m (plus the vertical
-accuracy) above that as an elevated viewpoint. Plugging a DEM (e.g. Berlin's
-DGM1 open data) into `TerrainModel` removes this limitation.
+**Terrain.** `Tools/berlin/prepare_terrain.py` downloads the 297 tiles of
+the official 1 m terrain model (≈ 3.5 GB of XYZ text), averages them into 25 m
+UTM cells and resamples them onto a 0.00027° × 0.00045° (≈ 30 m)
+latitude/longitude grid: 1 266 × 1 512 cells, 23.7–120.8 m (median 40.5 m),
+stored as int16 decimetres. `GridTerrain` reads it; outside Berlin it falls
+back to 35 m. With it
+
+* the eye height is measured against the real ground, so walking on the
+  Barnim or Teltow plateau (45–60 m) is street level, not a "high point";
+* the view distance uses the height above the *surrounding* terrain (mean
+  of a 300 m ring), so hilltops such as Teufelsberg or the Kreuzberg see far;
+* the line-of-sight sweep samples the ground along each ray, so hills hide
+  what lies behind them.
+
+The debug settings can switch the terrain off (flat 35 m) for comparison.
