@@ -355,8 +355,16 @@ final class AppModel: ObservableObject {
     private func importDemoData() async throws {
         let recorder = self.recorder
         lastOutcome = "Importing demo walks…"
-        for fix in try BerlinData.demoFixes() {
+        let fixes = try BerlinData.demoFixes()
+        defer { progress = nil }
+        for (index, fix) in fixes.enumerated() {
             _ = try await recorder.record(fix)
+            progress = Double(index + 1) / Double(fixes.count)
+            if index % 200 == 199 {
+                // Let the map fill up while the import runs.
+                sampleCount = try await store.sampleCount()
+                await refreshAll()
+            }
         }
         lastOutcome = ""
     }

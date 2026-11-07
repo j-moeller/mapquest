@@ -96,7 +96,14 @@ final class Scene3DController: ObservableObject {
         renderedVersion = -1
         await recolor(snapshot: snapshot, version: version, fogOpacity: fogOpacity)
 
-        async let map = GroundTexture.mapImage(for: rect)
+        // The map snapshot is applied as soon as it arrives, independently of the buildings.
+        Task { [weak self] in
+            let image = await GroundTexture.mapImage(for: rect)
+            guard let self, token == self.generation, let image else { return }
+            self.mapImage = image
+            self.renderedVersion = -1
+            await self.recolor(snapshot: snapshot, version: version, fogOpacity: fogOpacity)
+        }
         do {
             let loaded = try await source.buildings(in: rect)
             guard token == generation else { return }
@@ -112,7 +119,6 @@ final class Scene3DController: ObservableObject {
             guard token == generation else { return }
             status = "Building data unavailable – \(error.localizedDescription)"
         }
-        mapImage = await map
         guard token == generation else { return }
         renderedVersion = -1
         await recolor(snapshot: snapshot, version: version, fogOpacity: fogOpacity)
