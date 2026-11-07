@@ -230,6 +230,10 @@ marks the 3D layer as *stale*, and the app offers a rebuild once online.
 | `App/MapQuest/Map2D/FogOverlay.swift` | World-covering `MKOverlay` and its renderer |
 | `App/MapQuest/Map2D/FogMapView.swift` | `MKMapView` wrapper with fog, play-area outline and user tracking |
 | `App/MapQuest/Map3D/*` | SceneKit scene: extruded buildings, fogged ground, user marker |
+| `App/MapQuest/Debug/*` | Debug settings (parameters, test positions, evaluation overlay) |
+| `App/MapQuest/BundledBuildings.swift` | Unpacks the bundled Berlin building database |
+| `App/MapQuest/Keychain.swift`, `Views/AddRemoteSourceView.swift` | Remote data sources (token in the Keychain) |
+| `App/MapQuestUITests/` | Smoke test on an iPhone 13 mini simulator (workflow *UI smoke test*) |
 | `App/MapQuest/Views/*` | Main screen (2D/3D switch), statistics panel, settings, districts |
 
 ### 3D map (SceneKit)

@@ -45,9 +45,17 @@ The app has three major components:
 * **2D / 3D** switch at the top; in 2D the *Radius / Line of sight* picker
   chooses the layer.
 * The panel shows discovered area, share of Berlin, regions and stored
-  positions. **Settings** switch the data source (*My discoveries* or the
-  view-only *Demo explorer*), show per-district coverage, rebuild the
-  discovered area, pause recording or delete data.
+  positions; tap the chevron to collapse it on small screens (iPhone 13 mini).
+* **Settings** switch the data source (*My discoveries*, *Sandbox (testing)*,
+  the view-only *Demo explorer*, or a **remote account** on a MapQuest server
+  backed by PostgreSQL), show per-district coverage, rebuild the discovered
+  area, pause recording or delete data.
+* **Settings › Debug settings** tune everything on the fly: fog opacity,
+  radius, rays and sight distances of the line of sight, terrain on/off,
+  recording thresholds. *Long-press the 2D map* (or "Place a test position
+  here") to record a test position with a chosen eye height – e.g. 120 m to
+  try the "high point" behaviour without climbing a tower. Use the *Sandbox*
+  data source for experiments.
 
 ## Getting started
 
