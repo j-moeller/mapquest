@@ -78,3 +78,42 @@ final class SQLiteDataStoreTests: XCTestCase {
         XCTAssertTrue(details.contains { $0.contains("location_samples_tile") }, "plan: \(details)")
     }
 }
+
+final class SQLiteDiscoveryIntegrationTests: XCTestCase {
+    func testRecorderOnSQLiteSurvivesReopen() async throws {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("mq-\(UUID().uuidString).sqlite")
+        defer { try? FileManager.default.removeItem(at: url) }
+        let model = CircleDiscoveryModel(radius: 50)
+        let origin = GeoCoordinate(latitude: 52.52, longitude: 13.405)
+        let start = Date(timeIntervalSince1970: 1_760_000_000)
+        let walk = (0..<200).map { i in
+            LocationSample(
+                latitude: origin.latitude, longitude: origin.longitude + Double(i) * 2 / 67_800,
+                altitude: 40, horizontalAccuracy: 5, verticalAccuracy: 3, timestamp: start.addingTimeInterval(Double(i))
+            )
+        }
+        var storedCount = 0
+        var area = 0.0
+        do {
+            let store = try SQLiteDataStore(fileURL: url)
+            let engine = DiscoveryEngine(model: model, store: store)
+            let recorder = LocationRecorder(store: store, engines: [engine])
+            for sample in walk { _ = try await recorder.record(sample) }
+            storedCount = try await store.sampleCount()
+            area = await engine.snapshot().totalAreaSquareMeters
+        }
+        XCTAssertGreaterThan(storedCount, 20)
+        XCTAssertLessThan(storedCount, walk.count / 3, "only fixes revealing new area are stored")
+
+        let reopened = try SQLiteDataStore(fileURL: url)
+        let engine = DiscoveryEngine(model: model, store: reopened)
+        try await engine.loadAll()
+        let snapshot = await engine.snapshot()
+        XCTAssertEqual(snapshot.totalAreaSquareMeters, area, accuracy: 1e-6)
+        XCTAssertEqual(snapshot.regions.count, 1)
+        // ~400 m walk: corridor of 400 m × 100 m plus the end caps.
+        XCTAssertEqual(area, 400 * 100 + .pi * 2_500, accuracy: 1_000)
+        let known = try await engine.isDiscovered(walk[100].coordinate)
+        XCTAssertTrue(known)
+    }
+}

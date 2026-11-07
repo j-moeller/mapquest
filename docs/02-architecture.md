@@ -116,3 +116,55 @@ document stores.
 
 Every store implementation is verified against the same contract tests
 (`DataStoreContract` in the test target).
+
+## Discovery (the discovered-area component)
+
+### Discovery models and layers
+
+A `DiscoveryModel` turns one `LocationSample` into the area it reveals.
+Each model writes its own layer:
+
+| Model | Layer | Revealed area |
+|---|---|---|
+| `CircleDiscoveryModel` (2D) | `circle-50m` | 64-gon of radius *r* around the sample |
+| `ViewshedDiscoveryModel` (3D) | `viewshed-v1` | Visible ground + seen buildings (see 3D section) |
+
+### `DiscoveryEngine` – one per layer
+
+* **`evaluate(sample)`** – computes the revealed area and how much of it is
+  new: for every storage tile the revealed area touches, clip it to the exact
+  tile and subtract that tile's pieces. Read-only.
+* **`commit(evaluation)` / `merge(polygons, at:)`** – merges revealed area:
+  1. Split the revealed area into connected components (Clipper2 union).
+  2. For each component *C*: grow it by the adjacency tolerance ε (1 m) and
+     collect every cached piece it intersects (tiles within margin + ε).
+  3. The touched regions are merged; the **oldest** region (by first
+     discovery) keeps its ID, all others are relabelled to it. No touched
+     region → a new region (UUID).
+  4. For each tile, clip *C* to the tile grown by the 2 m margin, union it
+     with the touched pieces of that tile, simplify (5 cm), and replace those
+     pieces by the resulting connected polygons (new pieces, new IDs).
+  5. Everything is written as one `DiscoveredAreaChangeSet`.
+* **`rebuild(from: samples)`** – replays samples chronologically into an empty
+  in-memory layer and replaces the stored layer in one step. Because regions
+  are connected components, the result does not depend on processing order.
+* **`snapshot()`** – an immutable, tile-indexed copy for rendering and stats.
+* **`isDiscovered(coordinate)` / `region(at:)`** – point queries.
+
+The engine keeps a tile cache; `loadAll()` loads a whole layer (the app does
+this at start), otherwise tiles are loaded lazily on first use.
+
+### `LocationRecorder` – the location-tracking core
+
+Receives every position fix and:
+
+1. rejects invalid fixes, fixes worse than 50 m (1σ) and fixes outside the
+   play area;
+2. evaluates the fix with every engine;
+3. stores the fix only if, for at least one layer, ≥ 10 % of the revealed area
+   or ≥ 2 000 m² is new (`RecordingPolicy`);
+4. commits every stored fix to **every** layer, so each layer always equals a
+   rebuild from the stored samples.
+
+With a 50 m radius this stores about one fix per 8 m of *new* path and none
+while moving through known territory.
