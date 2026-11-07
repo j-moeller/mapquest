@@ -93,6 +93,9 @@ jobs:
       - name: Commit the compressed database
         if: github.event_name == 'workflow_dispatch' && inputs.commit
         run: |
+          # The branch may have moved on while the job ran: commit on top of its current tip.
+          git fetch --depth=1 origin "${{ github.ref_name }}"
+          git checkout -B bundled-buildings FETCH_HEAD
           cp berlin-buildings.sqlite.deflate App/MapQuest/Resources/Berlin/berlin-buildings.sqlite.deflate
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
