@@ -20,9 +20,10 @@ public struct SQLiteError: Error, CustomStringConvertible, Sendable {
 /// `SQLITE_TRANSIENT` is a C macro that Swift cannot import.
 private let sqliteTransient = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
 
-/// A minimal SQLite connection wrapper. Not thread-safe: callers serialise access
-/// (see `SQLiteDataStore`).
-final class SQLiteConnection {
+/// A minimal SQLite connection wrapper. Not thread-safe by itself: the owner
+/// serialises all access (`SQLiteDataStore` uses a serial queue), hence
+/// `@unchecked Sendable`.
+final class SQLiteConnection: @unchecked Sendable {
     private(set) var handle: OpaquePointer?
     private var statementCache: [String: SQLiteStatement] = [:]
 

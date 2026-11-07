@@ -168,3 +168,31 @@ Receives every position fix and:
 
 With a 50 m radius this stores about one fix per 8 m of *new* path and none
 while moving through known territory.
+
+## App (iOS)
+
+| File | Role |
+|---|---|
+| `App/MapQuest/Location/LocationTracker.swift` | `CLLocationManager` wrapper: permission, continuous updates (also in the background), significant-change relaunch |
+| `App/MapQuest/AppModel.swift` | Streams fixes sequentially through the `LocationRecorder`, owns the selected data source, publishes snapshots and statistics |
+| `App/MapQuest/DataSourceCatalog.swift` | Profiles (own data, other users, demo); one SQLite file each; only the own profile records |
+| `App/MapQuest/Map2D/FogOverlay.swift` | World-covering `MKOverlay` and its renderer |
+| `App/MapQuest/Map2D/FogMapView.swift` | `MKMapView` wrapper with fog, play-area outline and user tracking |
+| `App/MapQuest/Views/*` | Main screen, statistics panel, settings |
+
+### Fog rendering (2D)
+
+`FogOverlayRenderer.draw(_:zoomScale:in:)` is called by MapKit for each map
+tile, on background threads:
+
+1. Fill the tile with translucent dark blue (58 % opacity – unexplored areas
+   stay readable, but clearly darker).
+2. Query the snapshot for pieces intersecting the tile (`MKMapPoint × 16 =
+   world units`).
+3. With blend mode `.clear`, fill every piece (even-odd per piece, so holes
+   stay fogged). Vertices closer than half a screen point are skipped, which
+   keeps zoomed-out rendering cheap.
+
+When the recorder merges new area, only the changed storage tiles are
+invalidated (`setNeedsDisplay(_ mapRect:)`). The fog is drawn above labels so
+unexplored street names are darkened too.

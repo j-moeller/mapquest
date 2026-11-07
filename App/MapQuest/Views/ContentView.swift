@@ -1,27 +1,30 @@
-import MapKit
 import SwiftUI
 
 /// The main screen: the map with status and controls on top.
 struct ContentView: View {
     @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var tracker: LocationTracker
+    @State private var showsSettings = false
 
     var body: some View {
         ZStack(alignment: .top) {
-            Map(initialPosition: .userLocation(fallback: .region(MKCoordinateRegion(
-                center: CLLocationCoordinate2D(latitude: 52.5200, longitude: 13.4050),
-                latitudinalMeters: 8_000, longitudinalMeters: 8_000
-            )))) {
-                UserAnnotation()
-            }
+            FogMapView(
+                snapshot: model.snapshot,
+                version: model.snapshotVersion,
+                changedTiles: model.changedTiles,
+                playArea: model.playArea
+            )
             .ignoresSafeArea()
 
             VStack(spacing: 8) {
                 PermissionBanner()
                 Spacer()
-                StatusPanel()
+                StatusPanel(showsSettings: $showsSettings)
             }
             .padding()
+        }
+        .sheet(isPresented: $showsSettings) {
+            SettingsView()
         }
         .alert("MapQuest", isPresented: Binding(
             get: { model.errorMessage != nil },
@@ -38,6 +41,7 @@ struct ContentView: View {
 struct StatusPanel: View {
     @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var tracker: LocationTracker
+    @Binding var showsSettings: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -51,7 +55,14 @@ struct StatusPanel: View {
                     set: { tracker.isTrackingEnabled = $0 }
                 ))
                 .labelsHidden()
-                .disabled(!tracker.isAuthorized)
+                .disabled(!tracker.isAuthorized || !model.profile.recordsLocations)
+                Button {
+                    showsSettings = true
+                } label: {
+                    Image(systemName: "gearshape.fill")
+                        .font(.title3)
+                }
+                .accessibilityLabel("Settings")
             }
             HStack(spacing: 16) {
                 Statistic(value: Formatters.area(model.statistics.discoveredSquareMeters), label: "discovered")

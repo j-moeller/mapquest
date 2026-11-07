@@ -19,6 +19,8 @@ final class AppModel: ObservableObject {
     @Published private(set) var profiles: [DataProfile]
     /// The 2D discovered area of the selected data source.
     @Published private(set) var snapshot: DiscoveredAreaSnapshot
+    /// Increments with every snapshot change.
+    @Published private(set) var snapshotVersion = 0
     /// Tiles that changed with the last snapshot update (`nil` = everything).
     @Published private(set) var changedTiles: Set<TileKey>?
     @Published private(set) var statistics = Statistics()
@@ -125,6 +127,7 @@ final class AppModel: ObservableObject {
         guard engine === circleEngine else { return }
         self.snapshot = snapshot
         self.changedTiles = changedTiles
+        self.snapshotVersion += 1
         statistics.discoveredSquareMeters = snapshot.totalAreaSquareMeters
         statistics.regionCount = snapshot.regions.count
         if !playArea.isWorld, playArea.areaSquareMeters > 0 {
