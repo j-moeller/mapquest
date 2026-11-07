@@ -18,8 +18,18 @@ let package = Package(
             path: "Sources/CSQLite",
             providers: [.apt(["libsqlite3-dev"])]
         ),
+        // Clipper2 (Boost licence), vendored, behind a plain C interface.
+        .target(
+            name: "CClipper2",
+            path: "Sources/CClipper2",
+            exclude: ["clipper2/LICENSE", "clipper2/VENDORED.md"],
+            sources: ["MQClipper.cpp", "clipper2/src"],
+            publicHeadersPath: "include",
+            cxxSettings: [.headerSearchPath("clipper2/include")]
+        ),
         .target(
             name: "MapQuestCore",
+            dependencies: ["CClipper2"],
             path: "Sources/MapQuestCore"
         ),
         .target(
@@ -46,5 +56,6 @@ let package = Package(
             dependencies: ["MapQuestSQLite", "MapQuestCore", "MapQuestTestSupport"],
             path: "Tests/MapQuestSQLiteTests"
         ),
-    ]
+    ],
+    cxxLanguageStandard: .cxx17
 )
