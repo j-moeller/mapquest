@@ -233,7 +233,8 @@ final class AppModel: ObservableObject {
             }
             await updateStaleLayers()
         } catch {
-            errorMessage = "Could not record position: \(error.localizedDescription)"
+            // Not an alert: with a remote data source this can happen for every fix while offline.
+            lastOutcome = "Could not record position: \(error.localizedDescription)"
         }
     }
 
@@ -340,6 +341,13 @@ final class AppModel: ObservableObject {
 
     func refreshProfiles() {
         profiles = catalog.profiles
+    }
+
+    /// Adds a MapQuest server account as a data source and switches to it.
+    func addRemoteDataSource(url: URL, token: String, records: Bool) async throws {
+        let profile = try await catalog.addRemoteProfile(baseURL: url, token: token, records: records)
+        refreshProfiles()
+        await select(profile)
     }
 
     /// Feeds the demo explorer's raw fixes through the recorder, exactly as if

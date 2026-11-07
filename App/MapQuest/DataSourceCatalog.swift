@@ -1,5 +1,6 @@
 import Foundation
 import MapQuestCore
+import MapQuestRemote
 import MapQuestSQLite
 
 /// A data source the app can show: the user's own data, another user's data,
@@ -15,12 +16,12 @@ struct DataProfile: Codable, Hashable, Identifiable {
 }
 
 enum DataSourceError: LocalizedError {
-    case remoteNotImplemented
+    case missingToken
 
     var errorDescription: String? {
         switch self {
-        case .remoteNotImplemented:
-            return "Remote data sources are not implemented yet."
+        case .missingToken:
+            return "The access token of this remote data source is missing. Add the data source again."
         }
     }
 }
@@ -109,9 +110,31 @@ final class DataSourceCatalog {
             return try SQLiteDataStore(fileURL: databaseURL(for: path), descriptor: profile.descriptor)
         case .inMemory:
             return InMemoryDataStore(descriptor: profile.descriptor)
-        case .remote:
-            throw DataSourceError.remoteNotImplemented
+        case .remote(let baseURL, _):
+            guard let token = Keychain.get(profile.id) else { throw DataSourceError.missingToken }
+            return RemoteDataStore(descriptor: profile.descriptor, baseURL: baseURL, token: token)
         }
+    }
+
+    /// Checks a MapQuest server and token, then adds it as a data source.
+    /// - Parameter records: whether this device records its positions into the account.
+    func addRemoteProfile(baseURL: URL, token: String, records: Bool) async throws -> DataProfile {
+        let probe = RemoteDataStore(
+            descriptor: DataSourceDescriptor(id: "probe", displayName: "probe", kind: .remote(baseURL: baseURL, userID: "")),
+            baseURL: baseURL, token: token
+        )
+        let me = try await probe.whoAmI()
+        let host = baseURL.host ?? baseURL.absoluteString
+        let profile = DataProfile(
+            descriptor: DataSourceDescriptor(
+                id: "remote-\(host)-\(me.id)", displayName: "\(me.displayName) (\(host))",
+                kind: .remote(baseURL: baseURL, userID: me.id)
+            ),
+            recordsLocations: records
+        )
+        Keychain.set(token, for: profile.id)
+        upsert(profile)
+        return profile
     }
 
     /// Resolves a relative database path inside the data source directory

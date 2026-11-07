@@ -10,6 +10,7 @@ let package = Package(
     products: [
         .library(name: "MapQuestCore", targets: ["MapQuestCore"]),
         .library(name: "MapQuestSQLite", targets: ["MapQuestSQLite"]),
+        .library(name: "MapQuestRemote", targets: ["MapQuestRemote"]),
         .executable(name: "mapquest-import", targets: ["MapQuestImport"]),
     ],
     targets: [
@@ -41,6 +42,12 @@ let package = Package(
             ],
             path: "Sources/MapQuestSQLite"
         ),
+        // Client for the MapQuest REST API (Server/, PostgreSQL).
+        .target(
+            name: "MapQuestRemote",
+            dependencies: ["MapQuestCore"],
+            path: "Sources/MapQuestRemote"
+        ),
         // Command-line importer for building data (macOS/Linux).
         .executableTarget(
             name: "MapQuestImport",
@@ -62,6 +69,11 @@ let package = Package(
             name: "MapQuestSQLiteTests",
             dependencies: ["MapQuestSQLite", "MapQuestCore", "MapQuestTestSupport"],
             path: "Tests/MapQuestSQLiteTests"
+        ),
+        .testTarget(
+            name: "MapQuestRemoteTests",
+            dependencies: ["MapQuestRemote", "MapQuestCore", "MapQuestTestSupport"],
+            path: "Tests/MapQuestRemoteTests"
         ),
     ],
     cxxLanguageStandard: .cxx17

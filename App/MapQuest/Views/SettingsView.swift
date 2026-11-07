@@ -33,6 +33,9 @@ struct SettingsView: View {
                             }
                         }
                     }
+                    NavigationLink("Add remote data source…") {
+                        AddRemoteSourceView()
+                    }
                 } header: {
                     Text("Data source")
                 } footer: {

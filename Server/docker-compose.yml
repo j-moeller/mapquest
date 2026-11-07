@@ -1,0 +1,27 @@
+# PostgreSQL + MapQuest API. Put an HTTPS reverse proxy in front of port 8080.
+#   docker compose up -d
+#   docker compose exec api python mapquest_server.py add-user alice "Alice"
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: mapquest
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      POSTGRES_DB: mapquest
+    volumes:
+      - mapquest-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "mapquest"]
+      interval: 5s
+      retries: 12
+  api:
+    build: .
+    environment:
+      DATABASE_URL: postgresql://mapquest:${POSTGRES_PASSWORD:-change-me}@db/mapquest
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+volumes:
+  mapquest-db:

@@ -84,6 +84,7 @@ cd MapQuestKit && swift test
 | `App/MapQuest/` | The iOS app (SwiftUI, MapKit, Core Location) |
 | `App/Simulation/` | GPX walks for the iOS Simulator |
 | `Tools/` | Data preparation scripts (Berlin data, app icon) |
+| `Server/` | Remote store: PostgreSQL schema and reference REST server |
 | `docs/` | Literature review, architecture, data sources |
 | `project.yml` | XcodeGen project specification |
 
@@ -92,6 +93,7 @@ cd MapQuestKit && swift test
 * [Literature review and design decisions](docs/01-literature-review.md)
 * [Architecture](docs/02-architecture.md)
 * [Berlin data](docs/03-berlin-data.md)
+* [Remote store (PostgreSQL)](docs/04-remote-store.md)
 
 ## Status
 
@@ -111,8 +113,9 @@ cd MapQuestKit && swift test
   (`TerrainModel`) would fix this.
 * **Building heights** come from OSM tags or estimates; Berlin's official
   LoD2 model would be more precise.
-* **Remote stores** are designed for (`DataSourceDescriptor.remote`,
-  change sets that map to single requests) but not implemented.
+* **Remote store**: PostgreSQL behind a small REST API works for viewing
+  and recording, but recording needs a connection for every stored
+  position; offline-first sync is the next step (see docs/04).
 * The discovered area of a data source is loaded into memory completely,
   which is fine for a city; a world-scale dataset would need viewport-based
   loading.

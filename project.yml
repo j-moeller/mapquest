@@ -27,6 +27,7 @@ targets:
         products:
           - MapQuestCore
           - MapQuestSQLite
+          - MapQuestRemote
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.example.MapQuest

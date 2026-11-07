@@ -6,6 +6,7 @@ on:
       - "MapQuestKit/**"
       - "App/**"
       - "project.yml"
+      - "Server/**"
       - ".github/workflows/ci.yml"
   pull_request:
   workflow_dispatch:
@@ -16,14 +17,37 @@ concurrency:
 
 jobs:
   package-linux:
-    name: MapQuestKit tests (Linux)
+    name: MapQuestKit tests (Linux, with PostgreSQL)
     runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: mapquest
+          POSTGRES_PASSWORD: mapquest
+          POSTGRES_DB: mapquest
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 12
+    env:
+      DATABASE_URL: postgresql://mapquest:mapquest@127.0.0.1:5432/mapquest
     steps:
       - uses: actions/checkout@v5
       - name: Install SQLite headers
         run: sudo apt-get update && sudo apt-get install -y libsqlite3-dev
       - name: Swift version
         run: swift --version
+      - name: Start the MapQuest server
+        run: |
+          python3 -m venv .venv
+          .venv/bin/pip install "psycopg[binary]"
+          .venv/bin/python Server/mapquest_server.py migrate
+          echo "MAPQUEST_REMOTE_TOKEN=$(.venv/bin/python Server/mapquest_server.py add-user ci 'CI')" >> "$GITHUB_ENV"
+          echo "MAPQUEST_REMOTE_URL=http://127.0.0.1:8080" >> "$GITHUB_ENV"
+          nohup .venv/bin/python Server/mapquest_server.py serve --port 8080 > server.log 2>&1 &
+          sleep 2
+          cat server.log
       - name: Test
         working-directory: MapQuestKit
         run: swift test
