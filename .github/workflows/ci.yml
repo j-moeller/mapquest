@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    paths:
+      - "MapQuestKit/**"
+      - "App/**"
+      - "project.yml"
+      - ".github/workflows/ci.yml"
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  package-linux:
+    name: MapQuestKit tests (Linux)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install SQLite headers
+        run: sudo apt-get update && sudo apt-get install -y libsqlite3-dev
+      - name: Swift version
+        run: swift --version
+      - name: Test
+        working-directory: MapQuestKit
+        run: swift test
+
+  app-ios:
+    name: iOS app build (macOS)
+    runs-on: macos-15
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Xcode version
+        run: xcodebuild -version
+      - name: Package tests on macOS
+        working-directory: MapQuestKit
+        run: swift test
+      - name: Generate Xcode project
+        run: |
+          brew install xcodegen
+          xcodegen generate
+      - name: Build for iOS Simulator
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -project MapQuest.xcodeproj \
+            -scheme MapQuest \
+            -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+            | tee build.log | grep -E "error:|warning:|BUILD (SUCCEEDED|FAILED)" || true
+          grep -q "BUILD SUCCEEDED" build.log
