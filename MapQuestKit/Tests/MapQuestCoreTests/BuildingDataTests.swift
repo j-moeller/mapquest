@@ -20,6 +20,8 @@ final class BuildingDataTests: XCTestCase {
         XCTAssertEqual(h.height, 21); XCTAssertEqual(h.source, .tagged)
         h = OSMBuildingHeights.heights(tags: ["building": "apartments", "building:levels": "5", "roof:levels": "1"])
         XCTAssertEqual(h.height, 18); XCTAssertEqual(h.source, .levels)
+        h = OSMBuildingHeights.heights(tags: ["building": "yes", "height": "23.4", "mapquest:height_source": "lod2"])
+        XCTAssertEqual(h.height, 23.4); XCTAssertEqual(h.source, .measured)
         h = OSMBuildingHeights.heights(tags: ["building": "garage"])
         XCTAssertEqual(h.height, 3); XCTAssertEqual(h.source, .estimated)
         h = OSMBuildingHeights.heights(tags: ["building": "yes", "building:levels": "3", "building:min_level": "1"])
@@ -112,6 +114,37 @@ final class BuildingDataTests: XCTestCase {
         } catch {
             XCTFail("\(error)")
         }
+    }
+}
+
+final class LayeredBuildingCacheTests: XCTestCase {
+    func testCombinesBaseAndOverlay() async throws {
+        let buildings = try OverpassBuildingParser.buildings(from: Data(BuildingDataTests.overpassFixture.utf8))
+        let tile = TileKey(containing: GeoCoordinate(latitude: 52.52, longitude: 13.41), zoom: 14)
+        let base = InMemoryBuildingCache(Array(buildings.prefix(2)), downloadedTiles: [tile])
+        let overlay = InMemoryBuildingCache()
+        let layered = LayeredBuildingCache(overlay: overlay, base: { base })
+        // Overlay holds a newer copy of a base building and one extra building.
+        try await layered.store(Array(buildings.suffix(3)), downloadedTiles: [TileKey(zoom: 14, x: tile.x + 1, y: tile.y)])
+        let rect = WebMercator.worldRect(for: GeoBoundingBox(center: GeoCoordinate(latitude: 52.519, longitude: 13.41), radius: 400))
+        let all = try await layered.buildings(in: rect)
+        XCTAssertEqual(Set(all.map(\.id)), Set(buildings.map(\.id)))
+        XCTAssertEqual(all.count, buildings.count, "no duplicates")
+        let baseTile = try await layered.isDownloaded(tile)
+        let overlayTile = try await layered.isDownloaded(TileKey(zoom: 14, x: tile.x + 1, y: tile.y))
+        let missing = try await layered.isDownloaded(TileKey(zoom: 14, x: tile.x + 2, y: tile.y))
+        XCTAssertTrue(baseTile)
+        XCTAssertTrue(overlayTile)
+        XCTAssertFalse(missing)
+        let stored = await overlay.buildings(in: rect)
+        XCTAssertEqual(stored.count, 3, "writes go to the overlay")
+    }
+
+    func testWorksWithoutBase() async throws {
+        let layered = LayeredBuildingCache(overlay: InMemoryBuildingCache(), base: { nil })
+        let rect = WebMercator.worldRect(for: GeoBoundingBox(center: Walk.origin, radius: 100))
+        let found = try await layered.buildings(in: rect)
+        XCTAssertTrue(found.isEmpty)
     }
 }
 

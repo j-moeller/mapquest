@@ -165,23 +165,20 @@ final class AppModel: ObservableObject {
         engines.mapValues { LayerState(snapshot: .empty(layer: $0.layer)) }
     }
 
-    /// The shared building database in Application Support, seeded from a bundled
-    /// `berlin-buildings.sqlite` if the app ships one, plus on-demand OSM downloads.
+    /// Buildings for the line-of-sight layer and the 3D map: the bundled Berlin
+    /// database (unpacked once into Application Support) layered under a cache of
+    /// buildings downloaded on demand from OpenStreetMap.
     private static func makeBuildingSource() -> CachingBuildingSource {
         let fileManager = FileManager.default
         let directory = (try? fileManager.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true))?
             .appendingPathComponent("MapQuest/Buildings", isDirectory: true)
-        var cache: any BuildingCache = InMemoryBuildingCache()
-        if let directory {
-            let url = directory.appendingPathComponent("buildings.sqlite")
-            if !fileManager.fileExists(atPath: url.path),
-               let bundled = Bundle.main.url(forResource: "berlin-buildings", withExtension: "sqlite") {
-                try? fileManager.createDirectory(at: directory, withIntermediateDirectories: true)
-                try? fileManager.copyItem(at: bundled, to: url)
-            }
-            if let store = try? SQLiteBuildingStore(fileURL: url) {
-                cache = store
-            }
+        var overlay: any BuildingCache = InMemoryBuildingCache()
+        if let directory, let downloads = try? SQLiteBuildingStore(fileURL: directory.appendingPathComponent("buildings.sqlite")) {
+            overlay = downloads
+        }
+        let cache = LayeredBuildingCache(overlay: overlay) {
+            guard let directory else { return nil }
+            return BundledBuildings.prepare(in: directory)
         }
         let client = OverpassClient()
         return CachingBuildingSource(cache: cache, download: { box in try await client.buildings(in: box) })

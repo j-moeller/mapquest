@@ -10,6 +10,8 @@ public struct Building: Hashable, Sendable, Identifiable {
         case levels = 1
         /// Estimated from the building type.
         case estimated = 2
+        /// Measured: official 3D city model (e.g. Berlin LoD2).
+        case measured = 3
     }
 
     /// Stable identifier, e.g. the OSM way ID (relations are stored negated).

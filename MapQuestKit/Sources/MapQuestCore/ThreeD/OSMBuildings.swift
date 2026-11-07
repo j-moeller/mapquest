@@ -69,7 +69,8 @@ public enum OSMBuildingHeights {
         var source: Building.HeightSource
         if let tagged = parseLength(tags["height"]) ?? parseLength(tags["building:height"]), tagged > 0 {
             height = tagged
-            source = .tagged
+            // Set by Tools/berlin/apply_lod2_heights.py from Berlin's official LoD2 models.
+            source = tags["mapquest:height_source"] == "lod2" ? .measured : .tagged
         } else if let levels = parseLevels(tags["building:levels"]) {
             let roof = parseLength(tags["roof:height"]) ?? (parseLevels(tags["roof:levels"]).map { $0 * metersPerLevel } ?? 0)
             height = levels * metersPerLevel + roof

@@ -14,7 +14,7 @@ public enum BuildingImporter {
         public init() {}
 
         public var description: String {
-            let sources = [Building.HeightSource.tagged, .levels, .estimated].map { source in
+            let sources = [Building.HeightSource.measured, .tagged, .levels, .estimated].map { source in
                 let count = heightSources[source] ?? 0
                 let share = buildings > 0 ? Double(count) / Double(buildings) * 100 : 0
                 return "\(source): \(count) (\(String(format: "%.1f", share)) %)"

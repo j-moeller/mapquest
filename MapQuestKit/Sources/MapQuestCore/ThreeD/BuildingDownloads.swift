@@ -186,3 +186,33 @@ public actor InMemoryBuildingCache: BuildingCache {
         downloaded.formUnion(tiles)
     }
 }
+
+/// Combines a prepared base dataset (e.g. the bundled Berlin database, which may
+/// first have to be unpacked) with an overlay cache for downloads. Lookups use
+/// both; downloaded buildings go into the overlay. The base is prepared once,
+/// in the background, on first use.
+public actor LayeredBuildingCache: BuildingCache {
+    private let base: Task<(any BuildingCache)?, Never>
+    private let overlay: any BuildingCache
+
+    public init(overlay: any BuildingCache, base prepare: @escaping @Sendable () async -> (any BuildingCache)?) {
+        self.overlay = overlay
+        self.base = Task(priority: .userInitiated) { await prepare() }
+    }
+
+    public func buildings(in rect: WorldRect) async throws -> [Building] {
+        let fromBase = try await base.value?.buildings(in: rect) ?? []
+        let known = Set(fromBase.map(\.id))
+        let fromOverlay = try await overlay.buildings(in: rect).filter { !known.contains($0.id) }
+        return fromBase + fromOverlay
+    }
+
+    public func isDownloaded(_ tile: TileKey) async throws -> Bool {
+        if let base = await base.value, try await base.isDownloaded(tile) { return true }
+        return try await overlay.isDownloaded(tile)
+    }
+
+    public func store(_ buildings: [Building], downloadedTiles tiles: [TileKey]) async throws {
+        try await overlay.store(buildings, downloadedTiles: tiles)
+    }
+}

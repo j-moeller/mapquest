@@ -49,11 +49,28 @@ picked from Xcode's *Debug › Simulate Location* menu.
 
 | Data | Source | Licence | Where |
 |---|---|---|---|
-| Building footprints and heights (LoD1) | OpenStreetMap, [Geofabrik Berlin extract](https://download.geofabrik.de/europe/germany/berlin.html) | ODbL 1.0 | `berlin-buildings.sqlite` (CI artifact, optionally bundled) |
+| Building footprints (LoD1) | OpenStreetMap, [Geofabrik Berlin extract](https://download.geofabrik.de/europe/germany/berlin.html) | ODbL 1.0 | bundled `berlin-buildings.sqlite.deflate` |
+| Building heights | Berlin's official [LoD2 building models](https://gdi.berlin.de/data/a_lod2/atom) (Geoportal Berlin), else OSM tags/estimates | dl-de/zero-2-0 | same database |
 | Buildings anywhere else | OpenStreetMap via the Overpass API, downloaded on demand | ODbL 1.0 | App cache `Application Support/MapQuest/Buildings/buildings.sqlite` |
 | Terrain | Flat, 35 m above sea level (`FlatTerrain.berlin`) | – | – |
 
-The app works without any bundled building data: the first time the
+**Bundled database.** The app ships the whole of Berlin as
+`App/MapQuest/Resources/Berlin/berlin-buildings.sqlite.deflate` (raw DEFLATE,
+≈ 30 MB, committed by the *Berlin building data* workflow when run manually
+with *commit*). On first launch – and after every update of the file – the
+app unpacks it into `Application Support/MapQuest/Buildings/berlin.sqlite`
+(≈ 51 MB) in the background. A `LayeredBuildingCache` combines it with the
+download cache, so areas outside Berlin still come from Overpass.
+
+**LoD2 heights.** `Tools/berlin/extract_lod2.py` streams the ~925 CityGML
+tiles (1 × 1 km) and writes every building and building part with its own
+ground surface: `measuredHeight` (or roof top minus ground) and the ground
+polygon in WGS84. `Tools/berlin/apply_lod2_heights.py` keeps the OSM
+footprints but gives each one the height of the LoD2 part that overlaps it
+most (at least 30 % of the footprint); such buildings get height source
+`measured`.
+
+Without bundled data the app still works: the first time the
 line-of-sight layer or the 3D map needs an area, `CachingBuildingSource`
 downloads its zoom-14 tile (≈ 1.5 × 1.5 km in Berlin) from Overpass and keeps
 it in the local building cache. This makes the 3D mode work worldwide.
