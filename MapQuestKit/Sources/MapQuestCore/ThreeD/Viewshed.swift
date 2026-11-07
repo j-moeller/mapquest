@@ -25,6 +25,9 @@ public struct ViewshedConfiguration: Hashable, Sendable {
     public var gridCellSize: Double
     /// Tolerance for simplifying the resulting polygons, metres.
     public var simplificationTolerance: Double
+    /// With real terrain: radius of the ring whose mean elevation defines the
+    /// "surrounding ground" (a hilltop sees further than a plain).
+    public var prominenceRadius: Double
 
     public init(
         rayCount: Int = 720,
@@ -37,7 +40,8 @@ public struct ViewshedConfiguration: Hashable, Sendable {
         maximumEyeHeight: Double = 500,
         nonBlockingMinHeight: Double = 2.5,
         gridCellSize: Double = 25,
-        simplificationTolerance: Double = 0.5
+        simplificationTolerance: Double = 0.5,
+        prominenceRadius: Double = 300
     ) {
         self.rayCount = rayCount
         self.streetEyeHeight = streetEyeHeight
@@ -50,6 +54,29 @@ public struct ViewshedConfiguration: Hashable, Sendable {
         self.nonBlockingMinHeight = nonBlockingMinHeight
         self.gridCellSize = gridCellSize
         self.simplificationTolerance = simplificationTolerance
+        self.prominenceRadius = prominenceRadius
+    }
+
+    /// The inverse of `eyeHeight`: an altitude that yields `eyeHeight` above the
+    /// ground with the given vertical accuracy (used to place test positions).
+    public func altitude(forEyeHeight eyeHeight: Double, groundElevation: Double, verticalAccuracy: Double = 1) -> Double {
+        groundElevation + verticalAccuracy + elevatedThreshold + max(0, eyeHeight - streetEyeHeight)
+    }
+
+    /// A short, stable description of all parameters (part of the layer ID).
+    public var fingerprint: String {
+        let values: [Double] = [
+            Double(rayCount), streetEyeHeight, baseDistance, distancePerMeterOfHeight, maximumDistance,
+            maximumVerticalAccuracy, elevatedThreshold, maximumEyeHeight, nonBlockingMinHeight,
+            gridCellSize, simplificationTolerance, prominenceRadius,
+        ]
+        // FNV-1a over the canonical text, so the ID is identical on every device and launch.
+        var hash: UInt32 = 2_166_136_261
+        let canonical = values.map { String(format: "%.4f", $0) }.joined(separator: ",")
+        for byte in canonical.utf8 {
+            hash = (hash ^ UInt32(byte)) &* 16_777_619
+        }
+        return String(hash, radix: 16)
     }
 
     /// Eye height above ground for a fix: street level unless the altitude is
@@ -74,7 +101,10 @@ public struct ViewshedResult: Sendable {
     public var polygons: [WorldPolygon]
     /// Buildings of which some wall or roof is visible.
     public var seenBuildingIDs: Set<Int64>
+    /// Eye height above the local ground.
     public var eyeHeight: Double
+    /// Eye height above the surrounding terrain (≥ `eyeHeight` on hills).
+    public var effectiveHeight: Double
     public var viewDistance: Double
 }
 
@@ -108,14 +138,20 @@ public enum Viewshed {
         var blocks: Bool
     }
 
+    /// - Parameter terrain: real terrain for a terrain-aware sweep; `nil` (or a flat
+    ///   terrain) uses the exact flat-ground sweep.
     public static func compute(
         eye: WorldPoint,
         eyeHeight: Double,
         viewDistance: Double,
         buildings: [Building],
+        terrain: (any TerrainModel)? = nil,
+        effectiveHeight: Double? = nil,
         configuration: ViewshedConfiguration = ViewshedConfiguration()
     ) -> ViewshedResult {
         let metersPerUnit = WebMercator.metersPerUnit(atWorldY: Double(eye.y))
+        let relief = terrain.flatMap { $0.isFlat ? nil : $0 }
+        let eyeElevation = (relief?.elevation(at: eye) ?? 0) + eyeHeight
         let unitsPerMeter = 1 / metersPerUnit
         let distance = viewDistance
         let reach = Int64((distance * unitsPerMeter).rounded(.up)) + 1
@@ -195,7 +231,18 @@ public enum Viewshed {
                 }
             }
             var seenOnRay = Set<Int>()
-            let visible = sweep(crossings, eyeHeight: eyeHeight, length: distance, seen: &seenOnRay)
+            let visible: [(Double, Double)]
+            if let relief {
+                let ground: (Double) -> Double = { t in
+                    relief.elevation(at: WorldPoint(
+                        x: eye.x + Int64((dx * t * unitsPerMeter).rounded()),
+                        y: eye.y + Int64((dy * t * unitsPerMeter).rounded())
+                    ))
+                }
+                visible = sweep(crossings, eyeElevation: eyeElevation, ground: ground, length: distance, seen: &seenOnRay)
+            } else {
+                visible = sweep(crossings, eyeHeight: eyeHeight, length: distance, seen: &seenOnRay)
+            }
             seen.formUnion(seenOnRay)
             let a0 = angle - halfWidth, a1 = angle + halfWidth
             for (start, end) in visible {
@@ -217,8 +264,76 @@ public enum Viewshed {
             polygons: polygons,
             seenBuildingIDs: Set(seen.map { relevant[$0].id }),
             eyeHeight: eyeHeight,
+            effectiveHeight: effectiveHeight ?? eyeHeight,
             viewDistance: distance
         )
+    }
+
+    /// Step between ground samples at distance `t` (metres): fine near the eye, coarse far away.
+    static func groundStep(at t: Double) -> Double {
+        min(max(t * 0.02, 2), 20)
+    }
+
+    /// Walks along one ray over real terrain and returns the visible ground intervals.
+    ///
+    /// Like the flat sweep, but the ground is sampled: a sample at distance *t* is
+    /// visible iff `(g(t) − z_eye) / t ≥ maxSlope`, and the terrain itself raises
+    /// `maxSlope` (hills hide what lies behind them). Building heights are measured
+    /// from the ground at their near wall.
+    static func sweep(
+        _ crossings: [Crossing], eyeElevation: Double, ground: (Double) -> Double, length: Double, seen: inout Set<Int>
+    ) -> [(Double, Double)] {
+        var visible: [(Double, Double)] = []
+        var maxSlope = -Double.infinity
+        var cursor = 0.0 // end of blocking material passed so far
+        var emittedUntil = 0.0
+
+        func emit(_ from: Double, _ to: Double) {
+            let from = max(from, emittedUntil, cursor)
+            guard to - from > 1e-6 else { return }
+            emittedUntil = to
+            if let last = visible.last, abs(last.1 - from) < 1e-6 {
+                visible[visible.count - 1].1 = to
+            } else {
+                visible.append((from, to))
+            }
+        }
+        /// Judges the ground segment ending at `t` by its end point.
+        func judge(from start: Double, to t: Double) {
+            guard t > cursor, t > 0 else { return }
+            let slope = (ground(t) - eyeElevation) / t
+            if slope >= maxSlope - 1e-9 { emit(start, t) }
+            maxSlope = max(maxSlope, slope)
+        }
+
+        let ordered = crossings.sorted { $0.entry < $1.entry }
+        var next = 0
+        var t = 0.0
+        while t < length {
+            let end = min(t + groundStep(at: t), length)
+            var start = t
+            while next < ordered.count, ordered[next].entry < end {
+                let crossing = ordered[next]
+                next += 1
+                if crossing.entry > start {
+                    judge(from: start, to: crossing.entry)
+                    start = crossing.entry
+                }
+                let top = ground(crossing.entry) + crossing.top
+                let nearSlope = (top - eyeElevation) / max(crossing.entry, 0.01)
+                let farSlope = (top - eyeElevation) / max(crossing.exit, 0.01)
+                if nearSlope > maxSlope || farSlope > maxSlope {
+                    seen.insert(crossing.building)
+                }
+                if crossing.blocks {
+                    maxSlope = max(maxSlope, nearSlope, farSlope)
+                    cursor = max(cursor, crossing.exit)
+                }
+            }
+            judge(from: start, to: end)
+            t = end
+        }
+        return visible
     }
 
     /// Where a ray from the origin in direction (dx, dy) passes through a building's material.
@@ -348,22 +463,47 @@ public struct ViewshedDiscoveryModel: DiscoveryModel {
         self.configuration = configuration
     }
 
-    public var layer: DiscoveryLayerID { "viewshed-v1" }
+    /// `viewshed-v2` with the default parameters on flat terrain; any other parameters or
+    /// terrain give a different layer, so cached results always match their parameters.
+    public var layer: DiscoveryLayerID {
+        let isDefault = configuration == ViewshedConfiguration() && terrain.identifier == FlatTerrain.berlin.identifier
+        return isDefault ? "viewshed-v2" : DiscoveryLayerID("viewshed-v2-\(terrain.identifier)-\(configuration.fingerprint)")
+    }
 
     public func revealedArea(for sample: LocationSample) async throws -> [WorldPolygon] {
         try await viewshed(for: sample).polygons
     }
 
+    /// Eye height above the local ground and above the surrounding terrain for a sample.
+    public func heights(for sample: LocationSample) -> (eye: Double, effective: Double) {
+        let eye = sample.worldPoint
+        let ground = terrain.elevation(at: eye)
+        let height = configuration.eyeHeight(
+            altitude: sample.altitude, verticalAccuracy: sample.verticalAccuracy, groundElevation: ground
+        )
+        guard !terrain.isFlat else { return (height, height) }
+        // Mean elevation on a ring around the position: a hilltop is "high" even at street level.
+        let ring = (0..<8).map { i -> Double in
+            let angle = Double(i) / 8 * 2 * .pi
+            let reach = configuration.prominenceRadius / WebMercator.metersPerUnit(atLatitude: sample.latitude)
+            return terrain.elevation(at: WorldPoint(
+                x: eye.x + Int64((cos(angle) * reach).rounded()), y: eye.y + Int64((sin(angle) * reach).rounded())
+            ))
+        }
+        let surrounding = ring.reduce(0, +) / Double(ring.count)
+        return (height, max(height, ground + height - surrounding))
+    }
+
     public func viewshed(for sample: LocationSample) async throws -> ViewshedResult {
         let eye = sample.worldPoint
-        let height = configuration.eyeHeight(
-            altitude: sample.altitude, verticalAccuracy: sample.verticalAccuracy,
-            groundElevation: terrain.elevation(at: eye)
-        )
-        let distance = configuration.viewDistance(eyeHeight: height)
+        let (height, effective) = heights(for: sample)
+        let distance = configuration.viewDistance(eyeHeight: effective)
         let reach = Int64((distance / WebMercator.metersPerUnit(atLatitude: sample.latitude)).rounded(.up)) + 1
         let window = WorldRect(minX: eye.x - reach, minY: eye.y - reach, maxX: eye.x + reach, maxY: eye.y + reach)
         let nearby = try await buildings.buildings(in: window)
-        return Viewshed.compute(eye: eye, eyeHeight: height, viewDistance: distance, buildings: nearby, configuration: configuration)
+        return Viewshed.compute(
+            eye: eye, eyeHeight: height, viewDistance: distance, buildings: nearby,
+            terrain: terrain, effectiveHeight: effective, configuration: configuration
+        )
     }
 }
