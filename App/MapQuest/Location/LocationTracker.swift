@@ -45,8 +45,10 @@ final class LocationTracker: NSObject, ObservableObject, CLLocationManagerDelega
         super.init()
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyBest
-        // Fine enough for discovery; the recorder filters further.
-        manager.distanceFilter = 5
+        // No distance filter: climbing a tower changes only the altitude, which
+        // matters for the line-of-sight layer. The recorder discards fixes that
+        // reveal nothing new, so frequent updates cost no storage.
+        manager.distanceFilter = kCLDistanceFilterNone
         manager.activityType = .fitness
         manager.pausesLocationUpdatesAutomatically = false
         manager.showsBackgroundLocationIndicator = true
