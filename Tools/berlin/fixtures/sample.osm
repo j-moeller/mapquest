@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- A hand-made OSM file with three buildings for testing the building pipeline. -->
+<osm version="0.6" generator="MapQuest test fixture">
+  <node id="1" lat="52.5200000" lon="13.4100000" version="1"/>
+  <node id="2" lat="52.5200000" lon="13.4105000" version="1"/>
+  <node id="3" lat="52.5203000" lon="13.4105000" version="1"/>
+  <node id="4" lat="52.5203000" lon="13.4100000" version="1"/>
+  <node id="11" lat="52.5180000" lon="13.4100000" version="1"/>
+  <node id="12" lat="52.5180000" lon="13.4120000" version="1"/>
+  <node id="13" lat="52.5190000" lon="13.4120000" version="1"/>
+  <node id="14" lat="52.5190000" lon="13.4100000" version="1"/>
+  <node id="21" lat="52.5183000" lon="13.4105000" version="1"/>
+  <node id="22" lat="52.5183000" lon="13.4115000" version="1"/>
+  <node id="23" lat="52.5187000" lon="13.4115000" version="1"/>
+  <node id="24" lat="52.5187000" lon="13.4105000" version="1"/>
+  <node id="31" lat="52.5208000" lon="13.4093000" version="1"/>
+  <node id="32" lat="52.5208000" lon="13.4095500" version="1"/>
+  <node id="33" lat="52.5209500" lon="13.4095500" version="1"/>
+  <node id="34" lat="52.5209500" lon="13.4093000" version="1"/>
+  <way id="1001" version="1">
+    <nd ref="1"/><nd ref="2"/><nd ref="3"/><nd ref="4"/><nd ref="1"/>
+    <tag k="building" v="apartments"/><tag k="building:levels" v="6"/>
+  </way>
+  <way id="1004" version="1">
+    <nd ref="31"/><nd ref="32"/><nd ref="33"/><nd ref="34"/><nd ref="31"/>
+    <tag k="man_made" v="tower"/><tag k="height" v="368"/><tag k="name" v="Berliner Fernsehturm"/>
+  </way>
+  <way id="2001" version="1"><nd ref="11"/><nd ref="12"/><nd ref="13"/></way>
+  <way id="2002" version="1"><nd ref="13"/><nd ref="14"/><nd ref="11"/></way>
+  <way id="2003" version="1"><nd ref="21"/><nd ref="22"/><nd ref="23"/><nd ref="24"/><nd ref="21"/></way>
+  <relation id="77" version="1">
+    <member type="way" ref="2001" role="outer"/>
+    <member type="way" ref="2002" role="outer"/>
+    <member type="way" ref="2003" role="inner"/>
+    <tag k="type" v="multipolygon"/><tag k="building" v="office"/><tag k="height" v="30"/>
+  </relation>
+</osm>

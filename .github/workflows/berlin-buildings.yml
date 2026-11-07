@@ -1,0 +1,56 @@
+name: Berlin building data
+
+# Builds berlin-buildings.sqlite (LoD1 buildings for the 3D line-of-sight layer)
+# from the Geofabrik OpenStreetMap extract of Berlin and publishes it as an artifact.
+# Copy it to App/MapQuest/Resources/Berlin/ to ship it with the app (offline 3D).
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "Tools/berlin/extract_buildings.py"
+      - "MapQuestKit/Sources/MapQuestImport/**"
+      - "MapQuestKit/Sources/MapQuestSQLite/BuildingImporter.swift"
+      - ".github/workflows/berlin-buildings.yml"
+
+jobs:
+  buildings:
+    name: Build berlin-buildings.sqlite
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install tools
+        run: |
+          sudo apt-get update && sudo apt-get install -y libsqlite3-dev sqlite3
+          python3 -m venv .venv
+          .venv/bin/pip install osmium
+      - name: Download the Berlin OpenStreetMap extract (Geofabrik)
+        run: |
+          curl -fsSL -o berlin.osm.pbf https://download.geofabrik.de/europe/germany/berlin-latest.osm.pbf
+          ls -la berlin.osm.pbf
+      - name: Extract buildings
+        run: .venv/bin/python Tools/berlin/extract_buildings.py berlin.osm.pbf buildings.jsonl
+      - name: Build the database
+        working-directory: MapQuestKit
+        run: |
+          swift run -c release mapquest-import buildings \
+            --output ../berlin-buildings.sqlite \
+            --complete-inside ../App/MapQuest/Resources/Berlin/berlin-boundary.geojson \
+            --source "OpenStreetMap contributors (ODbL), Geofabrik Berlin extract of $(date -u +%F)" \
+            ../buildings.jsonl
+      - name: Statistics
+        run: |
+          echo "Heights by source (0 = height tag, 1 = levels, 2 = estimated):"
+          sqlite3 -header -column berlin-buildings.sqlite \
+            "SELECT height_source, COUNT(*) AS buildings, ROUND(AVG(height), 1) AS avg_height FROM buildings GROUP BY height_source;"
+          echo "Tallest named buildings:"
+          sqlite3 -header -column berlin-buildings.sqlite \
+            "SELECT name, height FROM buildings WHERE name IS NOT NULL ORDER BY height DESC LIMIT 10;"
+          sqlite3 berlin-buildings.sqlite "SELECT COUNT(*) || ' complete zoom-14 tiles' FROM downloaded_tiles;"
+          ls -la berlin-buildings.sqlite
+      - uses: actions/upload-artifact@v4
+        with:
+          name: berlin-buildings
+          path: berlin-buildings.sqlite
+          retention-days: 90

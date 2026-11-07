@@ -97,6 +97,7 @@ final class SQLiteConnection: @unchecked Sendable {
     var userVersion: Int {
         get throws {
             let statement = try prepare("PRAGMA user_version")
+            defer { statement.reset() } // an unfinished read would block VACUUM and checkpoints
             guard try statement.step() else { return 0 }
             return Int(statement.int64(at: 0))
         }

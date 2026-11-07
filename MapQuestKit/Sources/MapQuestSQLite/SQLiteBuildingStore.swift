@@ -171,6 +171,14 @@ public final class SQLiteBuildingStore: BuildingCache, @unchecked Sendable {
         }
     }
 
+    /// Rewrites the database file compactly (after a large import).
+    public func compact() async throws {
+        try await perform { db in
+            if self.fileURL != nil { try db.execute("PRAGMA wal_checkpoint(TRUNCATE)") }
+            try db.execute("VACUUM")
+        }
+    }
+
     public func setMetadata(_ key: String, value: String) async throws {
         try await perform { db in
             try db.prepare("INSERT OR REPLACE INTO metadata (key, value) VALUES (?, ?)").run([.text(key), .text(value)])

@@ -10,6 +10,7 @@ let package = Package(
     products: [
         .library(name: "MapQuestCore", targets: ["MapQuestCore"]),
         .library(name: "MapQuestSQLite", targets: ["MapQuestSQLite"]),
+        .executable(name: "mapquest-import", targets: ["MapQuestImport"]),
     ],
     targets: [
         // Apple platforms ship SQLite as the `SQLite3` module; elsewhere we link the system library.
@@ -39,6 +40,12 @@ let package = Package(
                 .target(name: "CSQLite", condition: .when(platforms: [.linux])),
             ],
             path: "Sources/MapQuestSQLite"
+        ),
+        // Command-line importer for building data (macOS/Linux).
+        .executableTarget(
+            name: "MapQuestImport",
+            dependencies: ["MapQuestCore", "MapQuestSQLite"],
+            path: "Sources/MapQuestImport"
         ),
         // Shared contract tests that every MapQuestDataStore implementation must pass.
         .target(

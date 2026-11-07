@@ -163,3 +163,37 @@ final class SQLiteBuildingStoreTests: XCTestCase {
         XCTAssertFalse(tiles.isEmpty)
     }
 }
+
+final class BuildingImporterTests: XCTestCase {
+    static let fixtures = URL(fileURLWithPath: #filePath)
+        .deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+        .appendingPathComponent("Tools/berlin/fixtures")
+
+    func testImportsExtractedBuildingsAndMarksCompleteTiles() async throws {
+        let store = try SQLiteBuildingStore.inMemory()
+        var data = try Data(contentsOf: Self.fixtures.appendingPathComponent("sample.jsonl"))
+        data.append(Data("this is not json\n".utf8))
+        let report = try await BuildingImporter.importOverpassLines(data, into: store, batchSize: 2)
+        XCTAssertEqual(report.buildings, 3)
+        XCTAssertEqual(report.skippedLines, 1)
+        XCTAssertEqual(report.heightSources[.tagged], 2)
+        XCTAssertEqual(report.heightSources[.levels], 1)
+
+        let rect = WebMercator.worldRect(for: GeoBoundingBox(center: GeoCoordinate(latitude: 52.519, longitude: 13.411), radius: 400))
+        let buildings = try await store.buildings(in: rect)
+        XCTAssertEqual(buildings.count, 3)
+        XCTAssertEqual(buildings.first { $0.name == "Berliner Fernsehturm" }?.height, 368)
+        XCTAssertEqual(buildings.first { $0.id < 0 }?.footprint.holes.count, 1)
+
+        // A 4 km square: only zoom-14 tiles entirely inside are complete.
+        let square = WorldPolygon(exterior: WebMercator.worldRect(
+            for: GeoBoundingBox(center: GeoCoordinate(latitude: 52.52, longitude: 13.41), radius: 2_000)
+        ).corners)
+        let marked = try await BuildingImporter.markTilesComplete(inside: [square], in: store)
+        XCTAssertGreaterThanOrEqual(marked, 1)
+        XCTAssertLessThanOrEqual(marked, 4)
+        let tiles = try await store.downloadedTiles()
+        XCTAssertEqual(tiles.count, marked)
+        XCTAssertTrue(tiles.allSatisfy { $0.zoom == 14 })
+    }
+}
