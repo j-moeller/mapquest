@@ -65,5 +65,5 @@ cd MapQuestKit && swift test
 - [x] 2D map presentation
 - [x] Berlin 2D data
 - [x] Location data component and discovered-area component (3D)
-- [ ] 3D map presentation
+- [x] 3D map presentation
 - [ ] Berlin 3D data

@@ -1,26 +1,51 @@
 import SwiftUI
 
+/// 2D map (MapKit) or 3D scene (SceneKit).
+enum MapMode: String, CaseIterable, Identifiable {
+    case twoD = "2D"
+    case threeD = "3D"
+
+    var id: String { rawValue }
+}
+
 /// The main screen: the map with status and controls on top.
 struct ContentView: View {
     @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var tracker: LocationTracker
     @State private var showsSettings = false
+    @AppStorage("ContentView.mode") private var mode: MapMode = .twoD
 
     var body: some View {
         ZStack(alignment: .top) {
-            let layer = model.state(model.selectedLayer)
-            FogMapView(
-                snapshot: layer.snapshot,
-                version: layer.version,
-                changedTiles: layer.changedTiles,
-                playArea: model.playArea
-            )
-            .ignoresSafeArea()
+            switch mode {
+            case .twoD:
+                FogMapView(
+                    snapshot: model.state(model.selectedLayer).snapshot,
+                    version: model.state(model.selectedLayer).version,
+                    changedTiles: model.state(model.selectedLayer).changedTiles,
+                    playArea: model.playArea
+                )
+                .ignoresSafeArea()
+            case .threeD:
+                Map3DScreen()
+            }
 
             VStack(spacing: 8) {
+                HStack {
+                    Picker("Map", selection: $mode) {
+                        ForEach(MapMode.allCases) { mode in
+                            Text(mode.rawValue).tag(mode)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .frame(width: 120)
+                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+                    Spacer()
+                }
                 PermissionBanner()
                 Spacer()
-                StatusPanel(showsSettings: $showsSettings)
+                // The 3D scene always shows the line-of-sight layer.
+                StatusPanel(showsSettings: $showsSettings, fixedLayer: mode == .threeD ? .lineOfSight : nil)
             }
             .padding()
         }
@@ -43,6 +68,8 @@ struct StatusPanel: View {
     @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var tracker: LocationTracker
     @Binding var showsSettings: Bool
+    /// Shows this layer's statistics without a layer picker (3D mode).
+    var fixedLayer: MapLayer?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -65,22 +92,25 @@ struct StatusPanel: View {
                 }
                 .accessibilityLabel("Settings")
             }
-            Picker("Discovery", selection: $model.selectedLayer) {
-                ForEach(MapLayer.allCases) { layer in
-                    Text(layer.title).tag(layer)
+            if fixedLayer == nil {
+                Picker("Discovery", selection: $model.selectedLayer) {
+                    ForEach(MapLayer.allCases) { layer in
+                        Text(layer.title).tag(layer)
+                    }
                 }
+                .pickerStyle(.segmented)
             }
-            .pickerStyle(.segmented)
-            let layer = model.state(model.selectedLayer)
+            let shown = fixedLayer ?? model.selectedLayer
+            let layer = model.state(shown)
             HStack(spacing: 16) {
                 Statistic(value: Formatters.area(layer.discoveredSquareMeters), label: "discovered")
-                if let fraction = model.playAreaFraction(model.selectedLayer) {
+                if let fraction = model.playAreaFraction(shown) {
                     Statistic(value: Formatters.percent(fraction), label: "of \(model.playArea.name)")
                 }
                 Statistic(value: "\(layer.regionCount)", label: layer.regionCount == 1 ? "region" : "regions")
                 Statistic(value: "\(model.sampleCount)", label: "positions")
             }
-            if model.staleLayers.contains(model.selectedLayer) {
+            if model.staleLayers.contains(shown) {
                 Label("Some positions are missing in this layer (no building data). Rebuild it in Settings when online.", systemImage: "exclamationmark.triangle")
                     .font(.caption)
                     .foregroundStyle(.orange)

@@ -226,7 +226,30 @@ marks the 3D layer as *stale*, and the app offers a rebuild once online.
 | `App/MapQuest/DataSourceCatalog.swift` | Profiles (own data, other users, demo); one SQLite file each; only the own profile records |
 | `App/MapQuest/Map2D/FogOverlay.swift` | World-covering `MKOverlay` and its renderer |
 | `App/MapQuest/Map2D/FogMapView.swift` | `MKMapView` wrapper with fog, play-area outline and user tracking |
-| `App/MapQuest/Views/*` | Main screen, statistics panel, settings |
+| `App/MapQuest/Map3D/*` | SceneKit scene: extruded buildings, fogged ground, user marker |
+| `App/MapQuest/Views/*` | Main screen (2D/3D switch), statistics panel, settings, districts |
+
+### 3D map (SceneKit)
+
+`Map3DScreen` shows a 1.4 km × 1.4 km square around the user (or
+Alexanderplatz):
+
+* **Buildings** are loaded from the `CachingBuildingSource` and extruded by
+  `LoD1MeshBuilder` (MapQuestCore, unit-tested) into one mesh: walls with
+  outward normals, roofs triangulated with Clipper2 (courtyards stay open),
+  undersides for raised buildings. Every building is coloured by the
+  **line-of-sight layer**: warm sand if its interior point is discovered,
+  dark slate otherwise.
+* **Ground**: an `MKMapSnapshotter` image of exactly the scene's Web Mercator
+  rectangle, with the same fog cut-outs as the 2D map, on an unlit plane.
+* **User marker** at eye height; the HUD shows the estimated eye height, the
+  resulting view distance and the number of buildings.
+* Orbit/pan/zoom via SceneKit's camera controller; recolouring runs off the
+  main thread whenever the layer changes.
+
+SceneKit was chosen for its built-in camera control; the mesh code is
+renderer-independent, so a later move to RealityKit only replaces
+`SceneKitMesh.swift` and `Map3DView.swift`.
 
 ### Fog rendering (2D)
 
