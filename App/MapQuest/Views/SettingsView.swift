@@ -39,6 +39,16 @@ struct SettingsView: View {
                     Text("Location data and discovered area always travel together. Switching the data source shows another user's discoveries – the rest of the app stays the same.")
                 }
 
+                if !model.playArea.subdivisions.isEmpty {
+                    Section {
+                        NavigationLink("Districts of \(model.playArea.name)") {
+                            DistrictsView()
+                        }
+                    } footer: {
+                        Text("Positions are only recorded inside \(model.playArea.name).")
+                    }
+                }
+
                 Section {
                     LabeledContent("Discovery radius", value: "\(Int(model.circleModel.radius)) m")
                     LabeledContent("Stored positions", value: "\(model.statistics.sampleCount)")

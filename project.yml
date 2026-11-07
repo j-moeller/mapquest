@@ -19,6 +19,9 @@ targets:
     platform: iOS
     sources:
       - path: App/MapQuest
+    # Location simulation for the iOS Simulator (Product › Scheme › Edit Scheme › Run › Options).
+    fileGroups:
+      - App/Simulation
     dependencies:
       - package: MapQuestKit
         products:
@@ -46,5 +49,6 @@ schemes:
       config: Debug
       simulateLocation:
         allow: true
+        defaultLocation: App/Simulation/BerlinWalk.gpx
     archive:
       config: Release

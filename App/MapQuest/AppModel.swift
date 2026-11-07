@@ -28,6 +28,8 @@ final class AppModel: ObservableObject {
     @Published private(set) var isBusy = false
     @Published var errorMessage: String?
     @Published private(set) var playArea: PlayArea
+    /// Discovered share per district (computed on demand).
+    @Published private(set) var districtCoverage: [AreaCoverage] = []
 
     let tracker: LocationTracker
     let catalog: DataSourceCatalog
@@ -44,8 +46,11 @@ final class AppModel: ObservableObject {
     init(catalog: DataSourceCatalog = DataSourceCatalog(), tracker: LocationTracker = LocationTracker()) {
         self.catalog = catalog
         self.tracker = tracker
-        let playArea = PlayArea.world
+        let playArea = BerlinData.playArea() ?? .world
         self.playArea = playArea
+        if !catalog.profiles.contains(where: { $0.id == BerlinData.demoProfileID }) {
+            catalog.upsert(BerlinData.demoProfile)
+        }
 
         let profile = catalog.selectedProfile
         let store: any MapQuestDataStore
@@ -144,6 +149,9 @@ final class AppModel: ObservableObject {
         isBusy = true
         defer { isBusy = false }
         do {
+            if profile.id == BerlinData.demoProfileID, try await store.sampleCount() == 0 {
+                try await importDemoData()
+            }
             try await circleEngine.loadAll()
             statistics.sampleCount = try await store.sampleCount()
             await refreshSnapshot(changedTiles: nil)
@@ -165,6 +173,7 @@ final class AppModel: ObservableObject {
             catalog.selectedProfileID = profile.id
             snapshot = .empty(layer: engine.layer)
             statistics = Statistics()
+            districtCoverage = []
             lastOutcome = ""
             await reload()
         } catch {
@@ -174,6 +183,27 @@ final class AppModel: ObservableObject {
 
     func refreshProfiles() {
         profiles = catalog.profiles
+    }
+
+    /// Feeds the demo explorer's raw fixes through the recorder, exactly as if
+    /// they had been tracked live: only fixes revealing new area are stored.
+    private func importDemoData() async throws {
+        let recorder = self.recorder
+        lastOutcome = "Importing demo walks…"
+        for fix in try BerlinData.demoFixes() {
+            _ = try await recorder.record(fix)
+        }
+        lastOutcome = ""
+    }
+
+    /// Computes the discovered share of every district (off the main thread).
+    func computeDistrictCoverage() async {
+        let snapshot = self.snapshot
+        let districts = playArea.subdivisions
+        let coverage = await Task.detached(priority: .userInitiated) {
+            DiscoveryStatistics.coverage(of: snapshot, in: districts)
+        }.value
+        districtCoverage = coverage.sorted { $0.fraction > $1.fraction }
     }
 
     func setPlayArea(_ area: PlayArea) async {
