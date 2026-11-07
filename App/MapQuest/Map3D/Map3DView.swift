@@ -10,6 +10,10 @@ final class Scene3DController: ObservableObject {
     /// Shown as an overlay while loading or when building data is missing.
     @Published private(set) var status: String?
     @Published private(set) var buildingCount = 0
+    /// Incremented to ask the scene to re-centre on the user.
+    @Published private(set) var reloadRequests = 0
+
+    func requestReload() { reloadRequests += 1 }
 
     let scene = SCNScene()
     let cameraNode = SCNNode()
@@ -82,7 +86,17 @@ final class Scene3DController: ObservableObject {
         let token = generation
         let frame = LocalFrame(origin: WebMercator.project(center))
         let rect = frame.worldRect(halfSize: halfSize)
+        // Show the fogged ground right away; map and buildings follow when loaded.
+        self.frame = frame
+        buildings = []
+        interiorPoints = [:]
+        buildingCount = 0
+        mapImage = nil
         status = "Loading buildings…"
+        renderedVersion = -1
+        await recolor(snapshot: snapshot, version: version, fogOpacity: fogOpacity)
+
+        async let map = GroundTexture.mapImage(for: rect)
         do {
             let loaded = try await source.buildings(in: rect)
             guard token == generation else { return }
@@ -90,20 +104,15 @@ final class Scene3DController: ObservableObject {
                 Dictionary(uniqueKeysWithValues: loaded.map { ($0.id, LoD1MeshBuilder.interiorPoint(of: $0)) })
             }.value
             guard token == generation else { return }
-            self.frame = frame
             buildings = loaded
             interiorPoints = points
             buildingCount = loaded.count
             status = loaded.isEmpty ? "No buildings in this area" : nil
         } catch {
             guard token == generation else { return }
-            self.frame = frame
-            buildings = []
-            interiorPoints = [:]
-            buildingCount = 0
             status = "Building data unavailable – \(error.localizedDescription)"
         }
-        mapImage = await GroundTexture.mapImage(for: rect)
+        mapImage = await map
         guard token == generation else { return }
         renderedVersion = -1
         await recolor(snapshot: snapshot, version: version, fogOpacity: fogOpacity)
@@ -173,11 +182,50 @@ struct SceneKitView: UIViewRepresentable {
     func updateUIView(_ view: SCNView, context: Context) {}
 }
 
-/// The 3D map screen.
+/// Status line and re-centre button of the 3D map, shown in the main overlay.
+struct Scene3DOverlay: View {
+    @EnvironmentObject private var model: AppModel
+    @EnvironmentObject private var tracker: LocationTracker
+    @ObservedObject var controller: Scene3DController
+
+    var body: some View {
+        let heights = tracker.lastLocation.map { model.viewshedModel.heights(for: LocationSample($0)) }
+            ?? (eye: model.viewshedModel.configuration.streetEyeHeight, effective: model.viewshedModel.configuration.streetEyeHeight)
+        HStack(alignment: .top) {
+            VStack(alignment: .leading, spacing: 4) {
+                if let status = controller.status {
+                    Text(status)
+                        .font(.footnote)
+                }
+                Text(String(
+                    format: "Eye height %.0f m · sight %.0f m · %d buildings",
+                    heights.eye, model.viewshedModel.configuration.viewDistance(eyeHeight: heights.effective), controller.buildingCount
+                ))
+                .font(.caption2.monospacedDigit())
+                .foregroundStyle(.secondary)
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
+            Spacer()
+            Button {
+                controller.requestReload()
+            } label: {
+                Image(systemName: "location.viewfinder")
+                    .font(.title3)
+                    .padding(8)
+                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
+            }
+            .accessibilityLabel("Center on my position")
+        }
+    }
+}
+
+/// The 3D map scene.
 struct Map3DScreen: View {
     @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var tracker: LocationTracker
-    @StateObject private var controller = Scene3DController()
+    @ObservedObject var controller: Scene3DController
 
     static let fallbackCenter = GeoCoordinate(latitude: 52.521918, longitude: 13.413215) // Alexanderplatz
 
@@ -201,44 +249,13 @@ struct Map3DScreen: View {
 
     var body: some View {
         let layer = model.state(.lineOfSight)
-        ZStack(alignment: .top) {
-            SceneKitView(controller: controller)
-                .ignoresSafeArea()
-            VStack(spacing: 6) {
-                if let status = controller.status {
-                    Text(status)
-                        .font(.footnote)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .background(.thinMaterial, in: Capsule())
-                }
-                Text(String(
-                    format: "Eye height %.0f m · sight %.0f m · %d buildings",
-                    heights.eye, model.viewshedModel.configuration.viewDistance(eyeHeight: heights.effective), controller.buildingCount
-                ))
-                .font(.caption2.monospacedDigit())
-                .foregroundStyle(.secondary)
-                .padding(.horizontal, 10)
-                .padding(.vertical, 4)
-                .background(.ultraThinMaterial, in: Capsule())
-            }
-            .padding(.top, 56)
-        }
-        .overlay(alignment: .topTrailing) {
-            Button {
-                Task { await reload() }
-            } label: {
-                Image(systemName: "location.viewfinder")
-                    .font(.title3)
-                    .padding(10)
-                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
-            }
-            .accessibilityLabel("Center on my position")
-            .padding(.top, 56)
-            .padding(.trailing, 12)
-        }
+        SceneKitView(controller: controller)
+            .ignoresSafeArea()
         .task {
             if !controller.isLoaded { await reload() }
+        }
+        .onChange(of: controller.reloadRequests) { _, _ in
+            Task { await reload() }
         }
         .onChange(of: layer.version) { _, _ in
             Task { await recolor() }

@@ -7,8 +7,22 @@ import UIKit
 enum GroundTexture {
     static let pointSize = CGSize(width: 1_024, height: 1_024)
 
-    /// A map image of exactly `rect` (Web Mercator, so it maps linearly onto the ground plane).
-    static func mapImage(for rect: WorldRect) async -> UIImage? {
+    /// A map image of exactly `rect` (Web Mercator, so it maps linearly onto the ground plane),
+    /// or `nil` if MapKit does not deliver one within `timeout` seconds.
+    static func mapImage(for rect: WorldRect, timeout: TimeInterval = 20) async -> UIImage? {
+        await withTaskGroup(of: UIImage?.self) { group in
+            group.addTask { await snapshot(for: rect) }
+            group.addTask {
+                try? await Task.sleep(nanoseconds: UInt64(timeout * 1_000_000_000))
+                return nil
+            }
+            let first = await group.next() ?? nil
+            group.cancelAll()
+            return first
+        }
+    }
+
+    private static func snapshot(for rect: WorldRect) async -> UIImage? {
         let options = MKMapSnapshotter.Options()
         options.mapRect = MapPointConversion.mapRect(for: rect)
         options.size = pointSize

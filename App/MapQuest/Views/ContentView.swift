@@ -14,6 +14,7 @@ struct ContentView: View {
     @EnvironmentObject private var tracker: LocationTracker
     @State private var showsSettings = false
     @AppStorage("ContentView.mode") private var mode: MapMode = .twoD
+    @StateObject private var scene3D = Scene3DController()
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -31,7 +32,7 @@ struct ContentView: View {
                 )
                 .ignoresSafeArea()
             case .threeD:
-                Map3DScreen()
+                Map3DScreen(controller: scene3D)
             }
 
             VStack(spacing: 8) {
@@ -47,6 +48,9 @@ struct ContentView: View {
                     Spacer()
                 }
                 PermissionBanner()
+                if mode == .threeD {
+                    Scene3DOverlay(controller: scene3D)
+                }
                 Spacer()
                 // The 3D scene always shows the line-of-sight layer.
                 StatusPanel(showsSettings: $showsSettings, fixedLayer: mode == .threeD ? .lineOfSight : nil)

@@ -67,6 +67,17 @@ struct FogMapView: UIViewRepresentable {
         private var drawnPlayAreaName: String?
         weak var map: MKMapView?
         var onLongPress: ((GeoCoordinate) -> Void)?
+        private var hasCenteredOnUser = false
+
+        /// Zooms to the user once, at the first position fix.
+        func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+            guard !hasCenteredOnUser, let location = userLocation.location, location.horizontalAccuracy >= 0 else { return }
+            hasCenteredOnUser = true
+            mapView.setRegion(
+                MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 1_500, longitudinalMeters: 1_500),
+                animated: true
+            )
+        }
 
         @objc func handleLongPress(_ recognizer: UILongPressGestureRecognizer) {
             guard recognizer.state == .began, let map, let onLongPress else { return }
