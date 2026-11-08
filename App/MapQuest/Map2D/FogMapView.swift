@@ -2,8 +2,9 @@ import MapKit
 import MapQuestCore
 import SwiftUI
 
-/// The 2D map: Apple Maps with the fog of war and the play-area outline on top
-/// (`FogLayerView`, which moves with the map frame by frame).
+/// The 2D map: a label-free base map with the fog of war drawn into it
+/// (`FogMapRenderer`, part of MapKit's own rendering, so it moves exactly with the
+/// map), the outlines of the cities, and city and district names above the fog.
 struct FogMapView: UIViewRepresentable {
     var snapshot: DiscoveredAreaSnapshot
     /// What the snapshot shows (layer, or layer and period); partial redraws only within one identity.
@@ -14,10 +15,11 @@ struct FogMapView: UIViewRepresentable {
     /// Fog of war, or a heatmap of `heatPoints`.
     var aggregate: MapAggregate = .fog
     var heatPoints = HeatPoints()
-    /// The cities with bundled 3D data (outlined).
-    var cityOutline: PlayArea
+    /// The cities with bundled 3D data (outlined and named, with their districts).
+    var cities: [PlayArea]
     /// Opacity, blur and edge softness of the fog over undiscovered areas.
     var fogStyle = FogStyle.default
+    var baseMap = BaseMapStyle.streets
     /// Called with the coordinate of a long press (debug: place a test position); `nil` disables it.
     var onLongPress: ((GeoCoordinate) -> Void)?
 
@@ -27,30 +29,37 @@ struct FogMapView: UIViewRepresentable {
     )
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(snapshot: snapshot)
+        Coordinator(content: FogMapRenderer.Content(tiles: BaseMapTiles.shared(baseMap), snapshot: snapshot, style: fogStyle))
     }
 
     func makeUIView(context: Context) -> MKMapView {
         let map = MKMapView(frame: .zero)
         map.delegate = context.coordinator
         map.showsUserLocation = true
+        map.pointOfInterestFilter = .excludingAll
+        map.showsBuildings = false
+        map.showsTraffic = false
         // MapKit's own compass sits top right, behind the debug button: our own one goes below the tracking button.
         map.showsCompass = false
         map.showsScale = true
-        // The fog follows the map with an affine transform, which cannot express a
-        // perspective camera; the 3D mode shows the city in perspective.
+        // The 3D mode shows the city in perspective.
         map.isPitchEnabled = false
         map.setRegion(Self.berlin, animated: false)
-        // Directly above the map content (tiles and labels, so unexplored street names
-        // are darkened too), below MapKit's compass, scale and legal notice.
-        let fog = context.coordinator.fogView
-        fog.frame = map.bounds
-        fog.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        fog.map = map
+        map.register(MapLabelView.self, forAnnotationViewWithReuseIdentifier: MapLabelView.reuseIdentifier)
+
+        // Apple's map is replaced by a dark ground; the base map and the fog lie on it.
+        map.addOverlay(GroundTileOverlay(color: UIColor(white: 0.1, alpha: 1)), level: .aboveLabels)
+        map.addOverlay(context.coordinator.fogOverlay, level: .aboveLabels)
+
+        // The heatmap view lies directly above the map content.
+        let heat = context.coordinator.heatView
+        heat.frame = map.bounds
+        heat.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        heat.map = map
         if let content = map.subviews.first {
-            map.insertSubview(fog, aboveSubview: content)
+            map.insertSubview(heat, aboveSubview: content)
         } else {
-            map.addSubview(fog)
+            map.addSubview(heat)
         }
 
         let trackingButton = MKUserTrackingButton(mapView: map)
@@ -71,47 +80,88 @@ struct FogMapView: UIViewRepresentable {
             compass.centerXAnchor.constraint(equalTo: trackingButton.centerXAnchor),
             compass.topAnchor.constraint(equalTo: trackingButton.bottomAnchor, constant: 10),
         ])
-        context.coordinator.updatePlayArea(cityOutline, on: map)
         let press = UILongPressGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleLongPress(_:)))
         map.addGestureRecognizer(press)
         context.coordinator.map = map
+        context.coordinator.updateCities(cities, on: map)
         return map
     }
 
     func updateUIView(_ map: MKMapView, context: Context) {
-        context.coordinator.onLongPress = onLongPress
-        context.coordinator.updateFog(style: fogStyle)
-        context.coordinator.update(snapshot: snapshot, identity: identity, version: version, changedTiles: changedTiles)
-        context.coordinator.fogView.setMode(aggregate == .heatmap ? .heatmap : .fog)
+        let coordinator = context.coordinator
+        coordinator.onLongPress = onLongPress
+        coordinator.update(style: fogStyle, baseMap: baseMap)
+        coordinator.update(
+            snapshot: snapshot, identity: identity, version: version, changedTiles: changedTiles,
+            showsFog: aggregate == .fog
+        )
+        coordinator.heatView.setActive(aggregate == .heatmap)
         if aggregate == .heatmap {
-            context.coordinator.fogView.setHeatPoints(heatPoints.points, version: heatPoints.version)
+            coordinator.heatView.setHeatPoints(heatPoints.points, version: heatPoints.version)
         }
-        context.coordinator.updatePlayArea(cityOutline, on: map)
+        coordinator.updateCities(cities, on: map)
     }
 
     @MainActor
     final class Coordinator: NSObject, MKMapViewDelegate {
-        let fogView = FogLayerView(frame: .zero)
+        let fogOverlay = FogMapOverlay()
+        let heatView = HeatmapLayerView(frame: .zero)
+        /// What the fog renderer shows (kept here as well: MapKit creates the renderer lazily).
+        private var content: FogMapRenderer.Content
+        private var renderer: FogMapRenderer?
         private var drawnVersion = -1
         private var drawnIdentity: String?
-        private var drawnPlayAreaName: String?
-        private var fogStyle: FogStyle?
+        private var showsFog = true
+        private var cityNames: [String]?
+        private var outlines: [MKPolyline] = []
+        private var labels: [MapLabelAnnotation] = []
         weak var map: MKMapView?
         var onLongPress: ((GeoCoordinate) -> Void)?
         private var hasCenteredOnUser = false
 
-        /// The fog moves with the map in the same frame (no asynchronous tile rendering).
+        init(content: FogMapRenderer.Content) {
+            self.content = content
+            super.init()
+        }
+
+        // MARK: Map delegate
+
+        func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+            if let ground = overlay as? MKTileOverlay {
+                return MKTileOverlayRenderer(tileOverlay: ground)
+            }
+            if let fog = overlay as? FogMapOverlay {
+                let renderer = FogMapRenderer(overlay: fog, content: content)
+                self.renderer = renderer
+                return renderer
+            }
+            if let line = overlay as? MKPolyline {
+                let renderer = MKPolylineRenderer(polyline: line)
+                renderer.strokeColor = UIColor.systemOrange.withAlphaComponent(0.9)
+                renderer.lineWidth = 2
+                renderer.lineDashPattern = [6, 4]
+                return renderer
+            }
+            return MKOverlayRenderer(overlay: overlay)
+        }
+
+        func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+            guard annotation is MapLabelAnnotation else { return nil }
+            return mapView.dequeueReusableAnnotationView(withIdentifier: MapLabelView.reuseIdentifier, for: annotation)
+        }
+
         func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
-            fogView.sync()
+            heatView.sync()
         }
 
         func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-            fogView.sync()
+            heatView.sync()
+            updateLabelVisibility(on: mapView)
         }
 
         /// Zooms to the user once, at the first position fix.
         func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
-            fogView.sync()
+            heatView.sync()
             guard !hasCenteredOnUser, let location = userLocation.location, location.horizontalAccuracy >= 0 else { return }
             hasCenteredOnUser = true
             mapView.setRegion(
@@ -126,30 +176,62 @@ struct FogMapView: UIViewRepresentable {
             onLongPress(GeoCoordinate(latitude: coordinate.latitude, longitude: coordinate.longitude))
         }
 
-        func updateFog(style: FogStyle) {
-            guard style != fogStyle else { return }
-            fogStyle = style
-            fogView.setStyle(style)
+        // MARK: Inputs
+
+        func update(style: FogStyle, baseMap: BaseMapStyle) {
+            if style != content.style {
+                content.style = style
+                renderer?.setStyle(style)
+            }
+            if baseMap != content.tiles.style {
+                content.tiles = BaseMapTiles.shared(baseMap)
+                renderer?.setTiles(content.tiles)
+            }
         }
 
-        init(snapshot: DiscoveredAreaSnapshot) {
-            super.init()
-            fogView.update(snapshot: snapshot, changedTiles: nil)
-        }
-
-        func update(snapshot: DiscoveredAreaSnapshot, identity: String, version: Int, changedTiles: Set<TileKey>?) {
-            guard version != drawnVersion || identity != drawnIdentity else { return }
+        func update(snapshot: DiscoveredAreaSnapshot, identity: String, version: Int, changedTiles: Set<TileKey>?, showsFog: Bool) {
+            let modeChanged = showsFog != self.showsFog
+            guard version != drawnVersion || identity != drawnIdentity || modeChanged else { return }
             // Only the next version of the same layer (and period) may be redrawn partially.
-            let partial = version == drawnVersion + 1 && identity == drawnIdentity ? changedTiles : nil
+            let partial = version == drawnVersion + 1 && identity == drawnIdentity && !modeChanged ? changedTiles : nil
             drawnVersion = version
             drawnIdentity = identity
-            fogView.update(snapshot: snapshot, changedTiles: partial)
+            self.showsFog = showsFog
+            content.snapshot = showsFog ? snapshot : nil
+            renderer?.setSnapshot(content.snapshot, changedTiles: partial)
         }
 
-        func updatePlayArea(_ playArea: PlayArea, on map: MKMapView) {
-            guard drawnPlayAreaName != playArea.name else { return }
-            drawnPlayAreaName = playArea.name
-            fogView.setBoundary(playArea.polygons)
+        /// Outlines and name labels of the cities (once per set of cities).
+        func updateCities(_ cities: [PlayArea], on map: MKMapView) {
+            let names = cities.map(\.name)
+            guard names != cityNames else { return }
+            cityNames = names
+            map.removeOverlays(outlines)
+            outlines = cities.flatMap(\.polygons).map { polygon in
+                let s = MapPointConversion.worldUnitsPerMapPoint
+                let points = polygon.exterior.map { MKMapPoint(x: Double($0.x) / s, y: Double($0.y) / s) }
+                return MKPolyline(points: points, count: points.count)
+            }
+            map.addOverlays(outlines, level: .aboveLabels)
+            Task { [weak self, weak map] in
+                let labels = await MapLabelAnnotation.make(for: cities)
+                guard let self, let map, self.cityNames == names else { return }
+                map.removeAnnotations(self.labels)
+                self.labels = labels
+                self.updateLabelVisibility(on: map)
+            }
+        }
+
+        /// City names from afar, district names closer in.
+        private func updateLabelVisibility(on map: MKMapView) {
+            let latitude = map.region.center.latitude
+            let width = map.visibleMapRect.size.width / MKMapPointsPerMeterAtLatitude(latitude)
+            let shown = Set(map.annotations.compactMap { $0 as? MapLabelAnnotation })
+            let wanted = labels.filter { $0.isVisible(atWidth: width) }
+            let remove = shown.filter { label in !wanted.contains { $0 === label } }
+            let add = wanted.filter { !shown.contains($0) }
+            if !remove.isEmpty { map.removeAnnotations(Array(remove)) }
+            if !add.isEmpty { map.addAnnotations(add) }
         }
     }
 }

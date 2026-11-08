@@ -9,15 +9,17 @@ import MapQuestCore
 /// another layer, which is rebuilt from the stored positions if it does not exist.
 struct DebugSettings: Codable, Equatable {
     /// Bumped when defaults change in a way stored settings must follow (see `init(from:)`).
-    static let currentVersion = 3
+    static let currentVersion = 4
     var version = DebugSettings.currentVersion
 
     // Rendering
-    var fogOpacity: Double = 0.9
-    /// Blur of the map under the fog (0 = none, 1 = the system's strongest blur).
-    var fogBlur: Double = 0.6
+    var fogOpacity: Double = 0.8
+    /// Blur of the map under the fog (0 = none, 1 = σ of `FogMapRenderer.maximumBlurPoints`).
+    var fogBlur: Double = 0.25
     /// Width on the ground over which the fog fades out inside discovered areas (metres; 0 = sharp).
     var fogSoftness: Double = 10
+    /// The label-free base map of the 2D map.
+    var baseMap: BaseMapStyle = .streets
 
     // 2D discovery
     var radius: Double = 50
@@ -51,7 +53,7 @@ struct DebugSettings: Codable, Equatable {
     private static let key = "DebugSettings"
 
     enum CodingKeys: String, CodingKey {
-        case version, fogOpacity, fogBlur, fogSoftness, radius, rayCount, baseDistance, distancePerMeterOfHeight, maximumDistance
+        case version, fogOpacity, fogBlur, fogSoftness, baseMap, radius, rayCount, baseDistance, distancePerMeterOfHeight, maximumDistance
         case elevatedThreshold, usesTerrain, downloadsBuildings, downloadsBuildingsEverywhere, minimumNewAreaPercent, minimumMovement
         case placesPositionsOnLongPress, testEyeHeight, showsEvaluation
     }
@@ -68,6 +70,7 @@ struct DebugSettings: Codable, Equatable {
         fogOpacity = value(.fogOpacity, d.fogOpacity)
         fogBlur = value(.fogBlur, d.fogBlur)
         fogSoftness = value(.fogSoftness, d.fogSoftness)
+        baseMap = value(.baseMap, d.baseMap)
         radius = value(.radius, d.radius)
         rayCount = value(.rayCount, d.rayCount)
         baseDistance = value(.baseDistance, d.baseDistance)
@@ -87,6 +90,11 @@ struct DebugSettings: Codable, Equatable {
         if stored < 2 { fogOpacity = d.fogOpacity }
         // Version 3: the 1 Hz track; fixes are sampled about every 10 m (was: every 5 m).
         if stored < 3 { minimumMovement = d.minimumMovement }
+        // Version 4: the fog is drawn into a label-free base map; 80 % fog, 25 % blur.
+        if stored < 4 {
+            fogOpacity = d.fogOpacity
+            fogBlur = d.fogBlur
+        }
         version = Self.currentVersion
     }
 

@@ -3,15 +3,20 @@ import MapKit
 import MapQuestCore
 import UIKit
 
-/// Renders the ground of the 3D scene: an Apple Maps snapshot of the area with
-/// the same fog as the 2D map (undiscovered parts darkened).
+/// Renders the ground of the 3D scene: the label-free base map of the 2D map
+/// (Apple Maps without points of interest if its tiles are unavailable) with the
+/// same fog as the 2D map (undiscovered parts darkened).
 enum GroundTexture {
     static let pointSize = CGSize(width: 1_024, height: 1_024)
 
     /// A map image of exactly `rect` (Web Mercator, so it maps linearly onto the ground plane),
-    /// or `nil` if MapKit does not deliver one within `timeout` seconds.
-    static func mapImage(for rect: WorldRect, timeout: TimeInterval = 20) async -> UIImage? {
-        await withTaskGroup(of: UIImage?.self) { group in
+    /// or `nil` if neither the base map nor MapKit delivers one within `timeout` seconds.
+    static func mapImage(for rect: WorldRect, style: BaseMapStyle, timeout: TimeInterval = 20) async -> UIImage? {
+        let pixels = Int(pointSize.width * 2)
+        if let tiles = await BaseMapTiles.shared(style).image(of: rect, pixelWidth: pixels) {
+            return UIImage(cgImage: tiles, scale: 2, orientation: .up)
+        }
+        return await withTaskGroup(of: UIImage?.self) { group in
             group.addTask { await snapshot(for: rect) }
             group.addTask {
                 try? await Task.sleep(nanoseconds: UInt64(timeout * 1_000_000_000))

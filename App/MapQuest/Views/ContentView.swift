@@ -30,8 +30,9 @@ struct ContentView: View {
                     changedTiles: shown.changedTiles,
                     aggregate: model.aggregate,
                     heatPoints: model.heatPoints,
-                    cityOutline: model.cityArea,
+                    cities: model.cities,
                     fogStyle: model.debug.fogStyle,
+                    baseMap: model.debug.baseMap,
                     onLongPress: model.debug.placesPositionsOnLongPress ? { coordinate in
                         Task { await model.placeTestPosition(at: coordinate) }
                     } : nil
@@ -68,6 +69,16 @@ struct ContentView: View {
                     Scene3DOverlay(controller: scene3D)
                 }
                 Spacer()
+                if mode == .twoD {
+                    // Credit for the base map (OpenStreetMap data, CARTO tiles).
+                    Text(BaseMapStyle.attribution)
+                        .font(.system(size: 9))
+                        .foregroundStyle(.secondary)
+                        .padding(.horizontal, 5)
+                        .padding(.vertical, 2)
+                        .background(.regularMaterial, in: Capsule())
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                }
                 // The 3D scene always shows the line-of-sight layer.
                 StatusPanel(showsSettings: $showsSettings, fixedLayer: mode == .threeD ? .lineOfSight : nil)
             }

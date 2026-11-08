@@ -374,12 +374,15 @@ regions unless they touch existing discovered area – consistent with the
 
 ## 5. Rendering and data sources
 
-**2D.** MapKit renders the base map; a single world-covering
-`MKOverlay` with a custom `MKOverlayRenderer` fills each requested map
-rectangle with a translucent dark colour and then *clears* the discovered
-pieces intersecting that rectangle. Because pieces are already tiled, each
-render call touches only the pieces of the visible tiles; vertices closer
-than one screen pixel are skipped at low zoom levels.
+**2D.** A single world-covering `MKOverlay` with a custom
+`MKOverlayRenderer` draws, for each requested map rectangle, the base map
+tiles and the fog over them: translucent black over the blurred map, with
+the discovered pieces intersecting that rectangle cut out (softly). Because
+pieces are already tiled, each render call touches only the pieces of the
+visible tiles; vertices closer than half a pixel are skipped at low zoom
+levels. The base map comes from label-free raster tiles (CARTO, from
+OpenStreetMap), since Apple Maps cannot hide its labels and its map image
+cannot be processed (docs/02, "Base map and fog rendering").
 
 **3D.** Apple's MapKit 3D buildings cannot be coloured per building, so the
 3D view renders its own LoD1 scene with SceneKit: buildings are extruded
@@ -389,7 +392,8 @@ been discovered. The ground shows the same fog cut-outs as in 2D.
 
 **Data for Berlin.**
 
-* *Base map (2D):* Apple Maps via MapKit; no data has to be shipped.
+* *Base map (2D):* label-free raster tiles (CARTO basemaps, © OpenStreetMap
+  contributors © CARTO), loaded on demand and cached; nothing is shipped.
 * *Play area:* the administrative boundary of Berlin (OSM relation 62422)
   and its twelve districts from OpenStreetMap (ODbL), used to restrict
   tracking to Berlin and to compute statistics per district.

@@ -16,10 +16,15 @@ struct DebugSettingsView: View {
                 ValueSlider(title: "Fog opacity", value: $draft.fogOpacity, range: 0.1...1, step: 0.01, format: "%.0f %%", scale: 100)
                 ValueSlider(title: "Blur under the fog", value: $draft.fogBlur, range: 0...1, step: 0.05, format: "%.0f %%", scale: 100)
                 ValueSlider(title: "Soft fog edges", value: $draft.fogSoftness, range: 0...40, step: 1, format: "%.0f m")
+                Picker("Base map", selection: $draft.baseMap) {
+                    ForEach(BaseMapStyle.allCases) { style in
+                        Text(style.title).tag(style)
+                    }
+                }
             } header: {
                 Text("Map")
             } footer: {
-                Text("Applies immediately. The blur shows through the fog only below 100 % opacity; soft edges fade the fog out over the given width on the ground inside discovered areas.")
+                Text("Applies immediately. The blur shows through the fog only below 100 % opacity; soft edges fade the fog out over the given width on the ground inside discovered areas. The base map has no labels (OpenStreetMap data, CARTO tiles); only city and district names are shown, above the fog.")
             }
 
             Section {
@@ -108,6 +113,7 @@ struct DebugSettingsView: View {
             immediate.fogOpacity = newValue.fogOpacity
             immediate.fogBlur = newValue.fogBlur
             immediate.fogSoftness = newValue.fogSoftness
+            immediate.baseMap = newValue.baseMap
             immediate.downloadsBuildingsEverywhere = newValue.downloadsBuildingsEverywhere
             immediate.minimumNewAreaPercent = newValue.minimumNewAreaPercent
             immediate.minimumMovement = newValue.minimumMovement

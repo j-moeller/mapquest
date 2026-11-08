@@ -295,8 +295,11 @@ marks the 3D layer as *stale*, and the app offers a rebuild once online.
 | `App/MapQuest/ViewOptions.swift`, `Views/ViewBar.swift` | Viewing options: fog of war or heatmap; all time or a day/week/month/year (computed in the background, live while the period includes now) |
 | `App/MapQuest/Cities.swift` | Bundled cities (outline, districts, terrain, buildings) |
 | `App/MapQuest/DataSourceCatalog.swift` | Profiles (own data, other users, demo); one SQLite file each; only the own profile records |
-| `App/MapQuest/Map2D/FogLayerView.swift` | Fog of war, heatmap raster, play-area outline and position marker, moving with the map frame by frame |
-| `App/MapQuest/Map2D/FogMapView.swift` | `MKMapView` wrapper with the fog view and user tracking |
+| `App/MapQuest/Map2D/BaseMapTiles.swift` | Label-free base map tiles (CARTO, from OpenStreetMap): loading, memory and disk cache |
+| `App/MapQuest/Map2D/FogMapRenderer.swift` | Draws base map and fog of war together inside MapKit's rendering |
+| `App/MapQuest/Map2D/MapLabels.swift` | City and district names above the fog |
+| `App/MapQuest/Map2D/HeatmapLayerView.swift` | Heatmap raster and dimming over the map |
+| `App/MapQuest/Map2D/FogMapView.swift` | `MKMapView` wrapper: overlays, labels, outlines, user tracking |
 | `App/MapQuest/Map3D/*` | SceneKit scene: extruded buildings, fogged ground, user marker |
 | `App/MapQuest/Debug/*` | Debug settings (parameters, test positions, evaluation overlay) |
 | `App/MapQuest/BundledBuildings.swift` | Unpacks the bundled building databases (one per city) |
@@ -315,8 +318,10 @@ Alexanderplatz):
   undersides for raised buildings. Every building is coloured by the
   **line-of-sight layer**: warm sand if its interior point is discovered,
   dark slate otherwise.
-* **Ground**: an `MKMapSnapshotter` image of exactly the scene's Web Mercator
-  rectangle, with the same fog cut-outs as the 2D map, on an unlit plane.
+* **Ground**: the 2D map's label-free base map stitched for exactly the
+  scene's Web Mercator rectangle (an Apple Maps snapshot without points of
+  interest if the tiles are unavailable), with the same fog as the 2D map, on
+  an unlit plane.
 * **User marker** at eye height; the HUD shows the estimated eye height, the
   resulting view distance and the number of buildings.
 * Orbit/pan/zoom via SceneKit's camera controller; recolouring runs off the
@@ -337,7 +342,7 @@ positions – while tuning (`Debug/DebugPanel.swift`).
 
 | Group | Parameters | Effect |
 |---|---|---|
-| Map | fog opacity (black, up to 100 %), blur under the fog, soft fog edges (metres) | immediate (2D overlay and 3D ground) |
+| Map | fog opacity (black, up to 100 %, default 80 %), blur under the fog (default 25 %), soft fog edges (metres), base map (streets, light, dark) | immediate (2D map and 3D ground) |
 | Radius layer | radius | new layer `circle-<r>m`, rebuilt from the stored positions |
 | Line-of-sight layer | rays, sight at street level, extra sight per metre, maximum sight, street-level threshold, terrain on/off | new layer `viewshed-v3-<terrain>-<hash>`, rebuilt |
 | Recording | new-area threshold, movement before re-evaluating | immediate, for new positions |
@@ -350,68 +355,63 @@ cached until *Delete unused cached layers*. The *Sandbox (testing)* data
 source records like the user's own one, so experiments do not touch real
 discoveries.
 
-### Fog rendering (2D)
+### Base map and fog rendering (2D)
 
-The fog is a view (`FogLayerView`) directly above MapKit's map content
-(tiles and labels, so unexplored street names are darkened too) and below the
-compass, scale and legal notice. It is one vector path in a `CAShapeLayer`:
+**No labels.** Apple Maps cannot hide its labels (street, place and POI names;
+only its satellite imagery has none), and MapKit does not let an app process
+its map image. The 2D map therefore uses its own base map: raster tiles
+without any labels or icons (CARTO basemaps *Voyager*, *Positron* or *Dark
+Matter* "no labels", rendered from OpenStreetMap; © OpenStreetMap
+contributors © CARTO, credited on the map; free for non-commercial use).
+`BaseMapTiles` loads them (@2x, 256-point tiles up to zoom 19, enlarged
+beyond) and caches them in memory and on disk (`Caches/BaseMapTiles`, trimmed
+to 300 MB). Apple's map is switched off by a `GroundTileOverlay`
+(`canReplaceMapContent`) that only shows a dark ground where nothing is drawn
+yet. The only names on the map are the bundled cities and their districts
+(`MapLabels.swift`): annotation views, which MapKit always draws above
+overlays, so they stay readable on the fog; label points are computed once,
+off the main thread (`WorldPolygon.labelPoint`, an approximate pole of
+inaccessibility). City names appear from afar, district names closer in;
+overlapping district names give way to each other (`displayPriority`).
 
-1. A rectangle of translucent black (90 % by default, adjustable up to
-   100 % – unexplored areas are clearly dark, but streets stay faintly
-   readable) covering nine times the visible area.
-2. Every discovered piece as a hole (even-odd fill). Pieces overlap their
-   neighbours by the 2 m margin, which even-odd filling would fog again, so
-   they are first clipped to their exact storage tiles – in the background,
-   only for the tiles that changed.
-3. Vertices closer than half a screen point, and holes smaller than a quarter
-   point, are skipped, which keeps zoomed-out paths small.
+**The fog is part of the map.** A view above the map (used before) is moved
+by the app in step with the map and could be seen lagging or "gliding" while
+the map decelerates. Now one world-covering overlay (`FogMapOverlay`) is drawn
+by `FogMapRenderer`, an `MKOverlayRenderer`, inside MapKit's own rendering:
+for every piece of the map MapKit asks for (any thread, any zoom), it
 
-The path is built in a local coordinate system (screen points at the zoom of
-the last rebuild, relative to the centre of the covered area). While the map
-moves, `mapViewDidChangeVisibleRegion` only updates the layer's affine
-transform (from three converted points), so the fog moves in the same frame
-as the map: newly exposed map is never shown unfogged. (MapKit's asynchronous
-`MKOverlayRenderer`, used before, drew fog tiles after the base map and left
-new areas unfogged for a moment when zooming out.) The path is rebuilt when
-the discovered area changes, the zoom changed by more than 1.5×, or the
-visible area left the covered area. The 2D map has no pitch (the 3D mode shows
-perspective), so an affine transform suffices. The play-area outline and a
-position marker (MapKit's own dot lies below the fog) are drawn by the same
-view.
+1. composes the base map tiles of the piece plus a margin into a bitmap
+   (a missing tile is requested and, meanwhile, a cached coarser tile is
+   enlarged; the piece is redrawn when the tile arrives);
+2. rasterizes the discovered pieces of that area into a mask (each piece
+   filled on its own, so overlapping neighbours simply add up; pieces below
+   half a pixel and vertices closer than half a pixel are skipped);
+3. turns it into the fog mask: 1 outside discovered areas, fading to 0 over
+   the soft-edge width inside them (three box blurs, σ = width / 2, then
+   1 − clamp(2B − 1) by table lookup – vImage);
+4. draws the sharp map, and where the mask is set, the map blurred (three
+   box blurs, σ = 25 % × 16 points by default) under translucent black (80 %
+   by default) – Core Graphics, clipped by the mask.
 
-### Fog blur and soft edges (2D and 3D)
+Map content and its fog are the same pixels, so the fog can neither lag
+behind nor glide, and no map ever appears unfogged (undrawn areas show the
+dark ground). When the discovered area changes, only the map rectangles of
+the changed storage tiles (plus margins) are redrawn
+(`setNeedsDisplay(_:)`); style or base map changes redraw everything. City
+outlines are `MKPolyline` overlays; MapKit's own location dot lies above all
+overlays.
 
-Two optional effects (Settings › Debug, `FogStyle`):
-
-* **Blur under the fog** – a `UIVisualEffectView` below the fog colour, masked
-  by the same fog path (and the soft band), so undiscovered map is frosted as
-  well as darkened. Its strength (0–100 %) is the progress of a paused
-  animation from no effect to the system's dark blur (`UIViewPropertyAnimator`;
-  the dark style's tint matches the fog, the light one washed it out); the
-  animator is stopped when the view leaves the window and restarted when it
-  comes back or the app returns to the foreground. It shows through the fog
-  only below 100 % opacity.
-* **Soft edges** – the fog fades out inside discovered areas over a chosen
-  width *on the ground* (metres, so the fringe scales with the map and
-  vanishes when zoomed out instead of swallowing narrow discovered strips):
-  for an area three screens wide, the discovered mask M is rasterized at one
-  pixel per point and blurred (three box blurs, σ = width / 2, vImage) to B;
-  the band has the fog colour with alpha 1 − clamp(2B − 1) – full outside M,
-  fading to nothing at the chosen depth inside. It is clipped to the
-  discovered areas by the same vector path as the fog, so both antialiased
-  edges complement each other without seams. The band is computed off the
-  main thread and placed like the heatmap; the vector fog stays underneath,
-  so while the band is rebuilt (zoom by 1.5×, leaving the area, new data) the
-  edges are briefly sharp – never unfogged.
+### Fog in 3D
 
 The 3D ground texture applies the same style with Core Image: the map is
 blurred where the fog lies and the fog mask is softened with a Gaussian blur.
 
 ### Heatmap rendering (2D)
 
-In heatmap mode the same view dims the map and shows a raster of the time
-spent: for an area three screens wide around the view, `HeatmapGrid` bins the
+In heatmap mode the fog renderer draws the plain base map, and
+`HeatmapLayerView`, a view above the map, dims it and shows a raster of the
+time spent: for an area three screens wide around the view, `HeatmapGrid` bins the
 period's weighted fixes into 2.5-point cells, blurs them (σ ≈ 6 points) and
 colours them – off the main thread; the image is placed with an affine
-transform from three converted corners each frame, like the fog, and rebuilt
+transform from three converted corners on every map change, and rebuilt
 when the view leaves the covered area or the zoom changes by 1.5×.

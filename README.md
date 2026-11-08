@@ -2,9 +2,11 @@
 
 MapQuest is an iPhone app that combines a classic map with a *fog of war*:
 you only see the parts of the world you have actually been to. Everything
-else stays visibly darker until you go there. It works everywhere (on
-Apple Maps); Berlin, Braunschweig and Peine additionally have bundled 3D
-building and terrain data for the line-of-sight reveal.
+else stays visibly darker until you go there. It works everywhere, on a map
+without labels or icons (OpenStreetMap tiles by CARTO) – only city and
+district names are written, above the fog. Berlin, Braunschweig and Peine
+additionally have bundled 3D building and terrain data for the line-of-sight
+reveal.
 
 The app has three major components:
 
@@ -12,7 +14,7 @@ The app has three major components:
 |---|---|
 | **Location tracking** | Records the position about once per second in a compact track (≈ 6 bytes per fix); the positions that reveal new parts of the map drive the fog of war |
 | **Discovered area** | Turns stored positions into discovered-area polygons, merges adjacent areas into regions, keeps disconnected areas apart; it is a cache that can always be rebuilt from the positions |
-| **Map display** | 2D: MapKit under a black fog (90 %, blurred map underneath) with the discovered area cut out. 3D: buildings that block the view; seen buildings are revealed |
+| **Map display** | 2D: a label-free base map with a black fog (80 %, blurred map underneath) drawn into it, the discovered area cut out. 3D: buildings that block the view; seen buildings are revealed |
 
 ## How it works
 
@@ -42,9 +44,11 @@ The app has three major components:
      exactly the areas whose view it can change are recomputed from the
      stored positions; everything else stays cached
      ([docs/05](docs/05-cache-invalidation.md)).
-4. **Maps** – 2D: MapKit under a black fog (90 % opacity) that moves with the
-   map frame by frame, discovered pieces cut out. 3D: SceneKit city model,
-   buildings coloured by discovery, fogged map on the ground.
+4. **Maps** – 2D: label-free base map tiles with the fog drawn into them
+   piece by piece inside MapKit's own rendering (80 % black, blurred map
+   underneath, soft edges), so the fog cannot glide over the map; city and
+   district names above the fog. 3D: SceneKit city model, buildings coloured
+   by discovery, fogged map on the ground.
 
 ## Using the app
 
@@ -64,8 +68,8 @@ The app has three major components:
   for areas that were computed with the default map.
 * **Debug settings** (slider button on the map, or Settings › Developer) open
   as a panel over the map, which stays visible and usable while tuning
-  everything on the fly: fog opacity (up to 100 %), blur under the fog and
-  soft fog edges,
+  everything on the fly: fog opacity (up to 100 %), blur under the fog,
+  soft fog edges and the base map style (streets, light, dark),
   radius, rays and sight distances of the line of sight, terrain on/off,
   recording thresholds. *Long-press the 2D map* (or "Place a test position
   here") to record a test position with a chosen eye height – e.g. 120 m to

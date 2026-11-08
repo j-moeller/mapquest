@@ -7,14 +7,14 @@ Berlin, where it comes from, and how to regenerate it.
 
 | Data | Source | Licence | File |
 |---|---|---|---|
-| Base map | Apple Maps via MapKit | Apple Maps terms | – (streamed by MapKit) |
+| Base map | CARTO basemaps without labels (Voyager, Positron, Dark Matter), from OpenStreetMap | © OpenStreetMap contributors (ODbL) © CARTO; free for non-commercial use | – (loaded on demand, cached) |
 | District boundaries (12 Bezirke) | Amt für Statistik Berlin-Brandenburg, merged from localities by [m-hoerz/berlin-shapes](https://github.com/m-hoerz/berlin-shapes) | CC BY 3.0 DE | `App/MapQuest/Resources/Berlin/berlin-districts.geojson` |
 | City outline | Union of the districts (slivers closed, simplified to 2 m) | CC BY 3.0 DE | `App/MapQuest/Resources/Berlin/berlin-boundary.geojson` |
 | Demo explorer track (1 Hz, TrackCodec) | Generated (`Tools/berlin/make_demo_data.py`) | – | `App/MapQuest/Resources/Berlin/demo-track.mqtrack` |
 | Simulator walk | Generated, Brandenburger Tor → Alexanderplatz | – | `App/Simulation/BerlinWalk.gpx` |
 
-For the 2D map no geographic data has to be shipped: Apple Maps provides the
-base map, and the fog is computed from the user's own positions. Berlin data is
+For the 2D map no geographic data has to be shipped: the base map tiles are
+loaded on demand, and the fog is computed from the user's own positions. Berlin data is
 needed to
 
 * **restrict recording** to Berlin (`PlayArea`, point-in-polygon per fix),

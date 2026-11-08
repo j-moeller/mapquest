@@ -81,7 +81,10 @@ final class Scene3DController: ObservableObject {
     }
 
     /// Loads buildings and the ground map around `center` and rebuilds the scene.
-    func load(center: GeoCoordinate, snapshot: DiscoveredAreaSnapshot, version: Int, fogStyle: FogStyle, source: CachingBuildingSource) async {
+    func load(
+        center: GeoCoordinate, snapshot: DiscoveredAreaSnapshot, version: Int, fogStyle: FogStyle,
+        baseMap: BaseMapStyle, source: CachingBuildingSource
+    ) async {
         generation += 1
         let token = generation
         let frame = LocalFrame(origin: WebMercator.project(center))
@@ -98,7 +101,7 @@ final class Scene3DController: ObservableObject {
 
         // The map snapshot is applied as soon as it arrives, independently of the buildings.
         Task { [weak self] in
-            let image = await GroundTexture.mapImage(for: rect)
+            let image = await GroundTexture.mapImage(for: rect, style: baseMap)
             guard let self, token == self.generation, let image else { return }
             self.mapImage = image
             self.renderedVersion = -1
@@ -286,7 +289,7 @@ struct Map3DScreen: View {
         let layer = model.displayedState(.lineOfSight)
         await controller.load(
             center: center, snapshot: layer.snapshot, version: Self.stamp(layer),
-            fogStyle: model.debug.fogStyle, source: model.buildings
+            fogStyle: model.debug.fogStyle, baseMap: model.debug.baseMap, source: model.buildings
         )
         controller.updateUser(tracker.lastLocation, eyeHeight: eyeHeight)
     }
