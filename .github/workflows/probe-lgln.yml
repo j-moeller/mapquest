@@ -1,0 +1,46 @@
+name: Probe LGLN open data
+
+# Temporary: discovers the download URLs of Lower Saxony's open geodata
+# (LGLN OpenGeoData: LoD2 buildings, DGM1 terrain) for the Braunschweig data
+# pipeline. Prints what it finds; changes nothing.
+
+on:
+  push:
+    paths:
+      - ".github/workflows/probe-lgln.yml"
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Portal page and scripts
+        run: |
+          set +e
+          curl -sSL -m 30 https://opengeodata.lgln.niedersachsen.de/ -o portal.html; echo "portal: $? $(wc -c < portal.html) bytes"
+          grep -oE '(src|href)="[^"]+"' portal.html | head -50
+          for js in $(grep -oE 'src="[^"]+\.js"' portal.html | sed 's/src="//; s/"$//'); do
+            case "$js" in http*) url="$js";; /*) url="https://opengeodata.lgln.niedersachsen.de$js";; *) url="https://opengeodata.lgln.niedersachsen.de/$js";; esac
+            echo "== $url"
+            curl -sSL -m 30 "$url" -o app.js
+            grep -oE '"[^"]*(lod2|LoD2|dgm1|DGM1|dgm|geojson|json|s3|cloud-object|\.zip|\.tif)[^"]*"' app.js | sort -u | head -80
+            grep -oE "'[^']*(lod2|LoD2|dgm1|DGM1|geojson|s3|cloud-object|\.zip|\.tif)[^']*'" app.js | sort -u | head -80
+            grep -oE 'https?://[A-Za-z0-9./_-]+' app.js | sort -u | head -80
+          done
+      - name: Guessed endpoints
+        run: |
+          set +e
+          for url in \
+            https://opengeodata.lgln.niedersachsen.de/data/ \
+            https://opengeodata.lgln.niedersachsen.de/api/ \
+            https://opengeodata.lgln.niedersachsen.de/config.json \
+            https://opengeodata.lgln.niedersachsen.de/assets/config.json \
+            https://lod2.s3.eu-de.cloud-object-storage.appdomain.cloud/ \
+            https://dgm.s3.eu-de.cloud-object-storage.appdomain.cloud/ \
+            https://dgm1.s3.eu-de.cloud-object-storage.appdomain.cloud/ \
+            https://lod2.s3.eu-de.cloud-object-storage.appdomain.cloud/lod2_32_604_5792_1_ni.zip \
+            https://www.lgln.niedersachsen.de/startseite/geodaten_karten/3d_geobasisdaten/3d-gebaudemodelle-lod2-209097.html ; do
+            code=$(curl -s -o body.txt -m 30 -w "%{http_code}" "$url")
+            echo "$code $url $(head -c 600 body.txt | tr '\n' ' ')"
+          done
