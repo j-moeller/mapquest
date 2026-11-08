@@ -102,9 +102,10 @@ open MapQuest.xcodeproj
 The project is generated from `project.yml` and is not committed: run
 `xcodegen generate` again after pulling changes that add or remove files, and
 keep settings in `project.yml` or `Local.xcconfig` rather than in Xcode, where
-they would be lost. Then run on an iPhone or in the
-Simulator. In the Simulator the scheme replays a walk from the Brandenburger
-Tor to Alexanderplatz (`App/Simulation/BerlinWalk.gpx`).
+they would be lost. Then run on an iPhone or in the Simulator. The scheme
+simulates no location; while the app runs, Xcode's *Debug › Simulate
+Location* can replay a walk from the Brandenburger Tor to Alexanderplatz
+(`App/Simulation/BerlinWalk.gpx`).
 
 The platform-independent core can be built and tested without Xcode, also on Linux:
 

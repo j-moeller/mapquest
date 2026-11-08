@@ -76,8 +76,9 @@ schemes:
         - MapQuestUITests
     run:
       config: Debug
+      # No default simulated location: the app uses the real position. A walk can
+      # still be picked while running (Debug › Simulate Location › BerlinWalk).
       simulateLocation:
         allow: true
-        defaultLocation: App/Simulation/BerlinWalk.gpx
     archive:
       config: Release

@@ -40,10 +40,11 @@ python3 Tools/berlin/make_demo_data.py
 
 ### Simulating a walk
 
-The Xcode scheme uses `App/Simulation/BerlinWalk.gpx` as the default simulated
-location, so running in the iOS Simulator walks from the Brandenburger Tor
-along Unter den Linden to Alexanderplatz at 1.4 m/s. Other locations can be
-picked from Xcode's *Debug › Simulate Location* menu.
+`App/Simulation/BerlinWalk.gpx` walks from the Brandenburger Tor along Unter
+den Linden to Alexanderplatz at 1.4 m/s. The scheme does not simulate a
+location by default (the app uses the real position); pick the walk, or any
+other location, from Xcode's *Debug › Simulate Location* menu while the app
+runs.
 
 ## 3D
 
