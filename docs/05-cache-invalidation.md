@@ -167,6 +167,44 @@ not a whole city.
 * Model parameters and the terrain model are part of the layer ID; changing them
   creates a new layer, which is rebuilt completely (docs/02-architecture.md).
 
+## 5. Implementation
+
+| Design element | Code |
+|---|---|
+| Data tiles, versions | `DataGrid`, `DataVersions` (MapQuestCore/Model/DataVersions.swift); `BuildingCache.version(of:)` – SQLite: import/download time; `LayeredBuildingCache` prefixes `bundle:` / `download:` |
+| Coverage with versions | `BuildingSource.coverage(in:)` (buildings as far as available + versions), `dataVersions(of:fetchingMissing:)`; `CachingBuildingSource` reports downloads via `setOnDataChange` and can skip automatic downloads |
+| Default map | `ViewshedDiscoveryModel.revelation(for:)`; `ViewshedConfiguration.fallbackRadius` (the app uses the 2D radius); layer `viewshed-v3` |
+| Dependencies | `DiscoveryModel.dataWindow(for:)`, `maximumDataReach`, `revelation(for:)` (result + versions used) |
+| Watermarks | `DiscoveredAreaChangeSet.dataVersions`, `DiscoveredAreaStore.dataVersions(layer:)`; SQLite table `layer_data_versions` (schema v2), Postgres table of the same name, `GET /v1/data-versions` |
+| Staleness | `DiscoveryUpdate.staleDataTiles` (a new sample saw newer data), return value of `rebuild(from:)`, `DiscoveryEngine.staleDataTiles(fetchingMissing:)` |
+| DRed | `DiscoveryEngine.refresh(dataTiles:locations:progress:)` |
+| App | `AppModel.scheduleDataRefresh` (queue, background), `checkBuildingData` (launch), `downloadMissingBuildingData` (Settings › Building data) |
+
+Details worth knowing:
+
+* **Exactness.** Re-deriving a cleared tile replays exactly the operations a
+  full rebuild performs on that tile (same samples, same order, same
+  union/simplification), so the geometry is *identical* to a rebuild, not just
+  close. `CacheInvalidationTests` compares refresh and rebuild piece by piece
+  and region by region.
+* **Recording continues during a refresh.** The expensive part (re-evaluating
+  samples) runs without blocking the engine; results committed meanwhile are
+  logged and replayed when the cleared tiles are re-derived, which happens
+  without suspension. Store writes are chained so they reach the store in the
+  order the in-memory state changed. Rebuilds and refreshes of a layer run one
+  at a time.
+* **Data changing during a refresh** (a download finishing meanwhile) shows up
+  as two different versions of one tile among the re-evaluated samples; the
+  tile stays stale and is refreshed in another round.
+* **Regions.** The union–find of incremental merging cannot split, so a
+  refresh recomputes connected components (adjacency within 1 m) for all
+  pieces of the regions that lost pieces, the new pieces, and the regions
+  next to them (each of those is connected already and counts as one node).
+  Components are labelled oldest first; a component may keep the ID of a
+  region it still contains pieces of or whose removed pieces its new area
+  overlaps, so a split keeps the old ID on its older part and a merge keeps
+  the older region's ID, as in incremental merging.
+
 ## References
 
 1. J. A. Blakeley, P.-Å. Larson, F. W. Tompa. *Efficiently updating materialized views.* Proc. ACM SIGMOD 1986, pp. 61–71.

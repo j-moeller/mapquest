@@ -11,7 +11,7 @@ The app has three major components:
 |---|---|
 | **Location tracking** | Continuously observes the user's position, but stores only the positions that reveal new parts of the map (latitude, longitude, height, timestamp) |
 | **Discovered area** | Turns stored positions into discovered-area polygons, merges adjacent areas into regions, keeps disconnected areas apart; it is a cache that can always be rebuilt from the positions |
-| **Map display** | 2D: MapKit with a translucent fog overlay and the discovered area cut out. 3D: buildings that block the view; seen buildings are revealed |
+| **Map display** | 2D: MapKit under a dark fog (90 %) with the discovered area cut out. 3D: buildings that block the view; seen buildings are revealed |
 
 ## How it works
 
@@ -33,10 +33,16 @@ The app has three major components:
    * **Radius (2D)**: a 50 m circle per sample.
    * **Line of sight (3D)**: 720-ray casting against OpenStreetMap buildings;
      buildings you see are discovered and hide what is behind them; higher
-     viewpoints see over lower roofs and further.
-4. **Maps** – 2D: MapKit with a translucent fog overlay, discovered pieces cut
-   out. 3D: SceneKit city model, buildings coloured by discovery, fogged map
-   on the ground.
+     viewpoints see over lower roofs and further. Where no building data is
+     available yet (a new city, offline), the radius circle – the default
+     map – is used instead.
+   * **When building data arrives** (downloaded, or a newer bundled dataset),
+     exactly the areas whose view it can change are recomputed from the
+     stored positions; everything else stays cached
+     ([docs/05](docs/05-cache-invalidation.md)).
+4. **Maps** – 2D: MapKit under a dark fog (90 % opacity) that moves with the
+   map frame by frame, discovered pieces cut out. 3D: SceneKit city model,
+   buildings coloured by discovery, fogged map on the ground.
 
 ## Using the app
 
@@ -49,7 +55,10 @@ The app has three major components:
 * **Settings** switch the data source (*My discoveries*, *Sandbox (testing)*,
   the view-only *Demo explorer*, or a **remote account** on a MapQuest server
   backed by PostgreSQL), show per-district coverage, rebuild the discovered
-  area, pause recording or delete data.
+  area, pause recording or delete data. **Building data** shows which
+  explored areas have bundled, downloaded or no building data, turns
+  automatic OpenStreetMap downloads on or off, and downloads missing data
+  for areas that were computed with the default map.
 * **Settings › Debug settings** tune everything on the fly: fog opacity,
   radius, rays and sight distances of the line of sight, terrain on/off,
   recording thresholds. *Long-press the 2D map* (or "Place a test position
