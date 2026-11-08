@@ -33,7 +33,8 @@ struct FogMapView: UIViewRepresentable {
         let map = MKMapView(frame: .zero)
         map.delegate = context.coordinator
         map.showsUserLocation = true
-        map.showsCompass = true
+        // MapKit's own compass sits top right, behind the debug button: our own one goes below the tracking button.
+        map.showsCompass = false
         map.showsScale = true
         // The fog follows the map with an affine transform, which cannot express a
         // perspective camera; the 3D mode shows the city in perspective.
@@ -60,6 +61,14 @@ struct FogMapView: UIViewRepresentable {
         NSLayoutConstraint.activate([
             trackingButton.trailingAnchor.constraint(equalTo: map.safeAreaLayoutGuide.trailingAnchor, constant: -12),
             trackingButton.topAnchor.constraint(equalTo: map.safeAreaLayoutGuide.topAnchor, constant: 64),
+        ])
+        let compass = MKCompassButton(mapView: map)
+        compass.compassVisibility = .adaptive
+        compass.translatesAutoresizingMaskIntoConstraints = false
+        map.addSubview(compass)
+        NSLayoutConstraint.activate([
+            compass.centerXAnchor.constraint(equalTo: trackingButton.centerXAnchor),
+            compass.topAnchor.constraint(equalTo: trackingButton.bottomAnchor, constant: 10),
         ])
         context.coordinator.updatePlayArea(playArea, on: map)
         let press = UILongPressGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleLongPress(_:)))
