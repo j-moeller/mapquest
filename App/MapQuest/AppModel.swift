@@ -24,6 +24,9 @@ enum MapLayer: String, CaseIterable, Identifiable {
 /// Published state of one layer.
 struct LayerState {
     var snapshot: DiscoveredAreaSnapshot
+    /// What the snapshot shows ("<layer>" for all time, "<layer>@<period>" for a
+    /// period); renderers redraw partially only between versions of the same identity.
+    var identity = ""
     /// Increments with every snapshot change.
     var version = 0
     /// Tiles that changed with the last update (`nil` = everything).
@@ -66,7 +69,7 @@ final class AppModel: ObservableObject {
     /// Layers that missed samples (e.g. building data was unavailable offline) and need a rebuild.
     @Published private(set) var staleLayers: Set<MapLayer> = []
     @Published private(set) var sampleCount = 0
-    @Published private(set) var lastOutcome: String = ""
+    @Published var lastOutcome: String = ""
     @Published private(set) var isBusy = false
     @Published var errorMessage: String?
     @Published private(set) var playArea: PlayArea
@@ -85,6 +88,31 @@ final class AppModel: ObservableObject {
     @Published private(set) var isDownloadingBuildings = false
     /// Size of the continuous track of the selected data source.
     @Published private(set) var trackSummary = TrackSummary()
+
+    // View options (ViewOptions.swift)
+    /// Fog of war (default) or heatmap.
+    @Published var aggregate: MapAggregate {
+        didSet {
+            UserDefaults.standard.set(aggregate.rawValue, forKey: Self.aggregateKey)
+            refreshView()
+        }
+    }
+    /// The time span shown: all time (`nil`, the default) or a day, week, month or year.
+    @Published var periodKind: PeriodKind?
+    /// A date inside the period shown.
+    @Published var periodAnchor = Date()
+    /// The area of the shown period per layer.
+    @Published var periodStates: [MapLayer: LayerState] = [:]
+    /// Figures of what is shown (period, or all time for the heatmap).
+    @Published var viewSummary: ViewSummary?
+    /// Progress (0…1) while a period is computed.
+    @Published var viewProgress: Double?
+    /// Weighted positions for the heatmap.
+    @Published var heatPoints = HeatPoints()
+    /// Whether the 3D scene is shown (it needs the line-of-sight layer).
+    @Published var isShowing3D = false {
+        didSet { if isShowing3D != oldValue { refreshView() } }
+    }
 
     let tracker: LocationTracker
     let catalog: DataSourceCatalog
@@ -107,6 +135,12 @@ final class AppModel: ObservableObject {
     /// Data tiles whose building data changed and whose areas must be recomputed.
     private var pendingDataTiles: Set<TileKey> = []
     private var dataRefreshTask: Task<Void, Never>?
+    var periodDiscovery: PeriodDiscovery
+    var viewTask: Task<Void, Never>?
+    var liveViewTask: Task<Void, Never>?
+    var versionCounter = 0
+    static let aggregateKey = "AppModel.aggregate"
+    static let periodKindKey = "AppModel.periodKind"
     /// Layers that could not be built during the last reload.
     private var failedLayers: Set<MapLayer> = []
     private static let selectedLayerKey = "AppModel.selectedLayer"
@@ -147,6 +181,9 @@ final class AppModel: ObservableObject {
             store: store, engines: MapLayer.allCases.compactMap { engines[$0] }, policy: debug.recordingPolicy, playArea: playArea
         )
         self.trackWriter = TrackWriter(store: store)
+        self.periodDiscovery = PeriodDiscovery(store: store)
+        self.aggregate = UserDefaults.standard.string(forKey: Self.aggregateKey).flatMap(MapAggregate.init(rawValue:)) ?? .fog
+        self.periodKind = UserDefaults.standard.string(forKey: Self.periodKindKey).flatMap(PeriodKind.init(rawValue:))
         self.layers = Self.emptyLayers(engines)
         self.selectedLayer = UserDefaults.standard.string(forKey: Self.selectedLayerKey).flatMap(MapLayer.init(rawValue:)) ?? .radius
 
@@ -259,6 +296,7 @@ final class AppModel: ObservableObject {
             switch outcome {
             case .recorded(_, let updates):
                 sampleCount += 1
+                periodViewTouched()
                 lastOutcome = "New area discovered"
                 for update in updates {
                     if let layer = layer(for: update.layer) {
@@ -298,6 +336,7 @@ final class AppModel: ObservableObject {
         guard engines[layer] === engine else { return }
         var state = layers[layer] ?? LayerState(snapshot: snapshot)
         state.snapshot = snapshot
+        state.identity = engine.layer.rawValue
         state.version += 1
         state.changedTiles = changedTiles
         state.discoveredSquareMeters = snapshot.totalAreaSquareMeters
@@ -319,8 +358,15 @@ final class AppModel: ObservableObject {
         isBusy = true
         defer { isBusy = false }
         do {
-            if profile.id == BerlinData.demoProfileID, try await store.sampleCount() == 0 {
-                try await importDemoData()
+            if profile.id == BerlinData.demoProfileID {
+                let summary = try await store.trackSummary()
+                if summary.pointCount == 0 {
+                    // First launch, or demo data from before the track: start afresh.
+                    try await store.removeAllSamples()
+                    for layer in try await store.layers() { try await store.removeAllPieces(layer: layer) }
+                    for engine in engines.values { await engine.invalidateCache() }
+                    try await importDemoData()
+                }
             }
             sampleCount = try await store.sampleCount()
             await updateTrackSummary()
@@ -342,6 +388,7 @@ final class AppModel: ObservableObject {
             }
             await refreshAll()
             await updateStaleLayers()
+            refreshView()
             // Building data may have changed since the layers were computed (downloads,
             // a newer bundled dataset after an app update): refresh those areas.
             Task { [weak self] in await self?.checkBuildingData(fetchingMissing: self?.debug.downloadsBuildings ?? false) }
@@ -379,6 +426,8 @@ final class AppModel: ObservableObject {
             self.recorder = LocationRecorder(store: store, engines: MapLayer.allCases.compactMap { engines[$0] }, playArea: playArea)
             self.trackWriter = TrackWriter(store: store)
             self.trackSummary = TrackSummary()
+            self.periodDiscovery = PeriodDiscovery(store: store)
+            self.periodStates = [:]
             self.profile = profile
             catalog.selectedProfileID = profile.id
             layers = Self.emptyLayers(engines)
@@ -403,25 +452,34 @@ final class AppModel: ObservableObject {
         await select(profile)
     }
 
-    /// Feeds the demo explorer's raw fixes through the recorder, exactly as if
-    /// they had been tracked live: only fixes revealing new area are stored.
+    /// Imports the demo explorer's track and feeds its fixes through the recorder,
+    /// exactly as if they had been tracked live: only sampled fixes revealing new
+    /// area become key samples.
     private func importDemoData() async throws {
         let recorder = self.recorder
-        lastOutcome = "Importing demo walks…"
-        let fixes = try BerlinData.demoFixes()
+        lastOutcome = "Importing the demo explorer's track…"
+        let points = try BerlinData.demoTrack()
         defer { progress = nil }
-        let trackWriter = self.trackWriter
-        defer { Task { try? await trackWriter.flush() } }
-        for (index, fix) in fixes.enumerated() {
-            _ = try? await trackWriter.append(TrackPoint(fix))
-            _ = try await recorder.record(fix)
-            progress = Double(index + 1) / Double(fixes.count)
-            if index % 200 == 199 {
+        // The track goes in as segments of ten minutes.
+        let segments = stride(from: 0, to: points.count, by: 600).map { start in
+            TrackSegment(points: Array(points[start..<min(start + 600, points.count)]))
+        }
+        for batch in stride(from: 0, to: segments.count, by: 50) {
+            try await store.putTrackSegments(Array(segments[batch..<min(batch + 50, segments.count)]))
+        }
+        for (index, point) in points.enumerated() {
+            _ = try await recorder.record(point.sample)
+            if index % 500 == 499 {
+                progress = Double(index + 1) / Double(points.count)
+            }
+            if index % 10_000 == 9_999 {
                 // Let the map fill up while the import runs.
                 sampleCount = try await store.sampleCount()
                 await refreshAll()
             }
         }
+        try await recorder.finishSampling()
+        await updateTrackSummary()
         lastOutcome = ""
     }
 
@@ -476,7 +534,10 @@ final class AppModel: ObservableObject {
     func deleteUnusedLayers() async {
         do {
             let used = Set(engines.values.map(\.layer))
+            // Cached days of the current layers (time-based views) are kept.
             for layer in try await store.layers() where !used.contains(layer) {
+                let base = DiscoveryLayerID(String(layer.rawValue.prefix { $0 != "@" }))
+                if layer.rawValue.contains("@day:"), used.contains(base) { continue }
                 try await store.removeAllPieces(layer: layer)
             }
             lastOutcome = "Unused layers deleted"

@@ -257,7 +257,7 @@ struct Map3DScreen: View {
     private var eyeHeight: Double { heights.eye }
 
     var body: some View {
-        let layer = model.state(.lineOfSight)
+        let layer = model.displayedState(.lineOfSight)
         SceneKitView(controller: controller)
             .ignoresSafeArea()
         .task {
@@ -266,7 +266,7 @@ struct Map3DScreen: View {
         .onChange(of: controller.reloadRequests) { _, _ in
             Task { await reload() }
         }
-        .onChange(of: layer.version) { _, _ in
+        .onChange(of: Self.stamp(layer)) { _, _ in
             Task { await recolor() }
         }
         .onChange(of: model.debug.fogOpacity) { _, _ in
@@ -277,17 +277,22 @@ struct Map3DScreen: View {
         }
     }
 
+    /// Changes whenever the shown area changes (another period, or a new version).
+    private static func stamp(_ layer: LayerState) -> Int {
+        layer.identity.hashValue &+ layer.version
+    }
+
     private func reload() async {
-        let layer = model.state(.lineOfSight)
+        let layer = model.displayedState(.lineOfSight)
         await controller.load(
-            center: center, snapshot: layer.snapshot, version: layer.version,
+            center: center, snapshot: layer.snapshot, version: Self.stamp(layer),
             fogOpacity: model.debug.fogOpacity, source: model.buildings
         )
         controller.updateUser(tracker.lastLocation, eyeHeight: eyeHeight)
     }
 
     private func recolor() async {
-        let layer = model.state(.lineOfSight)
-        await controller.recolor(snapshot: layer.snapshot, version: layer.version, fogOpacity: model.debug.fogOpacity)
+        let layer = model.displayedState(.lineOfSight)
+        await controller.recolor(snapshot: layer.snapshot, version: Self.stamp(layer), fogOpacity: model.debug.fogOpacity)
     }
 }

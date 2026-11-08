@@ -41,11 +41,10 @@ enum BerlinData {
         )
     }
 
-    /// Raw position fixes of the demo explorer (five walks in September/October 2026).
-    static func demoFixes(bundle: Bundle = .main) throws -> [LocationSample] {
-        guard let url = bundle.url(forResource: "demo-walks", withExtension: "json") else { return [] }
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        return try decoder.decode([LocationSample].self, from: Data(contentsOf: url))
+    /// The demo explorer's 1 Hz track (walks and weekday commutes, September to
+    /// October 2026, and a day trip to Braunschweig; Tools/berlin/make_demo_data.py).
+    static func demoTrack(bundle: Bundle = .main) throws -> [TrackPoint] {
+        guard let url = bundle.url(forResource: "demo-track", withExtension: "mqtrack") else { return [] }
+        return try TrackCodec.decode(Data(contentsOf: url))
     }
 }

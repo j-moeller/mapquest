@@ -20,10 +20,14 @@ struct ContentView: View {
         ZStack(alignment: .top) {
             switch mode {
             case .twoD:
+                let shown = model.displayedState(model.selectedLayer)
                 FogMapView(
-                    snapshot: model.state(model.selectedLayer).snapshot,
-                    version: model.state(model.selectedLayer).version,
-                    changedTiles: model.state(model.selectedLayer).changedTiles,
+                    snapshot: shown.snapshot,
+                    identity: shown.identity,
+                    version: shown.version,
+                    changedTiles: shown.changedTiles,
+                    aggregate: model.aggregate,
+                    heatPoints: model.heatPoints,
                     playArea: model.playArea,
                     fogOpacity: model.debug.fogOpacity,
                     onLongPress: model.debug.placesPositionsOnLongPress ? { coordinate in
@@ -36,16 +40,17 @@ struct ContentView: View {
             }
 
             VStack(spacing: 8) {
-                HStack {
+                HStack(alignment: .top) {
                     Picker("Map", selection: $mode) {
                         ForEach(MapMode.allCases) { mode in
                             Text(mode.rawValue).tag(mode)
                         }
                     }
                     .pickerStyle(.segmented)
-                    .frame(width: 120)
+                    .frame(width: 100)
                     .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
-                    Spacer()
+                    ViewBar(showsAggregate: mode == .twoD)
+                    Spacer(minLength: 0)
                 }
                 PermissionBanner()
                 if mode == .threeD {
@@ -56,6 +61,11 @@ struct ContentView: View {
                 StatusPanel(showsSettings: $showsSettings, fixedLayer: mode == .threeD ? .lineOfSight : nil)
             }
             .padding()
+        }
+        .onAppear { model.isShowing3D = mode == .threeD }
+        .onChange(of: mode) { _, newMode in model.isShowing3D = newMode == .threeD }
+        .onChange(of: model.selectedLayer) { _, _ in
+            if model.periodKind != nil { model.refreshView() }
         }
         .sheet(isPresented: $showsSettings) {
             SettingsView()
@@ -123,13 +133,34 @@ struct StatusPanel: View {
             }
             let shown = fixedLayer ?? model.selectedLayer
             let layer = model.state(shown)
-            HStack(spacing: 12) {
-                Statistic(value: Formatters.area(layer.discoveredSquareMeters), label: "discovered")
-                if let fraction = model.playAreaFraction(shown) {
-                    Statistic(value: Formatters.percent(fraction), label: "of \(model.playArea.name)")
+            let heatmap = model.aggregate == .heatmap && fixedLayer == nil
+            if model.periodKind == nil && !heatmap {
+                HStack(spacing: 12) {
+                    Statistic(value: Formatters.area(layer.discoveredSquareMeters), label: "discovered")
+                    if let fraction = model.playAreaFraction(shown) {
+                        Statistic(value: Formatters.percent(fraction), label: "of \(model.playArea.name)")
+                    }
+                    Statistic(value: "\(layer.regionCount)", label: layer.regionCount == 1 ? "region" : "regions")
+                    Statistic(value: "\(model.sampleCount)", label: "positions")
                 }
-                Statistic(value: "\(layer.regionCount)", label: layer.regionCount == 1 ? "region" : "regions")
-                Statistic(value: "\(model.sampleCount)", label: "positions")
+            } else {
+                // A period or the heatmap: figures from the track.
+                let summary = model.viewSummary
+                HStack(spacing: 12) {
+                    if let area = summary?.areaSquareMeters {
+                        Statistic(value: Formatters.area(area), label: "seen")
+                    }
+                    Statistic(value: Formatters.distance(summary?.statistics.distanceMeters ?? 0), label: "travelled")
+                    Statistic(value: Formatters.duration(summary?.statistics.recordedSeconds ?? 0), label: "recorded")
+                    if let days = summary?.statistics.activeDays, model.periodKind != .day {
+                        Statistic(value: "\(days)", label: days == 1 ? "day" : "days")
+                    }
+                }
+            }
+            if let progress = model.viewProgress, !collapsed {
+                ProgressView(value: progress) {
+                    Text("Computing \(model.currentPeriod?.title() ?? "")…").font(.caption)
+                }
             }
             if model.staleLayers.contains(shown) && !collapsed {
                 Label("Some positions are missing in this layer. Rebuild it in Settings.", systemImage: "exclamationmark.triangle")

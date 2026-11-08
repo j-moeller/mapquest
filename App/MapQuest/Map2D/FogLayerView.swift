@@ -16,11 +16,25 @@ import UIKit
 /// with even-odd filling, overlaps would be fogged again, so every piece is
 /// clipped to its exact storage tile first (in the background).
 final class FogLayerView: UIView {
+    enum Mode { case fog, heatmap }
+
     weak var map: MKMapView?
 
     private let fogLayer = CAShapeLayer()
     private let boundaryLayer = CAShapeLayer()
     private let positionLayer = CAShapeLayer()
+    /// Heatmap mode: the map is dimmed and the heat raster drawn on top.
+    private let dimLayer = CALayer()
+    private let heatLayer = CALayer()
+    private(set) var mode = Mode.fog
+
+    // Heatmap state: the raster and the map rectangle it covers.
+    private var heatPoints: [WeightedPoint] = []
+    private var heatVersion = -1
+    private var heatRect = MKMapRect.null
+    private var heatScale: Double = 0
+    private var heatNeedsRebuild = false
+    private var isComputingHeat = false
 
     /// Discovered area per storage tile, clipped to the exact tile.
     private var clipped: [TileKey: [WorldPolygon]] = [:]
@@ -47,6 +61,15 @@ final class FogLayerView: UIView {
             shape.bounds = CGRect(x: 0, y: 0, width: 1, height: 1)
             layer.addSublayer(shape)
         }
+        dimLayer.backgroundColor = UIColor(red: 0.04, green: 0.06, blue: 0.12, alpha: 0.35).cgColor
+        dimLayer.isHidden = true
+        layer.insertSublayer(dimLayer, at: 0)
+        heatLayer.anchorPoint = .zero
+        heatLayer.position = .zero
+        heatLayer.magnificationFilter = .linear
+        heatLayer.minificationFilter = .linear
+        heatLayer.isHidden = true
+        layer.insertSublayer(heatLayer, above: dimLayer)
         fogLayer.fillRule = .evenOdd
         fogLayer.fillColor = UIColor(red: 0.04, green: 0.06, blue: 0.12, alpha: 0.9).cgColor
         boundaryLayer.fillColor = nil
@@ -70,7 +93,89 @@ final class FogLayerView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        dimLayer.frame = bounds.insetBy(dx: -bounds.width, dy: -bounds.height)
         sync()
+    }
+
+    // MARK: Heatmap
+
+    func setMode(_ mode: Mode) {
+        guard mode != self.mode else { return }
+        self.mode = mode
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        fogLayer.isHidden = mode != .fog
+        dimLayer.isHidden = mode != .heatmap
+        heatLayer.isHidden = mode != .heatmap
+        CATransaction.commit()
+        heatNeedsRebuild = true
+        sync()
+    }
+
+    func setHeatPoints(_ points: [WeightedPoint], version: Int) {
+        guard version != heatVersion else { return }
+        heatVersion = version
+        heatPoints = points
+        heatNeedsRebuild = true
+        sync()
+    }
+
+    /// Rasterizes the heat of an area three screens wide in the background (cells of 2.5 points).
+    private func rebuildHeat(visible: MKMapRect, scale: Double) {
+        guard !isComputingHeat else {
+            heatNeedsRebuild = true
+            return
+        }
+        heatNeedsRebuild = false
+        isComputingHeat = true
+        let rect = visible.insetBy(dx: -visible.size.width, dy: -visible.size.height)
+        let points = heatPoints
+        let cellPoints = 2.5
+        let cellSize = max(Int64((cellPoints / scale * MapPointConversion.worldUnitsPerMapPoint).rounded()), 1)
+        Task { [weak self] in
+            let image = await Task.detached(priority: .userInitiated) { () -> CGImage? in
+                let area = MapPointConversion.worldRect(for: rect)
+                var grid = HeatmapGrid(covering: area, cellSize: cellSize)
+                grid.add(points.filter { area.contains($0.point) })
+                // ≈ 12 points of smoothing on screen.
+                return Self.image(of: grid.blurred(radius: 5))
+            }.value
+            guard let self else { return }
+            self.isComputingHeat = false
+            CATransaction.begin()
+            CATransaction.setDisableActions(true)
+            self.heatLayer.contents = image
+            self.heatLayer.bounds = CGRect(x: 0, y: 0, width: image?.width ?? 1, height: image?.height ?? 1)
+            CATransaction.commit()
+            self.heatRect = rect
+            self.heatScale = scale
+            self.sync()
+        }
+    }
+
+    private nonisolated static func image(of grid: HeatmapGrid) -> CGImage? {
+        guard grid.maximum > 0 else { return nil }
+        let pixels = grid.rgba()
+        guard let provider = CGDataProvider(data: Data(pixels) as CFData) else { return nil }
+        return CGImage(
+            width: grid.columns, height: grid.rows, bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: grid.columns * 4,
+            space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue),
+            provider: provider, decode: nil, shouldInterpolate: true, intent: .defaultIntent
+        )
+    }
+
+    /// Places the heat raster: its pixel grid mapped onto the map rectangle it covers.
+    private func placeHeat(on map: MKMapView) {
+        guard !heatRect.isNull, heatLayer.bounds.width > 0 else { return }
+        let width = heatLayer.bounds.width, height = heatLayer.bounds.height
+        let p0 = map.convert(MKMapPoint(x: heatRect.minX, y: heatRect.minY).coordinate, toPointTo: self)
+        let px = map.convert(MKMapPoint(x: heatRect.maxX, y: heatRect.minY).coordinate, toPointTo: self)
+        let py = map.convert(MKMapPoint(x: heatRect.minX, y: heatRect.maxY).coordinate, toPointTo: self)
+        heatLayer.setAffineTransform(CGAffineTransform(
+            a: (px.x - p0.x) / width, b: (px.y - p0.y) / width,
+            c: (py.x - p0.x) / height, d: (py.y - p0.y) / height,
+            tx: p0.x, ty: p0.y
+        ))
     }
 
     // MARK: Inputs
@@ -151,6 +256,10 @@ final class FogLayerView: UIView {
         if needsRebuild || !covered.contains(visible) || current > scale * 1.5 || current < scale / 1.5 {
             rebuild(visible: visible, scale: current)
         }
+        if mode == .heatmap,
+           heatNeedsRebuild || !heatRect.contains(visible) || current > heatScale * 1.5 || current < heatScale / 1.5 {
+            rebuildHeat(visible: visible, scale: current)
+        }
 
         // The affine transform path → view, from three points of the path's coordinate system.
         let step = 1_000.0
@@ -170,6 +279,7 @@ final class FogLayerView: UIView {
         boundaryLayer.setAffineTransform(transform)
         boundaryLayer.lineWidth = 2 / magnification
         boundaryLayer.lineDashPattern = [NSNumber(value: 6 / magnification), NSNumber(value: 4 / magnification)]
+        if mode == .heatmap { placeHeat(on: map) }
         if map.showsUserLocation, let location = map.userLocation.location, location.horizontalAccuracy >= 0 {
             positionLayer.position = map.convert(location.coordinate, toPointTo: self)
             positionLayer.isHidden = false

@@ -6,9 +6,14 @@ import SwiftUI
 /// (`FogLayerView`, which moves with the map frame by frame).
 struct FogMapView: UIViewRepresentable {
     var snapshot: DiscoveredAreaSnapshot
+    /// What the snapshot shows (layer, or layer and period); partial redraws only within one identity.
+    var identity: String
     /// Increments whenever `snapshot` changes.
     var version: Int
     var changedTiles: Set<TileKey>?
+    /// Fog of war, or a heatmap of `heatPoints`.
+    var aggregate: MapAggregate = .fog
+    var heatPoints = HeatPoints()
     var playArea: PlayArea
     /// Opacity of the fog over undiscovered areas (0…1).
     var fogOpacity: Double = 0.9
@@ -66,7 +71,11 @@ struct FogMapView: UIViewRepresentable {
     func updateUIView(_ map: MKMapView, context: Context) {
         context.coordinator.onLongPress = onLongPress
         context.coordinator.updateFog(opacity: fogOpacity)
-        context.coordinator.update(snapshot: snapshot, version: version, changedTiles: changedTiles)
+        context.coordinator.update(snapshot: snapshot, identity: identity, version: version, changedTiles: changedTiles)
+        context.coordinator.fogView.setMode(aggregate == .heatmap ? .heatmap : .fog)
+        if aggregate == .heatmap {
+            context.coordinator.fogView.setHeatPoints(heatPoints.points, version: heatPoints.version)
+        }
         context.coordinator.updatePlayArea(playArea, on: map)
     }
 
@@ -74,7 +83,7 @@ struct FogMapView: UIViewRepresentable {
     final class Coordinator: NSObject, MKMapViewDelegate {
         let fogView = FogLayerView(frame: .zero)
         private var drawnVersion = -1
-        private var drawnLayer: DiscoveryLayerID?
+        private var drawnIdentity: String?
         private var drawnPlayAreaName: String?
         private var fogOpacity: Double = -1
         weak var map: MKMapView?
@@ -118,12 +127,12 @@ struct FogMapView: UIViewRepresentable {
             fogView.update(snapshot: snapshot, changedTiles: nil)
         }
 
-        func update(snapshot: DiscoveredAreaSnapshot, version: Int, changedTiles: Set<TileKey>?) {
-            guard version != drawnVersion || snapshot.layer != drawnLayer else { return }
-            // Only consecutive versions of the same layer may be redrawn partially.
-            let partial = version == drawnVersion + 1 && snapshot.layer == drawnLayer ? changedTiles : nil
+        func update(snapshot: DiscoveredAreaSnapshot, identity: String, version: Int, changedTiles: Set<TileKey>?) {
+            guard version != drawnVersion || identity != drawnIdentity else { return }
+            // Only the next version of the same layer (and period) may be redrawn partially.
+            let partial = version == drawnVersion + 1 && identity == drawnIdentity ? changedTiles : nil
             drawnVersion = version
-            drawnLayer = snapshot.layer
+            drawnIdentity = identity
             fogView.update(snapshot: snapshot, changedTiles: partial)
         }
 

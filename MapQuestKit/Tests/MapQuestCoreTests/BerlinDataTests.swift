@@ -32,23 +32,29 @@ final class BerlinDataTests: XCTestCase {
         XCTAssertTrue(area.contains(GeoCoordinate(latitude: 52.516275, longitude: 13.377704)), "Brandenburger Tor is in Mitte")
     }
 
-    func testDemoWalksFormThreeRegions() async throws {
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        let fixes = try decoder.decode([LocationSample].self, from: load("demo-walks.json"))
-        XCTAssertGreaterThan(fixes.count, 1_000)
+    func testDemoTrack() async throws {
+        let points = try TrackCodec.decode(load("demo-track.mqtrack"))
+        XCTAssertGreaterThan(points.count, 100_000)
+        XCTAssertEqual(points, points.sorted { $0.time < $1.time }, "chronological")
+        let size = try load("demo-track.mqtrack").count
+        XCTAssertLessThan(Double(size) / Double(points.count), 7, "compact")
 
         let store = InMemoryDataStore()
         let engine = DiscoveryEngine(model: CircleDiscoveryModel(radius: 50), store: store)
         let berlin = try GeoJSON.playArea(named: "Berlin", from: load("berlin-boundary.geojson"))
         let recorder = LocationRecorder(store: store, engines: [engine], playArea: berlin)
-        for fix in fixes { _ = try await recorder.record(fix) }
+        var outside = 0
+        for point in points {
+            if case .rejected(.outsidePlayArea) = try await recorder.record(point.sample) { outside += 1 }
+        }
+        try await recorder.finishSampling()
+        XCTAssertGreaterThan(outside, 1_000, "the Braunschweig day trip is outside Berlin")
 
         let stored = await store.sampleCount()
-        XCTAssertLessThan(stored, fixes.count / 2, "only fixes revealing new area are stored")
+        XCTAssertLessThan(stored, points.count / 100, "sampled, and only fixes revealing new area are stored")
         let regions = try await store.regions(layer: engine.layer)
-        // Mitte walks (connected at Brandenburger Tor and Friedrichstraße), Tempelhofer Feld, Bergmannstraße.
-        XCTAssertEqual(regions.count, 3)
+        // Mitte and Kreuzberg (joined by the commute) and Tempelhofer Feld.
+        XCTAssertEqual(regions.count, 2)
     }
 
     func testTerrainModel() throws {

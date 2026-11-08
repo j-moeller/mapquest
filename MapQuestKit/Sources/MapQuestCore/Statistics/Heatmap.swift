@@ -1,5 +1,28 @@
 import Foundation
 
+/// A position with the time spent there (seconds), ready for binning.
+public struct WeightedPoint: Hashable, Sendable {
+    public var point: WorldPoint
+    public var weight: Float
+
+    public init(point: WorldPoint, weight: Float) {
+        self.point = point
+        self.weight = weight
+    }
+
+    /// Accurate fixes of chronologically sorted track points, weighted by the time
+    /// until the next fix (at most `maximumWeight` seconds).
+    public static func timeSpent(_ points: [TrackPoint], maximumAccuracy: Double = 50, maximumWeight: Double = 5) -> [WeightedPoint] {
+        var result: [WeightedPoint] = []
+        result.reserveCapacity(points.count)
+        for (index, point) in points.enumerated() where point.hasValidPosition && point.horizontalAccuracy <= maximumAccuracy {
+            let next = index + 1 < points.count ? points[index + 1].time : point.time + 10
+            result.append(WeightedPoint(point: point.worldPoint, weight: Float(min(max(Double(next - point.time) / 10, 0), maximumWeight))))
+        }
+        return result
+    }
+}
+
 /// Time spent per place, on a regular grid of world coordinates, for heatmaps.
 ///
 /// Every fix adds the time until the next fix (at most `maximumWeight` seconds),
@@ -40,10 +63,11 @@ public struct HeatmapGrid: Sendable {
 
     /// Adds chronologically sorted track points weighted by the time spent at them.
     public mutating func add(_ points: [TrackPoint], maximumAccuracy: Double = 50, maximumWeight: Double = 5) {
-        for (index, point) in points.enumerated() where point.hasValidPosition && point.horizontalAccuracy <= maximumAccuracy {
-            let next = index + 1 < points.count ? points[index + 1].time : point.time + 10
-            add(point.worldPoint, weight: Float(min(max(Double(next - point.time) / 10, 0), maximumWeight)))
-        }
+        add(WeightedPoint.timeSpent(points, maximumAccuracy: maximumAccuracy, maximumWeight: maximumWeight))
+    }
+
+    public mutating func add(_ points: [WeightedPoint]) {
+        for point in points { add(point.point, weight: point.weight) }
     }
 
     public var maximum: Float { values.max() ?? 0 }
