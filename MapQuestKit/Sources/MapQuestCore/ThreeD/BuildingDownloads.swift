@@ -249,6 +249,39 @@ public actor InMemoryBuildingCache: BuildingCache {
     }
 }
 
+/// Several building datasets side by side (e.g. one bundled database per city):
+/// lookups combine them, a tile's version comes from the first dataset that has
+/// it. Read-only: `store` writes into the first dataset.
+public struct CompositeBuildingCache: BuildingCache {
+    public let caches: [any BuildingCache]
+
+    public init(_ caches: [any BuildingCache]) {
+        self.caches = caches
+    }
+
+    public func buildings(in rect: WorldRect) async throws -> [Building] {
+        var seen = Set<Int64>()
+        var result: [Building] = []
+        for cache in caches {
+            for building in try await cache.buildings(in: rect) where seen.insert(building.id).inserted {
+                result.append(building)
+            }
+        }
+        return result
+    }
+
+    public func version(of tile: TileKey) async throws -> String? {
+        for cache in caches {
+            if let version = try await cache.version(of: tile) { return version }
+        }
+        return nil
+    }
+
+    public func store(_ buildings: [Building], downloadedTiles tiles: [TileKey]) async throws {
+        try await caches.first?.store(buildings, downloadedTiles: tiles)
+    }
+}
+
 /// Combines a prepared base dataset (e.g. the bundled Berlin database, which may
 /// first have to be unpacked) with an overlay cache for downloads. Lookups use
 /// both; downloaded buildings go into the overlay. The base is prepared once,

@@ -520,6 +520,9 @@ public struct ViewshedDiscoveryModel: DiscoveryModel {
     /// Eye height above the local ground and above the surrounding terrain for a sample.
     public func heights(for sample: LocationSample) -> (eye: Double, effective: Double) {
         let eye = sample.worldPoint
+        // Without known ground the altitude says nothing about the eye height (a city at
+        // 75 m would look like a viewpoint over a 35 m default): street level.
+        guard terrain.hasData(at: eye) else { return (configuration.streetEyeHeight, configuration.streetEyeHeight) }
         let ground = terrain.elevation(at: eye)
         let height = configuration.eyeHeight(
             altitude: sample.altitude, verticalAccuracy: sample.verticalAccuracy, groundElevation: ground

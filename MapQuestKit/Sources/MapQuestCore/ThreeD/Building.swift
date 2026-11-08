@@ -148,6 +148,13 @@ public protocol TerrainModel: Sendable {
     /// Whether the ground has the same elevation everywhere (enables the exact flat-ground sweep).
     var isFlat: Bool { get }
     func elevation(at point: WorldPoint) -> Double
+    /// Whether the model knows the ground at `point`. Where it does not, altitudes
+    /// cannot be judged and positions count as street level.
+    func hasData(at point: WorldPoint) -> Bool
+}
+
+public extension TerrainModel {
+    func hasData(at point: WorldPoint) -> Bool { true }
 }
 
 /// Flat ground at a constant elevation (Berlin's Spree valley lies ≈ 34 m above sea level).
@@ -163,6 +170,35 @@ public struct FlatTerrain: TerrainModel {
 
     /// Typical ground elevation of central Berlin.
     public static let berlin = FlatTerrain(elevation: 35)
+}
+
+/// Several elevation models (e.g. one per city): the first one with data at a
+/// position answers; elsewhere `fallback` applies and `hasData` is false.
+public struct CompositeTerrain: TerrainModel {
+    public let grids: [GridTerrain]
+    public let fallback: Double
+
+    public init(_ grids: [GridTerrain], fallback: Double) {
+        self.grids = grids
+        self.fallback = fallback
+    }
+
+    /// The identifiers of the grids (one grid: its own identifier, so layers stay the same).
+    public var identifier: String { grids.map(\.identifier).joined(separator: "+") }
+    public var isFlat: Bool { false }
+
+    public func elevation(at point: WorldPoint) -> Double {
+        let c = WebMercator.unproject(point)
+        for grid in grids where grid.covers(latitude: c.latitude, longitude: c.longitude) {
+            return grid.elevation(latitude: c.latitude, longitude: c.longitude)
+        }
+        return fallback
+    }
+
+    public func hasData(at point: WorldPoint) -> Bool {
+        let c = WebMercator.unproject(point)
+        return grids.contains { $0.covers(latitude: c.latitude, longitude: c.longitude) }
+    }
 }
 
 /// A digital elevation model on a regular latitude/longitude grid, sampled bilinearly.
@@ -228,6 +264,20 @@ public struct GridTerrain: TerrainModel {
     public func elevation(at point: WorldPoint) -> Double {
         let c = WebMercator.unproject(point)
         return elevation(latitude: c.latitude, longitude: c.longitude)
+    }
+
+    public func hasData(at point: WorldPoint) -> Bool {
+        let c = WebMercator.unproject(point)
+        return covers(latitude: c.latitude, longitude: c.longitude)
+    }
+
+    /// Whether the grid has data around a position.
+    public func covers(latitude: Double, longitude: Double) -> Bool {
+        let fy = (latitude - south) / latitudeStep
+        let fx = (longitude - west) / longitudeStep
+        guard fx >= 0, fy >= 0, fx <= Double(columns - 1), fy <= Double(rows - 1) else { return false }
+        let x = min(Int(fx.rounded()), columns - 1), y = min(Int(fy.rounded()), rows - 1)
+        return decimetres[y * columns + x] != Self.noData
     }
 
     public func elevation(latitude: Double, longitude: Double) -> Double {

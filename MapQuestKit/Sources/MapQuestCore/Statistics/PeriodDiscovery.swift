@@ -107,7 +107,7 @@ public actor PeriodDiscovery {
                 piece.layer = layer
                 return piece
             }
-            let versions = try await scratch.dataVersions(layer: model.layer)
+            let versions = await scratch.dataVersions(layer: model.layer)
             try await store.replaceLayer(layer, with: pieces, dataVersions: versions)
             openDays[layer] = nil
         } else {
