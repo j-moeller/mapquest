@@ -2,7 +2,7 @@ import XCTest
 @testable import MapQuestCore
 
 /// Checks the bundled Braunschweig data (App/MapQuest/Resources/Braunschweig,
-/// built by .github/workflows/braunschweig-data.yml) and recording in two cities.
+/// built by Tools/cities/build_city.sh) and recording in two cities.
 final class BraunschweigDataTests: XCTestCase {
     static let root = URL(fileURLWithPath: #filePath)
         .deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()

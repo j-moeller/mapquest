@@ -3,7 +3,7 @@
 MapQuest is an iPhone app that combines a classic map with a *fog of war*:
 you only see the parts of the world you have actually been to. Everything
 else stays visibly darker until you go there. It works everywhere (on
-Apple Maps); Berlin, Braunschweig and Peine additionally have bundled 3D
+Apple Maps); Berlin and Braunschweig additionally have bundled 3D
 building and terrain data for the line-of-sight reveal.
 
 The app has three major components:
@@ -99,6 +99,21 @@ The platform-independent core can be built and tested without Xcode, also on Lin
 cd MapQuestKit && swift test
 ```
 
+The repository has no hosted CI. Before a release, check on a Mac:
+
+```bash
+xcodebuild build -project MapQuest.xcodeproj -scheme MapQuest -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO
+```
+
+```bash
+Tools/check_bundle.sh
+```
+
+The UI smoke test (`App/MapQuestUITests`, iPhone 13 mini) runs from Xcode
+(*Product › Test*); the remote-store tests need a running server
+([docs/04](docs/04-remote-store.md)). The bundled city data is rebuilt with
+`Tools/berlin/build_buildings.sh` and `Tools/cities/build_city.sh`.
+
 ## Repository layout
 
 | Path | Contents |
@@ -106,7 +121,7 @@ cd MapQuestKit && swift test
 | `MapQuestKit/` | Swift package: data model, SQLite store, Clipper2 polygon engine, discovery |
 | `App/MapQuest/` | The iOS app (SwiftUI, MapKit, Core Location) |
 | `App/Simulation/` | GPX walks for the iOS Simulator |
-| `Tools/` | Data preparation scripts (Berlin data, app icon) |
+| `Tools/` | Data preparation scripts (Berlin and Lower Saxony city data, app icon) |
 | `Server/` | Remote store: PostgreSQL schema and reference REST server |
 | `docs/` | Literature review, architecture, data sources |
 | `project.yml` | XcodeGen project specification |
@@ -129,7 +144,7 @@ cd MapQuestKit && swift test
 - [x] Berlin 2D data
 - [x] Location data component and discovered-area component (3D)
 - [x] 3D map presentation
-- [x] Berlin 3D data (on-demand OSM downloads; full Berlin database built by CI)
+- [x] Berlin 3D data (bundled database, `Tools/berlin/build_buildings.sh`)
 - [x] Cache invalidation when building data improves (docs/05)
 - [x] Continuous 1 Hz track, coverage sampling, time-based views, heatmap
 - [x] Braunschweig as a second city (docs/06)

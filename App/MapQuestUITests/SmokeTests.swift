@@ -1,7 +1,7 @@
 import XCTest
 
 /// Launches the app and walks through the main screens, attaching a screenshot
-/// of each (run on an iPhone 13 mini simulator by .github/workflows/ui-smoke.yml).
+/// of each (run it on an iPhone 13 mini simulator: Xcode › Product › Test).
 final class SmokeTests: XCTestCase {
     private var app: XCUIApplication!
     private let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")

@@ -56,8 +56,7 @@ picked from Xcode's *Debug › Simulate Location* menu.
 
 **Bundled database.** The app ships the whole of Berlin as
 `App/MapQuest/Resources/Berlin/berlin-buildings.sqlite.deflate` (raw DEFLATE,
-≈ 30 MB, committed by the *Berlin building data* workflow when run manually
-with *commit*). On first launch – and after every update of the file – the
+≈ 30 MB, built by `Tools/berlin/build_buildings.sh`). On first launch – and after every update of the file – the
 app unpacks it into `Application Support/MapQuest/Buildings/berlin.sqlite`
 (≈ 51 MB) in the background. A `LayeredBuildingCache` combines it with the
 download cache, so tiles across the city limits still come from Overpass
@@ -103,9 +102,14 @@ For offline use, the complete Berlin dataset can be bundled:
    regenerate the project. On first launch the app copies it into its building
    cache.
 
-The workflow `.github/workflows/berlin-buildings.yml` runs all of this on
-GitHub Actions and publishes the database as the `berlin-buildings` artifact
-(run it from the Actions tab). Locally:
+`Tools/berlin/build_buildings.sh` runs all of this including the LoD2
+heights (below) and writes the compressed database for the app bundle:
+
+```bash
+Tools/berlin/build_buildings.sh
+```
+
+Step by step:
 
 ```bash
 curl -fsSL -o berlin.osm.pbf https://download.geofabrik.de/europe/germany/berlin-latest.osm.pbf
@@ -129,10 +133,10 @@ cd MapQuestKit && swift run -c release mapquest-import buildings --output ../App
 | Estimated from building type | 355 700 (66.0 %) |
 | Tallest | Fernsehturm 368 m, Funkturm 147 m, The Berlinian 146 m, EDGE East Side Tower 142 m |
 | Complete zoom-14 tiles | 321 |
-| Database | 51 MB (31 MB zipped) – too large for the git repository, hence a CI artifact |
+| Database | 51 MB, shipped compressed (raw DEFLATE) |
 
-Viewsheds computed by the workflow on this data (release build on a GitHub
-runner):
+Viewsheds computed on this data by `mapquest-import viewshed` (release build,
+as in `build_buildings.sh`):
 
 | Place | Eye height | Sight | Buildings seen | Visible | Time |
 |---|---|---|---|---|---|

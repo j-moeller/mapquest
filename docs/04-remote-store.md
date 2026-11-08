@@ -91,8 +91,9 @@ account or only views it (e.g. a friend's account).
 `MapQuestKit/Tests/MapQuestRemoteTests` runs the store contract tests and a
 recorder round trip (one client writes, a second one reads the same account)
 against a live server when `MAPQUEST_REMOTE_URL` and `MAPQUEST_REMOTE_TOKEN`
-are set. CI's Linux job starts PostgreSQL 16 as a service container plus the
-server and runs them on every push. The Docker files are not exercised by CI.
+are set (start PostgreSQL and the server first, e.g. with the Docker files;
+`python3 Server/mapquest_server.py migrate`, `add-user`, `serve`). Without
+them these tests are skipped.
 
 ## Limitations
 

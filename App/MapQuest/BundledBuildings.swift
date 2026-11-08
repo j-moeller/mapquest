@@ -5,7 +5,7 @@ import MapQuestSQLite
 /// The building databases shipped with the app, one per city.
 ///
 /// The bundle contains `<city>-buildings.sqlite.deflate` (raw DEFLATE, built by
-/// .github/workflows/berlin-buildings.yml and braunschweig-data.yml). Each is
+/// Tools/berlin/build_buildings.sh and Tools/cities/build_city.sh). Each is
 /// unpacked once into Application Support and again whenever the bundled file
 /// changes (app update).
 enum BundledBuildings {

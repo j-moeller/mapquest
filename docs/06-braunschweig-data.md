@@ -1,10 +1,19 @@
 # MapQuest – Braunschweig data
 
-Braunschweig is the second bundled city. Its data is built in GitHub Actions
-by `.github/workflows/braunschweig-data.yml` (the source hosts are not
-reachable from the development sandbox) and committed to
+Braunschweig is the second bundled city. Its data is built by
+`Tools/cities/build_city.sh` and committed to
 `App/MapQuest/Resources/Braunschweig/`. The app finds it by name
 (`App/MapQuest/Cities.swift`); every file is optional.
+
+```bash
+Tools/cities/build_city.sh --id braunschweig --name Braunschweig --admin-level 6 --bbox 10.30,52.12,10.75,52.42 --viewshed "Burgplatz (street)@52.26420,10.52360"
+```
+
+The script works for any city in Lower Saxony (outline from OSM by name and
+`admin_level`; LGLN covers the whole state). It needs Python with
+`osmium lxml pyproj shapely numpy rasterio`, `sqlite3`, a Swift toolchain,
+`osmium-tool` for the Geofabrik download (or `--osm FILE` with an existing
+extract) and network access to `download.geofabrik.de` and LGLN's buckets.
 
 | Data | Source | Licence | File |
 |---|---|---|---|
@@ -20,7 +29,7 @@ Geoinformation und Landesvermessung Niedersachsen (dl-de/by-2-0).
 ## Where the LGLN files are
 
 LGLN's OpenGeoData portal is a web application; its files lie in public object
-storage buckets, discovered with a probe workflow:
+storage buckets:
 
 * LoD2: `https://lod2.s3.eu-de.cloud-object-storage.appdomain.cloud/LoD2_32_<E km>_<N km>_1_ni.gml`
   (CityGML 2.0; an older index with download links is
@@ -42,7 +51,7 @@ storage buckets, discovered with a probe workflow:
    complete; then compressed (raw DEFLATE).
 6. `Tools/cities/lgln_terrain.py`: the DGM1 tiles around the city → MQDEM001.
 
-Steps 4 and 6 are best effort: without them the buildings keep their OSM
+Steps 4 and 6 are best effort (the script carries on without them): without them the buildings keep their OSM
 heights (tags, levels, estimates) and the city has no terrain model – fixes
 there then count as street level (docs/02-architecture.md, Cities).
 

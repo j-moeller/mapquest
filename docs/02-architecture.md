@@ -300,7 +300,7 @@ marks the 3D layer as *stale*, and the app offers a rebuild once online.
 | `App/MapQuest/Debug/*` | Debug settings (parameters, test positions, evaluation overlay) |
 | `App/MapQuest/BundledBuildings.swift` | Unpacks the bundled building databases (one per city) |
 | `App/MapQuest/Keychain.swift`, `Views/AddRemoteSourceView.swift` | Remote data sources (token in the Keychain) |
-| `App/MapQuestUITests/` | Smoke test on an iPhone 13 mini simulator (workflow *UI smoke test*) |
+| `App/MapQuestUITests/` | Smoke test on an iPhone 13 mini simulator (run from Xcode) |
 | `App/MapQuest/Views/*` | Main screen (2D/3D switch), statistics panel, settings, districts |
 
 ### 3D map (SceneKit)
