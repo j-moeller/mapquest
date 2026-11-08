@@ -102,6 +102,7 @@ cd MapQuestKit && swift test
 * [Architecture](docs/02-architecture.md)
 * [Berlin data](docs/03-berlin-data.md)
 * [Remote store (PostgreSQL)](docs/04-remote-store.md)
+* [Cache invalidation when map data improves](docs/05-cache-invalidation.md)
 
 ## Status
 
