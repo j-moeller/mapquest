@@ -10,7 +10,7 @@ struct FogMapView: UIViewRepresentable {
     var changedTiles: Set<TileKey>?
     var playArea: PlayArea
     /// Opacity of the fog over undiscovered areas (0…1).
-    var fogOpacity: Double = 0.58
+    var fogOpacity: Double = 0.9
     /// Called with the coordinate of a long press (debug: place a test position); `nil` disables it.
     var onLongPress: ((GeoCoordinate) -> Void)?
 

@@ -104,20 +104,23 @@ final class Scene3DController: ObservableObject {
             self.renderedVersion = -1
             await self.recolor(snapshot: snapshot, version: version, fogOpacity: fogOpacity)
         }
-        do {
-            let loaded = try await source.buildings(in: rect)
-            guard token == generation else { return }
-            let points = await Task.detached(priority: .userInitiated) {
-                Dictionary(uniqueKeysWithValues: loaded.map { ($0.id, LoD1MeshBuilder.interiorPoint(of: $0)) })
-            }.value
-            guard token == generation else { return }
-            buildings = loaded
-            interiorPoints = points
-            buildingCount = loaded.count
+        // Whatever data is available; tiles without data are reported, not fatal.
+        let coverage = await source.coverage(in: rect)
+        guard token == generation else { return }
+        let loaded = coverage.buildings
+        let points = await Task.detached(priority: .userInitiated) {
+            Dictionary(uniqueKeysWithValues: loaded.map { ($0.id, LoD1MeshBuilder.interiorPoint(of: $0)) })
+        }.value
+        guard token == generation else { return }
+        buildings = loaded
+        interiorPoints = points
+        buildingCount = loaded.count
+        if coverage.coveredTiles.isEmpty {
+            status = "No building data for this area yet (offline?)"
+        } else if coverage.coveredTiles.count < coverage.versions.count {
+            status = "Building data missing for part of this area"
+        } else {
             status = loaded.isEmpty ? "No buildings in this area" : nil
-        } catch {
-            guard token == generation else { return }
-            status = "Building data unavailable – \(error.localizedDescription)"
         }
         guard token == generation else { return }
         renderedVersion = -1

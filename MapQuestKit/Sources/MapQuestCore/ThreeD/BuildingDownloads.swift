@@ -81,7 +81,9 @@ public extension BuildingCache {
 /// tiles are kept in memory, so repeated viewshed computations do not hit the
 /// disk. After a failed download a tile is not retried for `retryInterval`, so
 /// that being offline does not stall the processing of every position fix.
-/// Every successful download is reported to `onDataChange` (cache invalidation).
+/// With `downloadsAutomatically` off, only explicit requests
+/// (`dataVersions(of:fetchingMissing: true)`) download. Every successful
+/// download is reported to `onDataChange` (cache invalidation).
 public actor CachingBuildingSource: BuildingSource {
     public typealias Download = @Sendable (GeoBoundingBox) async throws -> [Building]
 
@@ -96,12 +98,14 @@ public actor CachingBuildingSource: BuildingSource {
     private var inFlight: [TileKey: Task<[Building], Error>] = [:]
     private var failures: [TileKey: (date: Date, message: String)] = [:]
     private var onDataChange: (@Sendable (Set<TileKey>) -> Void)?
+    public private(set) var downloadsAutomatically: Bool
 
     /// - Parameters:
     ///   - download: Fetches buildings for a box; `nil` makes the source offline-only.
     public init(
         cache: any BuildingCache,
         download: Download?,
+        downloadsAutomatically: Bool = true,
         downloadZoom: Int = DataGrid.zoom,
         memoryLimit: Int = 24,
         retryInterval: TimeInterval = 120,
@@ -109,10 +113,15 @@ public actor CachingBuildingSource: BuildingSource {
     ) {
         self.cache = cache
         self.download = download
+        self.downloadsAutomatically = downloadsAutomatically
         self.downloadZoom = downloadZoom
         self.memoryLimit = memoryLimit
         self.retryInterval = retryInterval
         self.now = now
+    }
+
+    public func setDownloadsAutomatically(_ enabled: Bool) {
+        downloadsAutomatically = enabled
     }
 
     /// Called with the data tiles whose data changed (after downloads).
@@ -124,7 +133,7 @@ public actor CachingBuildingSource: BuildingSource {
         var seen = Set<Int64>()
         var result: [Building] = []
         for tile in TileRange(covering: rect, zoom: downloadZoom) {
-            for building in try await tileBuildings(tile)
+            for building in try await tileBuildings(tile, mayDownload: downloadsAutomatically)
             where building.bounds.intersects(rect) && seen.insert(building.id).inserted {
                 result.append(building)
             }
@@ -137,7 +146,7 @@ public actor CachingBuildingSource: BuildingSource {
         var buildings: [Building] = []
         var versions: DataVersions = [:]
         for tile in TileRange(covering: rect, zoom: downloadZoom) {
-            guard let tileBuildings = try? await tileBuildings(tile),
+            guard let tileBuildings = try? await tileBuildings(tile, mayDownload: downloadsAutomatically),
                   let version = try? await cache.version(of: tile)
             else {
                 versions[tile] = DataGrid.noData
@@ -155,7 +164,7 @@ public actor CachingBuildingSource: BuildingSource {
         var versions: DataVersions = [:]
         for tile in tiles {
             var version = (try? await cache.version(of: tile)) ?? nil
-            if version == nil, fetchingMissing, (try? await tileBuildings(tile)) != nil {
+            if version == nil, fetchingMissing, (try? await tileBuildings(tile, mayDownload: true, ignoringBackoff: true)) != nil {
                 version = (try? await cache.version(of: tile)) ?? nil
             }
             versions[tile] = version ?? DataGrid.noData
@@ -163,7 +172,10 @@ public actor CachingBuildingSource: BuildingSource {
         return versions
     }
 
-    private func tileBuildings(_ tile: TileKey) async throws -> [Building] {
+    /// - Parameters:
+    ///   - mayDownload: whether a missing tile may be downloaded.
+    ///   - ignoringBackoff: retry a failed download now (explicit requests).
+    private func tileBuildings(_ tile: TileKey, mayDownload: Bool, ignoringBackoff: Bool = false) async throws -> [Building] {
         if let cached = memory[tile] {
             touch(tile)
             return cached
@@ -171,11 +183,11 @@ public actor CachingBuildingSource: BuildingSource {
         if let running = inFlight[tile] {
             return try await running.value
         }
-        if let failure = failures[tile], now().timeIntervalSince(failure.date) < retryInterval {
+        let download = mayDownload ? self.download : nil
+        if download != nil, !ignoringBackoff, let failure = failures[tile], now().timeIntervalSince(failure.date) < retryInterval {
             throw BuildingSourceError.unavailable(failure.message)
         }
         let cache = self.cache
-        let download = self.download
         // Returns the tile's buildings and whether they were downloaded just now.
         let task = Task<([Building], Bool), Error> {
             if try await cache.isDownloaded(tile) {
@@ -198,7 +210,7 @@ public actor CachingBuildingSource: BuildingSource {
             if downloadedNow { onDataChange?([tile]) }
             return buildings
         } catch {
-            failures[tile] = (now(), String(describing: error))
+            if download != nil { failures[tile] = (now(), String(describing: error)) }
             throw error
         }
     }

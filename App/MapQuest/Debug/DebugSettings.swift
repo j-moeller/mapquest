@@ -7,8 +7,12 @@ import MapQuestCore
 /// (radius, line of sight, terrain) define the layer: changing them switches to
 /// another layer, which is rebuilt from the stored positions if it does not exist.
 struct DebugSettings: Codable, Equatable {
+    /// Bumped when defaults change in a way stored settings must follow (see `init(from:)`).
+    static let currentVersion = 2
+    var version = DebugSettings.currentVersion
+
     // Rendering
-    var fogOpacity: Double = 0.58
+    var fogOpacity: Double = 0.9
 
     // 2D discovery
     var radius: Double = 50
@@ -21,6 +25,11 @@ struct DebugSettings: Codable, Equatable {
     var elevatedThreshold: Double = 8
     var usesTerrain: Bool = true
 
+    // Building data
+    /// Download building data from OpenStreetMap where it is missing. Off: the
+    /// line-of-sight layer uses the radius circle there until data is downloaded.
+    var downloadsBuildings: Bool = true
+
     // Recording
     var minimumNewAreaPercent: Double = 10
     var minimumMovement: Double = 5
@@ -32,6 +41,40 @@ struct DebugSettings: Codable, Equatable {
 
     static let defaults = DebugSettings()
     private static let key = "DebugSettings"
+
+    enum CodingKeys: String, CodingKey {
+        case version, fogOpacity, radius, rayCount, baseDistance, distancePerMeterOfHeight, maximumDistance
+        case elevatedThreshold, usesTerrain, downloadsBuildings, minimumNewAreaPercent, minimumMovement
+        case placesPositionsOnLongPress, testEyeHeight, showsEvaluation
+    }
+
+    init() {}
+
+    /// Missing keys (settings stored by older versions) keep their defaults.
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        func value<T: Decodable>(_ key: CodingKeys, _ fallback: T) -> T {
+            ((try? c.decodeIfPresent(T.self, forKey: key)) ?? nil) ?? fallback
+        }
+        let d = DebugSettings()
+        fogOpacity = value(.fogOpacity, d.fogOpacity)
+        radius = value(.radius, d.radius)
+        rayCount = value(.rayCount, d.rayCount)
+        baseDistance = value(.baseDistance, d.baseDistance)
+        distancePerMeterOfHeight = value(.distancePerMeterOfHeight, d.distancePerMeterOfHeight)
+        maximumDistance = value(.maximumDistance, d.maximumDistance)
+        elevatedThreshold = value(.elevatedThreshold, d.elevatedThreshold)
+        usesTerrain = value(.usesTerrain, d.usesTerrain)
+        downloadsBuildings = value(.downloadsBuildings, d.downloadsBuildings)
+        minimumNewAreaPercent = value(.minimumNewAreaPercent, d.minimumNewAreaPercent)
+        minimumMovement = value(.minimumMovement, d.minimumMovement)
+        placesPositionsOnLongPress = value(.placesPositionsOnLongPress, d.placesPositionsOnLongPress)
+        testEyeHeight = value(.testEyeHeight, d.testEyeHeight)
+        showsEvaluation = value(.showsEvaluation, d.showsEvaluation)
+        // Version 2: the fog became 90 % opaque (was 58 %).
+        if value(.version, 1) < 2 { fogOpacity = d.fogOpacity }
+        version = Self.currentVersion
+    }
 
     static func load(from defaults: UserDefaults = .standard) -> DebugSettings {
         guard let data = defaults.data(forKey: key),
@@ -53,6 +96,8 @@ struct DebugSettings: Codable, Equatable {
         configuration.distancePerMeterOfHeight = distancePerMeterOfHeight
         configuration.maximumDistance = max(maximumDistance, baseDistance)
         configuration.elevatedThreshold = elevatedThreshold
+        // Where no building data is available, the line of sight uses the 2D circle.
+        configuration.fallbackRadius = radius
         return configuration
     }
 

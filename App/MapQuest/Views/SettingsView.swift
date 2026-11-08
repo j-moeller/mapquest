@@ -67,8 +67,51 @@ struct SettingsView: View {
                 } header: {
                     Text("Discovery")
                 } footer: {
-                    Text("The discovered area is a cache computed from the stored positions. Rebuilding recomputes both layers from scratch; the line-of-sight layer downloads building data from OpenStreetMap where needed.")
+                    Text("The discovered area is a cache computed from the stored positions. Rebuilding recomputes both layers from scratch; usually this is not needed – areas are recomputed automatically when building data changes.")
                 }
+
+                Section {
+                    Toggle("Download automatically", isOn: Binding(
+                        get: { model.debug.downloadsBuildings },
+                        set: { enabled in
+                            var settings = model.debug
+                            settings.downloadsBuildings = enabled
+                            Task { await model.applyDebugSettings(settings) }
+                        }
+                    ))
+                    let data = model.buildingData
+                    LabeledContent("Explored areas", value: "\(data.bundled + data.downloaded + data.missing) × 1.5 km tiles")
+                    LabeledContent("With building data", value: "\(data.bundled) bundled, \(data.downloaded) downloaded")
+                    LabeledContent("Default map (no data)", value: "\(data.missing)")
+                    if let refresh = model.dataRefresh {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Updating \(refresh.layer.title.lowercased()) for new building data…")
+                                .font(.subheadline)
+                            if let fraction = refresh.fraction {
+                                ProgressView(value: fraction)
+                            } else {
+                                ProgressView()
+                            }
+                        }
+                    }
+                    Button {
+                        Task { await model.downloadMissingBuildingData() }
+                    } label: {
+                        HStack {
+                            Text("Download missing building data")
+                            if model.isDownloadingBuildings {
+                                Spacer()
+                                ProgressView()
+                            }
+                        }
+                    }
+                    .disabled(model.isDownloadingBuildings || data.missing == 0)
+                } header: {
+                    Text("Building data")
+                } footer: {
+                    Text("Where no building data is available (a new city, offline), the line-of-sight layer uses the radius circle – the default map. When building data arrives, by download or with a newer bundled dataset, exactly the areas whose view it can change are recomputed from the stored positions.")
+                }
+                .task { await model.checkBuildingData(fetchingMissing: false) }
 
                 Section {
                     Toggle("Record positions", isOn: Binding(

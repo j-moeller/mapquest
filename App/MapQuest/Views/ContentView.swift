@@ -132,12 +132,21 @@ struct StatusPanel: View {
                 Statistic(value: "\(model.sampleCount)", label: "positions")
             }
             if model.staleLayers.contains(shown) && !collapsed {
-                Label("Some positions are missing in this layer (no building data). Rebuild it in Settings when online.", systemImage: "exclamationmark.triangle")
+                Label("Some positions are missing in this layer. Rebuild it in Settings.", systemImage: "exclamationmark.triangle")
                     .font(.caption)
                     .foregroundStyle(.orange)
             }
             if let progress = model.progress {
                 ProgressView(value: progress)
+            } else if let refresh = model.dataRefresh, !collapsed {
+                VStack(alignment: .leading, spacing: 4) {
+                    Label("Updating \(refresh.layer.title.lowercased()) for new building data", systemImage: "building.2")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    if let fraction = refresh.fraction {
+                        ProgressView(value: fraction)
+                    }
+                }
             }
             if let summary = model.evaluationSummary, model.debug.showsEvaluation, !collapsed {
                 Text(summary)

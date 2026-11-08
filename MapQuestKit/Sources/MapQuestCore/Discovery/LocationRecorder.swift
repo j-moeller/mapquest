@@ -135,12 +135,16 @@ public actor LocationRecorder {
         return .recorded(sample, updates)
     }
 
-    /// Rebuilds every layer from the stored samples.
-    public func rebuildAllLayers(progress: (@Sendable (Int, Int) -> Void)? = nil) async throws {
+    /// Rebuilds every layer from the stored samples. Returns the data tiles whose
+    /// data changed while rebuilding (to be refreshed).
+    @discardableResult
+    public func rebuildAllLayers(progress: (@Sendable (Int, Int) -> Void)? = nil) async throws -> Set<TileKey> {
         let samples = try await store.samples(matching: .all)
+        var stale = Set<TileKey>()
         for engine in engines {
-            try await engine.rebuild(from: samples, progress: progress)
+            stale.formUnion(try await engine.rebuild(from: samples, progress: progress))
             staleLayers.remove(engine.layer)
         }
+        return stale
     }
 }

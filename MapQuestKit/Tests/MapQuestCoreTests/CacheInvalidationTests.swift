@@ -439,6 +439,28 @@ final class CacheInvalidationTests: XCTestCase {
         XCTAssertEqual(changes.all.count, 1, "cached data is not a change")
     }
 
+    func testAutomaticDownloadsCanBeTurnedOff() async throws {
+        let counter = DownloadCounter()
+        let source = CachingBuildingSource(
+            cache: InMemoryBuildingCache(),
+            download: { _ in
+                await counter.increment()
+                return []
+            },
+            downloadsAutomatically: false
+        )
+        let tile = TileKey(containing: Walk.origin, zoom: DataGrid.zoom)
+        let rect = WebMercator.worldRect(for: GeoBoundingBox(center: Walk.origin, radius: 10))
+        let coverage = await source.coverage(in: rect)
+        XCTAssertEqual(coverage.versions, [tile: DataGrid.noData], "the default map, no download")
+        var downloads = await counter.value
+        XCTAssertEqual(downloads, 0)
+        let versions = await source.dataVersions(of: [tile], fetchingMissing: true)
+        XCTAssertEqual(versions, [tile: "memory:1"], "explicit requests download")
+        downloads = await counter.value
+        XCTAssertEqual(downloads, 1)
+    }
+
     func testLayeredCachePrefersTheBundledVersion() async throws {
         let tile = TileKey(containing: Walk.origin, zoom: DataGrid.zoom)
         let other = TileKey(zoom: tile.zoom, x: tile.x + 1, y: tile.y)

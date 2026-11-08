@@ -32,6 +32,26 @@ struct LayerState {
     var regionCount = 0
 }
 
+/// Progress of recomputing areas after building data changed.
+struct DataRefreshProgress: Equatable {
+    var layer: MapLayer
+    var dataTiles: Int
+    var done: Int
+    var total: Int
+
+    var fraction: Double? { total > 0 ? Double(done) / Double(total) : nil }
+}
+
+/// Explored data tiles (≈ 1.5 km squares) of the line-of-sight layer by data source.
+struct BuildingDataSummary: Equatable {
+    var bundled = 0
+    var downloaded = 0
+    /// Computed with the default map (radius circle): no building data yet.
+    var missing = 0
+    /// Waiting to be recomputed.
+    var pending = 0
+}
+
 /// Wires the three components together: location tracking → recorder →
 /// discovered area (2D and 3D layers) → maps. Owns the selected data source.
 @MainActor
@@ -58,6 +78,11 @@ final class AppModel: ObservableObject {
     @Published private(set) var progress: Double?
     /// What the last evaluated position revealed, shown when `debug.showsEvaluation` is on.
     @Published private(set) var evaluationSummary: String?
+    /// A running refresh of areas whose building data changed.
+    @Published private(set) var dataRefresh: DataRefreshProgress?
+    /// Building data behind the line-of-sight layer (from its data watermarks).
+    @Published private(set) var buildingData = BuildingDataSummary()
+    @Published private(set) var isDownloadingBuildings = false
 
     let tracker: LocationTracker
     let catalog: DataSourceCatalog
@@ -75,6 +100,9 @@ final class AppModel: ObservableObject {
     private nonisolated let sampleSink: AsyncStream<LocationSample>.Continuation
     private var processingTask: Task<Void, Never>?
     private var isRebuilding = false
+    /// Data tiles whose building data changed and whose areas must be recomputed.
+    private var pendingDataTiles: Set<TileKey> = []
+    private var dataRefreshTask: Task<Void, Never>?
     /// Layers that could not be built during the last reload.
     private var failedLayers: Set<MapLayer> = []
     private static let selectedLayerKey = "AppModel.selectedLayer"
@@ -98,7 +126,7 @@ final class AppModel: ObservableObject {
             store = InMemoryDataStore()
         }
         let debug = DebugSettings.load()
-        let buildings = Self.makeBuildingSource()
+        let buildings = Self.makeBuildingSource(downloadsAutomatically: debug.downloadsBuildings)
         let berlinTerrain = BerlinData.terrain()
         let (circleModel, viewshedModel) = Self.makeModels(debug, buildings: buildings, terrain: berlinTerrain)
         let engines = Self.makeEngines(store: store, circle: circleModel, viewshed: viewshedModel)
@@ -132,7 +160,13 @@ final class AppModel: ObservableObject {
                 await self.process(sample)
             }
         }
-        Task { await reload() }
+        // Downloaded buildings make the areas around them stale (docs/05-cache-invalidation.md).
+        Task { [weak self] in
+            await buildings.setOnDataChange { [weak self] tiles in
+                Task { @MainActor [weak self] in self?.scheduleDataRefresh(tiles) }
+            }
+            await self?.reload()
+        }
     }
 
     deinit {
@@ -168,7 +202,7 @@ final class AppModel: ObservableObject {
     /// Buildings for the line-of-sight layer and the 3D map: the bundled Berlin
     /// database (unpacked once into Application Support) layered under a cache of
     /// buildings downloaded on demand from OpenStreetMap.
-    private static func makeBuildingSource() -> CachingBuildingSource {
+    private static func makeBuildingSource(downloadsAutomatically: Bool) -> CachingBuildingSource {
         let fileManager = FileManager.default
         let directory = (try? fileManager.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true))?
             .appendingPathComponent("MapQuest/Buildings", isDirectory: true)
@@ -181,7 +215,9 @@ final class AppModel: ObservableObject {
             return BundledBuildings.prepare(in: directory)
         }
         let client = OverpassClient()
-        return CachingBuildingSource(cache: cache, download: { box in try await client.buildings(in: box) })
+        return CachingBuildingSource(
+            cache: cache, download: { box in try await client.buildings(in: box) }, downloadsAutomatically: downloadsAutomatically
+        )
     }
 
     // MARK: Convenience for views
@@ -219,8 +255,10 @@ final class AppModel: ObservableObject {
                 lastOutcome = "New area discovered"
                 for update in updates {
                     if let layer = layer(for: update.layer) {
-                        await refresh(layer, changedTiles: update.changedTiles)
+                        await publish(layer, changedTiles: update.changedTiles)
                     }
+                    // The position saw newer building data than the stored area around it.
+                    scheduleDataRefresh(update.staleDataTiles)
                 }
             case .alreadyDiscovered:
                 lastOutcome = "Known territory"
@@ -247,7 +285,7 @@ final class AppModel: ObservableObject {
         staleLayers = Set(stale.compactMap(layer(for:))).union(failedLayers)
     }
 
-    private func refresh(_ layer: MapLayer, changedTiles: Set<TileKey>?) async {
+    private func publish(_ layer: MapLayer, changedTiles: Set<TileKey>?) async {
         guard let engine = engines[layer] else { return }
         let snapshot = await engine.snapshot()
         guard engines[layer] === engine else { return }
@@ -262,7 +300,7 @@ final class AppModel: ObservableObject {
 
     private func refreshAll() async {
         for layer in MapLayer.allCases {
-            await refresh(layer, changedTiles: nil)
+            await publish(layer, changedTiles: nil)
         }
     }
 
@@ -296,6 +334,9 @@ final class AppModel: ObservableObject {
             }
             await refreshAll()
             await updateStaleLayers()
+            // Building data may have changed since the layers were computed (downloads,
+            // a newer bundled dataset after an app update): refresh those areas.
+            Task { [weak self] in await self?.checkBuildingData(fetchingMissing: self?.debug.downloadsBuildings ?? false) }
         } catch {
             errorMessage = "Could not load data: \(error.localizedDescription)"
         }
@@ -311,9 +352,10 @@ final class AppModel: ObservableObject {
         lastOutcome = "Building the \(label.lowercased()) layer…"
         progress = 0
         let samples = try await store.samples(matching: .all)
-        try await engine.rebuild(from: samples) { done, total in
+        let stale = try await engine.rebuild(from: samples) { done, total in
             Task { @MainActor [weak self] in self?.progress = Double(done) / Double(max(total, 1)) }
         }
+        scheduleDataRefresh(stale)
         lastOutcome = ""
     }
 
@@ -389,6 +431,10 @@ final class AppModel: ObservableObject {
         settings.save()
         await recorder.setPolicy(settings.recordingPolicy)
         if !settings.showsEvaluation { evaluationSummary = nil }
+        if settings.downloadsBuildings != previous.downloadsBuildings {
+            await buildings.setDownloadsAutomatically(settings.downloadsBuildings)
+            if settings.downloadsBuildings { Task { await checkBuildingData(fetchingMissing: true) } }
+        }
         guard settings.changesLayers(comparedTo: previous) else { return }
         let (circle, viewshed) = Self.makeModels(settings, buildings: buildings, terrain: berlinTerrain)
         circleModel = circle
@@ -451,6 +497,111 @@ final class AppModel: ObservableObject {
         evaluationSummary = lines.joined(separator: "\n")
     }
 
+    // MARK: Building data and cache invalidation
+
+    /// Queues data tiles whose building data changed; their areas are recomputed
+    /// in the background (DRed over the influence zone, docs/05-cache-invalidation.md).
+    func scheduleDataRefresh(_ tiles: Set<TileKey>) {
+        guard !tiles.isEmpty else { return }
+        pendingDataTiles.formUnion(tiles)
+        startDataRefresh()
+    }
+
+    private func startDataRefresh() {
+        guard dataRefreshTask == nil, !pendingDataTiles.isEmpty else { return }
+        dataRefreshTask = Task { [weak self] in
+            // Downloads of neighbouring tiles usually arrive together: collect them first.
+            try? await Task.sleep(nanoseconds: 1_500_000_000)
+            await self?.runDataRefresh()
+        }
+    }
+
+    private func runDataRefresh() async {
+        while !pendingDataTiles.isEmpty {
+            while isRebuilding {
+                try? await Task.sleep(nanoseconds: 200_000_000)
+            }
+            let tiles = pendingDataTiles
+            pendingDataTiles = []
+            let store = self.store
+            for (layer, engine) in engines.sorted(by: { $0.key.rawValue < $1.key.rawValue }) where engine.model.usesMapData {
+                dataRefresh = DataRefreshProgress(layer: layer, dataTiles: tiles.count, done: 0, total: 0)
+                do {
+                    let result = try await engine.refresh(dataTiles: tiles, locations: store) { done, total in
+                        Task { @MainActor [weak self] in
+                            guard self?.dataRefresh?.layer == layer else { return }
+                            self?.dataRefresh?.done = done
+                            self?.dataRefresh?.total = total
+                        }
+                    }
+                    pendingDataTiles.formUnion(result.staleDataTiles)
+                    if engines[layer] === engine {
+                        await publish(layer, changedTiles: result.changedTiles)
+                    }
+                    if result.affectedSamples > 0 {
+                        lastOutcome = "\(layer.title) updated for new building data (\(result.recomputedSamples) positions)"
+                    }
+                } catch {
+                    lastOutcome = "Could not update \(layer.title.lowercased()): \(error.localizedDescription)"
+                }
+            }
+        }
+        await updateBuildingDataSummary()
+        // No suspension from here on: tiles queued meanwhile start the next run.
+        dataRefresh = nil
+        dataRefreshTask = nil
+        startDataRefresh()
+    }
+
+    /// Compares the data the layers were computed from with the current building
+    /// data and refreshes what changed. With `fetchingMissing`, first tries to
+    /// download data for explored areas that have none.
+    func checkBuildingData(fetchingMissing: Bool) async {
+        for engine in engines.values where engine.model.usesMapData {
+            if let stale = try? await engine.staleDataTiles(fetchingMissing: fetchingMissing) {
+                scheduleDataRefresh(stale)
+            }
+        }
+        await updateBuildingDataSummary()
+    }
+
+    /// Downloads building data for explored areas that were computed with the
+    /// default map (radius circle); those areas are then recomputed.
+    func downloadMissingBuildingData() async {
+        guard let engine = engines[.lineOfSight] else { return }
+        isDownloadingBuildings = true
+        defer { isDownloadingBuildings = false }
+        let missing = Set(((try? await engine.dataWatermarks()) ?? [:]).filter { $0.value == DataGrid.noData }.keys)
+        guard !missing.isEmpty else {
+            lastOutcome = "Building data is available for all explored areas"
+            return
+        }
+        lastOutcome = "Downloading building data for \(missing.count) \(missing.count == 1 ? "tile" : "tiles")…"
+        let stale = (try? await engine.staleDataTiles(fetchingMissing: true)) ?? []
+        scheduleDataRefresh(stale)
+        let downloaded = stale.intersection(missing).count
+        lastOutcome = downloaded == missing.count
+            ? "Building data downloaded – updating the line of sight…"
+            : "Downloaded \(downloaded) of \(missing.count) tiles (offline or server busy? Try again later)"
+        await updateBuildingDataSummary()
+    }
+
+    private func updateBuildingDataSummary() async {
+        guard let engine = engines[.lineOfSight], let marks = try? await engine.dataWatermarks() else { return }
+        var summary = BuildingDataSummary()
+        for version in marks.values {
+            if version == DataGrid.noData {
+                summary.missing += 1
+            } else if version.hasPrefix("bundle:") {
+                summary.bundled += 1
+            } else {
+                summary.downloaded += 1
+            }
+        }
+        summary.pending = pendingDataTiles.count
+        buildingData = summary
+    }
+
     // MARK: Maintenance
 
     /// Recomputes all discovered-area layers from the stored location samples.
@@ -463,7 +614,7 @@ final class AppModel: ObservableObject {
         }
         do {
             lastOutcome = "Rebuilding discovered area…"
-            try await recorder.rebuildAllLayers()
+            scheduleDataRefresh(try await recorder.rebuildAllLayers())
             failedLayers = []
             lastOutcome = "Discovered area rebuilt"
         } catch {

@@ -48,7 +48,7 @@ final class SnapshotBox: @unchecked Sendable {
 /// discovered pieces out of it, so discovered places show the plain map.
 final class FogOverlayRenderer: MKOverlayRenderer {
     let box: SnapshotBox
-    var fogColor = UIColor(red: 0.04, green: 0.06, blue: 0.12, alpha: 0.58)
+    var fogColor = UIColor(red: 0.04, green: 0.06, blue: 0.12, alpha: 0.9)
 
     init(overlay: FogOverlay, snapshot: DiscoveredAreaSnapshot) {
         box = SnapshotBox(snapshot)
