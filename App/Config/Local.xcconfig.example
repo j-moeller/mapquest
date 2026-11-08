@@ -1,0 +1,9 @@
+// Copy to App/Config/Local.xcconfig (git-ignored) and fill in.
+// `xcodegen generate` leaves these settings alone.
+
+// A reverse domain you own, e.g. de.yourname (bundle ID: de.yourname.MapQuest).
+MQ_BUNDLE_ID_PREFIX = com.example
+
+// Your team ID: Xcode › Settings › Accounts › your team, or
+// developer.apple.com › Account › Membership details.
+DEVELOPMENT_TEAM = ABCDE12345

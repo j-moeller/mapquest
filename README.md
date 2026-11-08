@@ -80,6 +80,13 @@ Requirements: Xcode 15 or newer (iOS 17 SDK) and [XcodeGen](https://github.com/y
 brew install xcodegen
 ```
 
+Once, put your signing settings in a local file that `xcodegen generate` never
+touches (git-ignored), then fill in your team ID and bundle ID prefix:
+
+```bash
+cp App/Config/Local.xcconfig.example App/Config/Local.xcconfig
+```
+
 ```bash
 xcodegen generate
 ```
@@ -88,8 +95,10 @@ xcodegen generate
 open MapQuest.xcodeproj
 ```
 
-Select your development team for the `MapQuest` target (and change the bundle
-identifier `com.example.MapQuest` if needed), then run on an iPhone or in the
+The project is generated from `project.yml` and is not committed: run
+`xcodegen generate` again after pulling changes that add or remove files, and
+keep settings in `project.yml` or `Local.xcconfig` rather than in Xcode, where
+they would be lost. Then run on an iPhone or in the
 Simulator. In the Simulator the scheme replays a walk from the Brandenburger
 Tor to Alexanderplatz (`App/Simulation/BerlinWalk.gpx`).
 

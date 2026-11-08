@@ -1,5 +1,8 @@
 # Xcode project specification for XcodeGen (https://github.com/yonaskolb/XcodeGen).
 # Generate the project with:  xcodegen generate
+# The generated project is not committed: changes made in Xcode are lost when it is
+# generated again. Bundle ID prefix and development team belong in
+# App/Config/Local.xcconfig (git-ignored; see Local.xcconfig.example).
 name: MapQuest
 options:
   bundleIdPrefix: com.example
@@ -17,6 +20,9 @@ targets:
   MapQuest:
     type: application
     platform: iOS
+    configFiles:
+      Debug: App/Config/MapQuest.xcconfig
+      Release: App/Config/MapQuest.xcconfig
     sources:
       - path: App/MapQuest
     # Location simulation for the iOS Simulator (Product › Scheme › Edit Scheme › Run › Options).
@@ -30,7 +36,7 @@ targets:
           - MapQuestRemote
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.example.MapQuest
+        PRODUCT_BUNDLE_IDENTIFIER: $(MQ_BUNDLE_ID_PREFIX).MapQuest
         PRODUCT_NAME: MapQuest
         INFOPLIST_FILE: App/MapQuest/Resources/Info.plist
         GENERATE_INFOPLIST_FILE: NO
@@ -44,13 +50,16 @@ targets:
   MapQuestUITests:
     type: bundle.ui-testing
     platform: iOS
+    configFiles:
+      Debug: App/Config/MapQuest.xcconfig
+      Release: App/Config/MapQuest.xcconfig
     sources:
       - path: App/MapQuestUITests
     dependencies:
       - target: MapQuest
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.example.MapQuestUITests
+        PRODUCT_BUNDLE_IDENTIFIER: $(MQ_BUNDLE_ID_PREFIX).MapQuestUITests
         GENERATE_INFOPLIST_FILE: YES
         TEST_TARGET_NAME: MapQuest
         TARGETED_DEVICE_FAMILY: "1"

@@ -1,0 +1,12 @@
+// Signing settings of the MapQuest targets (used by project.yml).
+//
+// Your own values go into App/Config/Local.xcconfig (git-ignored), so
+// `xcodegen generate` keeps them. Copy Local.xcconfig.example to start.
+
+// Bundle identifiers: <prefix>.MapQuest and <prefix>.MapQuestUITests.
+MQ_BUNDLE_ID_PREFIX = com.example
+
+// Apple developer team ID (10 characters); empty: choose in Xcode each time.
+DEVELOPMENT_TEAM =
+
+#include? "Local.xcconfig"
