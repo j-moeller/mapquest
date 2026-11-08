@@ -380,14 +380,18 @@ Two optional effects (Settings › Debug, `FogStyle`):
   animator is stopped when the view leaves the window and restarted when it
   comes back or the app returns to the foreground. It shows through the fog
   only below 100 % opacity.
-* **Soft edges** – the fog fades out inside discovered areas over the chosen
-  width: for an area three screens wide, the discovered mask M is rasterized
-  at one pixel per point and blurred (three box blurs, σ = width / 2, vImage)
-  to B; inside M the fog colour gets the alpha 1 − clamp(2B − 1), so it starts
-  at the fog's own opacity at the edge and vanishes at the chosen depth. The
-  band is computed off the main thread and placed like the heatmap; the
-  vector fog stays underneath, so while the band is rebuilt (zoom by 1.5×,
-  leaving the area, new data) the edges are briefly sharp – never unfogged.
+* **Soft edges** – the fog fades out inside discovered areas over a chosen
+  width *on the ground* (metres, so the fringe scales with the map and
+  vanishes when zoomed out instead of swallowing narrow discovered strips):
+  for an area three screens wide, the discovered mask M is rasterized at one
+  pixel per point and blurred (three box blurs, σ = width / 2, vImage) to B;
+  the band has the fog colour with alpha 1 − clamp(2B − 1) – full outside M,
+  fading to nothing at the chosen depth inside. It is clipped to the
+  discovered areas by the same vector path as the fog, so both antialiased
+  edges complement each other without seams. The band is computed off the
+  main thread and placed like the heatmap; the vector fog stays underneath,
+  so while the band is rebuilt (zoom by 1.5×, leaving the area, new data) the
+  edges are briefly sharp – never unfogged.
 
 The 3D ground texture applies the same style with Core Image: the map is
 blurred where the fog lies and the fog mask is softened with a Gaussian blur.

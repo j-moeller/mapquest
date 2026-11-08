@@ -45,7 +45,10 @@ enum GroundTexture {
         format.scale = 2
         let size = pointSize
         let pixels = (width: Int(size.width * format.scale), height: Int(size.height * format.scale))
-        let mask = fogMask(rect: rect, snapshot: snapshot, pixels: pixels, softness: style.softness * Double(format.scale))
+        // Softness is a ground width: metres → texture pixels.
+        let metersPerUnit = WebMercator.metersPerUnit(atWorldY: Double(rect.center.y))
+        let pixelsPerMeter = Double(pixels.width) / (Double(rect.width) * metersPerUnit)
+        let mask = fogMask(rect: rect, snapshot: snapshot, pixels: pixels, softness: style.softness * pixelsPerMeter)
         let blurred = style.blur > 0 ? map.flatMap { blur($0, radius: style.blur * 20 * Double(format.scale)) } : nil
         return UIGraphicsImageRenderer(size: size, format: format).image { context in
             let cg = context.cgContext
@@ -98,7 +101,7 @@ enum GroundTexture {
             gray.fillPath(using: .evenOdd)
         }
         guard let sharp = gray.makeImage() else { return nil }
-        guard softness > 0 else { return sharp }
+        guard softness >= 1 else { return sharp }
         let input = CIImage(cgImage: sharp)
         let output = input.clampedToExtent().applyingGaussianBlur(sigma: softness / 2).cropped(to: input.extent)
         return CIContext().createCGImage(output, from: input.extent, format: .L8, colorSpace: CGColorSpaceCreateDeviceGray())

@@ -16,8 +16,8 @@ struct DebugSettings: Codable, Equatable {
     var fogOpacity: Double = 0.9
     /// Blur of the map under the fog (0 = none, 1 = the system's strongest blur).
     var fogBlur: Double = 0.6
-    /// Width over which the fog fades in at the edges of discovered areas (points; 0 = sharp).
-    var fogSoftness: Double = 8
+    /// Width on the ground over which the fog fades out inside discovered areas (metres; 0 = sharp).
+    var fogSoftness: Double = 10
 
     // 2D discovery
     var radius: Double = 50
@@ -132,7 +132,7 @@ struct FogStyle: Equatable {
     var opacity: Double
     /// Blur of the map under the fog, 0…1.
     var blur: Double
-    /// Fade-in width at the edges of discovered areas, in points.
+    /// Fade width at the edges of discovered areas, in metres on the ground.
     var softness: Double
 
     static let `default` = DebugSettings.defaults.fogStyle

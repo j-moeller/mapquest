@@ -15,11 +15,11 @@ struct DebugSettingsView: View {
             Section {
                 ValueSlider(title: "Fog opacity", value: $draft.fogOpacity, range: 0.1...1, step: 0.01, format: "%.0f %%", scale: 100)
                 ValueSlider(title: "Blur under the fog", value: $draft.fogBlur, range: 0...1, step: 0.05, format: "%.0f %%", scale: 100)
-                ValueSlider(title: "Soft fog edges", value: $draft.fogSoftness, range: 0...40, step: 1, format: "%.0f pt")
+                ValueSlider(title: "Soft fog edges", value: $draft.fogSoftness, range: 0...40, step: 1, format: "%.0f m")
             } header: {
                 Text("Map")
             } footer: {
-                Text("Applies immediately. The blur shows through the fog only below 100 % opacity; soft edges fade the fog in over the given width inside discovered areas.")
+                Text("Applies immediately. The blur shows through the fog only below 100 % opacity; soft edges fade the fog out over the given width on the ground inside discovered areas.")
             }
 
             Section {

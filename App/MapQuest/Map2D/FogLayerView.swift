@@ -19,9 +19,11 @@ import UIKit
 ///
 /// Optional effects (`FogStyle`): a system blur under the fog, masked by the same
 /// path, so undiscovered map is frosted as well as darkened; and soft edges – a
-/// raster band inside the discovered areas, three screens wide, in which the fog
-/// fades out over the chosen width (computed in the background, placed like the
-/// heatmap; while it is rebuilt the edges are briefly sharp, never unfogged).
+/// raster band, three screens wide, in which the fog fades out over the chosen
+/// ground width inside discovered areas (computed in the background, placed like
+/// the heatmap). The band is clipped to the discovered areas by the same vector
+/// path as the fog, so the two edges meet without seams; while it is rebuilt the
+/// edges are briefly sharp, never unfogged.
 final class FogLayerView: UIView {
     enum Mode { case fog, heatmap }
 
@@ -30,8 +32,11 @@ final class FogLayerView: UIView {
     private let fogLayer = CAShapeLayer()
     private let boundaryLayer = CAShapeLayer()
     private let positionLayer = CAShapeLayer()
-    /// Soft edges: the fog fading out inside discovered areas.
+    /// Soft edges: the fog fading out inside discovered areas (a raster, clipped
+    /// by `bandClip` – the discovered areas as a vector path – in `bandContainer`).
     private let bandLayer = CALayer()
+    private let bandContainer = CALayer()
+    private let bandClip = CAShapeLayer()
     /// Blur under the fog, masked by the fog's shape and soft band.
     private let blurView = UIVisualEffectView(effect: nil)
     private let blurMask = UIView()
@@ -100,7 +105,14 @@ final class FogLayerView: UIView {
             raster.magnificationFilter = .linear
             raster.minificationFilter = .linear
         }
-        layer.insertSublayer(bandLayer, above: fogLayer)
+        bandClip.anchorPoint = .zero
+        bandClip.position = .zero
+        bandClip.bounds = CGRect(x: 0, y: 0, width: 1, height: 1)
+        bandClip.fillRule = .evenOdd
+        bandClip.fillColor = UIColor.black.cgColor
+        bandContainer.mask = bandClip
+        bandContainer.addSublayer(bandLayer)
+        layer.insertSublayer(bandContainer, above: fogLayer)
 
         // The blur lies under everything else, masked like the fog.
         blurView.isUserInteractionEnabled = false
@@ -142,6 +154,7 @@ final class FogLayerView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         dimLayer.frame = bounds.insetBy(dx: -bounds.width, dy: -bounds.height)
+        bandContainer.frame = bounds
         blurView.frame = bounds
         blurMask.frame = blurView.bounds
         sync()
@@ -176,7 +189,7 @@ final class FogLayerView: UIView {
         fogLayer.fillColor = color
         bandLayer.opacity = Float(newStyle.opacity)
         let soft = newStyle.softness > 0
-        bandLayer.isHidden = !soft || mode != .fog
+        bandContainer.isHidden = !soft || mode != .fog
         maskBand.isHidden = !soft
         CATransaction.commit()
         if newStyle.blur != old.blur { applyBlur() }
@@ -223,7 +236,7 @@ final class FogLayerView: UIView {
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         fogLayer.isHidden = mode != .fog
-        bandLayer.isHidden = mode != .fog || style.softness <= 0
+        bandContainer.isHidden = mode != .fog || style.softness <= 0
         dimLayer.isHidden = mode != .heatmap
         heatLayer.isHidden = mode != .heatmap
         CATransaction.commit()
@@ -316,7 +329,9 @@ final class FogLayerView: UIView {
         let rect = visible.insetBy(dx: -visible.size.width, dy: -visible.size.height)
         let area = MapPointConversion.worldRect(for: rect)
         let polygons = clipped.filter { $0.key.worldRect.intersects(area) }.values.flatMap { $0 }.filter { $0.bounds.intersects(area) }
-        let softness = style.softness
+        // The fade has a fixed width on the ground: in points it shrinks when zooming out.
+        let latitude = MKMapPoint(x: rect.midX, y: rect.midY).coordinate.latitude
+        let softness = style.softness * scale * MKMapPointsPerMeterAtLatitude(latitude)
         Task { [weak self] in
             let image = await Task.detached(priority: .userInitiated) {
                 FogLayerView.band(polygons: polygons, rect: rect, scale: scale, softness: softness)
@@ -336,13 +351,14 @@ final class FogLayerView: UIView {
         }
     }
 
-    /// The fog colour inside discovered areas, fading from full at their edges to
-    /// nothing at `softness` points inside: with M the discovered mask and B its
-    /// Gaussian blur (σ = softness / 2, three box blurs), the alpha is
-    /// 1 − clamp(2 B − 1) inside, so it starts at the fog's own opacity at the edge.
+    /// The fog colour fading from full at the edges of discovered areas to nothing
+    /// at `softness` points inside: with M the discovered mask and B its Gaussian
+    /// blur (σ = softness / 2, three box blurs), the alpha is 1 − clamp(2 B − 1) –
+    /// 1 outside M, so the band can be clipped to M by a vector path without seams.
     private nonisolated static func band(polygons: [WorldPolygon], rect: MKMapRect, scale: Double, softness: Double) -> CGImage? {
         let width = Int((rect.size.width * scale).rounded(.up)), height = Int((rect.size.height * scale).rounded(.up))
-        guard width > 0, height > 0, width * height < 12_000_000, !polygons.isEmpty else { return nil }
+        // Below about a point the fade is invisible: sharp edges (zoomed out).
+        guard softness >= 1, width > 0, height > 0, width * height < 12_000_000, !polygons.isEmpty else { return nil }
         guard let gray = CGContext(
             data: nil, width: width, height: height, bitsPerComponent: 8, bytesPerRow: width,
             space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGImageAlphaInfo.none.rawValue
@@ -368,7 +384,7 @@ final class FogLayerView: UIView {
         let mask = maskData.bindMemory(to: UInt8.self, capacity: width * height)
 
         // Three box blurs ≈ Gaussian with σ ≈ radius.
-        let radius = max(1, Int((softness / 2).rounded()))
+        let radius = min(60, max(1, Int((softness / 2).rounded())))
         var blurred = [UInt8](repeating: 0, count: width * height)
         var scratch = [UInt8](repeating: 0, count: width * height)
         blurred.withUnsafeMutableBytes { blurredBytes in
@@ -386,7 +402,7 @@ final class FogLayerView: UIView {
 
         let red = UInt8(FogStyle.red * 255), green = UInt8(FogStyle.green * 255), blue = UInt8(FogStyle.blue * 255)
         var pixels = [UInt8](repeating: 0, count: width * height * 4)
-        for i in 0..<(width * height) where mask[i] > 127 {
+        for i in 0..<(width * height) {
             let b = Double(blurred[i]) / 255
             let alpha = 1 - min(max(2 * b - 1, 0), 1)
             guard alpha > 0.01 else { continue }
@@ -499,6 +515,7 @@ final class FogLayerView: UIView {
         CATransaction.setDisableActions(true)
         fogLayer.setAffineTransform(transform)
         maskShape.setAffineTransform(transform)
+        bandClip.setAffineTransform(transform)
         boundaryLayer.setAffineTransform(transform)
         if mode == .fog, style.softness > 0 {
             for raster in [bandLayer, maskBand] { place(raster, covering: bandRect, on: map) }
@@ -528,6 +545,7 @@ final class FogLayerView: UIView {
             x: (covered.minX - origin.x) * scale, y: (covered.minY - origin.y) * scale,
             width: covered.size.width * scale, height: covered.size.height * scale
         ))
+        let holes = CGMutablePath()
         let area = MapPointConversion.worldRect(for: covered)
         let unitsPerMapPoint = MapPointConversion.worldUnitsPerMapPoint
         // Holes smaller than a quarter point are invisible; skip them when zoomed out.
@@ -537,6 +555,7 @@ final class FogLayerView: UIView {
                 let bounds = polygon.bounds
                 guard bounds.intersects(area), max(bounds.width, bounds.height) >= minimumSize else { continue }
                 append(polygon.rings, to: fog)
+                append(polygon.rings, to: holes)
             }
         }
 
@@ -549,6 +568,7 @@ final class FogLayerView: UIView {
         CATransaction.setDisableActions(true)
         fogLayer.path = fog
         maskShape.path = fog
+        bandClip.path = holes
         boundaryLayer.path = outline
         CATransaction.commit()
     }
