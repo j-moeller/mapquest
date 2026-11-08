@@ -34,6 +34,8 @@ struct DebugSettings: Codable, Equatable {
     /// Download building data from OpenStreetMap where it is missing. Off: the
     /// line-of-sight layer uses the radius circle there until data is downloaded.
     var downloadsBuildings: Bool = true
+    /// Download buildings (OpenStreetMap) everywhere, not only around the cities with bundled 3D data.
+    var downloadsBuildingsEverywhere: Bool = false
 
     // Recording
     var minimumNewAreaPercent: Double = 10
@@ -50,7 +52,7 @@ struct DebugSettings: Codable, Equatable {
 
     enum CodingKeys: String, CodingKey {
         case version, fogOpacity, fogBlur, fogSoftness, radius, rayCount, baseDistance, distancePerMeterOfHeight, maximumDistance
-        case elevatedThreshold, usesTerrain, downloadsBuildings, minimumNewAreaPercent, minimumMovement
+        case elevatedThreshold, usesTerrain, downloadsBuildings, downloadsBuildingsEverywhere, minimumNewAreaPercent, minimumMovement
         case placesPositionsOnLongPress, testEyeHeight, showsEvaluation
     }
 
@@ -74,6 +76,7 @@ struct DebugSettings: Codable, Equatable {
         elevatedThreshold = value(.elevatedThreshold, d.elevatedThreshold)
         usesTerrain = value(.usesTerrain, d.usesTerrain)
         downloadsBuildings = value(.downloadsBuildings, d.downloadsBuildings)
+        downloadsBuildingsEverywhere = value(.downloadsBuildingsEverywhere, d.downloadsBuildingsEverywhere)
         minimumNewAreaPercent = value(.minimumNewAreaPercent, d.minimumNewAreaPercent)
         minimumMovement = value(.minimumMovement, d.minimumMovement)
         placesPositionsOnLongPress = value(.placesPositionsOnLongPress, d.placesPositionsOnLongPress)

@@ -14,7 +14,8 @@ struct FogMapView: UIViewRepresentable {
     /// Fog of war, or a heatmap of `heatPoints`.
     var aggregate: MapAggregate = .fog
     var heatPoints = HeatPoints()
-    var playArea: PlayArea
+    /// The cities with bundled 3D data (outlined).
+    var cityOutline: PlayArea
     /// Opacity, blur and edge softness of the fog over undiscovered areas.
     var fogStyle = FogStyle.default
     /// Called with the coordinate of a long press (debug: place a test position); `nil` disables it.
@@ -70,7 +71,7 @@ struct FogMapView: UIViewRepresentable {
             compass.centerXAnchor.constraint(equalTo: trackingButton.centerXAnchor),
             compass.topAnchor.constraint(equalTo: trackingButton.bottomAnchor, constant: 10),
         ])
-        context.coordinator.updatePlayArea(playArea, on: map)
+        context.coordinator.updatePlayArea(cityOutline, on: map)
         let press = UILongPressGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleLongPress(_:)))
         map.addGestureRecognizer(press)
         context.coordinator.map = map
@@ -85,7 +86,7 @@ struct FogMapView: UIViewRepresentable {
         if aggregate == .heatmap {
             context.coordinator.fogView.setHeatPoints(heatPoints.points, version: heatPoints.version)
         }
-        context.coordinator.updatePlayArea(playArea, on: map)
+        context.coordinator.updatePlayArea(cityOutline, on: map)
     }
 
     @MainActor

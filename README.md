@@ -2,8 +2,9 @@
 
 MapQuest is an iPhone app that combines a classic map with a *fog of war*:
 you only see the parts of the world you have actually been to. Everything
-else stays visibly darker until you go there. The first play area is
-Berlin; the data model is global.
+else stays visibly darker until you go there. It works everywhere (on
+Apple Maps); Berlin, Braunschweig and Peine additionally have bundled 3D
+building and terrain data for the line-of-sight reveal.
 
 The app has three major components:
 

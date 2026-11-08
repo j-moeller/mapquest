@@ -38,10 +38,11 @@ struct DebugSettingsView: View {
                 ValueSlider(title: "Height counted as street level", value: $draft.elevatedThreshold, range: 0...30, step: 1, format: "%.0f m")
                 Toggle("Use the cities' terrain models", isOn: $draft.usesTerrain)
                     .disabled(model.cityTerrain == nil)
+                Toggle("Download buildings outside the cities", isOn: $draft.downloadsBuildingsEverywhere)
             } header: {
                 Text("Line-of-sight layer (3D)")
             } footer: {
-                Text("Heights up to the threshold plus the GPS vertical accuracy count as street level. With the terrain model, hills count as high points.")
+                Text("Heights up to the threshold plus the GPS vertical accuracy count as street level. With the terrain model, hills count as high points. Buildings are downloaded only around the cities with 3D data; elsewhere the line of sight uses the radius circle, unless downloads outside the cities are allowed (immediate).")
             }
 
             Section {
@@ -107,6 +108,7 @@ struct DebugSettingsView: View {
             immediate.fogOpacity = newValue.fogOpacity
             immediate.fogBlur = newValue.fogBlur
             immediate.fogSoftness = newValue.fogSoftness
+            immediate.downloadsBuildingsEverywhere = newValue.downloadsBuildingsEverywhere
             immediate.minimumNewAreaPercent = newValue.minimumNewAreaPercent
             immediate.minimumMovement = newValue.minimumMovement
             immediate.placesPositionsOnLongPress = newValue.placesPositionsOnLongPress

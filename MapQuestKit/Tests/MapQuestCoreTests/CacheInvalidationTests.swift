@@ -461,6 +461,42 @@ final class CacheInvalidationTests: XCTestCase {
         XCTAssertEqual(downloads, 1)
     }
 
+    func testDownloadsStayInsideTheDownloadRegion() async throws {
+        let counter = DownloadCounter()
+        let source = CachingBuildingSource(
+            cache: InMemoryBuildingCache(),
+            download: { _ in
+                await counter.increment()
+                return []
+            }
+        )
+        let inside = TileKey(containing: Walk.origin, zoom: DataGrid.zoom)
+        let elsewhere = GeoCoordinate(latitude: 53.55, longitude: 9.99)
+        await source.setDownloadRegion { $0 == inside }
+        let mayInside = await source.mayDownload(inside)
+        let mayElsewhere = await source.mayDownload(TileKey(containing: elsewhere, zoom: DataGrid.zoom))
+        XCTAssertTrue(mayInside)
+        XCTAssertFalse(mayElsewhere)
+
+        // Elsewhere: no download, not even when asked explicitly – the default map.
+        let far = WebMercator.worldRect(for: GeoBoundingBox(center: elsewhere, radius: 10))
+        let farCoverage = await source.coverage(in: far)
+        XCTAssertTrue(farCoverage.versions.values.allSatisfy { $0 == DataGrid.noData })
+        _ = await source.dataVersions(of: Array(farCoverage.versions.keys), fetchingMissing: true)
+        var downloads = await counter.value
+        XCTAssertEqual(downloads, 0)
+        let model = ViewshedDiscoveryModel(buildings: source)
+        let revealed = try await model.revealedArea(for: Walk.sample(east: 0, north: 0, second: 0, from: elsewhere))
+        XCTAssertEqual(revealed.reduce(0) { $0 + $1.areaSquareMeters }, .pi * 50 * 50, accuracy: 0.01 * .pi * 50 * 50, "the radius circle")
+
+        // Inside the region buildings are downloaded as before.
+        let near = WebMercator.worldRect(for: GeoBoundingBox(center: Walk.origin, radius: 10))
+        let nearCoverage = await source.coverage(in: near)
+        XCTAssertEqual(nearCoverage.versions[inside], "memory:1")
+        downloads = await counter.value
+        XCTAssertEqual(downloads, 1)
+    }
+
     func testLayeredCachePrefersTheBundledVersion() async throws {
         let tile = TileKey(containing: Walk.origin, zoom: DataGrid.zoom)
         let other = TileKey(zoom: tile.zoom, x: tile.x + 1, y: tile.y)

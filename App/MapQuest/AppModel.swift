@@ -79,8 +79,10 @@ final class AppModel: ObservableObject {
     @Published var lastOutcome: String = ""
     @Published private(set) var isBusy = false
     @Published var errorMessage: String?
-    /// Where positions are recorded: all bundled cities together.
-    @Published private(set) var playArea: PlayArea
+    /// The cities with bundled 3D data, together (outlined on the map). Positions
+    /// are recorded and the fog of war lifts everywhere; only building downloads
+    /// are limited to these cities.
+    @Published private(set) var cityArea: PlayArea
     /// The bundled cities (each with its districts).
     let cities: [PlayArea]
     /// Discovered share per city and district of the selected layer (computed on demand).
@@ -163,9 +165,8 @@ final class AppModel: ObservableObject {
         self.catalog = catalog
         self.tracker = tracker
         let cities = Cities.playAreas()
-        let playArea = Cities.combined(cities)
         self.cities = cities
-        self.playArea = playArea
+        self.cityArea = Cities.combined(cities)
         if !catalog.profiles.contains(where: { $0.id == BerlinData.demoProfileID }) {
             catalog.upsert(BerlinData.demoProfile)
         }
@@ -194,7 +195,7 @@ final class AppModel: ObservableObject {
         self.store = store
         self.engines = engines
         self.recorder = LocationRecorder(
-            store: store, engines: MapLayer.allCases.compactMap { engines[$0] }, policy: debug.recordingPolicy, playArea: playArea
+            store: store, engines: MapLayer.allCases.compactMap { engines[$0] }, policy: debug.recordingPolicy
         )
         self.trackWriter = TrackWriter(store: store)
         self.periodDiscovery = PeriodDiscovery(store: store)
@@ -218,8 +219,12 @@ final class AppModel: ObservableObject {
                 await self.process(sample)
             }
         }
+        // Buildings are downloaded only around the cities with bundled 3D data (elsewhere:
+        // the default map), unless the debug setting allows it everywhere.
+        let region: (@Sendable (TileKey) -> Bool)? = debug.downloadsBuildingsEverywhere ? nil : Self.downloadRegion(cities)
         // Downloaded buildings make the areas around them stale (docs/05-cache-invalidation.md).
         Task { [weak self] in
+            await buildings.setDownloadRegion(region)
             await buildings.setOnDataChange { [weak self] tiles in
                 Task { @MainActor [weak self] in self?.scheduleDataRefresh(tiles) }
             }
@@ -278,6 +283,17 @@ final class AppModel: ObservableObject {
         )
     }
 
+    /// Data tiles near a city with bundled data (its outline's bounds grown by 2 km,
+    /// so tiles across the city limits are downloaded as well).
+    static func downloadRegion(_ cities: [PlayArea]) -> @Sendable (TileKey) -> Bool {
+        let boxes = cities.compactMap { city -> WorldRect? in
+            guard let bounds = city.bounds else { return nil }
+            let latitude = WebMercator.unproject(bounds.center).latitude
+            return bounds.expanded(by: Int64(2_000 / WebMercator.metersPerUnit(atLatitude: latitude)))
+        }
+        return { tile in boxes.contains { $0.intersects(tile.worldRect) } }
+    }
+
     // MARK: Convenience for views
 
     func state(_ layer: MapLayer) -> LayerState {
@@ -290,7 +306,9 @@ final class AppModel: ObservableObject {
            let city = cities.first(where: { $0.contains(GeoCoordinate(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)) }) {
             return city
         }
-        return cities.max { discovered(layer, in: $0) < discovered(layer, in: $1) }
+        // Elsewhere: the city with the most discovered area, if any (e.g. viewing another user's data).
+        let best = cities.max { discovered(layer, in: $0) < discovered(layer, in: $1) }
+        return best.flatMap { discovered(layer, in: $0) > 0 ? $0 : nil }
     }
 
     /// Discovered area of a layer inside a city's bounding box (cities are far apart).
@@ -343,7 +361,7 @@ final class AppModel: ObservableObject {
             case .rejected(.inaccurate):
                 lastOutcome = "Waiting for a precise position"
             case .rejected(.outsidePlayArea):
-                lastOutcome = "Outside \(playArea.name)"
+                lastOutcome = "Outside the recording area"
             case .rejected(.invalidPosition):
                 lastOutcome = "No valid position"
             }
@@ -456,7 +474,7 @@ final class AppModel: ObservableObject {
             self.store = store
             self.engines = engines
             await flushTrack()
-            self.recorder = LocationRecorder(store: store, engines: MapLayer.allCases.compactMap { engines[$0] }, playArea: playArea)
+            self.recorder = LocationRecorder(store: store, engines: MapLayer.allCases.compactMap { engines[$0] }, policy: debug.recordingPolicy)
             self.trackWriter = TrackWriter(store: store)
             self.trackSummary = TrackSummary()
             self.periodDiscovery = PeriodDiscovery(store: store)
@@ -543,6 +561,10 @@ final class AppModel: ObservableObject {
         settings.save()
         await recorder.setPolicy(settings.recordingPolicy)
         if !settings.showsEvaluation { evaluationSummary = nil }
+        if settings.downloadsBuildingsEverywhere != previous.downloadsBuildingsEverywhere {
+            await buildings.setDownloadRegion(settings.downloadsBuildingsEverywhere ? nil : Self.downloadRegion(cities))
+            if settings.downloadsBuildings { Task { await checkBuildingData(fetchingMissing: true) } }
+        }
         if settings.downloadsBuildings != previous.downloadsBuildings {
             await buildings.setDownloadsAutomatically(settings.downloadsBuildings)
             if settings.downloadsBuildings { Task { await checkBuildingData(fetchingMissing: true) } }
@@ -554,7 +576,7 @@ final class AppModel: ObservableObject {
         let engines = Self.makeEngines(store: store, circle: circle, viewshed: viewshed)
         self.engines = engines
         recorder = LocationRecorder(
-            store: store, engines: MapLayer.allCases.compactMap { engines[$0] }, policy: settings.recordingPolicy, playArea: playArea
+            store: store, engines: MapLayer.allCases.compactMap { engines[$0] }, policy: settings.recordingPolicy
         )
         layers = Self.emptyLayers(engines)
         await reload()
@@ -718,9 +740,12 @@ final class AppModel: ObservableObject {
         guard let engine = engines[.lineOfSight] else { return }
         isDownloadingBuildings = true
         defer { isDownloadingBuildings = false }
-        let missing = Set(((try? await engine.dataWatermarks()) ?? [:]).filter { $0.value == DataGrid.noData }.keys)
+        var missing = Set<TileKey>()
+        for (tile, version) in (try? await engine.dataWatermarks()) ?? [:] where version == DataGrid.noData {
+            if await buildings.mayDownload(tile) { missing.insert(tile) }
+        }
         guard !missing.isEmpty else {
-            lastOutcome = "Building data is available for all explored areas"
+            lastOutcome = "Building data is available for all explored areas in the cities"
             return
         }
         lastOutcome = "Downloading building data for \(missing.count) \(missing.count == 1 ? "tile" : "tiles")…"

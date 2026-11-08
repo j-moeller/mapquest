@@ -191,7 +191,8 @@ Receives every position fix and:
 
 1. writes every valid fix to the track (the app does this directly, so the
    track keeps recording while a layer is rebuilt);
-2. rejects fixes worse than 50 m (1σ) and fixes outside the play area;
+2. rejects fixes worse than 50 m (1σ) (and fixes outside a play area, if one
+   is set – the app records everywhere);
 3. lets the `CoverageSampler` choose the fixes worth evaluating: about one per
    10 m of movement, corners and climbs, nothing for jitter while standing
    still (docs/01-literature-review.md §2.6; a viewshed from a tower takes
@@ -226,10 +227,14 @@ transparent).
 
 The app bundles data per city (`Cities`): `<id>-boundary.geojson`,
 `<id>-districts.geojson`, `<id>-terrain.dem` and
-`<id>-buildings.sqlite.deflate`, each optional. Positions are recorded inside
-all cities; the terrain models form a `CompositeTerrain` (where none has data,
-fixes count as street level) and the building databases a
-`CompositeBuildingCache`. Berlin: docs/03-berlin-data.md; Braunschweig:
+`<id>-buildings.sqlite.deflate`, each optional. Positions are recorded and the
+fog of war lifts **everywhere**; the cities only add data for the
+line-of-sight layer: the terrain models form a `CompositeTerrain` (where none
+has data, fixes count as street level), the building databases a
+`CompositeBuildingCache`, and buildings are downloaded (OpenStreetMap) only for
+data tiles within 2 km of a city (`CachingBuildingSource.setDownloadRegion`;
+a debug setting allows downloads everywhere). Elsewhere the line of sight
+reveals the radius circle (the default map, docs/05). Berlin: docs/03-berlin-data.md; Braunschweig:
 docs/06-braunschweig-data.md.
 
 ## 3D discovery (line of sight)

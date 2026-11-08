@@ -82,8 +82,10 @@ public extension BuildingCache {
 /// disk. After a failed download a tile is not retried for `retryInterval`, so
 /// that being offline does not stall the processing of every position fix.
 /// With `downloadsAutomatically` off, only explicit requests
-/// (`dataVersions(of:fetchingMissing: true)`) download. Every successful
-/// download is reported to `onDataChange` (cache invalidation).
+/// (`dataVersions(of:fetchingMissing: true)`) download; outside `downloadRegion`
+/// nothing is downloaded at all (those tiles have no data: the line-of-sight
+/// layer uses the default map there). Every successful download is reported to
+/// `onDataChange` (cache invalidation).
 public actor CachingBuildingSource: BuildingSource {
     public typealias Download = @Sendable (GeoBoundingBox) async throws -> [Building]
 
@@ -99,6 +101,8 @@ public actor CachingBuildingSource: BuildingSource {
     private var failures: [TileKey: (date: Date, message: String)] = [:]
     private var onDataChange: (@Sendable (Set<TileKey>) -> Void)?
     public private(set) var downloadsAutomatically: Bool
+    /// Data tiles that may be downloaded (`nil`: all).
+    private var downloadRegion: (@Sendable (TileKey) -> Bool)?
 
     /// - Parameters:
     ///   - download: Fetches buildings for a box; `nil` makes the source offline-only.
@@ -122,6 +126,16 @@ public actor CachingBuildingSource: BuildingSource {
 
     public func setDownloadsAutomatically(_ enabled: Bool) {
         downloadsAutomatically = enabled
+    }
+
+    /// Restricts downloads to the data tiles for which `region` is true (`nil`: everywhere).
+    public func setDownloadRegion(_ region: (@Sendable (TileKey) -> Bool)?) {
+        downloadRegion = region
+    }
+
+    /// Whether a data tile may be downloaded at all.
+    public func mayDownload(_ tile: TileKey) -> Bool {
+        download != nil && (downloadRegion?(tile) ?? true)
     }
 
     /// Called with the data tiles whose data changed (after downloads).
@@ -183,7 +197,7 @@ public actor CachingBuildingSource: BuildingSource {
         if let running = inFlight[tile] {
             return try await running.value
         }
-        let download = mayDownload ? self.download : nil
+        let download = mayDownload && (downloadRegion?(tile) ?? true) ? self.download : nil
         if download != nil, !ignoringBackoff, let failure = failures[tile], now().timeIntervalSince(failure.date) < retryInterval {
             throw BuildingSourceError.unavailable(failure.message)
         }

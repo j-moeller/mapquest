@@ -1,6 +1,6 @@
 # MapQuest – Berlin data
 
-Berlin is the first play area. This page lists every dataset the app uses for
+Berlin is the first city with bundled data (the fog of war works everywhere). This page lists every dataset the app uses for
 Berlin, where it comes from, and how to regenerate it.
 
 ## 2D
@@ -60,7 +60,9 @@ picked from Xcode's *Debug › Simulate Location* menu.
 with *commit*). On first launch – and after every update of the file – the
 app unpacks it into `Application Support/MapQuest/Buildings/berlin.sqlite`
 (≈ 51 MB) in the background. A `LayeredBuildingCache` combines it with the
-download cache, so areas outside Berlin still come from Overpass.
+download cache, so tiles across the city limits still come from Overpass
+(downloads are limited to the surroundings of the bundled cities; elsewhere
+the line of sight reveals the radius circle).
 
 **LoD2 heights.** `Tools/berlin/extract_lod2.py` streams the ~925 CityGML
 tiles (1 × 1 km) and writes every building and building part with its own

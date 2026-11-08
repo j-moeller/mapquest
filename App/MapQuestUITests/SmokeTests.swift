@@ -151,7 +151,7 @@ final class SmokeTests: XCTestCase {
 
         // Both cities in the districts list.
         settings.tap()
-        let districts = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Districts of'")).firstMatch
+        let districts = app.buttons["Cities and districts"]
         if districts.waitForExistence(timeout: 5) {
             districts.tap()
             pause(8)

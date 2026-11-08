@@ -44,11 +44,11 @@ struct SettingsView: View {
 
                 if !model.cities.isEmpty {
                     Section {
-                        NavigationLink("Districts of \(model.playArea.name)") {
+                        NavigationLink("Cities and districts") {
                             DistrictsView()
                         }
                     } footer: {
-                        Text("Positions are only recorded inside \(model.playArea.name).")
+                        Text("The fog of war lifts everywhere. \(model.cities.map(\.name).joined(separator: ", ")) also have 3D building and terrain data for the line of sight; elsewhere it reveals the radius circle.")
                     }
                 }
 
@@ -110,7 +110,7 @@ struct SettingsView: View {
                 } header: {
                     Text("Building data")
                 } footer: {
-                    Text("Where no building data is available (a new city, offline), the line-of-sight layer uses the radius circle – the default map. When building data arrives, by download or with a newer bundled dataset, exactly the areas whose view it can change are recomputed from the stored positions.")
+                    Text("Building data is bundled for the cities with 3D data and downloaded (OpenStreetMap) only around them. Where none is available (other places, offline), the line-of-sight layer uses the radius circle – the default map. When building data arrives, by download or with a newer bundled dataset, exactly the areas whose view it can change are recomputed from the stored positions.")
                 }
                 .task { await model.checkBuildingData(fetchingMissing: false) }
 
