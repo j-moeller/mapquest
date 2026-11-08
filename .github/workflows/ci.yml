@@ -82,5 +82,8 @@ jobs:
         run: |
           APP=$(find ~/Library/Developer/Xcode/DerivedData -path "*Debug-iphonesimulator/MapQuest.app" -maxdepth 6 -type d | head -1)
           echo "$APP"
-          ls -la "$APP" | grep -E "berlin|demo" || true
-          for f in berlin-boundary.geojson berlin-districts.geojson demo-track.mqtrack berlin-terrain.dem berlin-buildings.sqlite.deflate; do test -e "$APP/$f" || { echo "missing $f"; exit 1; }; done
+          ls -la "$APP" | grep -E "berlin|braunschweig|demo" || true
+          for f in berlin-boundary.geojson berlin-districts.geojson demo-track.mqtrack berlin-terrain.dem berlin-buildings.sqlite.deflate \
+                   braunschweig-boundary.geojson braunschweig-districts.geojson braunschweig-terrain.dem braunschweig-buildings.sqlite.deflate; do
+            test -e "$APP/$f" || { echo "missing $f"; exit 1; }
+          done

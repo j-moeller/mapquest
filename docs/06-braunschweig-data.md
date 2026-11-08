@@ -46,6 +46,23 @@ Steps 4 and 6 are best effort: without them the buildings keep their OSM
 heights (tags, levels, estimates) and the city has no terrain model – fixes
 there then count as street level (docs/02-architecture.md, Cities).
 
+## Result (run of 8 November 2026)
+
+| | |
+|---|---|
+| Outline | 192.5 km² |
+| Districts | 12 Stadtbezirke (admin_level 9), tiling the city |
+| OSM buildings | 182 827 in the extract (71 197 inside the city, the rest around it, so the city edges are covered) |
+| LoD2 | 201 189 footprints from 223 tiles (25 tiles without buildings); **92.0 %** of the buildings inside the city get measured heights (Berlin: 79.6 %) |
+| Tallest | Funkturm Broitzem 154 m, St. Andreas 94.5 m, St. Katharinen 72.9 m, St. Petri 70.7 m |
+| Database | 16.9 MB, 8.8 MB compressed; 60 complete zoom-14 tiles |
+| Terrain | 378 DGM1 tiles → 670 × 549 cells, 58.5–125.4 m (median 80.2 m); Burgplatz 71 m |
+| Viewsheds | Burgplatz 43 %, Altstadtmarkt 26 %, Schlossplatz 66 %, Hauptbahnhof forecourt 93 % of the 150 m view disk |
+
+With the terrain model the line-of-sight layer's ID changes (the terrain
+identifier becomes `berlin-dgm30+braunschweig-dgm30`), so it is rebuilt once
+after the update.
+
 ## Demo
 
 The demo explorer's track (`Tools/berlin/make_demo_data.py`) includes a day

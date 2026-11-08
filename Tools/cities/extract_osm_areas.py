@@ -2,8 +2,8 @@
 
 The city is the administrative boundary relation with the given name and
 admin_level; its districts are the boundary relations of the first of the
-given district levels with a plausible count (5–60) whose interior points lie
-inside the city. Both are simplified to ~2 m and written as GeoJSON (WGS84):
+given district levels with a plausible count (5–60) that lie at least half
+inside the city (neighbouring municipalities touch the outline). Both are simplified to ~2 m and written as GeoJSON (WGS84):
 
   <out>/<id>-boundary.geojson   (1 feature: name)
   <out>/<id>-districts.geojson  (features: name, admin_level)
@@ -22,7 +22,6 @@ import sys
 
 import osmium
 import shapely
-from shapely.prepared import prep
 from shapely import wkb
 from shapely.geometry import mapping
 
@@ -89,10 +88,9 @@ def main():
         "geometry": mapping(simplify(city, latitude)),
     }])
 
-    inside = prep(city.buffer(0.001))
     for level in district_levels:
         districts = [(name, g) for l, name, g in handler.found
-                     if l == level and inside.contains(g.representative_point())]
+                     if l == level and g.area > 0 and g.intersection(city).area >= 0.5 * g.area]
         print(f"admin_level {level}: {len(districts)} districts")
         if 5 <= len(districts) <= 60:
             write(args.out / f"{args.id}-districts.geojson", [{
