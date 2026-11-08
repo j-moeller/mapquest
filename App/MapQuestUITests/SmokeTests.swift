@@ -149,7 +149,7 @@ final class SmokeTests: XCTestCase {
             }
         }
 
-        // Both cities in the districts list.
+        // All bundled cities (Berlin, Braunschweig, Peine) in the districts list.
         settings.tap()
         let districts = app.buttons["Cities and districts"]
         if districts.waitForExistence(timeout: 5) {

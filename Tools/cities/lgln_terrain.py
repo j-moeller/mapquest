@@ -36,27 +36,51 @@ NODATA = -32768
 KEY = re.compile(r"dgm1_32_(\d+)_(\d+)_1_ni_(\d{4})\.tif$")
 
 
-def list_tiles(wanted):
-    """Keys of the newest tile for every wanted (E, N), preferring full tiles."""
-    best = {}
-    marker = ""
+def fetch(url: str, attempts: int = 6) -> str:
+    for attempt in range(attempts):
+        try:
+            return urllib.request.urlopen(url, timeout=60).read().decode("utf-8")
+        except Exception:
+            if attempt == attempts - 1:
+                raise
+            time.sleep(2 ** (attempt + 1))
+    return ""
+
+
+def list_keys(prefix: str):
+    """All keys below a prefix (paged, 1000 per request)."""
+    keys, marker = [], ""
     while True:
-        query = urllib.parse.urlencode({"max-keys": 1000, "marker": marker})
-        xml = urllib.request.urlopen(f"{BUCKET}/?{query}", timeout=60).read().decode("utf-8")
-        keys = re.findall(r"<Key>([^<]+)</Key>", xml)
-        for key in keys:
-            m = KEY.search(key)
-            if not m:
-                continue
-            tile = (int(m.group(1)), int(m.group(2)))
-            if tile not in wanted:
-                continue
-            rank = (int(m.group(3)), "Vollkacheln" in key)
-            if tile not in best or rank > best[tile][0]:
-                best[tile] = (rank, key)
-        if "<IsTruncated>true</IsTruncated>" not in xml or not keys:
-            break
-        marker = keys[-1]
+        query = urllib.parse.urlencode({"max-keys": 1000, "marker": marker, "prefix": prefix})
+        xml = fetch(f"{BUCKET}/?{query}")
+        page = re.findall(r"<Key>([^<]+)</Key>", xml)
+        keys += page
+        if "<IsTruncated>true</IsTruncated>" not in xml or not page:
+            return keys
+        marker = page[-1]
+
+
+def list_tiles(wanted):
+    """Keys of the newest tile for every wanted (E, N), preferring full tiles.
+
+    The bucket holds one folder per delivery lot (L<lot>/…); they are listed in parallel.
+    """
+    xml = fetch(f"{BUCKET}/?{urllib.parse.urlencode({'delimiter': '/', 'max-keys': 1000})}")
+    lots = [p for p in re.findall(r"<Prefix>([^<]*)</Prefix>", xml) if p]
+    best = {}
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        for keys in pool.map(list_keys, lots):
+            for key in keys:
+                m = KEY.search(key)
+                if not m:
+                    continue
+                tile = (int(m.group(1)), int(m.group(2)))
+                if tile not in wanted:
+                    continue
+                rank = (int(m.group(3)), "Vollkacheln" in key)
+                if tile not in best or rank > best[tile][0]:
+                    best[tile] = (rank, key)
+    print(f"listed {len(lots)} lots", flush=True)
     return {tile: key for tile, (_, key) in best.items()}
 
 

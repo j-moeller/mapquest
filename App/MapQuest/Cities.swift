@@ -5,7 +5,8 @@ import MapQuestSQLite
 /// A city with bundled data: outline and districts (play area), elevation model
 /// and building database. Resources are named `<id>-boundary.geojson`,
 /// `<id>-districts.geojson`, `<id>-terrain.dem` and `<id>-buildings.sqlite.deflate`
-/// (docs/03-berlin-data.md, docs/06-braunschweig-data.md); missing ones are skipped.
+/// (docs/03-berlin-data.md, docs/06-braunschweig-data.md, docs/07-peine-data.md);
+/// missing ones are skipped.
 struct City: Hashable, Identifiable {
     let id: String
     let name: String
@@ -17,6 +18,7 @@ enum Cities {
     static let all = [
         City(id: "berlin", name: "Berlin", groundElevation: 35),
         City(id: "braunschweig", name: "Braunschweig", groundElevation: 75),
+        City(id: "peine", name: "Peine", groundElevation: 67),
     ]
 
     /// The outline of a city with its districts as subdivisions, if bundled.

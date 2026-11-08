@@ -3,7 +3,7 @@
 MapQuest is an iPhone app that combines a classic map with a *fog of war*:
 you only see the parts of the world you have actually been to. Everything
 else stays visibly darker until you go there. It works everywhere (on
-Apple Maps); Berlin and Braunschweig additionally have bundled 3D
+Apple Maps); Berlin, Braunschweig and Peine additionally have bundled 3D
 building and terrain data for the line-of-sight reveal.
 
 The app has three major components:
@@ -53,7 +53,7 @@ The app has three major components:
 * **2D / 3D** switch at the top, next to the view bar: fog of war or heatmap,
   and *All time / Day / Week / Month / Year* with ‹ › to step through
   periods; in 2D the *Radius / Line of sight* picker chooses the layer.
-* The panel shows discovered area, share of Berlin, regions and stored
+* The panel shows discovered area, share of the current city, regions and stored
   positions; tap the chevron to collapse it on small screens (iPhone 13 mini).
 * **Settings** switch the data source (*My discoveries*, *Sandbox (testing)*,
   the view-only *Demo explorer*, or a **remote account** on a MapQuest server
@@ -134,6 +134,7 @@ The UI smoke test (`App/MapQuestUITests`, iPhone 13 mini) runs from Xcode
 * [Remote store (PostgreSQL)](docs/04-remote-store.md)
 * [Cache invalidation when map data improves](docs/05-cache-invalidation.md)
 * [Braunschweig data](docs/06-braunschweig-data.md)
+* [Peine data](docs/07-peine-data.md)
 
 ## Status
 
@@ -148,12 +149,14 @@ The UI smoke test (`App/MapQuestUITests`, iPhone 13 mini) runs from Xcode
 - [x] Cache invalidation when building data improves (docs/05)
 - [x] Continuous 1 Hz track, coverage sampling, time-based views, heatmap
 - [x] Braunschweig as a second city (docs/06)
+- [x] Fog of war everywhere; 3D data downloads only around the bundled cities
+- [x] Peine as a third city, from official data only (docs/07)
 
 ## Known limitations and next steps
 
 * **Terrain** comes from Berlin's official 1 m terrain model at ≈ 30 m
-  resolution (Braunschweig: LGLN DGM1); elsewhere positions count as street
-  level.
+  resolution (Braunschweig and Peine: LGLN DGM1); elsewhere positions count
+  as street level.
 * **Building heights** come from Berlin's LoD2 models where they match an OSM
   footprint, otherwise from OSM tags or estimates.
 * **Remote store**: PostgreSQL behind a small REST API works for viewing

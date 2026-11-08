@@ -1,7 +1,7 @@
 import MapQuestCore
 import SwiftUI
 
-/// Discovered share of each district of the play area.
+/// Discovered share of each bundled city and its districts.
 struct DistrictsView: View {
     @EnvironmentObject private var model: AppModel
     @State private var isComputing = false
@@ -17,6 +17,10 @@ struct DistrictsView: View {
             }
             ForEach(model.districtCoverage) { city in
                 Section {
+                    if city.districts.isEmpty {
+                        // A city without bundled districts (Peine): the city itself.
+                        CoverageRow(coverage: city.city)
+                    }
                     ForEach(city.districts, id: \.name) { district in
                         CoverageRow(coverage: district)
                     }
@@ -27,7 +31,7 @@ struct DistrictsView: View {
                 }
             }
         }
-        .navigationTitle("Districts")
+        .navigationTitle("Cities and districts")
         .safeAreaInset(edge: .top) {
             Picker("Discovery", selection: $model.selectedLayer) {
                 ForEach(MapLayer.allCases) { layer in

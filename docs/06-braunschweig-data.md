@@ -14,6 +14,8 @@ The script works for any city in Lower Saxony (outline from OSM by name and
 `osmium lxml pyproj shapely numpy rasterio`, `sqlite3`, a Swift toolchain,
 `osmium-tool` for the Geofabrik download (or `--osm FILE` with an existing
 extract) and network access to `download.geofabrik.de` and LGLN's buckets.
+Without OpenStreetMap it takes the outline from BKG's VG250 and the buildings
+from LoD2 alone (`--vg250 … --ags …`, used for Peine: docs/07-peine-data.md).
 
 | Data | Source | Licence | File |
 |---|---|---|---|

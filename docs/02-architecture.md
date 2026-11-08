@@ -235,7 +235,8 @@ has data, fixes count as street level), the building databases a
 data tiles within 2 km of a city (`CachingBuildingSource.setDownloadRegion`;
 a debug setting allows downloads everywhere). Elsewhere the line of sight
 reveals the radius circle (the default map, docs/05). Berlin: docs/03-berlin-data.md; Braunschweig:
-docs/06-braunschweig-data.md.
+docs/06-braunschweig-data.md; Peine (official outline and LoD2 buildings, no
+districts): docs/07-peine-data.md.
 
 ## 3D discovery (line of sight)
 
