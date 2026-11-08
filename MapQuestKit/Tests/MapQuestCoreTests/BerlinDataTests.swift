@@ -39,6 +39,11 @@ final class BerlinDataTests: XCTestCase {
         let size = try load("demo-track.mqtrack").count
         XCTAssertLessThan(Double(size) / Double(points.count), 7, "compact")
 
+        // The app imports the sampled track (revisits merged): a few thousand evaluations.
+        let reduced = CoverageSampler.reduce(points.map(\.sample), configuration: RecordingPolicy().sampling.offline)
+        print("demo track: \(points.count) fixes → \(reduced.count) after sampling")
+        XCTAssertLessThan(reduced.count, points.count / 25)
+
         let store = InMemoryDataStore()
         let engine = DiscoveryEngine(model: CircleDiscoveryModel(radius: 50), store: store)
         let berlin = try GeoJSON.playArea(named: "Berlin", from: load("berlin-boundary.geojson"))

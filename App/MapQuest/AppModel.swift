@@ -481,27 +481,32 @@ final class AppModel: ObservableObject {
         await select(profile)
     }
 
-    /// Imports the demo explorer's track and feeds its fixes through the recorder,
-    /// exactly as if they had been tracked live: only sampled fixes revealing new
-    /// area become key samples.
+    /// Imports the demo explorer's track and feeds its fixes through the recorder.
+    /// The track is first reduced by the coverage sampler with revisits merged:
+    /// the ten repeated commutes would be known territory live anyway, so the
+    /// key samples are (nearly) the same at a fraction of the evaluations.
     private func importDemoData() async throws {
         let recorder = self.recorder
         lastOutcome = "Importing the demo explorer's track…"
         let points = try BerlinData.demoTrack()
         defer { progress = nil }
-        // The track goes in as segments of ten minutes.
+        // The whole track goes in as segments of ten minutes.
         let segments = stride(from: 0, to: points.count, by: 600).map { start in
             TrackSegment(points: Array(points[start..<min(start + 600, points.count)]))
         }
         for batch in stride(from: 0, to: segments.count, by: 50) {
             try await store.putTrackSegments(Array(segments[batch..<min(batch + 50, segments.count)]))
         }
-        for (index, point) in points.enumerated() {
-            _ = try await recorder.record(point.sample)
-            if index % 500 == 499 {
-                progress = Double(index + 1) / Double(points.count)
+        let sampling = debug.recordingPolicy.sampling.offline
+        let samples = await Task.detached(priority: .userInitiated) {
+            CoverageSampler.reduce(points.map(\.sample), configuration: sampling)
+        }.value
+        for (index, sample) in samples.enumerated() {
+            _ = try await recorder.record(sample)
+            if index % 50 == 49 {
+                progress = Double(index + 1) / Double(samples.count)
             }
-            if index % 10_000 == 9_999 {
+            if index % 500 == 499 {
                 // Let the map fill up while the import runs.
                 sampleCount = try await store.sampleCount()
                 await refreshAll()

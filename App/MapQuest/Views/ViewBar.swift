@@ -1,7 +1,7 @@
 import MapQuestCore
 import SwiftUI
 
-/// Viewing options above the map: fog of war or heatmap, and the time span
+/// Viewing options above the map: fog of war or heatmap (toggle), and the time span
 /// (all time, or a day, week, month or year with navigation).
 struct ViewBar: View {
     @EnvironmentObject private var model: AppModel
@@ -12,18 +12,18 @@ struct ViewBar: View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 8) {
                 if showsAggregate {
-                    Menu {
-                        Picker("Show", selection: $model.aggregate) {
-                            ForEach(MapAggregate.allCases) { aggregate in
-                                Label(aggregate.title, systemImage: aggregate.systemImage).tag(aggregate)
-                            }
-                        }
+                    // Two options: one tap switches between the fog of war and the heatmap.
+                    Button {
+                        model.aggregate = model.aggregate == .heatmap ? .fog : .heatmap
                     } label: {
                         Image(systemName: model.aggregate.systemImage)
+                            .foregroundStyle(model.aggregate == .heatmap ? Color.orange : Color.primary)
                             .frame(width: 36, height: 30)
                             .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
                     }
-                    .accessibilityLabel("Show: \(model.aggregate.title)")
+                    .accessibilityLabel("Heatmap")
+                    .accessibilityValue(model.aggregate == .heatmap ? "on" : "off")
+                    .accessibilityHint("Switches between the fog of war and the heatmap")
                 }
                 Menu {
                     Picker("Time", selection: Binding(get: { model.periodKind }, set: { model.showPeriod($0) })) {

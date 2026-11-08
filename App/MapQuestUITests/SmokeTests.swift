@@ -97,7 +97,7 @@ final class SmokeTests: XCTestCase {
         }
         demo.tap()
         app.buttons["Done"].tap()
-        pause(180) // the demo track (113 000 fixes at 1 Hz) is imported through the recorder
+        pause(120) // the demo track (113 000 fixes at 1 Hz, sampled) is imported through the recorder
         app.buttons["Radius"].tap()
         pause(3)
         screenshot("06-demo-explorer")
@@ -110,6 +110,7 @@ final class SmokeTests: XCTestCase {
         // Time-based view: October 2026 (commutes, walks, a day in Braunschweig).
         let timeSpan = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Time span'")).firstMatch
         if timeSpan.waitForExistence(timeout: 5) {
+            if map.exists { map.pinch(withScale: 4, velocity: 3) } // back to street scale around the walks
             timeSpan.tap()
             let month = app.buttons["Month"]
             if month.waitForExistence(timeout: 3) { month.tap() }
@@ -119,11 +120,9 @@ final class SmokeTests: XCTestCase {
             screenshot("08-month-fog")
 
             // Heatmap of the same month.
-            let show = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Show'")).firstMatch
-            if show.waitForExistence(timeout: 3) {
-                show.tap()
-                let heatmap = app.buttons["Heatmap"]
-                if heatmap.waitForExistence(timeout: 3) { heatmap.tap() }
+            let heatmap = app.buttons["Heatmap"]
+            if heatmap.waitForExistence(timeout: 3) {
+                heatmap.tap()
                 pause(10)
                 screenshot("09-month-heatmap")
                 if map.exists {
