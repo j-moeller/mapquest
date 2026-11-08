@@ -154,8 +154,8 @@ imported into the same schema later.
 the official 1 m terrain model (≈ 3.5 GB of XYZ text), averages them into 25 m
 UTM cells and resamples them onto a 0.00027° × 0.00045° (≈ 30 m)
 latitude/longitude grid: 1 266 × 1 512 cells, 23.7–120.8 m (median 40.5 m),
-stored as int16 decimetres. `GridTerrain` reads it; outside Berlin it falls
-back to 35 m. With it
+stored as int16 decimetres. `GridTerrain` reads it; outside the grids of all
+bundled cities positions count as street level (`CompositeTerrain`). With it
 
 * the eye height is measured against the real ground, so walking on the
   Barnim or Teltow plateau (45–60 m) is street level, not a "high point";

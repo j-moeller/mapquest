@@ -9,18 +9,19 @@ The app has three major components:
 
 | Component | Responsibility |
 |---|---|
-| **Location tracking** | Continuously observes the user's position, but stores only the positions that reveal new parts of the map (latitude, longitude, height, timestamp) |
+| **Location tracking** | Records the position about once per second in a compact track (≈ 6 bytes per fix); the positions that reveal new parts of the map drive the fog of war |
 | **Discovered area** | Turns stored positions into discovered-area polygons, merges adjacent areas into regions, keeps disconnected areas apart; it is a cache that can always be rebuilt from the positions |
 | **Map display** | 2D: MapKit under a dark fog (90 %) with the discovered area cut out. 3D: buildings that block the view; seen buildings are revealed |
 
 ## How it works
 
 1. **Tracking** – `LocationTracker` receives every Core Location fix (also in
-   the background). The `LocationRecorder` drops inaccurate fixes and fixes
-   outside Berlin, asks every discovery layer how much *new* area the fix
-   would reveal, and stores the fix only if that is ≥ 10 % (or ≥ 2 000 m²).
-   Walking through known streets stores nothing; standing still is not even
-   evaluated.
+   the background). Every fix goes into the **track** (delta-encoded segments,
+   ≈ 6 bytes per fix: ≈ 15 MB per year for two hours a day, ≈ 190 MB around
+   the clock). A **coverage sampler** picks the few fixes that matter for the
+   area – about one per 10 m of movement, none while standing still – and the
+   `LocationRecorder` asks every discovery layer how much *new* area they
+   reveal; fixes revealing ≥ 10 % (or ≥ 2 000 m²) become key samples.
 2. **Storage** – one SQLite database per data source holds the location
    samples (lat, lon, altitude, accuracies, timestamp, tile key) *and* the
    discovered area. Everything goes through the `MapQuestDataStore`
@@ -48,8 +49,9 @@ The app has three major components:
 
 * First launch explains the purpose and asks for location access; upgrading
   to *Always* keeps discovering in the background.
-* **2D / 3D** switch at the top; in 2D the *Radius / Line of sight* picker
-  chooses the layer.
+* **2D / 3D** switch at the top, next to the view bar: fog of war or heatmap,
+  and *All time / Day / Week / Month / Year* with ‹ › to step through
+  periods; in 2D the *Radius / Line of sight* picker chooses the layer.
 * The panel shows discovered area, share of Berlin, regions and stored
   positions; tap the chevron to collapse it on small screens (iPhone 13 mini).
 * **Settings** switch the data source (*My discoveries*, *Sandbox (testing)*,
@@ -112,6 +114,7 @@ cd MapQuestKit && swift test
 * [Berlin data](docs/03-berlin-data.md)
 * [Remote store (PostgreSQL)](docs/04-remote-store.md)
 * [Cache invalidation when map data improves](docs/05-cache-invalidation.md)
+* [Braunschweig data](docs/06-braunschweig-data.md)
 
 ## Status
 
@@ -123,11 +126,15 @@ cd MapQuestKit && swift test
 - [x] Location data component and discovered-area component (3D)
 - [x] 3D map presentation
 - [x] Berlin 3D data (on-demand OSM downloads; full Berlin database built by CI)
+- [x] Cache invalidation when building data improves (docs/05)
+- [x] Continuous 1 Hz track, coverage sampling, time-based views, heatmap
+- [x] Braunschweig as a second city (docs/06)
 
 ## Known limitations and next steps
 
 * **Terrain** comes from Berlin's official 1 m terrain model at ≈ 30 m
-  resolution; outside Berlin the ground is assumed flat.
+  resolution (Braunschweig: LGLN DGM1); elsewhere positions count as street
+  level.
 * **Building heights** come from Berlin's LoD2 models where they match an OSM
   footprint, otherwise from OSM tags or estimates.
 * **Remote store**: PostgreSQL behind a small REST API works for viewing

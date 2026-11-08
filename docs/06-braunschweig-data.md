@@ -1,0 +1,52 @@
+# MapQuest – Braunschweig data
+
+Braunschweig is the second bundled city. Its data is built in GitHub Actions
+by `.github/workflows/braunschweig-data.yml` (the source hosts are not
+reachable from the development sandbox) and committed to
+`App/MapQuest/Resources/Braunschweig/`. The app finds it by name
+(`App/MapQuest/Cities.swift`); every file is optional.
+
+| Data | Source | Licence | File |
+|---|---|---|---|
+| City outline | OpenStreetMap: administrative boundary "Braunschweig", admin_level 6 (Geofabrik extract of Lower Saxony) | ODbL 1.0 | `braunschweig-boundary.geojson` |
+| Districts | OpenStreetMap: the Stadtbezirke (admin_level 9, else 10) inside the city | ODbL 1.0 | `braunschweig-districts.geojson` |
+| Building footprints | OpenStreetMap (Geofabrik extract), `Tools/berlin/extract_buildings.py` | ODbL 1.0 | `braunschweig-buildings.sqlite.deflate` |
+| Building heights | LGLN OpenGeoData *3D-Gebäudemodelle LoD2* (CityGML, 1 km tiles, ETRS89/UTM 32N), matched to the OSM footprints like Berlin's (`Tools/berlin/apply_lod2_heights.py`) | Datenlizenz Deutschland – Namensnennung – 2.0 | (in the building database) |
+| Terrain | LGLN OpenGeoData *DGM1* (GeoTIFF, 1 m, 1 km tiles), averaged to 25 m and resampled to a ≈ 30 m grid | Datenlizenz Deutschland – Namensnennung – 2.0 | `braunschweig-terrain.dem` |
+
+Attribution: © OpenStreetMap contributors; © LGLN – Landesamt für
+Geoinformation und Landesvermessung Niedersachsen (dl-de/by-2-0).
+
+## Where the LGLN files are
+
+LGLN's OpenGeoData portal is a web application; its files lie in public object
+storage buckets, discovered with a probe workflow:
+
+* LoD2: `https://lod2.s3.eu-de.cloud-object-storage.appdomain.cloud/LoD2_32_<E km>_<N km>_1_ni.gml`
+  (CityGML 2.0; an older index with download links is
+  `https://single-datasets.opengeodata.lgln.niedersachsen.de/pro-download-indices/lod2/lgln-opengeodata-lod2.geojson`).
+* DGM1: `https://dgm1.s3.eu-de.cloud-object-storage.appdomain.cloud/L<lot>/<Vollkacheln|Randkacheln|…>/dgm1_32_<E km>_<N km>_1_ni_<year>.tif`
+  (found by listing the bucket; the newest year of a tile wins).
+
+## Pipeline
+
+1. Cut Braunschweig out of the Lower Saxony extract (`osmium extract`, complete
+   boundary relations).
+2. `Tools/cities/extract_osm_areas.py`: outline and districts, simplified to 2 m.
+3. `Tools/berlin/extract_buildings.py`: OSM footprints.
+4. `Tools/cities/lgln_lod2.py`: the LoD2 tiles intersecting the outline,
+   downloaded six at a time, extracted with `Tools/berlin/extract_lod2.py`
+   (any CityGML version, source CRS EPSG:25832) and deleted again.
+5. `apply_lod2_heights.py` and `mapquest-import buildings --complete-inside …`:
+   the SQLite building database, zoom-14 tiles inside the outline marked
+   complete; then compressed (raw DEFLATE).
+6. `Tools/cities/lgln_terrain.py`: the DGM1 tiles around the city → MQDEM001.
+
+Steps 4 and 6 are best effort: without them the buildings keep their OSM
+heights (tags, levels, estimates) and the city has no terrain model – fixes
+there then count as street level (docs/02-architecture.md, Cities).
+
+## Demo
+
+The demo explorer's track (`Tools/berlin/make_demo_data.py`) includes a day
+trip through Braunschweig's old town on 24 October 2026.

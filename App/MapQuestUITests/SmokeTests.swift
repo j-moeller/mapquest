@@ -97,13 +97,50 @@ final class SmokeTests: XCTestCase {
         }
         demo.tap()
         app.buttons["Done"].tap()
-        pause(120)
+        pause(180) // the demo track (113 000 fixes at 1 Hz) is imported through the recorder
         app.buttons["Radius"].tap()
         pause(3)
         screenshot("06-demo-explorer")
         if map.exists {
             map.pinch(withScale: 0.2, velocity: -3)
             screenshot("07-demo-zoomed-out-immediately")
+            pause(2)
+        }
+
+        // Time-based view: October 2026 (commutes, walks, a day in Braunschweig).
+        let timeSpan = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Time span'")).firstMatch
+        if timeSpan.waitForExistence(timeout: 5) {
+            timeSpan.tap()
+            let month = app.buttons["Month"]
+            if month.waitForExistence(timeout: 3) { month.tap() }
+            let previous = app.buttons["Previous month"]
+            if previous.waitForExistence(timeout: 5) { previous.tap() }
+            pause(25)
+            screenshot("08-month-fog")
+
+            // Heatmap of the same month.
+            let show = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Show'")).firstMatch
+            if show.waitForExistence(timeout: 3) {
+                show.tap()
+                let heatmap = app.buttons["Heatmap"]
+                if heatmap.waitForExistence(timeout: 3) { heatmap.tap() }
+                pause(10)
+                screenshot("09-month-heatmap")
+                if map.exists {
+                    map.pinch(withScale: 3, velocity: 3)
+                    pause(6)
+                    screenshot("10-heatmap-zoomed-in")
+                }
+            }
+        }
+
+        // Both cities in the districts list.
+        settings.tap()
+        let districts = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Districts of'")).firstMatch
+        if districts.waitForExistence(timeout: 5) {
+            districts.tap()
+            pause(8)
+            screenshot("11-districts")
         }
     }
 }

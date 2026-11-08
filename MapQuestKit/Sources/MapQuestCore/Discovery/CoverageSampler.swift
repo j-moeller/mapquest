@@ -1,7 +1,7 @@
 import Foundation
 
 /// Reduces a stream of position fixes to the few that matter for area
-/// calculations (docs/01-literature-review.md, §2.4).
+/// calculations (docs/01-literature-review.md, §2.6).
 ///
 /// At one fix per second, consecutive fixes reveal almost the same area. The
 /// sampler is an *opening window* trajectory simplification (Meratnia & de By

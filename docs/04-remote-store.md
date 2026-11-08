@@ -45,6 +45,10 @@ base64-encoded PolygonCodec blob relative to the tile origin.
 | `DELETE /v1/pieces?layer=…` | `removeAllPieces(layer:)` | also deletes the layer's data watermarks |
 | `GET /v1/layers` | `layers()` | `[String]` |
 | `GET /v1/data-versions?layer=…` | `dataVersions(layer:)` | `[DataVersion]` (docs/05-cache-invalidation.md) |
+| `PUT /v1/track` | `putTrackSegments` | body: `[TrackSegment]`, upsert by `id` |
+| `GET /v1/track` | `trackSegments(overlapping:intersecting:)` | optional `from`/`to` (Unix seconds), `minX/minY/maxX/maxY` (world units) |
+| `GET /v1/track/summary` | `trackSummary` | `{segmentCount, pointCount, byteCount, first, last}` |
+| `DELETE /v1/track` | `removeAllTrack` | |
 
 ```json
 Sample: {"id": "…", "latitude": 52.52, "longitude": 13.41, "altitude": 36.0,
@@ -56,6 +60,8 @@ Piece:  {"id": "…", "layer": "circle-50m", "regionID": "…", "tileZoom": 16, 
 Change: {"layer": "circle-50m", "regionMerges": [{"sources": ["…"], "target": "…"}],
          "removedPieceIDs": ["…"], "upsertedPieces": [Piece], "dataVersions": [DataVersion]}
 DataVersion: {"zoom": 14, "x": 8802, "y": 5373, "version": "bundle:1760000000"}
+TrackSegment: {"id": "…", "start": 1760000000, "end": 1760000599.9, "minX": …, "minY": …,
+               "maxX": …, "maxY": …, "pointCount": 600, "data": "AdgE…"}  (data: TrackCodec v1, base64)
 ```
 
 Errors: HTTP status with `{"error": "…"}` (401 for missing or unknown tokens).

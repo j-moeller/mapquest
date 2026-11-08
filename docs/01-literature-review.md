@@ -142,6 +142,51 @@ for geodata.
   in-memory store (tests, previews) and future remote stores are
   interchangeable.
 
+### 2.6 Update: the continuous track and reducing it for area calculations
+
+Time-based views (per day, week, month, year) and heatmaps need *every*
+position, not only those that changed the map, so a second store keeps the
+**continuous track** at about one fix per second.
+
+**Size.** A fix of three 32-bit values plus a 64-bit timestamp is 20 bytes;
+at 1 Hz around the clock that is 365 × 86 400 × 20 B ≈ **630 MB per year**
+(not a few megabytes), and a SQLite row with doubles, a key and an index costs
+two to three times more. Consecutive fixes are highly correlated, however:
+storing quantized *differences* as variable-length integers – the zig-zag
+varints of Protocol Buffers [44], the idea behind Google's encoded polylines
+and of integer compression in general [45] – needs 1–2 bytes per value. After
+quantization far below GNSS accuracy (0.1 s, 10⁻⁶° ≈ 0.11 m, 1 dm) MapQuest
+measures **6.0 bytes per fix** for a 1 Hz walk with realistic noise
+(`TrackTests`): ≈ 190 MB per year around the clock, ≈ 15 MB for two hours a
+day. Fixes are grouped into segments of ≤ 10 minutes (one row per segment with
+its time span and bounding box), like the trajectory "segments" of TrajStore
+[46]; segments, not points, are the unit of storage and query.
+
+**Reducing the track for area calculations.** At 1 Hz almost every fix is
+superfluous for the discovered area: walking at 1.4 m/s, consecutive 50 m
+circles differ by a sliver, and standing still produces only GNSS jitter.
+Trajectory simplification is well studied: Douglas–Peucker [47] (offline)
+and the *opening window* algorithms [48] (online) keep a point only when the
+skipped points would deviate from the chord between kept points by more than
+a tolerance; stay-point detection [49] collapses stationary periods; surveys
+compare the trade-offs [50]. MapQuest's `CoverageSampler` is an opening window
+adapted to coverage: a fix is kept when a skipped fix would leave its
+tolerance (1.5 × its own accuracy, 3–20 m) of the chord, when the chord exceeds
+a spacing of 10 m, when the altitude changes beyond the vertical accuracy, or
+after 30 s of slow movement; jitter within the tolerance never counts as
+movement. Every skipped fix then lies within its tolerance of the polyline of
+kept fixes, so for circles of radius r the area misses at most
+`tolerance + r − √(r² − spacing²/4)` along its outline – less than the
+positions' own uncertainty. Offline (period views), revisits within half the
+spacing are merged as well. A 1 Hz day of 30 940 fixes (8 h of stays, 3 km of
+walking) shrinks to 637 evaluated fixes online and 172 with revisits merged
+(0.6 %); a city walk loses 0.2 % of its viewshed area (`CoverageSamplerTests`).
+
+**Heatmaps** are kernel density estimates [51] of the time spent: every fix is
+weighted by the time until the next one, binned into screen-sized cells and
+smoothed with three box blurs, which approximate a Gaussian kernel [52]; a
+logarithmic colour scale keeps a single walk visible next to a daily commute.
+
 ---
 
 ## 3. Representing and merging the discovered area
@@ -429,3 +474,12 @@ shortcut.
 41. J. Amanatides, A. Woo. *A fast voxel traversal algorithm for ray tracing.* Proc. Eurographics 1987, pp. 3–10.
 42. Y.-A. de Montjoye, C. A. Hidalgo, M. Verleysen, V. D. Blondel. *Unique in the Crowd: The privacy bounds of human mobility.* Scientific Reports 3, 2013, article 1376.
 43. J. Krumm. *A survey of computational location privacy.* Personal and Ubiquitous Computing 13(6), 2009, pp. 391–399.
+44. Google. *Protocol Buffers – Encoding* (varints, zig-zag encoding). https://protobuf.dev/programming-guides/encoding/
+45. D. Lemire, L. Boytsov. *Decoding billions of integers per second through vectorization.* Software: Practice and Experience 45(1), 2015, pp. 1–29.
+46. P. Cudré-Mauroux, E. Wu, S. Madden. *TrajStore: An adaptive storage system for very large trajectory data sets.* Proc. IEEE ICDE 2010, pp. 109–120.
+47. D. H. Douglas, T. K. Peucker. *Algorithms for the reduction of the number of points required to represent a digitized line or its caricature.* Cartographica 10(2), 1973, pp. 112–122.
+48. N. Meratnia, R. A. de By. *Spatiotemporal compression techniques for moving point objects.* Proc. EDBT 2004, LNCS 2992, pp. 765–782.
+49. Q. Li, Y. Zheng, X. Xie, Y. Chen, W. Liu, W.-Y. Ma. *Mining user similarity based on location history.* Proc. ACM SIGSPATIAL GIS 2008, article 34.
+50. J. Muckell, P. W. Olsen Jr., J.-H. Hwang, C. T. Lawson, S. S. Ravi. *Compression of trajectory data: a comprehensive evaluation and new approach.* GeoInformatica 18(3), 2014, pp. 435–460.
+51. B. W. Silverman. *Density Estimation for Statistics and Data Analysis.* Chapman & Hall, 1986.
+52. W. M. Wells. *Efficient synthesis of Gaussian filters by cascaded uniform filters.* IEEE Transactions on Pattern Analysis and Machine Intelligence 8(2), 1986, pp. 234–239.

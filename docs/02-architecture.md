@@ -41,6 +41,23 @@ the core can be verified without Xcode.
 | `timestamp` | Date | When the fix was taken (timeline) |
 | `tile` *(derived)* | TileKey | Zoom-16 tile: the spatial index key |
 
+These *key samples* are the fixes that changed the map; the discovered area is
+derived from them. Every fix (about one per second) is also kept in the
+**track** (below).
+
+### Track (continuous location data)
+
+`TrackPoint` is a quantized fix – time in 0.1 s, latitude/longitude in 10⁻⁶°
+(≈ 0.11 m), altitude and accuracies in decimetres. `TrackCodec` stores runs of
+fixes as zig-zag varint deltas (≈ 6 bytes per fix at 1 Hz, lossless after
+quantization; docs/01-literature-review.md §2.6). A `TrackSegment` is one such
+run (≤ 600 fixes, no gap over 2 minutes) with its time span and bounding box;
+segments are the unit of storage and query (`TrackStore`). The `TrackWriter`
+buffers the open segment and rewrites it every 30 fixes or 30 s, so at most
+that much is lost if the app is killed; it is flushed when the app goes to
+the background. Track points become `LocationSample`s with IDs derived from
+their time, so period computations can refresh like the main layers.
+
 ### Discovered area (cache)
 
 * `DiscoveryLayerID` – one layer per discovery model (`circle-50m`,
@@ -82,7 +99,7 @@ always travel together. Implementations:
 | `InMemoryDataStore` | Tests, previews, staging during cache rebuilds |
 | `SQLiteDataStore` | The local database: one SQLite file per data source (user profile) |
 
-### SQLite schema (version 1, `PRAGMA user_version`)
+### SQLite schema (version 3, `PRAGMA user_version`)
 
 ```sql
 CREATE TABLE location_samples (
@@ -107,6 +124,20 @@ CREATE INDEX discovered_pieces_tile ON discovered_pieces (layer, tile_x, tile_y)
 CREATE INDEX discovered_pieces_region ON discovered_pieces (layer, region_id);
 
 CREATE TABLE metadata (key TEXT PRIMARY KEY, value TEXT);
+
+-- version 2: data watermarks (docs/05-cache-invalidation.md)
+CREATE TABLE layer_data_versions (
+    layer TEXT, zoom INTEGER, x INTEGER, y INTEGER, version TEXT,
+    PRIMARY KEY (layer, zoom, x, y)
+) WITHOUT ROWID;
+
+-- version 3: the continuous track
+CREATE TABLE track_segments (
+    id TEXT PRIMARY KEY, start_time REAL, end_time REAL,
+    min_x INTEGER, min_y INTEGER, max_x INTEGER, max_y INTEGER,  -- world bounding box
+    point_count INTEGER, data BLOB                               -- TrackCodec v1
+);
+CREATE INDEX track_segments_time ON track_segments (start_time, end_time);
 ```
 
 The store runs every call on a private serial dispatch queue and uses WAL
@@ -158,19 +189,47 @@ this at start), otherwise tiles are loaded lazily on first use.
 
 Receives every position fix and:
 
-1. rejects invalid fixes, fixes worse than 50 m (1σ) and fixes outside the
-   play area;
-2. skips fixes within 5 m horizontally and 3 m vertically of the last
-   evaluated fix (standing still costs nothing; a viewshed from a tower takes
+1. writes every valid fix to the track (the app does this directly, so the
+   track keeps recording while a layer is rebuilt);
+2. rejects fixes worse than 50 m (1σ) and fixes outside the play area;
+3. lets the `CoverageSampler` choose the fixes worth evaluating: about one per
+   10 m of movement, corners and climbs, nothing for jitter while standing
+   still (docs/01-literature-review.md §2.6; a viewshed from a tower takes
    about a second);
-3. evaluates the fix with every engine;
-4. stores the fix only if, for at least one layer, ≥ 10 % of the revealed area
-   or ≥ 2 000 m² is new (`RecordingPolicy`);
-5. commits every stored fix to **every** layer, so each layer always equals a
+4. evaluates the sampled fix with every engine;
+5. stores the fix as a key sample only if, for at least one layer, ≥ 10 % of
+   the revealed area or ≥ 2 000 m² is new (`RecordingPolicy`);
+6. commits every stored fix to **every** layer, so each layer always equals a
    rebuild from the stored samples.
 
 With a 50 m radius this stores about one fix per 10 m of *new* path and none
 while moving through known territory.
+
+### Time-based views and statistics
+
+`Period` is a calendar day, week, month or year (the user's calendar).
+`PeriodDiscovery` computes the area revealed during a period with any
+discovery model: a day's track is reduced by the `CoverageSampler` (revisits
+merged) and rebuilt in a scratch engine. Completed days are cached as layers
+`<layer>@day:<date>:s<spacing>` in the data store, with data watermarks, so new
+building data recomputes them; the current day is recomputed when its track
+grew. Weeks, months and years are per-tile unions of their days.
+`TrackStatistics` gives distance (along the sampled path, so jitter does not
+add up), recorded time and active days, also per day.
+
+`HeatmapGrid` bins `WeightedPoint`s (time until the next fix, ≤ 5 s) into a
+grid, blurs it three times with a box filter (≈ Gaussian) and colours it on a
+logarithmic scale up to the 99th percentile.
+
+### Cities
+
+The app bundles data per city (`Cities`): `<id>-boundary.geojson`,
+`<id>-districts.geojson`, `<id>-terrain.dem` and
+`<id>-buildings.sqlite.deflate`, each optional. Positions are recorded inside
+all cities; the terrain models form a `CompositeTerrain` (where none has data,
+fixes count as street level) and the building databases a
+`CompositeBuildingCache`. Berlin: docs/03-berlin-data.md; Braunschweig:
+docs/06-braunschweig-data.md.
 
 ## 3D discovery (line of sight)
 
@@ -225,13 +284,15 @@ marks the 3D layer as *stale*, and the app offers a rebuild once online.
 | File | Role |
 |---|---|
 | `App/MapQuest/Location/LocationTracker.swift` | `CLLocationManager` wrapper: permission, continuous updates (also in the background), significant-change relaunch |
-| `App/MapQuest/AppModel.swift` | Streams fixes sequentially through the `LocationRecorder`, owns the selected data source, publishes snapshots and statistics |
+| `App/MapQuest/AppModel.swift` | Writes every fix to the track and streams fixes through the `LocationRecorder`, owns the selected data source, publishes snapshots and statistics, refreshes areas when building data changes |
+| `App/MapQuest/ViewOptions.swift`, `Views/ViewBar.swift` | Viewing options: fog of war or heatmap; all time or a day/week/month/year (computed in the background, live while the period includes now) |
+| `App/MapQuest/Cities.swift` | Bundled cities (outline, districts, terrain, buildings) |
 | `App/MapQuest/DataSourceCatalog.swift` | Profiles (own data, other users, demo); one SQLite file each; only the own profile records |
-| `App/MapQuest/Map2D/FogOverlay.swift` | World-covering `MKOverlay` and its renderer |
-| `App/MapQuest/Map2D/FogMapView.swift` | `MKMapView` wrapper with fog, play-area outline and user tracking |
+| `App/MapQuest/Map2D/FogLayerView.swift` | Fog of war, heatmap raster, play-area outline and position marker, moving with the map frame by frame |
+| `App/MapQuest/Map2D/FogMapView.swift` | `MKMapView` wrapper with the fog view and user tracking |
 | `App/MapQuest/Map3D/*` | SceneKit scene: extruded buildings, fogged ground, user marker |
 | `App/MapQuest/Debug/*` | Debug settings (parameters, test positions, evaluation overlay) |
-| `App/MapQuest/BundledBuildings.swift` | Unpacks the bundled Berlin building database |
+| `App/MapQuest/BundledBuildings.swift` | Unpacks the bundled building databases (one per city) |
 | `App/MapQuest/Keychain.swift`, `Views/AddRemoteSourceView.swift` | Remote data sources (token in the Keychain) |
 | `App/MapQuestUITests/` | Smoke test on an iPhone 13 mini simulator (workflow *UI smoke test*) |
 | `App/MapQuest/Views/*` | Main screen (2D/3D switch), statistics panel, settings, districts |
@@ -305,3 +366,12 @@ visible area left the covered area. The 2D map has no pitch (the 3D mode shows
 perspective), so an affine transform suffices. The play-area outline and a
 position marker (MapKit's own dot lies below the fog) are drawn by the same
 view.
+
+### Heatmap rendering (2D)
+
+In heatmap mode the same view dims the map and shows a raster of the time
+spent: for an area three screens wide around the view, `HeatmapGrid` bins the
+period's weighted fixes into 2.5-point cells, blurs them (≈ 12 points) and
+colours them – off the main thread; the image is placed with an affine
+transform from three converted corners each frame, like the fog, and rebuilt
+when the view leaves the covered area or the zoom changes by 1.5×.
