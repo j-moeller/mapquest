@@ -614,7 +614,8 @@ final class AppModel: ObservableObject {
         }
         do {
             lastOutcome = "Rebuilding discovered area…"
-            scheduleDataRefresh(try await recorder.rebuildAllLayers())
+            let stale = try await recorder.rebuildAllLayers()
+            scheduleDataRefresh(stale)
             failedLayers = []
             lastOutcome = "Discovered area rebuilt"
         } catch {
