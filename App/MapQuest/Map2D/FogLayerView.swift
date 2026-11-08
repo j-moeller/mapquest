@@ -200,7 +200,8 @@ final class FogLayerView: UIView {
         }
         blurView.isHidden = false
         let animator = UIViewPropertyAnimator(duration: 1, curve: .linear) { [blurView] in
-            blurView.effect = UIBlurEffect(style: .regular)
+            // The dark style: its tint matches the fog (the light one would wash it out in light mode).
+            blurView.effect = UIBlurEffect(style: .dark)
         }
         animator.pausesOnCompletion = true
         animator.fractionComplete = CGFloat(min(max(fraction, 0), 1))

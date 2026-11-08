@@ -375,7 +375,8 @@ Two optional effects (Settings › Debug, `FogStyle`):
 * **Blur under the fog** – a `UIVisualEffectView` below the fog colour, masked
   by the same fog path (and the soft band), so undiscovered map is frosted as
   well as darkened. Its strength (0–100 %) is the progress of a paused
-  animation from no effect to the system blur (`UIViewPropertyAnimator`); the
+  animation from no effect to the system's dark blur (`UIViewPropertyAnimator`;
+  the dark style's tint matches the fog, the light one washed it out); the
   animator is stopped when the view leaves the window and restarted when it
   comes back or the app returns to the foreground. It shows through the fog
   only below 100 % opacity.
