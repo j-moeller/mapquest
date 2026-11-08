@@ -28,8 +28,8 @@ public struct WeightedPoint: Hashable, Sendable {
 /// Every fix adds the time until the next fix (at most `maximumWeight` seconds),
 /// so the value of a cell is roughly the time spent there. The grid is smoothed
 /// with three box blurs (≈ Gaussian kernel density estimate, cf. Silverman 1986)
-/// and drawn with a logarithmic colour scale, so that both a daily commute and a
-/// single walk stay visible.
+/// and drawn with a logarithmic colour scale up to the hottest cell, so that a
+/// daily commute glows red while a single walk stays blue.
 public struct HeatmapGrid: Sendable {
     /// Top-left corner (world coordinates; y grows southwards, row 0 is the top).
     public let origin: WorldPoint
@@ -102,20 +102,18 @@ public struct HeatmapGrid: Sendable {
         return output
     }
 
-    /// The value treated as "hot": the 99th percentile of non-empty cells (robust to outliers).
-    public var reference: Float {
-        let filled = values.filter { $0 > 0 }.sorted()
-        guard !filled.isEmpty else { return 0 }
-        return filled[min(filled.count - 1, Int(Double(filled.count) * 0.99))]
-    }
+    /// The value drawn as hottest: the maximum.
+    public var reference: Float { maximum }
 
-    /// Premultiplied RGBA pixels (row 0 = top), logarithmic scale up to `reference`.
-    public func rgba(reference: Float? = nil) -> [UInt8] {
+    /// Premultiplied RGBA pixels (row 0 = top), logarithmic scale up to `reference`;
+    /// intensities below `cutoff` stay transparent (the blur's faint tails).
+    public func rgba(reference: Float? = nil, cutoff: Float = 0.03) -> [UInt8] {
         let top = max(reference ?? self.reference, 1e-6)
         let scale = 1 / log1p(top)
         var pixels = [UInt8](repeating: 0, count: values.count * 4)
         for (i, value) in values.enumerated() where value > 0 {
             let t = min(1, log1p(value) * scale)
+            guard t >= cutoff else { continue }
             let (r, g, b, a) = HeatmapPalette.color(t)
             pixels[i * 4] = r
             pixels[i * 4 + 1] = g

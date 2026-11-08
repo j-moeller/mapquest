@@ -137,8 +137,8 @@ final class FogLayerView: UIView {
                 let area = MapPointConversion.worldRect(for: rect)
                 var grid = HeatmapGrid(covering: area, cellSize: cellSize)
                 grid.add(points.filter { area.contains($0.point) })
-                // ≈ 12 points of smoothing on screen.
-                return Self.image(of: grid.blurred(radius: 5))
+                // ≈ 6 points (σ) of smoothing on screen.
+                return Self.image(of: grid.blurred(radius: 2))
             }.value
             guard let self else { return }
             self.isComputingHeat = false

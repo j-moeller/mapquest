@@ -219,7 +219,8 @@ add up), recorded time and active days, also per day.
 
 `HeatmapGrid` bins `WeightedPoint`s (time until the next fix, ≤ 5 s) into a
 grid, blurs it three times with a box filter (≈ Gaussian) and colours it on a
-logarithmic scale up to the 99th percentile.
+logarithmic scale up to the hottest cell (faint tails below 3 % stay
+transparent).
 
 ### Cities
 
@@ -371,7 +372,7 @@ view.
 
 In heatmap mode the same view dims the map and shows a raster of the time
 spent: for an area three screens wide around the view, `HeatmapGrid` bins the
-period's weighted fixes into 2.5-point cells, blurs them (≈ 12 points) and
+period's weighted fixes into 2.5-point cells, blurs them (σ ≈ 6 points) and
 colours them – off the main thread; the image is placed with an affine
 transform from three converted corners each frame, like the fog, and rebuilt
 when the view leaves the covered area or the zoom changes by 1.5×.
