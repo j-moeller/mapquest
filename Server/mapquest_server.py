@@ -147,6 +147,10 @@ class Handler(BaseHTTPRequestHandler):
             ("POST", "/v1/changes"): self.post_changes,
             ("GET", "/v1/layers"): self.get_layers,
             ("GET", "/v1/data-versions"): self.get_data_versions,
+            ("PUT", "/v1/track"): self.put_track,
+            ("GET", "/v1/track"): self.get_track,
+            ("GET", "/v1/track/summary"): self.track_summary,
+            ("DELETE", "/v1/track"): self.delete_track,
             ("GET", "/v1/me"): self.get_me,
         }.get((method, url.path))
         conn = None
@@ -270,6 +274,56 @@ class Handler(BaseHTTPRequestHandler):
     def get_layers(self, cur, owner, query):
         cur.execute("SELECT DISTINCT layer FROM discovered_pieces WHERE owner = %s ORDER BY layer", (owner,))
         return [row[0] for row in cur.fetchall()]
+
+    def put_track(self, cur, owner, query):
+        segments = self.body()
+        if not isinstance(segments, list):
+            raise ApiError(HTTPStatus.BAD_REQUEST, "expected a list of track segments")
+        for s in segments:
+            cur.execute(
+                """INSERT INTO track_segments
+                   (owner, id, start_time, end_time, min_x, min_y, max_x, max_y, point_count, data)
+                   VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                   ON CONFLICT (owner, id) DO UPDATE SET
+                     start_time = excluded.start_time, end_time = excluded.end_time,
+                     min_x = excluded.min_x, min_y = excluded.min_y, max_x = excluded.max_x, max_y = excluded.max_y,
+                     point_count = excluded.point_count, data = excluded.data""",
+                (owner, s["id"], float(s["start"]), float(s["end"]), int(s["minX"]), int(s["minY"]),
+                 int(s["maxX"]), int(s["maxY"]), int(s["pointCount"]), base64.b64decode(s["data"])),
+            )
+        return {"stored": len(segments)}
+
+    def get_track(self, cur, owner, query):
+        conditions, params = ["owner = %s"], [owner]
+        if "from" in query or "to" in query:
+            conditions.append("end_time >= %s AND start_time <= %s")
+            params += [number(query, "from"), number(query, "to")]
+        if "minX" in query:
+            conditions.append("max_x >= %s AND min_x <= %s AND max_y >= %s AND min_y <= %s")
+            params += [number(query, "minX", int), number(query, "maxX", int), number(query, "minY", int), number(query, "maxY", int)]
+        cur.execute(
+            "SELECT id, start_time, end_time, min_x, min_y, max_x, max_y, point_count, data FROM track_segments WHERE "
+            + " AND ".join(conditions) + " ORDER BY start_time, id",
+            params,
+        )
+        return [
+            {"id": str(r[0]).upper(), "start": r[1], "end": r[2], "minX": r[3], "minY": r[4], "maxX": r[5], "maxY": r[6],
+             "pointCount": r[7], "data": base64.b64encode(bytes(r[8])).decode("ascii")}
+            for r in cur.fetchall()
+        ]
+
+    def track_summary(self, cur, owner, query):
+        cur.execute(
+            "SELECT COUNT(*), COALESCE(SUM(point_count), 0), COALESCE(SUM(LENGTH(data)), 0), MIN(start_time), MAX(end_time) "
+            "FROM track_segments WHERE owner = %s",
+            (owner,),
+        )
+        count, points, size, first, last = cur.fetchone()
+        return {"segmentCount": count, "pointCount": int(points), "byteCount": int(size), "first": first, "last": last}
+
+    def delete_track(self, cur, owner, query):
+        cur.execute("DELETE FROM track_segments WHERE owner = %s", (owner,))
+        return {"deleted": cur.rowcount}
 
     def get_data_versions(self, cur, owner, query):
         layer = query.get("layer", [None])[0]

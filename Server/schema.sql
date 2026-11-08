@@ -1,4 +1,4 @@
--- MapQuest remote store: PostgreSQL schema (version 2: data watermarks).
+-- MapQuest remote store: PostgreSQL schema (version 3: the continuous track).
 -- Mirrors the local SQLite schema (docs/02-architecture.md) with an `owner`
 -- column, so one database serves many users. Apply with:
 --   psql "$DATABASE_URL" -f Server/schema.sql
@@ -57,6 +57,23 @@ CREATE TABLE IF NOT EXISTS layer_data_versions (
     version text NOT NULL,
     PRIMARY KEY (owner, layer, zoom, x, y)
 );
+
+-- The continuous location track: delta-encoded segments (TrackCodec), see
+-- docs/02-architecture.md. World coordinates are Web Mercator in a 2^32 world.
+CREATE TABLE IF NOT EXISTS track_segments (
+    owner       text NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    id          uuid NOT NULL,
+    start_time  double precision NOT NULL,   -- Unix seconds
+    end_time    double precision NOT NULL,
+    min_x       bigint NOT NULL,
+    min_y       bigint NOT NULL,
+    max_x       bigint NOT NULL,
+    max_y       bigint NOT NULL,
+    point_count integer NOT NULL,
+    data        bytea NOT NULL,
+    PRIMARY KEY (owner, id)
+);
+CREATE INDEX IF NOT EXISTS track_segments_time ON track_segments (owner, start_time, end_time);
 
 -- Applies a DiscoveredAreaChangeSet atomically: region merges, then removals,
 -- then upserts, then data watermarks.

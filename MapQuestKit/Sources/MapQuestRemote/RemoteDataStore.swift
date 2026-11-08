@@ -105,6 +105,43 @@ public final class RemoteDataStore: MapQuestDataStore, @unchecked Sendable {
         return Dictionary(rows.map { (TileKey(zoom: $0.zoom, x: $0.x, y: $0.y), $0.version) }) { _, last in last }
     }
 
+    // MARK: TrackStore
+
+    public func putTrackSegments(_ segments: [TrackSegment]) async throws {
+        guard !segments.isEmpty else { return }
+        let _: Ignored = try await request("PUT", "v1/track", body: segments.map(TrackSegmentDTO.init))
+    }
+
+    public func trackSegments(overlapping interval: DateInterval?, intersecting rect: WorldRect?) async throws -> [TrackSegment] {
+        var items: [URLQueryItem] = []
+        if let interval {
+            items += [
+                URLQueryItem(name: "from", value: "\(interval.start.timeIntervalSince1970)"),
+                URLQueryItem(name: "to", value: "\(interval.end.timeIntervalSince1970)"),
+            ]
+        }
+        if let rect {
+            items += [
+                URLQueryItem(name: "minX", value: "\(rect.minX)"), URLQueryItem(name: "minY", value: "\(rect.minY)"),
+                URLQueryItem(name: "maxX", value: "\(rect.maxX)"), URLQueryItem(name: "maxY", value: "\(rect.maxY)"),
+            ]
+        }
+        let rows: [TrackSegmentDTO] = try await request("GET", "v1/track", query: items)
+        return try rows.map { try $0.segment() }
+    }
+
+    public func trackSummary() async throws -> TrackSummary {
+        let summary: TrackSummaryDTO = try await request("GET", "v1/track/summary")
+        return TrackSummary(
+            segmentCount: summary.segmentCount, pointCount: summary.pointCount, byteCount: summary.byteCount,
+            first: summary.first.map(Date.init(timeIntervalSince1970:)), last: summary.last.map(Date.init(timeIntervalSince1970:))
+        )
+    }
+
+    public func removeAllTrack() async throws {
+        let _: Ignored = try await request("DELETE", "v1/track")
+    }
+
     // MARK: HTTP
 
     private static func tileItems(_ tiles: TileRange) -> [URLQueryItem] {
@@ -236,6 +273,48 @@ struct PieceDTO: Codable {
             lastUpdated: Date(timeIntervalSince1970: lastUpdated)
         )
     }
+}
+
+struct TrackSegmentDTO: Codable {
+    var id: String
+    var start: Double
+    var end: Double
+    var minX: Int64
+    var minY: Int64
+    var maxX: Int64
+    var maxY: Int64
+    var pointCount: Int
+    var data: String
+
+    init(_ segment: TrackSegment) {
+        id = segment.id.uuidString
+        start = segment.start.timeIntervalSince1970
+        end = segment.end.timeIntervalSince1970
+        minX = segment.bounds.minX
+        minY = segment.bounds.minY
+        maxX = segment.bounds.maxX
+        maxY = segment.bounds.maxY
+        pointCount = segment.pointCount
+        data = segment.data.base64EncodedString()
+    }
+
+    func segment() throws -> TrackSegment {
+        guard let uuid = UUID(uuidString: id), let blob = Data(base64Encoded: data) else {
+            throw RemoteDataStore.RemoteError.invalidResponse
+        }
+        return TrackSegment(
+            id: uuid, start: Date(timeIntervalSince1970: start), end: Date(timeIntervalSince1970: end),
+            bounds: WorldRect(minX: minX, minY: minY, maxX: maxX, maxY: maxY), pointCount: pointCount, data: blob
+        )
+    }
+}
+
+struct TrackSummaryDTO: Decodable {
+    var segmentCount: Int
+    var pointCount: Int
+    var byteCount: Int
+    var first: Double?
+    var last: Double?
 }
 
 struct DataVersionDTO: Codable {

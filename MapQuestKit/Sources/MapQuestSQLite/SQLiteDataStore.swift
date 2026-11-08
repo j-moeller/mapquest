@@ -15,7 +15,7 @@ public final class SQLiteDataStore: MapQuestDataStore, @unchecked Sendable {
     private let queue: DispatchQueue
 
     /// The schema version this code writes. Bump and add a migration step for every change.
-    public static let schemaVersion = 2
+    public static let schemaVersion = 3
 
     /// Opens or creates the database at `url`.
     public convenience init(fileURL url: URL, descriptor: DataSourceDescriptor? = nil) throws {
@@ -108,6 +108,23 @@ public final class SQLiteDataStore: MapQuestDataStore, @unchecked Sendable {
                     version TEXT NOT NULL,
                     PRIMARY KEY (layer, zoom, x, y)
                 ) WITHOUT ROWID;
+                """)
+            }
+            if version < 3 {
+                // The continuous track (TrackCodec blobs, docs/02-architecture.md).
+                try db.execute("""
+                CREATE TABLE track_segments (
+                    id          TEXT PRIMARY KEY NOT NULL,
+                    start_time  REAL NOT NULL,
+                    end_time    REAL NOT NULL,
+                    min_x       INTEGER NOT NULL,
+                    min_y       INTEGER NOT NULL,
+                    max_x       INTEGER NOT NULL,
+                    max_y       INTEGER NOT NULL,
+                    point_count INTEGER NOT NULL,
+                    data        BLOB NOT NULL
+                );
+                CREATE INDEX track_segments_time ON track_segments (start_time, end_time);
                 """)
             }
             try db.setUserVersion(schemaVersion)
@@ -350,6 +367,87 @@ public final class SQLiteDataStore: MapQuestDataStore, @unchecked Sendable {
             }
             statement.reset()
             return result
+        }
+    }
+
+    // MARK: TrackStore
+
+    public func putTrackSegments(_ segments: [TrackSegment]) async throws {
+        guard !segments.isEmpty else { return }
+        try await perform { db in
+            try db.transaction {
+                let insert = try db.prepare("""
+                INSERT OR REPLACE INTO track_segments (id, start_time, end_time, min_x, min_y, max_x, max_y, point_count, data)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """)
+                for segment in segments {
+                    try insert.run([
+                        .text(segment.id.uuidString),
+                        .real(segment.start.timeIntervalSince1970), .real(segment.end.timeIntervalSince1970),
+                        .integer(segment.bounds.minX), .integer(segment.bounds.minY),
+                        .integer(segment.bounds.maxX), .integer(segment.bounds.maxY),
+                        .integer(Int64(segment.pointCount)), .blob(segment.data),
+                    ])
+                }
+            }
+        }
+    }
+
+    public func trackSegments(overlapping interval: DateInterval?, intersecting rect: WorldRect?) async throws -> [TrackSegment] {
+        try await perform { db in
+            var sql = "SELECT id, start_time, end_time, min_x, min_y, max_x, max_y, point_count, data FROM track_segments WHERE 1 = 1"
+            var values: [SQLiteValue] = []
+            if let interval {
+                sql += " AND end_time >= ? AND start_time <= ?"
+                values += [.real(interval.start.timeIntervalSince1970), .real(interval.end.timeIntervalSince1970)]
+            }
+            if let rect {
+                sql += " AND max_x >= ? AND min_x <= ? AND max_y >= ? AND min_y <= ?"
+                values += [.integer(rect.minX), .integer(rect.maxX), .integer(rect.minY), .integer(rect.maxY)]
+            }
+            sql += " ORDER BY start_time, id"
+            let statement = try db.prepare(sql)
+            try statement.bind(values)
+            var result: [TrackSegment] = []
+            while try statement.step() {
+                guard let id = UUID(uuidString: statement.string(at: 0)) else { continue }
+                result.append(TrackSegment(
+                    id: id,
+                    start: Date(timeIntervalSince1970: statement.double(at: 1)),
+                    end: Date(timeIntervalSince1970: statement.double(at: 2)),
+                    bounds: WorldRect(
+                        minX: statement.int64(at: 3), minY: statement.int64(at: 4),
+                        maxX: statement.int64(at: 5), maxY: statement.int64(at: 6)
+                    ),
+                    pointCount: statement.int(at: 7),
+                    data: statement.data(at: 8)
+                ))
+            }
+            statement.reset()
+            return result
+        }
+    }
+
+    public func trackSummary() async throws -> TrackSummary {
+        try await perform { db in
+            let statement = try db.prepare("""
+            SELECT COUNT(*), COALESCE(SUM(point_count), 0), COALESCE(SUM(LENGTH(data)), 0), MIN(start_time), MAX(end_time)
+            FROM track_segments
+            """)
+            guard try statement.step() else { return TrackSummary() }
+            let summary = TrackSummary(
+                segmentCount: statement.int(at: 0), pointCount: statement.int(at: 1), byteCount: statement.int(at: 2),
+                first: statement.isNull(at: 3) ? nil : Date(timeIntervalSince1970: statement.double(at: 3)),
+                last: statement.isNull(at: 4) ? nil : Date(timeIntervalSince1970: statement.double(at: 4))
+            )
+            statement.reset()
+            return summary
+        }
+    }
+
+    public func removeAllTrack() async throws {
+        try await perform { db in
+            try db.execute("DELETE FROM track_segments")
         }
     }
 }

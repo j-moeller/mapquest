@@ -19,6 +19,10 @@ final class SQLiteDataStoreTests: XCTestCase {
         try await DataStoreContract.verifyLocationStore(SQLiteDataStore.inMemory())
     }
 
+    func testTrackStoreContract() async throws {
+        try await DataStoreContract.verifyTrackStore(SQLiteDataStore.inMemory())
+    }
+
     func testDiscoveredAreaStoreContract() async throws {
         try await DataStoreContract.verifyDiscoveredAreaStore(SQLiteDataStore.inMemory())
     }
@@ -64,6 +68,7 @@ final class SQLiteDataStoreTests: XCTestCase {
         do {
             let raw = try SQLiteConnection(path: url.path)
             try raw.execute("DROP TABLE layer_data_versions")
+            try raw.execute("DROP TABLE track_segments")
             try raw.setUserVersion(1)
         }
         let store = try SQLiteDataStore(fileURL: url)
@@ -73,7 +78,10 @@ final class SQLiteDataStoreTests: XCTestCase {
         XCTAssertEqual(versions, [tile: "bundle:1"])
         let pieces = try await store.pieces(layer: "viewshed-v2", tiles: nil)
         XCTAssertEqual(pieces.count, 1, "existing data is kept")
-        XCTAssertEqual(try SQLiteConnection(path: url.path).userVersion, 2)
+        try await store.putTrackSegments([TrackSegment(points: DataStoreContract.makeTrack(count: 10))])
+        let summary = try await store.trackSummary()
+        XCTAssertEqual(summary.pointCount, 10)
+        XCTAssertEqual(try SQLiteConnection(path: url.path).userVersion, SQLiteDataStore.schemaVersion)
     }
 
     func testFailedTransactionRollsBack() throws {

@@ -197,4 +197,24 @@ enum Formatters {
         }
         return String(format: "%.1f %%", fraction * 100)
     }
+
+    static func bytes(_ count: Int) -> String {
+        ByteCountFormatter.string(fromByteCount: Int64(count), countStyle: .file)
+    }
+
+    static func distance(_ meters: Double) -> String {
+        meters >= 1_000 ? String(format: "%.1f km", meters / 1_000) : String(format: "%.0f m", meters)
+    }
+
+    static func duration(_ seconds: TimeInterval) -> String {
+        let minutes = Int((seconds / 60).rounded())
+        return minutes >= 60 ? String(format: "%d h %02d min", minutes / 60, minutes % 60) : "\(minutes) min"
+    }
+
+    /// "12 345 positions · 74 KB" (bytes only once something is written).
+    static func track(_ summary: TrackSummary) -> String {
+        let count = summary.pointCount.formatted()
+        guard summary.byteCount > 0 else { return "\(count) positions" }
+        return "\(count) positions · \(bytes(summary.byteCount))"
+    }
 }

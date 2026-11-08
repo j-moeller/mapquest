@@ -53,7 +53,8 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    LabeledContent("Stored positions", value: "\(model.sampleCount)")
+                    LabeledContent("Track", value: Formatters.track(model.trackSummary))
+                    LabeledContent("Map-changing positions", value: "\(model.sampleCount)")
                     LabeledContent("Radius (2D)", value: "\(Int(model.circleModel.radius)) m around each position")
                     LabeledContent("Line of sight (3D)", value: "\(model.viewshedModel.configuration.rayCount) rays, up to \(Int(model.viewshedModel.configuration.maximumDistance)) m")
                     ForEach(MapLayer.allCases) { layer in
@@ -128,7 +129,7 @@ struct SettingsView: View {
                 } header: {
                     Text("Tracking")
                 } footer: {
-                    Text("Only positions that reveal something new are stored – nothing is recorded while you move through known territory.")
+                    Text("While recording, every position (about one per second) is added to the track, compactly encoded (≈ 6 bytes per position). The positions that reveal something new also drive the fog of war.")
                 }
 
                 Section {

@@ -8,6 +8,7 @@ public actor InMemoryDataStore: MapQuestDataStore {
     private var samplesByID: [UUID: LocationSample] = [:]
     private var piecesByLayer: [DiscoveryLayerID: [UUID: DiscoveredPiece]] = [:]
     private var watermarksByLayer: [DiscoveryLayerID: DataVersions] = [:]
+    private var segmentsByID: [UUID: TrackSegment] = [:]
 
     public init(descriptor: DataSourceDescriptor = DataSourceDescriptor(id: "memory", displayName: "In memory", kind: .inMemory)) {
         self.descriptor = descriptor
@@ -79,5 +80,34 @@ public actor InMemoryDataStore: MapQuestDataStore {
 
     public func layers() -> [DiscoveryLayerID] {
         piecesByLayer.keys.sorted { $0.rawValue < $1.rawValue }
+    }
+
+    // MARK: TrackStore
+
+    public func putTrackSegments(_ segments: [TrackSegment]) {
+        for segment in segments { segmentsByID[segment.id] = segment }
+    }
+
+    public func trackSegments(overlapping interval: DateInterval?, intersecting rect: WorldRect?) -> [TrackSegment] {
+        segmentsByID.values.filter { segment in
+            if let interval, segment.end < interval.start || segment.start > interval.end { return false }
+            if let rect, !segment.bounds.intersects(rect) { return false }
+            return true
+        }.sorted { ($0.start, $0.id.uuidString) < ($1.start, $1.id.uuidString) }
+    }
+
+    public func trackSummary() -> TrackSummary {
+        let segments = segmentsByID.values
+        return TrackSummary(
+            segmentCount: segments.count,
+            pointCount: segments.reduce(0) { $0 + $1.pointCount },
+            byteCount: segments.reduce(0) { $0 + $1.data.count },
+            first: segments.map(\.start).min(),
+            last: segments.map(\.end).max()
+        )
+    }
+
+    public func removeAllTrack() {
+        segmentsByID.removeAll()
     }
 }

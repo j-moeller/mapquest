@@ -7,6 +7,10 @@ final class InMemoryDataStoreTests: XCTestCase {
         try await DataStoreContract.verifyLocationStore(InMemoryDataStore())
     }
 
+    func testTrackStoreContract() async throws {
+        try await DataStoreContract.verifyTrackStore(InMemoryDataStore())
+    }
+
     func testDiscoveredAreaStoreContract() async throws {
         try await DataStoreContract.verifyDiscoveredAreaStore(InMemoryDataStore())
     }

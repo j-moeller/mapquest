@@ -93,10 +93,41 @@ public extension DiscoveredAreaStore {
     }
 }
 
+/// Storage of the continuous location track (about one fix per second), in
+/// delta-encoded segments (`TrackSegment`). Unlike `LocationStore`, which keeps
+/// only the fixes that changed the map, the track keeps every fix: it feeds
+/// time-based views, heatmaps and statistics.
+public protocol TrackStore: AnyObject, Sendable {
+    /// Inserts segments or replaces segments with the same ID (the open segment
+    /// is rewritten while it grows).
+    func putTrackSegments(_ segments: [TrackSegment]) async throws
+    /// Segments whose time span overlaps `interval` and whose bounding box
+    /// intersects `rect` (`nil`: no restriction), ordered by start time.
+    func trackSegments(overlapping interval: DateInterval?, intersecting rect: WorldRect?) async throws -> [TrackSegment]
+    func trackSummary() async throws -> TrackSummary
+    func removeAllTrack() async throws
+}
+
+public extension TrackStore {
+    /// The track points in `interval` (inclusive) and `rect`, in chronological order.
+    func trackPoints(in interval: DateInterval? = nil, within rect: WorldRect? = nil) async throws -> [TrackPoint] {
+        var points: [TrackPoint] = []
+        for segment in try await trackSegments(overlapping: interval, intersecting: rect) {
+            for point in try segment.points() {
+                if let interval, !(point.timestamp >= interval.start && point.timestamp <= interval.end) { continue }
+                if let rect, !rect.contains(point.worldPoint) { continue }
+                points.append(point)
+            }
+        }
+        points.sort { $0.time < $1.time }
+        return points
+    }
+}
+
 /// Location data and discovered area always belong together, so a data source
-/// provides both. Switching the app's data source (local ↔ remote, user 1 ↔
-/// user 2) means swapping one `MapQuestDataStore`.
-public protocol MapQuestDataStore: LocationStore, DiscoveredAreaStore {
+/// provides both (and the track). Switching the app's data source (local ↔
+/// remote, user 1 ↔ user 2) means swapping one `MapQuestDataStore`.
+public protocol MapQuestDataStore: LocationStore, DiscoveredAreaStore, TrackStore {
     var descriptor: DataSourceDescriptor { get }
 }
 

@@ -31,6 +31,11 @@ final class RemoteDataStoreTests: XCTestCase {
         try await DataStoreContract.verifyLocationStore(store)
     }
 
+    func testTrackStoreContract() async throws {
+        let store = try makeStore()
+        try await DataStoreContract.verifyTrackStore(store)
+    }
+
     func testDiscoveredAreaStoreContract() async throws {
         let store = try makeStore()
         try await clean(store)

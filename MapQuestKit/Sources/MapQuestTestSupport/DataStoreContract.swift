@@ -145,4 +145,64 @@ public enum DataStoreContract {
         let otherVersions = try await store.dataVersions(layer: other)
         XCTAssertEqual(otherVersions, [dataTile: "bundle:7"], file: file, line: line)
     }
+
+    /// A walk at 1 Hz along Unter den Linden: `count` fixes from `start`.
+    public static func makeTrack(count: Int, from start: Date = DataStoreContract.start, longitude: Double = 13.3800) -> [TrackPoint] {
+        (0..<count).map { i -> TrackPoint in
+            let t = Double(i)
+            let latitude: Double = 52.5170 + sin(t / 40) * 0.0002
+            let east: Double = longitude + t * 0.00002
+            let altitude: Double = 36 + Double(i % 7) * 0.3
+            let accuracy: Double = 4 + Double(i % 3)
+            return TrackPoint(
+                timestamp: start.addingTimeInterval(t), latitude: latitude, longitude: east,
+                altitude: altitude, horizontalAccuracy: accuracy, verticalAccuracy: 3
+            )
+        }
+    }
+
+    public static func verifyTrackStore(_ store: some TrackStore, file: StaticString = #filePath, line: UInt = #line) async throws {
+        try await store.removeAllTrack()
+        let walk = makeTrack(count: 300)
+        let first = TrackSegment(points: Array(walk[0..<100]))
+        var second = TrackSegment(points: Array(walk[100..<150]))
+        try await store.putTrackSegments([first, second])
+        // The open segment grows and is rewritten under the same ID.
+        second = TrackSegment(id: second.id, points: Array(walk[100..<300]))
+        try await store.putTrackSegments([second])
+
+        let summary = try await store.trackSummary()
+        XCTAssertEqual(summary.segmentCount, 2, file: file, line: line)
+        XCTAssertEqual(summary.pointCount, 300, file: file, line: line)
+        XCTAssertEqual(summary.byteCount, first.data.count + second.data.count, file: file, line: line)
+        XCTAssertEqual(summary.first, walk[0].timestamp, file: file, line: line)
+        XCTAssertEqual(summary.last, walk[299].timestamp, file: file, line: line)
+
+        let all = try await store.trackPoints()
+        XCTAssertEqual(all, walk, "every fix round-trips exactly", file: file, line: line)
+
+        // Time filter: segments overlapping, points inside.
+        let interval = DateInterval(start: walk[90].timestamp, end: walk[110].timestamp)
+        let segments = try await store.trackSegments(overlapping: interval, intersecting: nil)
+        XCTAssertEqual(segments.map(\.id), [first.id, second.id], file: file, line: line)
+        let points = try await store.trackPoints(in: interval)
+        XCTAssertEqual(points, Array(walk[90...110]), file: file, line: line)
+        let later = try await store.trackSegments(
+            overlapping: DateInterval(start: walk[200].timestamp, end: walk[299].timestamp.addingTimeInterval(60)), intersecting: nil
+        )
+        XCTAssertEqual(later.map(\.id), [second.id], file: file, line: line)
+
+        // Spatial filter.
+        let east = WorldRect(bounding: walk[250..<300].map(\.worldPoint))!
+        let nearEast = try await store.trackSegments(overlapping: nil, intersecting: east)
+        XCTAssertEqual(nearEast.map(\.id), [second.id], file: file, line: line)
+        let far = WebMercator.worldRect(for: GeoBoundingBox(center: GeoCoordinate(latitude: 53.55, longitude: 9.99), radius: 100))
+        let none = try await store.trackSegments(overlapping: nil, intersecting: far)
+        XCTAssertTrue(none.isEmpty, file: file, line: line)
+
+        try await store.removeAllTrack()
+        let empty = try await store.trackSummary()
+        XCTAssertEqual(empty.pointCount, 0, file: file, line: line)
+        XCTAssertNil(empty.first, file: file, line: line)
+    }
 }

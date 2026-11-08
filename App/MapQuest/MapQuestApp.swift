@@ -3,12 +3,19 @@ import SwiftUI
 @main
 struct MapQuestApp: App {
     @StateObject private var model = AppModel()
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environmentObject(model)
                 .environmentObject(model.tracker)
+        }
+        .onChange(of: scenePhase) { _, phase in
+            // Buffered track fixes are written before the app may be suspended.
+            if phase != .active {
+                Task { await model.flushTrack() }
+            }
         }
     }
 }

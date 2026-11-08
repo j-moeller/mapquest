@@ -83,6 +83,8 @@ final class AppModel: ObservableObject {
     /// Building data behind the line-of-sight layer (from its data watermarks).
     @Published private(set) var buildingData = BuildingDataSummary()
     @Published private(set) var isDownloadingBuildings = false
+    /// Size of the continuous track of the selected data source.
+    @Published private(set) var trackSummary = TrackSummary()
 
     let tracker: LocationTracker
     let catalog: DataSourceCatalog
@@ -96,6 +98,8 @@ final class AppModel: ObservableObject {
     private(set) var store: any MapQuestDataStore
     private(set) var engines: [MapLayer: DiscoveryEngine]
     private(set) var recorder: LocationRecorder
+    /// Writes every fix (≈ 1 Hz) to the track of the selected data source.
+    private(set) var trackWriter: TrackWriter
 
     private nonisolated let sampleSink: AsyncStream<LocationSample>.Continuation
     private var processingTask: Task<Void, Never>?
@@ -142,6 +146,7 @@ final class AppModel: ObservableObject {
         self.recorder = LocationRecorder(
             store: store, engines: MapLayer.allCases.compactMap { engines[$0] }, policy: debug.recordingPolicy, playArea: playArea
         )
+        self.trackWriter = TrackWriter(store: store)
         self.layers = Self.emptyLayers(engines)
         self.selectedLayer = UserDefaults.standard.string(forKey: Self.selectedLayerKey).flatMap(MapLayer.init(rawValue:)) ?? .radius
 
@@ -235,12 +240,14 @@ final class AppModel: ObservableObject {
     // MARK: Processing
 
     private func process(_ sample: LocationSample) async {
-        while isRebuilding {
-            try? await Task.sleep(nanoseconds: 200_000_000)
-        }
         guard profile.recordsLocations else {
             lastOutcome = "Viewing \(profile.name) – not recording"
             return
+        }
+        // The track keeps every fix, right away – also while a layer is being rebuilt.
+        await appendToTrack(sample)
+        while isRebuilding {
+            try? await Task.sleep(nanoseconds: 200_000_000)
         }
         let recorder = self.recorder
         do {
@@ -316,6 +323,7 @@ final class AppModel: ObservableObject {
                 try await importDemoData()
             }
             sampleCount = try await store.sampleCount()
+            await updateTrackSummary()
             let existing = Set(try await store.layers())
             failedLayers = []
             for layer in MapLayer.allCases {
@@ -367,7 +375,10 @@ final class AppModel: ObservableObject {
             let engines = Self.makeEngines(store: store, circle: circleModel, viewshed: viewshedModel)
             self.store = store
             self.engines = engines
+            await flushTrack()
             self.recorder = LocationRecorder(store: store, engines: MapLayer.allCases.compactMap { engines[$0] }, playArea: playArea)
+            self.trackWriter = TrackWriter(store: store)
+            self.trackSummary = TrackSummary()
             self.profile = profile
             catalog.selectedProfileID = profile.id
             layers = Self.emptyLayers(engines)
@@ -399,7 +410,10 @@ final class AppModel: ObservableObject {
         lastOutcome = "Importing demo walks…"
         let fixes = try BerlinData.demoFixes()
         defer { progress = nil }
+        let trackWriter = self.trackWriter
+        defer { Task { try? await trackWriter.flush() } }
         for (index, fix) in fixes.enumerated() {
+            _ = try? await trackWriter.append(TrackPoint(fix))
             _ = try await recorder.record(fix)
             progress = Double(index + 1) / Double(fixes.count)
             if index % 200 == 199 {
@@ -495,6 +509,34 @@ final class AppModel: ObservableObject {
             viewshedModel.configuration.viewDistance(eyeHeight: heights.effective)
         ))
         evaluationSummary = lines.joined(separator: "\n")
+    }
+
+    // MARK: Track
+
+    private func appendToTrack(_ sample: LocationSample) async {
+        do {
+            if try await trackWriter.append(TrackPoint(sample)) {
+                trackSummary.pointCount += 1
+                trackSummary.last = sample.timestamp
+                if trackSummary.first == nil { trackSummary.first = sample.timestamp }
+            }
+        } catch {
+            lastOutcome = "Could not write the track: \(error.localizedDescription)"
+        }
+    }
+
+    /// Writes buffered fixes (when the app goes to the background).
+    func flushTrack() async {
+        try? await trackWriter.flush()
+    }
+
+    func updateTrackSummary() async {
+        if let summary = try? await store.trackSummary() {
+            let pending = await trackWriter.pendingPointCount
+            var adjusted = summary
+            adjusted.pointCount += pending
+            trackSummary = adjusted
+        }
     }
 
     // MARK: Building data and cache invalidation
@@ -634,7 +676,10 @@ final class AppModel: ObservableObject {
             isBusy = false
         }
         do {
+            await flushTrack()
             try await store.removeAllSamples()
+            try await store.removeAllTrack()
+            trackSummary = TrackSummary()
             for layer in try await store.layers() {
                 try await store.removeAllPieces(layer: layer)
             }

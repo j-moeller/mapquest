@@ -65,9 +65,10 @@ public enum RecordingOutcome: Sendable {
     }
 }
 
-/// The location-tracking component's core: receives every position fix, keeps
-/// only those that reveal new parts of the map, stores them, and feeds them to
-/// all discovery engines (2D, 3D, …).
+/// The location-tracking component's core: receives every position fix, writes
+/// it to the continuous track (if a `TrackWriter` is given), keeps the fixes
+/// that reveal new parts of the map as key samples, and feeds those to all
+/// discovery engines (2D, 3D, …).
 ///
 /// Every stored sample is merged into every layer, so each layer always equals
 /// what a rebuild from the stored samples would produce. If a layer cannot be
@@ -75,6 +76,8 @@ public enum RecordingOutcome: Sendable {
 /// still record and the failed layer is marked stale until it is rebuilt.
 public actor LocationRecorder {
     public nonisolated let store: any LocationStore
+    /// Receives every valid fix (about one per second).
+    public nonisolated let track: TrackWriter?
     public private(set) var engines: [DiscoveryEngine]
     public var policy: RecordingPolicy
     public private(set) var playArea: PlayArea
@@ -86,12 +89,18 @@ public actor LocationRecorder {
     private var lastEvaluated: LocationSample?
     /// The evaluations of the last evaluated fix, one per layer that could be evaluated.
     public private(set) var lastEvaluations: [DiscoveryEvaluation] = []
+    /// The most recent error writing the track.
+    public private(set) var lastTrackError: String?
 
-    public init(store: any LocationStore, engines: [DiscoveryEngine], policy: RecordingPolicy = RecordingPolicy(), playArea: PlayArea = .world) {
+    public init(
+        store: any LocationStore, engines: [DiscoveryEngine], policy: RecordingPolicy = RecordingPolicy(),
+        playArea: PlayArea = .world, track: TrackWriter? = nil
+    ) {
         self.store = store
         self.engines = engines
         self.policy = policy
         self.playArea = playArea
+        self.track = track
     }
 
     public func setPlayArea(_ area: PlayArea) { playArea = area }
@@ -101,6 +110,15 @@ public actor LocationRecorder {
     /// Processes one position fix.
     public func record(_ sample: LocationSample) async throws -> RecordingOutcome {
         guard sample.hasValidPosition else { return .rejected(.invalidPosition) }
+        if let track {
+            // The track keeps every fix, everywhere (statistics, heatmaps, time-based views).
+            do {
+                try await track.append(TrackPoint(sample))
+                lastTrackError = nil
+            } catch {
+                lastTrackError = String(describing: error)
+            }
+        }
         guard sample.horizontalAccuracy <= policy.maximumHorizontalAccuracy else { return .rejected(.inaccurate) }
         guard playArea.contains(sample.coordinate) else { return .rejected(.outsidePlayArea) }
         if let previous = lastEvaluated, policy.isNegligibleMove(from: previous, to: sample) {
