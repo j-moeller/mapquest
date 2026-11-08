@@ -24,18 +24,18 @@ final class MapLabelAnnotation: NSObject, MKAnnotation {
     /// Labels for the cities and their districts (label points computed off the main thread).
     static func make(for cities: [PlayArea]) async -> [MapLabelAnnotation] {
         let places = await Task.detached(priority: .utility) { () -> [(name: String, point: WorldPoint, isCity: Bool, isAlone: Bool)] in
-            var places: [(name: String, point: WorldPoint, isCity: Bool, isAlone: Bool)] = []
+            var found: [(name: String, point: WorldPoint, isCity: Bool, isAlone: Bool)] = []
             for city in cities {
                 if let point = city.labelPoint {
-                    places.append((city.name, point, true, city.subdivisions.isEmpty))
+                    found.append((city.name, point, true, city.subdivisions.isEmpty))
                 }
                 for district in city.subdivisions {
                     if let point = district.labelPoint {
-                        places.append((district.name, point, false, false))
+                        found.append((district.name, point, false, false))
                     }
                 }
             }
-            return places
+            return found
         }.value
         return places.map { MapLabelAnnotation(name: $0.name, point: $0.point, kind: $0.isCity ? .city : .district, isAlone: $0.isAlone) }
     }

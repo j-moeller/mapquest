@@ -295,7 +295,8 @@ marks the 3D layer as *stale*, and the app offers a rebuild once online.
 | `App/MapQuest/ViewOptions.swift`, `Views/ViewBar.swift` | Viewing options: fog of war or heatmap; all time or a day/week/month/year (computed in the background, live while the period includes now) |
 | `App/MapQuest/Cities.swift` | Bundled cities (outline, districts, terrain, buildings) |
 | `App/MapQuest/DataSourceCatalog.swift` | Profiles (own data, other users, demo); one SQLite file each; only the own profile records |
-| `App/MapQuest/Map2D/BaseMapTiles.swift` | Label-free base map tiles (CARTO, from OpenStreetMap): loading, memory and disk cache |
+| `App/MapQuest/Map2D/BaseMapTiles.swift` | Map data (OpenFreeMap vector tiles: download, disk cache) and the label-free map tiles drawn from it |
+| `MapQuestKit/Sources/MapQuestCore/BaseMap/*` | Vector tile decoder (MVT), map style (what is drawn, order, widths, palettes), TileJSON |
 | `App/MapQuest/Map2D/FogMapRenderer.swift` | Draws base map and fog of war together inside MapKit's rendering |
 | `App/MapQuest/Map2D/MapLabels.swift` | City and district names above the fog |
 | `App/MapQuest/Map2D/HeatmapLayerView.swift` | Heatmap raster and dimming over the map |
@@ -359,13 +360,34 @@ discoveries.
 
 **No labels.** Apple Maps cannot hide its labels (street, place and POI names;
 only its satellite imagery has none), and MapKit does not let an app process
-its map image. The 2D map therefore uses its own base map: raster tiles
-without any labels or icons (CARTO basemaps *Voyager*, *Positron* or *Dark
-Matter* "no labels", rendered from OpenStreetMap; © OpenStreetMap
-contributors © CARTO, credited on the map; free for non-commercial use).
-`BaseMapTiles` loads them (@2x, 256-point tiles up to zoom 19, enlarged
-beyond) and caches them in memory and on disk (`Caches/BaseMapTiles`, trimmed
-to 300 MB). Apple's map is switched off by a `GroundTileOverlay`
+its map image. The 2D map therefore draws its own base map on the device from
+OpenStreetMap vector data, leaving out every label and icon:
+
+* **Data**: OpenFreeMap's vector tiles (OpenMapTiles schema, zoom 0–14; free,
+  no key, no sign-up; credit "OpenFreeMap © OpenMapTiles · Data © OpenStreetMap
+  contributors" on the map). The TileJSON (tile URLs change with each data
+  release) is fetched once per launch and kept for offline use. Requests carry
+  an app User-Agent; only tiles the map needs are loaded, no bulk downloads.
+  (OpenStreetMap's own tile server only serves its labelled standard style,
+  so it is not used; its tile usage policy therefore does not apply.)
+* **Cache**: every downloaded tile is stored zlib-compressed in
+  `Application Support/MapQuest/MapData` (excluded from backups, limited to
+  500 MB, oldest first out) and reused offline and for every deeper zoom;
+  tiles older than 90 days are refreshed in the background when used.
+  Decoded tiles and drawn tiles are kept in memory. *Settings › Map data*
+  shows the size and deletes it.
+* **Drawing** (`MapRenderPlan`, MapQuestCore, unit-tested with a real tile):
+  only the layers `landuse`, `landcover`, `water`, `waterway`, `aeroway`,
+  `transportation` and `building` are decoded (`VectorTile`, a small protocol
+  buffer reader); names, house numbers and POIs are never read. Fills
+  (land use, land cover, water, buildings from zoom 14) and strokes
+  (waterways, runways, roads with casings, tunnels below and bridges above,
+  dashed paths and tracks, railways) are ordered like a regular map; widths
+  follow per-class zoom stops. Tiles are drawn at 512 pixels for 256 points;
+  beyond zoom 14 the zoom-14 data is drawn enlarged, so lines stay sharp up
+  to zoom 21. Three palettes: streets, light, dark.
+
+Apple's map is switched off by a `GroundTileOverlay`
 (`canReplaceMapContent`) that only shows a dark ground where nothing is drawn
 yet. The only names on the map are the bundled cities and their districts
 (`MapLabels.swift`): annotation views, which MapKit always draws above

@@ -3,8 +3,9 @@
 MapQuest is an iPhone app that combines a classic map with a *fog of war*:
 you only see the parts of the world you have actually been to. Everything
 else stays visibly darker until you go there. It works everywhere, on a map
-without labels or icons (OpenStreetMap tiles by CARTO) – only city and
-district names are written, above the fog. Berlin, Braunschweig and Peine
+without labels or icons, drawn on the phone from OpenStreetMap data
+(OpenFreeMap vector tiles, cached for offline use) – only city and district
+names are written, above the fog. Berlin, Braunschweig and Peine
 additionally have bundled 3D building and terrain data for the line-of-sight
 reveal.
 
@@ -44,7 +45,8 @@ The app has three major components:
      exactly the areas whose view it can change are recomputed from the
      stored positions; everything else stays cached
      ([docs/05](docs/05-cache-invalidation.md)).
-4. **Maps** – 2D: label-free base map tiles with the fog drawn into them
+4. **Maps** – 2D: map tiles drawn on the phone from cached OpenStreetMap
+   vector data, without labels, with the fog drawn into them
    piece by piece inside MapKit's own rendering (80 % black, blurred map
    underneath, soft edges), so the fog cannot glide over the map; city and
    district names above the fog. 3D: SceneKit city model, buildings coloured

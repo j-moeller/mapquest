@@ -24,7 +24,7 @@ struct DebugSettingsView: View {
             } header: {
                 Text("Map")
             } footer: {
-                Text("Applies immediately. The blur shows through the fog only below 100 % opacity; soft edges fade the fog out over the given width on the ground inside discovered areas. The base map has no labels (OpenStreetMap data, CARTO tiles); only city and district names are shown, above the fog.")
+                Text("Applies immediately. The blur shows through the fog only below 100 % opacity; soft edges fade the fog out over the given width on the ground inside discovered areas. The base map is drawn without labels from OpenStreetMap data (OpenFreeMap); only city and district names are shown, above the fog.")
             }
 
             Section {

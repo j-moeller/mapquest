@@ -114,6 +114,8 @@ struct SettingsView: View {
                 }
                 .task { await model.checkBuildingData(fetchingMissing: false) }
 
+                MapDataSection()
+
                 Section {
                     Toggle("Record positions", isOn: Binding(
                         get: { tracker.isTrackingEnabled },
@@ -179,5 +181,35 @@ struct SettingsView: View {
         case .authorizedWhenInUse: return "While using the app"
         @unknown default: return "Unknown"
         }
+    }
+}
+
+/// The cached map data (vector tiles of the base map): size and deletion.
+private struct MapDataSection: View {
+    @State private var bytes: Int?
+
+    var body: some View {
+        Section {
+            LabeledContent("Stored on this iPhone", value: bytes.map {
+                ByteCountFormatter.string(fromByteCount: Int64($0), countStyle: .file)
+            } ?? "…")
+            Button("Delete map data", role: .destructive) {
+                Task {
+                    await Task.detached(priority: .userInitiated) { VectorTileStore.shared.clear() }.value
+                    await measure()
+                }
+            }
+            .disabled((bytes ?? 0) == 0)
+        } header: {
+            Text("Map data")
+        } footer: {
+            Text("The map is drawn on this iPhone from OpenStreetMap data (OpenFreeMap vector tiles, no labels). Every area you have looked at is kept here, compressed, and works offline; it is refreshed after 90 days and limited to 500 MB.")
+        }
+        .task { await measure() }
+    }
+
+    @MainActor
+    private func measure() async {
+        bytes = await Task.detached(priority: .utility) { VectorTileStore.shared.diskUsage() }.value
     }
 }

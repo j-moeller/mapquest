@@ -380,9 +380,9 @@ tiles and the fog over them: translucent black over the blurred map, with
 the discovered pieces intersecting that rectangle cut out (softly). Because
 pieces are already tiled, each render call touches only the pieces of the
 visible tiles; vertices closer than half a pixel are skipped at low zoom
-levels. The base map comes from label-free raster tiles (CARTO, from
-OpenStreetMap), since Apple Maps cannot hide its labels and its map image
-cannot be processed (docs/02, "Base map and fog rendering").
+levels. The base map is drawn on the device from OpenStreetMap vector tiles
+(OpenFreeMap) without labels, since Apple Maps cannot hide its labels and its
+map image cannot be processed (docs/02, "Base map and fog rendering").
 
 **3D.** Apple's MapKit 3D buildings cannot be coloured per building, so the
 3D view renders its own LoD1 scene with SceneKit: buildings are extruded
@@ -392,8 +392,9 @@ been discovered. The ground shows the same fog cut-outs as in 2D.
 
 **Data for Berlin.**
 
-* *Base map (2D):* label-free raster tiles (CARTO basemaps, © OpenStreetMap
-  contributors © CARTO), loaded on demand and cached; nothing is shipped.
+* *Base map (2D):* drawn on the device without labels from OpenFreeMap vector
+  tiles (OpenMapTiles schema, © OpenStreetMap contributors), loaded on demand
+  and cached on the device; nothing is shipped.
 * *Play area:* the administrative boundary of Berlin (OSM relation 62422)
   and its twelve districts from OpenStreetMap (ODbL), used to restrict
   tracking to Berlin and to compute statistics per district.

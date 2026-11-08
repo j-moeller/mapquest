@@ -70,7 +70,7 @@ struct ContentView: View {
                 }
                 Spacer()
                 if mode == .twoD {
-                    // Credit for the base map (OpenStreetMap data, CARTO tiles).
+                    // Credit for the base map (OpenStreetMap data, OpenFreeMap vector tiles).
                     Text(BaseMapStyle.attribution)
                         .font(.system(size: 9))
                         .foregroundStyle(.secondary)
