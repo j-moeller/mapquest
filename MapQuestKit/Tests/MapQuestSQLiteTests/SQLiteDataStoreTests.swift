@@ -53,6 +53,29 @@ final class SQLiteDataStoreTests: XCTestCase {
         XCTAssertNoThrow(try SQLiteDataStore(fileURL: url))
     }
 
+    func testVersion1DatabaseIsMigrated() async throws {
+        // A database written by the first version: pieces, but no data watermarks.
+        let url = temporaryDirectory.appendingPathComponent("v1.sqlite")
+        do {
+            let store = try SQLiteDataStore(fileURL: url)
+            let piece = DataStoreContract.makePiece(layer: "viewshed-v2", region: UUID(), tileX: 35_200, firstDiscovered: Date())
+            try await store.apply(DiscoveredAreaChangeSet(layer: "viewshed-v2", upsertedPieces: [piece]))
+        }
+        do {
+            let raw = try SQLiteConnection(path: url.path)
+            try raw.execute("DROP TABLE layer_data_versions")
+            try raw.setUserVersion(1)
+        }
+        let store = try SQLiteDataStore(fileURL: url)
+        let tile = TileKey(zoom: DataGrid.zoom, x: 8_800, y: 5_373)
+        try await store.apply(DiscoveredAreaChangeSet(layer: "viewshed-v3", dataVersions: [tile: "bundle:1"]))
+        let versions = try await store.dataVersions(layer: "viewshed-v3")
+        XCTAssertEqual(versions, [tile: "bundle:1"])
+        let pieces = try await store.pieces(layer: "viewshed-v2", tiles: nil)
+        XCTAssertEqual(pieces.count, 1, "existing data is kept")
+        XCTAssertEqual(try SQLiteConnection(path: url.path).userVersion, 2)
+    }
+
     func testFailedTransactionRollsBack() throws {
         let db = try SQLiteConnection(path: ":memory:")
         try db.execute("CREATE TABLE t (v INTEGER NOT NULL)")

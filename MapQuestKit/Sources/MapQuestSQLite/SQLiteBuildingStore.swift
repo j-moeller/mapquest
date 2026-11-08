@@ -109,13 +109,14 @@ public final class SQLiteBuildingStore: BuildingCache, @unchecked Sendable {
         }
     }
 
-    public func isDownloaded(_ tile: TileKey) async throws -> Bool {
+    /// The data version of a tile: when it was downloaded/imported (Unix seconds), or `nil`.
+    public func version(of tile: TileKey) async throws -> String? {
         try await perform { db in
-            let statement = try db.prepare("SELECT 1 FROM downloaded_tiles WHERE zoom = ? AND x = ? AND y = ?")
+            let statement = try db.prepare("SELECT downloaded_at FROM downloaded_tiles WHERE zoom = ? AND x = ? AND y = ?")
             try statement.bind([.integer(Int64(tile.zoom)), .integer(Int64(tile.x)), .integer(Int64(tile.y))])
-            let found = try statement.step()
+            let version = try statement.step() ? String(Int64(statement.double(at: 0).rounded())) : nil
             statement.reset()
-            return found
+            return version
         }
     }
 

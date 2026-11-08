@@ -28,6 +28,9 @@ public struct ViewshedConfiguration: Hashable, Sendable {
     /// With real terrain: radius of the ring whose mean elevation defines the
     /// "surrounding ground" (a hilltop sees further than a plain).
     public var prominenceRadius: Double
+    /// Where no building data is available, a circle of this radius (metres) is
+    /// revealed instead – the default map (docs/05-cache-invalidation.md).
+    public var fallbackRadius: Double
 
     public init(
         rayCount: Int = 720,
@@ -41,7 +44,8 @@ public struct ViewshedConfiguration: Hashable, Sendable {
         nonBlockingMinHeight: Double = 2.5,
         gridCellSize: Double = 25,
         simplificationTolerance: Double = 0.5,
-        prominenceRadius: Double = 300
+        prominenceRadius: Double = 300,
+        fallbackRadius: Double = 50
     ) {
         self.rayCount = rayCount
         self.streetEyeHeight = streetEyeHeight
@@ -55,6 +59,7 @@ public struct ViewshedConfiguration: Hashable, Sendable {
         self.gridCellSize = gridCellSize
         self.simplificationTolerance = simplificationTolerance
         self.prominenceRadius = prominenceRadius
+        self.fallbackRadius = fallbackRadius
     }
 
     /// The inverse of `eyeHeight`: an altitude that yields `eyeHeight` above the
@@ -68,7 +73,7 @@ public struct ViewshedConfiguration: Hashable, Sendable {
         let values: [Double] = [
             Double(rayCount), streetEyeHeight, baseDistance, distancePerMeterOfHeight, maximumDistance,
             maximumVerticalAccuracy, elevatedThreshold, maximumEyeHeight, nonBlockingMinHeight,
-            gridCellSize, simplificationTolerance, prominenceRadius,
+            gridCellSize, simplificationTolerance, prominenceRadius, fallbackRadius,
         ]
         // FNV-1a over the canonical text, so the ID is identical on every device and launch.
         var hash: UInt32 = 2_166_136_261
@@ -463,15 +468,53 @@ public struct ViewshedDiscoveryModel: DiscoveryModel {
         self.configuration = configuration
     }
 
-    /// `viewshed-v2` with the default parameters on flat terrain; any other parameters or
+    /// `viewshed-v3` with the default parameters on flat terrain; any other parameters or
     /// terrain give a different layer, so cached results always match their parameters.
+    /// (v3: the default map – a circle – where building data is missing.)
     public var layer: DiscoveryLayerID {
         let isDefault = configuration == ViewshedConfiguration() && terrain.identifier == FlatTerrain.berlin.identifier
-        return isDefault ? "viewshed-v2" : DiscoveryLayerID("viewshed-v2-\(terrain.identifier)-\(configuration.fingerprint)")
+        return isDefault ? "viewshed-v3" : DiscoveryLayerID("viewshed-v3-\(terrain.identifier)-\(configuration.fingerprint)")
     }
 
     public func revealedArea(for sample: LocationSample) async throws -> [WorldPolygon] {
-        try await viewshed(for: sample).polygons
+        try await revelation(for: sample).polygons
+    }
+
+    /// The viewshed where building data is available, and the fallback circle
+    /// (`configuration.fallbackRadius`) in data tiles without data:
+    ///
+    ///     (viewshed ∖ tiles without data) ∪ (circle ∩ tiles without data)
+    public func revelation(for sample: LocationSample) async throws -> Revelation {
+        let geometry = self.geometry(for: sample)
+        let coverage = await buildings.coverage(in: geometry.window)
+        let gaps = coverage.versions.filter { $0.value == DataGrid.noData }.keys.sorted()
+        let circle = PolygonOps.circle(
+            center: geometry.eye, radius: configuration.fallbackRadius * geometry.unitsPerMeter, segments: 64
+        )
+        if gaps.count == coverage.versions.count {
+            return Revelation(polygons: [circle], dataVersions: coverage.versions)
+        }
+        let viewshed = compute(geometry, buildings: coverage.buildings).polygons
+        guard !gaps.isEmpty else {
+            return Revelation(polygons: viewshed, dataVersions: coverage.versions)
+        }
+        let gapArea = PolygonOps.union(gaps.map { PolygonOps.rectangle($0.worldRect) })
+        let polygons = PolygonOps.union(
+            PolygonOps.difference(viewshed, gapArea) + PolygonOps.intersection([circle], gapArea)
+        )
+        return Revelation(polygons: polygons, dataVersions: coverage.versions)
+    }
+
+    public func dataWindow(for sample: LocationSample) -> WorldRect? {
+        geometry(for: sample).window
+    }
+
+    public var maximumDataReach: Double {
+        max(configuration.maximumDistance, configuration.fallbackRadius)
+    }
+
+    public func currentDataVersions(of tiles: [TileKey], fetchingMissing: Bool) async -> DataVersions {
+        await buildings.dataVersions(of: tiles, fetchingMissing: fetchingMissing)
     }
 
     /// Eye height above the local ground and above the surrounding terrain for a sample.
@@ -494,16 +537,38 @@ public struct ViewshedDiscoveryModel: DiscoveryModel {
         return (height, max(height, ground + height - surrounding))
     }
 
+    /// The viewshed of a sample, computed with the buildings available (no fallback).
     public func viewshed(for sample: LocationSample) async throws -> ViewshedResult {
+        let geometry = self.geometry(for: sample)
+        return compute(geometry, buildings: await buildings.coverage(in: geometry.window).buildings)
+    }
+
+    private struct Geometry {
+        var eye: WorldPoint
+        var height: Double
+        var effectiveHeight: Double
+        var distance: Double
+        var unitsPerMeter: Double
+        /// Contains the view distance and the fallback circle.
+        var window: WorldRect
+    }
+
+    private func geometry(for sample: LocationSample) -> Geometry {
         let eye = sample.worldPoint
         let (height, effective) = heights(for: sample)
         let distance = configuration.viewDistance(eyeHeight: effective)
-        let reach = Int64((distance / WebMercator.metersPerUnit(atLatitude: sample.latitude)).rounded(.up)) + 1
-        let window = WorldRect(minX: eye.x - reach, minY: eye.y - reach, maxX: eye.x + reach, maxY: eye.y + reach)
-        let nearby = try await buildings.buildings(in: window)
-        return Viewshed.compute(
-            eye: eye, eyeHeight: height, viewDistance: distance, buildings: nearby,
-            terrain: terrain, effectiveHeight: effective, configuration: configuration
+        let unitsPerMeter = 1 / WebMercator.metersPerUnit(atLatitude: sample.latitude)
+        let reach = Int64((max(distance, configuration.fallbackRadius) * unitsPerMeter).rounded(.up)) + 1
+        return Geometry(
+            eye: eye, height: height, effectiveHeight: effective, distance: distance, unitsPerMeter: unitsPerMeter,
+            window: WorldRect(minX: eye.x - reach, minY: eye.y - reach, maxX: eye.x + reach, maxY: eye.y + reach)
+        )
+    }
+
+    private func compute(_ geometry: Geometry, buildings: [Building]) -> ViewshedResult {
+        Viewshed.compute(
+            eye: geometry.eye, eyeHeight: geometry.height, viewDistance: geometry.distance, buildings: buildings,
+            terrain: terrain, effectiveHeight: geometry.effectiveHeight, configuration: configuration
         )
     }
 }

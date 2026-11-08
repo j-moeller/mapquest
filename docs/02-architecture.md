@@ -266,7 +266,7 @@ renderer-independent, so a later move to RealityKit only replaces
 |---|---|---|
 | Map | fog opacity | immediate (2D overlay and 3D ground) |
 | Radius layer | radius | new layer `circle-<r>m`, rebuilt from the stored positions |
-| Line-of-sight layer | rays, sight at street level, extra sight per metre, maximum sight, street-level threshold, terrain on/off | new layer `viewshed-v2-<terrain>-<hash>`, rebuilt |
+| Line-of-sight layer | rays, sight at street level, extra sight per metre, maximum sight, street-level threshold, terrain on/off | new layer `viewshed-v3-<terrain>-<hash>`, rebuilt |
 | Recording | new-area threshold, movement before re-evaluating | immediate, for new positions |
 | Testing | long-press the 2D map to place a position, eye height of test positions, "place here", evaluation details overlay | immediate |
 

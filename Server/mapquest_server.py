@@ -146,6 +146,7 @@ class Handler(BaseHTTPRequestHandler):
             ("DELETE", "/v1/pieces"): self.delete_pieces,
             ("POST", "/v1/changes"): self.post_changes,
             ("GET", "/v1/layers"): self.get_layers,
+            ("GET", "/v1/data-versions"): self.get_data_versions,
             ("GET", "/v1/me"): self.get_me,
         }.get((method, url.path))
         conn = None
@@ -255,7 +256,9 @@ class Handler(BaseHTTPRequestHandler):
         if not layer:
             raise ApiError(HTTPStatus.BAD_REQUEST, "layer is required")
         cur.execute("DELETE FROM discovered_pieces WHERE owner = %s AND layer = %s", (owner, layer))
-        return {"deleted": cur.rowcount}
+        deleted = cur.rowcount
+        cur.execute("DELETE FROM layer_data_versions WHERE owner = %s AND layer = %s", (owner, layer))
+        return {"deleted": deleted}
 
     def post_changes(self, cur, owner, query):
         change = self.body()
@@ -267,6 +270,16 @@ class Handler(BaseHTTPRequestHandler):
     def get_layers(self, cur, owner, query):
         cur.execute("SELECT DISTINCT layer FROM discovered_pieces WHERE owner = %s ORDER BY layer", (owner,))
         return [row[0] for row in cur.fetchall()]
+
+    def get_data_versions(self, cur, owner, query):
+        layer = query.get("layer", [None])[0]
+        if not layer:
+            raise ApiError(HTTPStatus.BAD_REQUEST, "layer is required")
+        cur.execute(
+            "SELECT zoom, x, y, version FROM layer_data_versions WHERE owner = %s AND layer = %s ORDER BY zoom, y, x",
+            (owner, layer),
+        )
+        return [{"zoom": z, "x": x, "y": y, "version": v} for z, x, y, v in cur.fetchall()]
 
 
 def migrate() -> None:

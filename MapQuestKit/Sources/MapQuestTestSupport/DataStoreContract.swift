@@ -120,14 +120,29 @@ public enum DataStoreContract {
         let otherPieces = try await store.pieces(layer: other, tiles: nil)
         XCTAssertEqual(otherPieces, [o1], file: file, line: line)
 
-        try await store.replaceLayer(layer, with: [b1])
+        // Data watermarks: set with change sets (atomically with pieces), per layer.
+        let dataTile = TileKey(zoom: DataGrid.zoom, x: 8_800, y: 5_373)
+        let neighbour = TileKey(zoom: DataGrid.zoom, x: 8_801, y: 5_373)
+        try await store.apply(DiscoveredAreaChangeSet(layer: layer, dataVersions: [dataTile: DataGrid.noData, neighbour: "download:1"]))
+        try await store.apply(DiscoveredAreaChangeSet(layer: layer, dataVersions: [dataTile: "download:2"]))
+        try await store.apply(DiscoveredAreaChangeSet(layer: other, dataVersions: [dataTile: "bundle:7"]))
+        var versions = try await store.dataVersions(layer: layer)
+        XCTAssertEqual(versions, [dataTile: "download:2", neighbour: "download:1"], file: file, line: line)
+
+        try await store.replaceLayer(layer, with: [b1], dataVersions: [neighbour: "download:3"])
         pieces = try await store.pieces(layer: layer, tiles: nil)
         XCTAssertEqual(pieces.map(\.id), [b1.id], file: file, line: line)
+        versions = try await store.dataVersions(layer: layer)
+        XCTAssertEqual(versions, [neighbour: "download:3"], "replacing a layer replaces its watermarks", file: file, line: line)
 
         try await store.removeAllPieces(layer: layer)
         pieces = try await store.pieces(layer: layer, tiles: nil)
         XCTAssertTrue(pieces.isEmpty, file: file, line: line)
         let remainingLayers = try await store.layers()
         XCTAssertEqual(remainingLayers, [other], file: file, line: line)
+        versions = try await store.dataVersions(layer: layer)
+        XCTAssertTrue(versions.isEmpty, file: file, line: line)
+        let otherVersions = try await store.dataVersions(layer: other)
+        XCTAssertEqual(otherVersions, [dataTile: "bundle:7"], file: file, line: line)
     }
 }

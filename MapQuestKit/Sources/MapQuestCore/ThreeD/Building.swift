@@ -40,11 +40,47 @@ public struct Building: Hashable, Sendable, Identifiable {
     public var bounds: WorldRect { footprint.bounds }
 }
 
+/// Buildings of an area as far as data is available, with the version of every
+/// data tile covering the area (`DataGrid.noData` where none is available).
+public struct BuildingCoverage: Sendable {
+    public var buildings: [Building]
+    public var versions: DataVersions
+
+    public init(buildings: [Building], versions: DataVersions) {
+        self.buildings = buildings
+        self.versions = versions
+    }
+
+    /// Data tiles for which data is available.
+    public var coveredTiles: Set<TileKey> { Set(versions.filter { $0.value != DataGrid.noData }.keys) }
+}
+
 /// Provides buildings for an area. Implementations: bundled/cached databases,
 /// on-demand downloads (OpenStreetMap via Overpass), in-memory test data.
 public protocol BuildingSource: Sendable {
     /// All buildings whose footprint may intersect `rect` (world coordinates).
     func buildings(in rect: WorldRect) async throws -> [Building]
+    /// Buildings of `rect` tile by tile as far as data can be obtained (downloading
+    /// if possible), with the version of every data tile covering `rect`.
+    func coverage(in rect: WorldRect) async -> BuildingCoverage
+    /// The current versions of data tiles. With `fetchingMissing`, tries to obtain
+    /// data for tiles that have none (e.g. download when back online).
+    func dataVersions(of tiles: [TileKey], fetchingMissing: Bool) async -> DataVersions
+}
+
+public extension BuildingSource {
+    /// Sources without versioning: all data is version "static", or missing if loading fails.
+    func coverage(in rect: WorldRect) async -> BuildingCoverage {
+        let tiles = Array(TileRange(covering: rect, zoom: DataGrid.zoom))
+        guard let buildings = try? await buildings(in: rect) else {
+            return BuildingCoverage(buildings: [], versions: Dictionary(uniqueKeysWithValues: tiles.map { ($0, DataGrid.noData) }))
+        }
+        return BuildingCoverage(buildings: buildings, versions: Dictionary(uniqueKeysWithValues: tiles.map { ($0, "static") }))
+    }
+
+    func dataVersions(of tiles: [TileKey], fetchingMissing: Bool) async -> DataVersions {
+        Dictionary(uniqueKeysWithValues: tiles.map { ($0, "static") })
+    }
 }
 
 public enum BuildingSourceError: Error, Equatable {
@@ -55,10 +91,18 @@ public enum BuildingSourceError: Error, Equatable {
 /// A fixed set of buildings, indexed by storage tile.
 public struct InMemoryBuildingSource: BuildingSource {
     public let buildings: [Building]
+    /// Data tiles with data (`nil`: everywhere).
+    public let coveredTiles: Set<TileKey>?
+    public let version: String
     private let index: [TileKey: [Int]]
 
-    public init(_ buildings: [Building]) {
+    /// - Parameters:
+    ///   - coveredTiles: data tiles (zoom `DataGrid.zoom`) for which data exists; `nil` means everywhere.
+    ///   - version: the version reported for covered data tiles.
+    public init(_ buildings: [Building], coveredTiles: Set<TileKey>? = nil, version: String = "memory") {
         self.buildings = buildings
+        self.coveredTiles = coveredTiles
+        self.version = version
         var index: [TileKey: [Int]] = [:]
         for (i, building) in buildings.enumerated() {
             for tile in TileRange(covering: building.bounds, zoom: DiscoveryGrid.zoom) {
@@ -77,6 +121,22 @@ public struct InMemoryBuildingSource: BuildingSource {
             }
         }
         return result
+    }
+
+    public func coverage(in rect: WorldRect) -> BuildingCoverage {
+        let versions = dataVersions(of: Array(TileRange(covering: rect, zoom: DataGrid.zoom)), fetchingMissing: false)
+        let covered = Set(versions.filter { $0.value != DataGrid.noData }.keys)
+        // Buildings belong to the data tile containing their bounds centre.
+        let available = buildings(in: rect).filter {
+            covered.contains(TileKey(containing: $0.bounds.center, zoom: DataGrid.zoom))
+        }
+        return BuildingCoverage(buildings: available, versions: versions)
+    }
+
+    public func dataVersions(of tiles: [TileKey], fetchingMissing: Bool) -> DataVersions {
+        Dictionary(uniqueKeysWithValues: tiles.map { tile in
+            (tile, coveredTiles.map { $0.contains(tile) } ?? true ? version : DataGrid.noData)
+        })
     }
 }
 

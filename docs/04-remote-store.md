@@ -42,8 +42,9 @@ base64-encoded PolygonCodec blob relative to the tile origin.
 | `DELETE /v1/samples` | `removeAllSamples` | |
 | `GET /v1/pieces?layer=…` | `pieces(layer:tiles:)` | optional tile range and `zoom` |
 | `POST /v1/changes` | `apply(_:)` | body: change set, atomic |
-| `DELETE /v1/pieces?layer=…` | `removeAllPieces(layer:)` | |
+| `DELETE /v1/pieces?layer=…` | `removeAllPieces(layer:)` | also deletes the layer's data watermarks |
 | `GET /v1/layers` | `layers()` | `[String]` |
+| `GET /v1/data-versions?layer=…` | `dataVersions(layer:)` | `[DataVersion]` (docs/05-cache-invalidation.md) |
 
 ```json
 Sample: {"id": "…", "latitude": 52.52, "longitude": 13.41, "altitude": 36.0,
@@ -53,7 +54,8 @@ Piece:  {"id": "…", "layer": "circle-50m", "regionID": "…", "tileZoom": 16, 
          "tileY": 21490, "geometry": "AQEE…", "areaSquareMeters": 812.4,
          "firstDiscovered": 1760000000, "lastUpdated": 1760000100}
 Change: {"layer": "circle-50m", "regionMerges": [{"sources": ["…"], "target": "…"}],
-         "removedPieceIDs": ["…"], "upsertedPieces": [Piece]}
+         "removedPieceIDs": ["…"], "upsertedPieces": [Piece], "dataVersions": [DataVersion]}
+DataVersion: {"zoom": 14, "x": 8802, "y": 5373, "version": "bundle:1760000000"}
 ```
 
 Errors: HTTP status with `{"error": "…"}` (401 for missing or unknown tokens).

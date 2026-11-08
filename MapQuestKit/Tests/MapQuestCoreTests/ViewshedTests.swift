@@ -149,7 +149,7 @@ final class ViewshedTests: XCTestCase {
 
     func testViewshedModelUsesBuildingSourceAndFeedsTheEngine() async throws {
         let model = ViewshedDiscoveryModel(buildings: InMemoryBuildingSource(cityGrid()))
-        XCTAssertEqual(model.layer, "viewshed-v2")
+        XCTAssertEqual(model.layer, "viewshed-v3")
         let engine = DiscoveryEngine(model: model, store: InMemoryDataStore())
         // Walk along the street at north = 0.
         for sample in Walk.line(fromEast: -150, north: 0, toEast: 150, north: 0, step: 30) {

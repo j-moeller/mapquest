@@ -77,7 +77,7 @@ final class TerrainTests: XCTestCase {
             return 50 + max(0, 70 * (1 - r / 600))
         }
         let model = ViewshedDiscoveryModel(buildings: InMemoryBuildingSource([]), terrain: hill)
-        XCTAssertNotEqual(model.layer, "viewshed-v2", "real terrain gives its own layer")
+        XCTAssertNotEqual(model.layer, "viewshed-v3", "real terrain gives its own layer")
 
         var top = Walk.sample(east: 0, north: 0, second: 0)
         top.altitude = 120 + 1.5
@@ -99,11 +99,11 @@ final class TerrainTests: XCTestCase {
     func testLayerIDsTrackParameters() {
         let source = InMemoryBuildingSource([])
         let standard = ViewshedDiscoveryModel(buildings: source)
-        XCTAssertEqual(standard.layer, "viewshed-v2")
+        XCTAssertEqual(standard.layer, "viewshed-v3")
         var config = ViewshedConfiguration()
         config.baseDistance = 200
         let wider = ViewshedDiscoveryModel(buildings: source, configuration: config)
-        XCTAssertTrue(wider.layer.rawValue.hasPrefix("viewshed-v2-flat35-"))
+        XCTAssertTrue(wider.layer.rawValue.hasPrefix("viewshed-v3-flat35-"))
         XCTAssertEqual(wider.layer, ViewshedDiscoveryModel(buildings: source, configuration: config).layer, "stable")
         config.rayCount = 360
         XCTAssertNotEqual(ViewshedDiscoveryModel(buildings: source, configuration: config).layer, wider.layer)

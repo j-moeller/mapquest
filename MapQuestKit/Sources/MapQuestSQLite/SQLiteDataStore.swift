@@ -15,7 +15,7 @@ public final class SQLiteDataStore: MapQuestDataStore, @unchecked Sendable {
     private let queue: DispatchQueue
 
     /// The schema version this code writes. Bump and add a migration step for every change.
-    public static let schemaVersion = 1
+    public static let schemaVersion = 2
 
     /// Opens or creates the database at `url`.
     public convenience init(fileURL url: URL, descriptor: DataSourceDescriptor? = nil) throws {
@@ -95,6 +95,19 @@ public final class SQLiteDataStore: MapQuestDataStore, @unchecked Sendable {
                     key   TEXT PRIMARY KEY NOT NULL,
                     value TEXT NOT NULL
                 );
+                """)
+            }
+            if version < 2 {
+                // Data watermarks (docs/05-cache-invalidation.md).
+                try db.execute("""
+                CREATE TABLE layer_data_versions (
+                    layer   TEXT NOT NULL,
+                    zoom    INTEGER NOT NULL,
+                    x       INTEGER NOT NULL,
+                    y       INTEGER NOT NULL,
+                    version TEXT NOT NULL,
+                    PRIMARY KEY (layer, zoom, x, y)
+                ) WITHOUT ROWID;
                 """)
             }
             try db.setUserVersion(schemaVersion)
@@ -295,13 +308,36 @@ public final class SQLiteDataStore: MapQuestDataStore, @unchecked Sendable {
                         .real(piece.firstDiscovered.timeIntervalSince1970), .real(piece.lastUpdated.timeIntervalSince1970),
                     ])
                 }
+                let watermark = try db.prepare("INSERT OR REPLACE INTO layer_data_versions (layer, zoom, x, y, version) VALUES (?, ?, ?, ?, ?)")
+                for (tile, version) in changes.dataVersions {
+                    try watermark.run([
+                        .text(changes.layer.rawValue), .integer(Int64(tile.zoom)), .integer(Int64(tile.x)), .integer(Int64(tile.y)),
+                        .text(version),
+                    ])
+                }
             }
         }
     }
 
     public func removeAllPieces(layer: DiscoveryLayerID) async throws {
         try await perform { db in
-            try db.prepare("DELETE FROM discovered_pieces WHERE layer = ?").run([.text(layer.rawValue)])
+            try db.transaction {
+                try db.prepare("DELETE FROM discovered_pieces WHERE layer = ?").run([.text(layer.rawValue)])
+                try db.prepare("DELETE FROM layer_data_versions WHERE layer = ?").run([.text(layer.rawValue)])
+            }
+        }
+    }
+
+    public func dataVersions(layer: DiscoveryLayerID) async throws -> DataVersions {
+        try await perform { db in
+            let statement = try db.prepare("SELECT zoom, x, y, version FROM layer_data_versions WHERE layer = ?")
+            try statement.bind([.text(layer.rawValue)])
+            var result: DataVersions = [:]
+            while try statement.step() {
+                result[TileKey(zoom: statement.int(at: 0), x: statement.int(at: 1), y: statement.int(at: 2))] = statement.string(at: 3)
+            }
+            statement.reset()
+            return result
         }
     }
 

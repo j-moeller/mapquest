@@ -7,6 +7,7 @@ public actor InMemoryDataStore: MapQuestDataStore {
 
     private var samplesByID: [UUID: LocationSample] = [:]
     private var piecesByLayer: [DiscoveryLayerID: [UUID: DiscoveredPiece]] = [:]
+    private var watermarksByLayer: [DiscoveryLayerID: DataVersions] = [:]
 
     public init(descriptor: DataSourceDescriptor = DataSourceDescriptor(id: "memory", displayName: "In memory", kind: .inMemory)) {
         self.descriptor = descriptor
@@ -62,10 +63,18 @@ public actor InMemoryDataStore: MapQuestDataStore {
             layerPieces[piece.id] = piece
         }
         piecesByLayer[changes.layer] = layerPieces.isEmpty ? nil : layerPieces
+        if !changes.dataVersions.isEmpty {
+            watermarksByLayer[changes.layer, default: [:]].merge(changes.dataVersions) { _, new in new }
+        }
     }
 
     public func removeAllPieces(layer: DiscoveryLayerID) {
         piecesByLayer[layer] = nil
+        watermarksByLayer[layer] = nil
+    }
+
+    public func dataVersions(layer: DiscoveryLayerID) -> DataVersions {
+        watermarksByLayer[layer] ?? [:]
     }
 
     public func layers() -> [DiscoveryLayerID] {

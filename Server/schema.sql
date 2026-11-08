@@ -1,4 +1,4 @@
--- MapQuest remote store: PostgreSQL schema (version 1).
+-- MapQuest remote store: PostgreSQL schema (version 2: data watermarks).
 -- Mirrors the local SQLite schema (docs/02-architecture.md) with an `owner`
 -- column, so one database serves many users. Apply with:
 --   psql "$DATABASE_URL" -f Server/schema.sql
@@ -46,7 +46,20 @@ CREATE TABLE IF NOT EXISTS discovered_pieces (
 CREATE INDEX IF NOT EXISTS discovered_pieces_tile ON discovered_pieces (owner, layer, tile_x, tile_y);
 CREATE INDEX IF NOT EXISTS discovered_pieces_region ON discovered_pieces (owner, layer, region_id);
 
--- Applies a DiscoveredAreaChangeSet atomically: region merges, then removals, then upserts.
+-- Data watermarks: the map-data version every data tile (zoom 14) had when a
+-- layer was last made consistent with it (docs/05-cache-invalidation.md).
+CREATE TABLE IF NOT EXISTS layer_data_versions (
+    owner   text NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    layer   text NOT NULL,
+    zoom    integer NOT NULL,
+    x       integer NOT NULL,
+    y       integer NOT NULL,
+    version text NOT NULL,
+    PRIMARY KEY (owner, layer, zoom, x, y)
+);
+
+-- Applies a DiscoveredAreaChangeSet atomically: region merges, then removals,
+-- then upserts, then data watermarks.
 -- `change` is the JSON body of POST /v1/changes (docs/04-remote-store.md).
 CREATE OR REPLACE FUNCTION apply_change_set(p_owner text, change jsonb) RETURNS void
 LANGUAGE plpgsql AS $$
@@ -77,5 +90,10 @@ BEGIN
         tile_x = excluded.tile_x, tile_y = excluded.tile_y, geometry = excluded.geometry,
         area_m2 = excluded.area_m2, first_discovered = excluded.first_discovered,
         last_updated = excluded.last_updated;
+
+    INSERT INTO layer_data_versions (owner, layer, zoom, x, y, version)
+    SELECT p_owner, layer_name, (v ->> 'zoom')::integer, (v ->> 'x')::integer, (v ->> 'y')::integer, v ->> 'version'
+      FROM jsonb_array_elements(coalesce(change -> 'dataVersions', '[]'::jsonb)) AS v
+    ON CONFLICT (owner, layer, zoom, x, y) DO UPDATE SET version = excluded.version;
 END;
 $$;

@@ -114,7 +114,8 @@ public struct DiscoveredRegion: Hashable, Sendable, Identifiable {
 /// An atomic modification of one layer of discovered area.
 ///
 /// Stores apply the parts in this order: region merges, piece removals, piece
-/// upserts. A remote store can send the whole change set as one request.
+/// upserts, data watermarks. A remote store can send the whole change set as one
+/// request.
 public struct DiscoveredAreaChangeSet: Hashable, Sendable {
     /// Relabels all pieces of `sources` to `target`.
     public struct RegionMerge: Hashable, Sendable {
@@ -131,20 +132,27 @@ public struct DiscoveredAreaChangeSet: Hashable, Sendable {
     public var regionMerges: [RegionMerge]
     public var removedPieceIDs: [UUID]
     public var upsertedPieces: [DiscoveredPiece]
+    /// Data watermarks to set: the version of each data tile the layer is now
+    /// consistent with (docs/05-cache-invalidation.md).
+    public var dataVersions: DataVersions
 
     public init(
         layer: DiscoveryLayerID,
         regionMerges: [RegionMerge] = [],
         removedPieceIDs: [UUID] = [],
-        upsertedPieces: [DiscoveredPiece] = []
+        upsertedPieces: [DiscoveredPiece] = [],
+        dataVersions: DataVersions = [:]
     ) {
         self.layer = layer
         self.regionMerges = regionMerges
         self.removedPieceIDs = removedPieceIDs
         self.upsertedPieces = upsertedPieces
+        self.dataVersions = dataVersions
     }
 
-    public var isEmpty: Bool { regionMerges.isEmpty && removedPieceIDs.isEmpty && upsertedPieces.isEmpty }
+    public var isEmpty: Bool {
+        regionMerges.isEmpty && removedPieceIDs.isEmpty && upsertedPieces.isEmpty && dataVersions.isEmpty
+    }
 
     /// Combines `self` followed by `other` into one change set with the same effect
     /// as applying both in sequence (piece IDs are never reused after removal).
@@ -165,5 +173,6 @@ public struct DiscoveredAreaChangeSet: Hashable, Sendable {
         // Pieces that only ever existed inside this change set need no removal in the store.
         removedPieceIDs += other.removedPieceIDs.filter { !pendingIDs.contains($0) }
         upsertedPieces += other.upsertedPieces
+        dataVersions.merge(other.dataVersions) { _, new in new }
     }
 }

@@ -100,6 +100,11 @@ public final class RemoteDataStore: MapQuestDataStore, @unchecked Sendable {
         return names.map(DiscoveryLayerID.init(rawValue:))
     }
 
+    public func dataVersions(layer: DiscoveryLayerID) async throws -> DataVersions {
+        let rows: [DataVersionDTO] = try await request("GET", "v1/data-versions", query: [URLQueryItem(name: "layer", value: layer.rawValue)])
+        return Dictionary(rows.map { (TileKey(zoom: $0.zoom, x: $0.x, y: $0.y), $0.version) }) { _, last in last }
+    }
+
     // MARK: HTTP
 
     private static func tileItems(_ tiles: TileRange) -> [URLQueryItem] {
@@ -233,6 +238,13 @@ struct PieceDTO: Codable {
     }
 }
 
+struct DataVersionDTO: Codable {
+    var zoom: Int
+    var x: Int
+    var y: Int
+    var version: String
+}
+
 struct ChangeSetDTO: Encodable {
     struct Merge: Encodable { var sources: [String]; var target: String }
 
@@ -240,11 +252,15 @@ struct ChangeSetDTO: Encodable {
     var regionMerges: [Merge]
     var removedPieceIDs: [String]
     var upsertedPieces: [PieceDTO]
+    var dataVersions: [DataVersionDTO]
 
     init(_ changes: DiscoveredAreaChangeSet) {
         layer = changes.layer.rawValue
         regionMerges = changes.regionMerges.map { Merge(sources: $0.sources.map(\.uuidString), target: $0.target.uuidString) }
         removedPieceIDs = changes.removedPieceIDs.map(\.uuidString)
         upsertedPieces = changes.upsertedPieces.map(PieceDTO.init)
+        dataVersions = changes.dataVersions.sorted { $0.key < $1.key }.map {
+            DataVersionDTO(zoom: $0.key.zoom, x: $0.key.x, y: $0.key.y, version: $0.value)
+        }
     }
 }

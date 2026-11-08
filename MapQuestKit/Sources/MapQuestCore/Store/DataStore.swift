@@ -71,10 +71,13 @@ public protocol DiscoveredAreaStore: AnyObject, Sendable {
     func pieces(layer: DiscoveryLayerID, tiles: TileRange?) async throws -> [DiscoveredPiece]
     /// Applies a change set atomically.
     func apply(_ changes: DiscoveredAreaChangeSet) async throws
-    /// Deletes every piece of a layer (e.g. before a rebuild).
+    /// Deletes every piece and data watermark of a layer (e.g. before a rebuild).
     func removeAllPieces(layer: DiscoveryLayerID) async throws
     /// The layers that currently hold pieces.
     func layers() async throws -> [DiscoveryLayerID]
+    /// The data watermarks of a layer: for every data tile its results depend on,
+    /// the version of the map data they were computed from.
+    func dataVersions(layer: DiscoveryLayerID) async throws -> DataVersions
 }
 
 public extension DiscoveredAreaStore {
@@ -84,9 +87,9 @@ public extension DiscoveredAreaStore {
     }
 
     /// Replaces a whole layer (used when rebuilding the cache).
-    func replaceLayer(_ layer: DiscoveryLayerID, with pieces: [DiscoveredPiece]) async throws {
+    func replaceLayer(_ layer: DiscoveryLayerID, with pieces: [DiscoveredPiece], dataVersions: DataVersions = [:]) async throws {
         try await removeAllPieces(layer: layer)
-        try await apply(DiscoveredAreaChangeSet(layer: layer, upsertedPieces: pieces))
+        try await apply(DiscoveredAreaChangeSet(layer: layer, upsertedPieces: pieces, dataVersions: dataVersions))
     }
 }
 

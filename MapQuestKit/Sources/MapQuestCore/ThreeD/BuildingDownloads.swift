@@ -61,19 +61,27 @@ public struct OverpassClient: Sendable {
     }
 }
 
-/// Persistent storage for downloaded buildings, organised by download tiles.
+/// Persistent storage for downloaded buildings, organised by data tiles.
 public protocol BuildingCache: Sendable {
     func buildings(in rect: WorldRect) async throws -> [Building]
-    func isDownloaded(_ tile: TileKey) async throws -> Bool
+    /// The version of a data tile's buildings, or `nil` if the tile has no data.
+    func version(of tile: TileKey) async throws -> String?
     /// Stores buildings and marks `tiles` as downloaded (atomically).
     func store(_ buildings: [Building], downloadedTiles tiles: [TileKey]) async throws
 }
 
+public extension BuildingCache {
+    func isDownloaded(_ tile: TileKey) async throws -> Bool {
+        try await version(of: tile) != nil
+    }
+}
+
 /// Serves buildings from a persistent cache and downloads missing areas on
-/// demand, one zoom-14 tile (≈ 1.5 km in Berlin) at a time. Recently used tiles
-/// are kept in memory, so repeated viewshed computations do not hit the disk.
-/// After a failed download a tile is not retried for `retryInterval`, so that
-/// being offline does not stall the processing of every position fix.
+/// demand, one data tile (zoom 14, ≈ 1.5 km in Berlin) at a time. Recently used
+/// tiles are kept in memory, so repeated viewshed computations do not hit the
+/// disk. After a failed download a tile is not retried for `retryInterval`, so
+/// that being offline does not stall the processing of every position fix.
+/// Every successful download is reported to `onDataChange` (cache invalidation).
 public actor CachingBuildingSource: BuildingSource {
     public typealias Download = @Sendable (GeoBoundingBox) async throws -> [Building]
 
@@ -87,13 +95,14 @@ public actor CachingBuildingSource: BuildingSource {
     private var recentlyUsed: [TileKey] = []
     private var inFlight: [TileKey: Task<[Building], Error>] = [:]
     private var failures: [TileKey: (date: Date, message: String)] = [:]
+    private var onDataChange: (@Sendable (Set<TileKey>) -> Void)?
 
     /// - Parameters:
     ///   - download: Fetches buildings for a box; `nil` makes the source offline-only.
     public init(
         cache: any BuildingCache,
         download: Download?,
-        downloadZoom: Int = 14,
+        downloadZoom: Int = DataGrid.zoom,
         memoryLimit: Int = 24,
         retryInterval: TimeInterval = 120,
         now: @escaping @Sendable () -> Date = { Date() }
@@ -106,6 +115,11 @@ public actor CachingBuildingSource: BuildingSource {
         self.now = now
     }
 
+    /// Called with the data tiles whose data changed (after downloads).
+    public func setOnDataChange(_ handler: (@Sendable (Set<TileKey>) -> Void)?) {
+        onDataChange = handler
+    }
+
     public func buildings(in rect: WorldRect) async throws -> [Building] {
         var seen = Set<Int64>()
         var result: [Building] = []
@@ -116,6 +130,37 @@ public actor CachingBuildingSource: BuildingSource {
             }
         }
         return result
+    }
+
+    public func coverage(in rect: WorldRect) async -> BuildingCoverage {
+        var seen = Set<Int64>()
+        var buildings: [Building] = []
+        var versions: DataVersions = [:]
+        for tile in TileRange(covering: rect, zoom: downloadZoom) {
+            guard let tileBuildings = try? await tileBuildings(tile),
+                  let version = try? await cache.version(of: tile)
+            else {
+                versions[tile] = DataGrid.noData
+                continue
+            }
+            versions[tile] = version
+            for building in tileBuildings where building.bounds.intersects(rect) && seen.insert(building.id).inserted {
+                buildings.append(building)
+            }
+        }
+        return BuildingCoverage(buildings: buildings, versions: versions)
+    }
+
+    public func dataVersions(of tiles: [TileKey], fetchingMissing: Bool) async -> DataVersions {
+        var versions: DataVersions = [:]
+        for tile in tiles {
+            var version = (try? await cache.version(of: tile)) ?? nil
+            if version == nil, fetchingMissing, (try? await tileBuildings(tile)) != nil {
+                version = (try? await cache.version(of: tile)) ?? nil
+            }
+            versions[tile] = version ?? DataGrid.noData
+        }
+        return versions
     }
 
     private func tileBuildings(_ tile: TileKey) async throws -> [Building] {
@@ -131,24 +176,26 @@ public actor CachingBuildingSource: BuildingSource {
         }
         let cache = self.cache
         let download = self.download
-        let task = Task<[Building], Error> {
-            let isDownloaded = try await cache.isDownloaded(tile)
-            if !isDownloaded {
-                guard let download else {
-                    throw BuildingSourceError.unavailable("No building data for tile \(tile)")
-                }
-                let downloaded = try await download(tile.boundingBox)
-                try await cache.store(downloaded, downloadedTiles: [tile])
+        // Returns the tile's buildings and whether they were downloaded just now.
+        let task = Task<([Building], Bool), Error> {
+            if try await cache.isDownloaded(tile) {
+                return (try await cache.buildings(in: tile.worldRect), false)
             }
-            return try await cache.buildings(in: tile.worldRect)
+            guard let download else {
+                throw BuildingSourceError.unavailable("No building data for tile \(tile)")
+            }
+            let downloaded = try await download(tile.boundingBox)
+            try await cache.store(downloaded, downloadedTiles: [tile])
+            return (try await cache.buildings(in: tile.worldRect), true)
         }
-        inFlight[tile] = task
+        inFlight[tile] = Task { try await task.value.0 }
         defer { inFlight[tile] = nil }
         do {
-            let buildings = try await task.value
+            let (buildings, downloadedNow) = try await task.value
             failures[tile] = nil
             memory[tile] = buildings
             touch(tile)
+            if downloadedNow { onDataChange?([tile]) }
             return buildings
         } catch {
             failures[tile] = (now(), String(describing: error))
@@ -165,32 +212,36 @@ public actor CachingBuildingSource: BuildingSource {
     }
 }
 
-/// A volatile `BuildingCache` (tests, previews).
+/// A volatile `BuildingCache` (tests, previews). Every `store` call creates a new
+/// version (`memory:<n>`) of the stored tiles.
 public actor InMemoryBuildingCache: BuildingCache {
     private var byID: [Int64: Building] = [:]
-    private var downloaded: Set<TileKey> = []
+    private var versions: [TileKey: String] = [:]
+    private var counter = 0
 
     public init(_ buildings: [Building] = [], downloadedTiles: Set<TileKey> = []) {
         for building in buildings { byID[building.id] = building }
-        downloaded = downloadedTiles
+        for tile in downloadedTiles { versions[tile] = "memory:0" }
     }
 
     public func buildings(in rect: WorldRect) -> [Building] {
         byID.values.filter { $0.bounds.intersects(rect) }.sorted { $0.id < $1.id }
     }
 
-    public func isDownloaded(_ tile: TileKey) -> Bool { downloaded.contains(tile) }
+    public func version(of tile: TileKey) -> String? { versions[tile] }
 
     public func store(_ buildings: [Building], downloadedTiles tiles: [TileKey]) {
         for building in buildings { byID[building.id] = building }
-        downloaded.formUnion(tiles)
+        counter += 1
+        for tile in tiles { versions[tile] = "memory:\(counter)" }
     }
 }
 
 /// Combines a prepared base dataset (e.g. the bundled Berlin database, which may
 /// first have to be unpacked) with an overlay cache for downloads. Lookups use
 /// both; downloaded buildings go into the overlay. The base is prepared once,
-/// in the background, on first use.
+/// in the background, on first use. Where the base has a data tile, its version
+/// wins (prefixed `bundle:`); otherwise the overlay's (prefixed `download:`).
 public actor LayeredBuildingCache: BuildingCache {
     private let base: Task<(any BuildingCache)?, Never>
     private let overlay: any BuildingCache
@@ -207,9 +258,11 @@ public actor LayeredBuildingCache: BuildingCache {
         return fromBase + fromOverlay
     }
 
-    public func isDownloaded(_ tile: TileKey) async throws -> Bool {
-        if let base = await base.value, try await base.isDownloaded(tile) { return true }
-        return try await overlay.isDownloaded(tile)
+    public func version(of tile: TileKey) async throws -> String? {
+        if let base = await base.value, let version = try await base.version(of: tile) {
+            return "bundle:\(version)"
+        }
+        return try await overlay.version(of: tile).map { "download:\($0)" }
     }
 
     public func store(_ buildings: [Building], downloadedTiles tiles: [TileKey]) async throws {
