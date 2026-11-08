@@ -72,8 +72,13 @@ mostly (≥ 50 %) inside it** – towers that LoD2 models as separate parts
 part, the part covering most of the footprint (≥ 30 %) is used. An explicit
 OSM `height` that is taller wins: LoD2 stops below antennas (Fernsehturm:
 229 m in LoD2, 368 m in OSM) and predates the newest towers. Such buildings
-get height source `measured`. Result: 78 % of Berlin's OSM buildings have
-measured heights (before: 1.4 % tagged, 33 % from levels, 66 % estimated).
+get height source `measured`.
+
+Result (bundled database, November 2026): 539 018 buildings; heights measured
+(LoD2) 79.6 %, OSM `height` tag 0.8 %, OSM levels 3.1 %, estimated 16.5 %
+(before LoD2: 1.4 % tagged, 33 % levels, 66 % estimated). Landmarks: Fernsehturm
+368 m, Funkturm 147 m, Berliner Dom 98 m, Rotes Rathaus 84 m, Brandenburger
+Tor 26 m. 56.5 MB unpacked, 31.7 MB in the app bundle.
 
 Without bundled data the app still works: the first time the
 line-of-sight layer or the 3D map needs an area, `CachingBuildingSource`
