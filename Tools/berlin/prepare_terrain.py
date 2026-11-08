@@ -23,6 +23,8 @@ import pathlib
 import re
 import struct
 import sys
+import time
+import urllib.error
 import urllib.request
 import zipfile
 from concurrent.futures import ThreadPoolExecutor
@@ -46,12 +48,24 @@ def tile_urls() -> list:
     return sorted(set(re.findall(r'href="(https://gdi\.berlin\.de/data/dgm1/atom/DGM1_\d+_\d+\.zip)"', feed)))
 
 
-def download(url: str, cache: pathlib.Path) -> pathlib.Path:
+def download(url: str, cache: pathlib.Path, attempts: int = 6) -> pathlib.Path:
+    """Downloads a tile once; retries with exponential backoff (the Geoportal answers 503 under load)."""
     path = cache / url.rsplit("/", 1)[1]
-    if not path.exists() or path.stat().st_size == 0:
-        tmp = path.with_suffix(".part")
-        urllib.request.urlretrieve(url, tmp)
-        tmp.rename(path)
+    if path.exists() and path.stat().st_size > 0:
+        return path
+    tmp = path.with_suffix(".part")
+    for attempt in range(attempts):
+        try:
+            urllib.request.urlretrieve(url, tmp)
+            tmp.rename(path)
+            return path
+        except (urllib.error.URLError, ConnectionError, TimeoutError) as error:
+            permanent = isinstance(error, urllib.error.HTTPError) and error.code < 500
+            if permanent or attempt == attempts - 1:
+                raise
+            wait = 2 ** (attempt + 1)
+            print(f"retrying {path.name} in {wait} s ({error})", flush=True)
+            time.sleep(wait)
     return path
 
 
