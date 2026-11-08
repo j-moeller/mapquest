@@ -34,8 +34,8 @@ struct DebugSettingsView: View {
                 ValueSlider(title: "Extra sight per metre of height", value: $draft.distancePerMeterOfHeight, range: 0...50, step: 1, format: "%.0f m")
                 ValueSlider(title: "Maximum sight", value: $draft.maximumDistance, range: 200...5_000, step: 100, format: "%.0f m")
                 ValueSlider(title: "Height counted as street level", value: $draft.elevatedThreshold, range: 0...30, step: 1, format: "%.0f m")
-                Toggle("Use Berlin terrain model", isOn: $draft.usesTerrain)
-                    .disabled(model.berlinTerrain == nil)
+                Toggle("Use the cities' terrain models", isOn: $draft.usesTerrain)
+                    .disabled(model.cityTerrain == nil)
             } header: {
                 Text("Line-of-sight layer (3D)")
             } footer: {

@@ -5,6 +5,9 @@ Stadtentwicklung, Bauen und Wohnen Berlin, https://gdi.berlin.de/data/a_lod2/ato
 (Datenlizenz Deutschland – Zero – 2.0): ~925 CityGML tiles of 1 × 1 km in
 ETRS89/UTM 33N with DHHN2016 heights.
 
+Also used for other cities (Tools/cities/lgln_lod2.py): any CityGML version is
+accepted (namespaces are matched by local name) and the source CRS is a parameter.
+
 Every bldg:Building and bldg:BuildingPart with its own ground surface becomes one
 JSON line:  {"id": <gml:id>, "h": <height above ground, m>, "z": <ground elevation, m>,
              "r": [[lon, lat], ...]}  (one line per ground polygon, WGS84).
@@ -29,9 +32,16 @@ from lxml import etree
 from pyproj import Transformer
 
 FEED = "https://gdi.berlin.de/data/a_lod2/atom/0.atom"
-BLDG = "{http://www.opengis.net/citygml/building/1.0}"
-GML = "{http://www.opengis.net/gml}"
+# Any CityGML version / GML namespace (lxml's "{*}" wildcard).
+BLDG = "{*}"
+GML = "{*}"
 TO_WGS84 = Transformer.from_crs("EPSG:25833", "EPSG:4326", always_xy=True)
+
+
+def set_source_crs(epsg: int) -> None:
+    """Coordinates of the CityGML files (Berlin: 25833, Lower Saxony: 25832)."""
+    global TO_WGS84
+    TO_WGS84 = Transformer.from_crs(f"EPSG:{epsg}", "EPSG:4326", always_xy=True)
 
 
 def tile_urls() -> list:
@@ -75,6 +85,14 @@ def own_surfaces(element, kind: str) -> list:
     return rings
 
 
+def gml_id(element):
+    """The gml:id attribute, whatever the GML namespace."""
+    for key, value in element.attrib.items():
+        if key == "id" or key.endswith("}id"):
+            return value
+    return None
+
+
 def records(element) -> list:
     grounds = own_surfaces(element, "GroundSurface")
     if not grounds:
@@ -95,7 +113,7 @@ def records(element) -> list:
             continue
         lons, lats = TO_WGS84.transform([p[0] for p in ring], [p[1] for p in ring])
         out.append({
-            "id": element.get(f"{GML}id"),
+            "id": gml_id(element),
             "h": round(height, 2),
             "z": round(z, 2),
             "r": [[round(lon, 7), round(lat, 7)] for lon, lat in zip(lons, lats)],
@@ -103,22 +121,31 @@ def records(element) -> list:
     return out
 
 
+def process_stream(stream, out) -> int:
+    count = 0
+    for _, element in etree.iterparse(stream, events=("end",), tag=(f"{BLDG}Building", f"{BLDG}BuildingPart"), huge_tree=True):
+        for record in records(element):
+            out.write(json.dumps(record, separators=(",", ":")))
+            out.write("\n")
+            count += 1
+        if etree.QName(element).localname == "Building":
+            element.clear()
+            while element.getprevious() is not None:
+                del element.getparent()[0]
+    return count
+
+
 def process(path: pathlib.Path, out) -> int:
+    """A zip of CityGML files (Berlin) or a single CityGML file (Lower Saxony)."""
+    if path.suffix.lower() in (".gml", ".xml"):
+        with open(path, "rb") as stream:
+            return process_stream(stream, out)
     count = 0
     with zipfile.ZipFile(path) as archive:
         for info in archive.infolist():
-            if not info.filename.lower().endswith((".xml", ".gml")):
-                continue
-            with archive.open(info) as stream:
-                for _, element in etree.iterparse(stream, events=("end",), tag=(f"{BLDG}Building", f"{BLDG}BuildingPart"), huge_tree=True):
-                    for record in records(element):
-                        out.write(json.dumps(record, separators=(",", ":")))
-                        out.write("\n")
-                        count += 1
-                    if element.tag == f"{BLDG}Building":
-                        element.clear()
-                        while element.getprevious() is not None:
-                            del element.getparent()[0]
+            if info.filename.lower().endswith((".xml", ".gml")):
+                with archive.open(info) as stream:
+                    count += process_stream(stream, out)
     return count
 
 

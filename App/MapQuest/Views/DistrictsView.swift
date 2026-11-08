@@ -15,24 +15,19 @@ struct DistrictsView: View {
                         .foregroundStyle(.secondary)
                 }
             }
-            ForEach(model.districtCoverage, id: \.name) { district in
-                VStack(alignment: .leading, spacing: 6) {
-                    HStack {
-                        Text(district.name)
-                        Spacer()
-                        Text(Formatters.percent(district.fraction))
-                            .monospacedDigit()
-                            .foregroundStyle(.secondary)
+            ForEach(model.districtCoverage) { city in
+                Section {
+                    ForEach(city.districts, id: \.name) { district in
+                        CoverageRow(coverage: district)
                     }
-                    ProgressView(value: district.fraction)
-                    Text("\(Formatters.area(district.discoveredSquareMeters)) of \(Formatters.area(district.areaSquareMeters))")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                } header: {
+                    Text(city.city.name)
+                } footer: {
+                    Text("\(city.city.name): \(Formatters.percent(city.city.fraction)) – \(Formatters.area(city.city.discoveredSquareMeters)) of \(Formatters.area(city.city.areaSquareMeters))")
                 }
-                .padding(.vertical, 2)
             }
         }
-        .navigationTitle("\(model.playArea.name) districts")
+        .navigationTitle("Districts")
         .safeAreaInset(edge: .top) {
             Picker("Discovery", selection: $model.selectedLayer) {
                 ForEach(MapLayer.allCases) { layer in
@@ -49,5 +44,26 @@ struct DistrictsView: View {
             await model.computeDistrictCoverage()
             isComputing = false
         }
+    }
+}
+
+private struct CoverageRow: View {
+    let coverage: AreaCoverage
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Text(coverage.name)
+                Spacer()
+                Text(Formatters.percent(coverage.fraction))
+                    .monospacedDigit()
+                    .foregroundStyle(.secondary)
+            }
+            ProgressView(value: coverage.fraction)
+            Text("\(Formatters.area(coverage.discoveredSquareMeters)) of \(Formatters.area(coverage.areaSquareMeters))")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .padding(.vertical, 2)
     }
 }

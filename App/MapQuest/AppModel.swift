@@ -35,6 +35,13 @@ struct LayerState {
     var regionCount = 0
 }
 
+/// Discovered share of a city and its districts.
+struct CityCoverage: Identifiable {
+    var city: AreaCoverage
+    var districts: [AreaCoverage]
+    var id: String { city.name }
+}
+
 /// Progress of recomputing areas after building data changed.
 struct DataRefreshProgress: Equatable {
     var layer: MapLayer
@@ -72,9 +79,12 @@ final class AppModel: ObservableObject {
     @Published var lastOutcome: String = ""
     @Published private(set) var isBusy = false
     @Published var errorMessage: String?
+    /// Where positions are recorded: all bundled cities together.
     @Published private(set) var playArea: PlayArea
-    /// Discovered share per district of the selected layer (computed on demand).
-    @Published private(set) var districtCoverage: [AreaCoverage] = []
+    /// The bundled cities (each with its districts).
+    let cities: [PlayArea]
+    /// Discovered share per city and district of the selected layer (computed on demand).
+    @Published private(set) var districtCoverage: [CityCoverage] = []
     /// Tunable parameters (Settings › Debug).
     @Published private(set) var debug: DebugSettings
     /// Progress (0…1) of a running rebuild.
@@ -120,8 +130,8 @@ final class AppModel: ObservableObject {
     private(set) var viewshedModel: ViewshedDiscoveryModel
     /// Buildings for ray casting and the 3D map (bundled, cached, or downloaded on demand).
     let buildings: CachingBuildingSource
-    /// Berlin's elevation model, if bundled.
-    let berlinTerrain: GridTerrain?
+    /// The cities' elevation models, if bundled.
+    let cityTerrain: CompositeTerrain?
 
     private(set) var store: any MapQuestDataStore
     private(set) var engines: [MapLayer: DiscoveryEngine]
@@ -148,7 +158,9 @@ final class AppModel: ObservableObject {
     init(catalog: DataSourceCatalog = DataSourceCatalog(), tracker: LocationTracker = LocationTracker()) {
         self.catalog = catalog
         self.tracker = tracker
-        let playArea = BerlinData.playArea() ?? .world
+        let cities = Cities.playAreas()
+        let playArea = Cities.combined(cities)
+        self.cities = cities
         self.playArea = playArea
         if !catalog.profiles.contains(where: { $0.id == BerlinData.demoProfileID }) {
             catalog.upsert(BerlinData.demoProfile)
@@ -165,14 +177,14 @@ final class AppModel: ObservableObject {
         }
         let debug = DebugSettings.load()
         let buildings = Self.makeBuildingSource(downloadsAutomatically: debug.downloadsBuildings)
-        let berlinTerrain = BerlinData.terrain()
-        let (circleModel, viewshedModel) = Self.makeModels(debug, buildings: buildings, terrain: berlinTerrain)
+        let cityTerrain = Cities.terrain()
+        let (circleModel, viewshedModel) = Self.makeModels(debug, buildings: buildings, terrain: cityTerrain)
         let engines = Self.makeEngines(store: store, circle: circleModel, viewshed: viewshedModel)
         self.debug = debug
         self.circleModel = circleModel
         self.viewshedModel = viewshedModel
         self.buildings = buildings
-        self.berlinTerrain = berlinTerrain
+        self.cityTerrain = cityTerrain
         self.profile = profile
         self.profiles = catalog.profiles
         self.store = store
@@ -216,7 +228,7 @@ final class AppModel: ObservableObject {
     }
 
     private static func makeModels(
-        _ debug: DebugSettings, buildings: CachingBuildingSource, terrain: GridTerrain?
+        _ debug: DebugSettings, buildings: CachingBuildingSource, terrain: CompositeTerrain?
     ) -> (CircleDiscoveryModel, ViewshedDiscoveryModel) {
         let ground: any TerrainModel
         if debug.usesTerrain, let terrain {
@@ -254,7 +266,7 @@ final class AppModel: ObservableObject {
         }
         let cache = LayeredBuildingCache(overlay: overlay) {
             guard let directory else { return nil }
-            return BundledBuildings.prepare(in: directory)
+            return Cities.bundledBuildings(in: directory)
         }
         let client = OverpassClient()
         return CachingBuildingSource(
@@ -268,10 +280,27 @@ final class AppModel: ObservableObject {
         layers[layer] ?? LayerState(snapshot: .empty(layer: DiscoveryLayerID(layer.rawValue)))
     }
 
-    /// Discovered share of the play area for a layer, if the play area is bounded.
-    func playAreaFraction(_ layer: MapLayer) -> Double? {
-        guard !playArea.isWorld, playArea.areaSquareMeters > 0 else { return nil }
-        return min(1, state(layer).discoveredSquareMeters / playArea.areaSquareMeters)
+    /// The city the user is in (or was last), else the most discovered one.
+    func focusCity(_ layer: MapLayer) -> PlayArea? {
+        if let location = tracker.lastLocation,
+           let city = cities.first(where: { $0.contains(GeoCoordinate(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)) }) {
+            return city
+        }
+        return cities.max { discovered(layer, in: $0) < discovered(layer, in: $1) }
+    }
+
+    /// Discovered area of a layer inside a city's bounding box (cities are far apart).
+    private func discovered(_ layer: MapLayer, in city: PlayArea) -> Double {
+        guard let bounds = city.bounds else { return 0 }
+        return state(layer).snapshot.piecesByTile
+            .filter { bounds.contains($0.key.worldRect.center) }
+            .reduce(0) { $0 + $1.value.reduce(0) { $0 + $1.areaSquareMeters } }
+    }
+
+    /// Discovered share of the city in focus for a layer.
+    func playAreaFraction(_ layer: MapLayer) -> (city: String, fraction: Double)? {
+        guard let city = focusCity(layer), city.areaSquareMeters > 0 else { return nil }
+        return (city.name, min(1, discovered(layer, in: city) / city.areaSquareMeters))
     }
 
     // MARK: Processing
@@ -483,14 +512,16 @@ final class AppModel: ObservableObject {
         lastOutcome = ""
     }
 
-    /// Computes the discovered share of every district for the selected layer (off the main thread).
+    /// Computes the discovered share of every city and district for the selected layer (off the main thread).
     func computeDistrictCoverage() async {
         let snapshot = state(selectedLayer).snapshot
-        let districts = playArea.subdivisions
-        let coverage = await Task.detached(priority: .userInitiated) {
-            DiscoveryStatistics.coverage(of: snapshot, in: districts)
+        let cities = self.cities
+        districtCoverage = await Task.detached(priority: .userInitiated) {
+            cities.map { city in
+                let coverage = DiscoveryStatistics.coverage(of: snapshot, in: [city] + city.subdivisions)
+                return CityCoverage(city: coverage[0], districts: coverage.dropFirst().sorted { $0.fraction > $1.fraction })
+            }
         }.value
-        districtCoverage = coverage.sorted { $0.fraction > $1.fraction }
     }
 
     // MARK: Debug
@@ -508,7 +539,7 @@ final class AppModel: ObservableObject {
             if settings.downloadsBuildings { Task { await checkBuildingData(fetchingMissing: true) } }
         }
         guard settings.changesLayers(comparedTo: previous) else { return }
-        let (circle, viewshed) = Self.makeModels(settings, buildings: buildings, terrain: berlinTerrain)
+        let (circle, viewshed) = Self.makeModels(settings, buildings: buildings, terrain: cityTerrain)
         circleModel = circle
         viewshedModel = viewshed
         let engines = Self.makeEngines(store: store, circle: circle, viewshed: viewshed)

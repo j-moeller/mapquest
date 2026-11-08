@@ -2,20 +2,21 @@ import Foundation
 import MapQuestCore
 import MapQuestSQLite
 
-/// The Berlin building database shipped with the app.
+/// The building databases shipped with the app, one per city.
 ///
-/// The bundle contains `berlin-buildings.sqlite.deflate` (raw DEFLATE, built by
-/// .github/workflows/berlin-buildings.yml). It is unpacked once into Application
-/// Support and again whenever the bundled file changes (app update).
+/// The bundle contains `<city>-buildings.sqlite.deflate` (raw DEFLATE, built by
+/// .github/workflows/berlin-buildings.yml and braunschweig-data.yml). Each is
+/// unpacked once into Application Support and again whenever the bundled file
+/// changes (app update).
 enum BundledBuildings {
-    private static let markerKey = "BundledBuildings.marker"
-
-    /// Opens the unpacked database, unpacking it first if needed. Runs off the main thread.
-    static func prepare(in directory: URL, bundle: Bundle = .main) -> SQLiteBuildingStore? {
+    /// Opens a city's unpacked database, unpacking it first if needed. Runs off the main thread.
+    static func prepare(city: String, in directory: URL, bundle: Bundle = .main) -> SQLiteBuildingStore? {
+        // Berlin's marker keeps its original key, so existing installs do not unpack again.
+        let markerKey = city == "berlin" ? "BundledBuildings.marker" : "BundledBuildings.marker.\(city)"
         let fileManager = FileManager.default
-        let target = directory.appendingPathComponent("berlin.sqlite")
-        let compressed = bundle.url(forResource: "berlin-buildings.sqlite", withExtension: "deflate")
-        let plain = bundle.url(forResource: "berlin-buildings", withExtension: "sqlite")
+        let target = directory.appendingPathComponent("\(city).sqlite")
+        let compressed = bundle.url(forResource: "\(city)-buildings.sqlite", withExtension: "deflate")
+        let plain = bundle.url(forResource: "\(city)-buildings", withExtension: "sqlite")
         guard let source = compressed ?? plain else {
             return fileManager.fileExists(atPath: target.path) ? try? SQLiteBuildingStore(fileURL: target) : nil
         }

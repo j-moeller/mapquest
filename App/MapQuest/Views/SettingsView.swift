@@ -42,7 +42,7 @@ struct SettingsView: View {
                     Text("Location data and discovered area always travel together. Switching the data source shows another user's discoveries – the rest of the app stays the same.")
                 }
 
-                if !model.playArea.subdivisions.isEmpty {
+                if !model.cities.isEmpty {
                     Section {
                         NavigationLink("Districts of \(model.playArea.name)") {
                             DistrictsView()

@@ -138,8 +138,8 @@ struct StatusPanel: View {
             if model.periodKind == nil && !heatmap {
                 HStack(spacing: 12) {
                     Statistic(value: Formatters.area(layer.discoveredSquareMeters), label: "discovered")
-                    if let fraction = model.playAreaFraction(shown) {
-                        Statistic(value: Formatters.percent(fraction), label: "of \(model.playArea.name)")
+                    if let share = model.playAreaFraction(shown) {
+                        Statistic(value: Formatters.percent(share.fraction), label: "of \(share.city)")
                     }
                     Statistic(value: "\(layer.regionCount)", label: layer.regionCount == 1 ? "region" : "regions")
                     Statistic(value: "\(model.sampleCount)", label: "positions")
