@@ -61,7 +61,8 @@ The app has three major components:
   explored areas have bundled, downloaded or no building data, turns
   automatic OpenStreetMap downloads on or off, and downloads missing data
   for areas that were computed with the default map.
-* **Settings › Debug settings** tune everything on the fly: fog opacity,
+* **Settings › Debug settings** tune everything on the fly: fog opacity (up to
+  100 %), blur under the fog and soft fog edges,
   radius, rays and sight distances of the line of sight, terrain on/off,
   recording thresholds. *Long-press the 2D map* (or "Place a test position
   here") to record a test position with a chosen eye height – e.g. 120 m to

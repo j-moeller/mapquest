@@ -1,3 +1,4 @@
+import CoreGraphics
 import Foundation
 import MapQuestCore
 
@@ -13,6 +14,10 @@ struct DebugSettings: Codable, Equatable {
 
     // Rendering
     var fogOpacity: Double = 0.9
+    /// Blur of the map under the fog (0 = none, 1 = the system's strongest blur).
+    var fogBlur: Double = 0.6
+    /// Width over which the fog fades in at the edges of discovered areas (points; 0 = sharp).
+    var fogSoftness: Double = 8
 
     // 2D discovery
     var radius: Double = 50
@@ -44,7 +49,7 @@ struct DebugSettings: Codable, Equatable {
     private static let key = "DebugSettings"
 
     enum CodingKeys: String, CodingKey {
-        case version, fogOpacity, radius, rayCount, baseDistance, distancePerMeterOfHeight, maximumDistance
+        case version, fogOpacity, fogBlur, fogSoftness, radius, rayCount, baseDistance, distancePerMeterOfHeight, maximumDistance
         case elevatedThreshold, usesTerrain, downloadsBuildings, minimumNewAreaPercent, minimumMovement
         case placesPositionsOnLongPress, testEyeHeight, showsEvaluation
     }
@@ -59,6 +64,8 @@ struct DebugSettings: Codable, Equatable {
         }
         let d = DebugSettings()
         fogOpacity = value(.fogOpacity, d.fogOpacity)
+        fogBlur = value(.fogBlur, d.fogBlur)
+        fogSoftness = value(.fogSoftness, d.fogSoftness)
         radius = value(.radius, d.radius)
         rayCount = value(.rayCount, d.rayCount)
         baseDistance = value(.baseDistance, d.baseDistance)
@@ -105,6 +112,10 @@ struct DebugSettings: Codable, Equatable {
         return configuration
     }
 
+    var fogStyle: FogStyle {
+        FogStyle(opacity: fogOpacity, blur: fogBlur, softness: fogSoftness)
+    }
+
     var recordingPolicy: RecordingPolicy {
         RecordingPolicy(minimumNewAreaFraction: minimumNewAreaPercent / 100, samplingSpacing: max(minimumMovement, 1))
     }
@@ -113,4 +124,19 @@ struct DebugSettings: Codable, Equatable {
     func changesLayers(comparedTo other: DebugSettings) -> Bool {
         radius != other.radius || viewshedConfiguration != other.viewshedConfiguration || usesTerrain != other.usesTerrain
     }
+}
+
+/// How the fog of war looks (2D map and 3D ground).
+struct FogStyle: Equatable {
+    /// Opacity of the fog colour, 0…1.
+    var opacity: Double
+    /// Blur of the map under the fog, 0…1.
+    var blur: Double
+    /// Fade-in width at the edges of discovered areas, in points.
+    var softness: Double
+
+    static let `default` = DebugSettings.defaults.fogStyle
+
+    /// The fog colour (dark blue).
+    static let red: CGFloat = 0.04, green: CGFloat = 0.06, blue: CGFloat = 0.12
 }

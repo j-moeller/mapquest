@@ -85,6 +85,12 @@ final class SmokeTests: XCTestCase {
         debug.tap()
         XCTAssertTrue(app.navigationBars["Debug"].waitForExistence(timeout: 5))
         screenshot("05-debug-settings")
+        // Half-transparent fog, so the blur under it and the soft edges show in the next screenshots.
+        let opacity = app.sliders["Fog opacity"]
+        if opacity.waitForExistence(timeout: 3) {
+            opacity.adjust(toNormalizedSliderPosition: (0.5 - 0.1) / 0.9)
+            pause(1)
+        }
         app.navigationBars.buttons.element(boundBy: 0).tap()
 
         // Switch to the demo explorer: imports its walks through the recorder.

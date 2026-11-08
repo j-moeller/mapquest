@@ -15,8 +15,8 @@ struct FogMapView: UIViewRepresentable {
     var aggregate: MapAggregate = .fog
     var heatPoints = HeatPoints()
     var playArea: PlayArea
-    /// Opacity of the fog over undiscovered areas (0…1).
-    var fogOpacity: Double = 0.9
+    /// Opacity, blur and edge softness of the fog over undiscovered areas.
+    var fogStyle = FogStyle.default
     /// Called with the coordinate of a long press (debug: place a test position); `nil` disables it.
     var onLongPress: ((GeoCoordinate) -> Void)?
 
@@ -70,7 +70,7 @@ struct FogMapView: UIViewRepresentable {
 
     func updateUIView(_ map: MKMapView, context: Context) {
         context.coordinator.onLongPress = onLongPress
-        context.coordinator.updateFog(opacity: fogOpacity)
+        context.coordinator.updateFog(style: fogStyle)
         context.coordinator.update(snapshot: snapshot, identity: identity, version: version, changedTiles: changedTiles)
         context.coordinator.fogView.setMode(aggregate == .heatmap ? .heatmap : .fog)
         if aggregate == .heatmap {
@@ -85,7 +85,7 @@ struct FogMapView: UIViewRepresentable {
         private var drawnVersion = -1
         private var drawnIdentity: String?
         private var drawnPlayAreaName: String?
-        private var fogOpacity: Double = -1
+        private var fogStyle: FogStyle?
         weak var map: MKMapView?
         var onLongPress: ((GeoCoordinate) -> Void)?
         private var hasCenteredOnUser = false
@@ -116,10 +116,10 @@ struct FogMapView: UIViewRepresentable {
             onLongPress(GeoCoordinate(latitude: coordinate.latitude, longitude: coordinate.longitude))
         }
 
-        func updateFog(opacity: Double) {
-            guard abs(fogOpacity - opacity) > 0.001 else { return }
-            fogOpacity = opacity
-            fogView.setFogOpacity(opacity)
+        func updateFog(style: FogStyle) {
+            guard style != fogStyle else { return }
+            fogStyle = style
+            fogView.setStyle(style)
         }
 
         init(snapshot: DiscoveredAreaSnapshot) {

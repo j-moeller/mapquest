@@ -28,7 +28,7 @@ final class Scene3DController: ObservableObject {
     private var interiorPoints: [Int64: WorldPoint] = [:]
     private var mapImage: UIImage?
     private var renderedVersion = -1
-    private var renderedOpacity = -1.0
+    private var renderedStyle: FogStyle?
     private var generation = 0
 
     init() {
@@ -81,7 +81,7 @@ final class Scene3DController: ObservableObject {
     }
 
     /// Loads buildings and the ground map around `center` and rebuilds the scene.
-    func load(center: GeoCoordinate, snapshot: DiscoveredAreaSnapshot, version: Int, fogOpacity: Double, source: CachingBuildingSource) async {
+    func load(center: GeoCoordinate, snapshot: DiscoveredAreaSnapshot, version: Int, fogStyle: FogStyle, source: CachingBuildingSource) async {
         generation += 1
         let token = generation
         let frame = LocalFrame(origin: WebMercator.project(center))
@@ -94,7 +94,7 @@ final class Scene3DController: ObservableObject {
         mapImage = nil
         status = "Loading buildings…"
         renderedVersion = -1
-        await recolor(snapshot: snapshot, version: version, fogOpacity: fogOpacity)
+        await recolor(snapshot: snapshot, version: version, fogStyle: fogStyle)
 
         // The map snapshot is applied as soon as it arrives, independently of the buildings.
         Task { [weak self] in
@@ -102,7 +102,7 @@ final class Scene3DController: ObservableObject {
             guard let self, token == self.generation, let image else { return }
             self.mapImage = image
             self.renderedVersion = -1
-            await self.recolor(snapshot: snapshot, version: version, fogOpacity: fogOpacity)
+            await self.recolor(snapshot: snapshot, version: version, fogStyle: fogStyle)
         }
         // Whatever data is available; tiles without data are reported, not fatal.
         let coverage = await source.coverage(in: rect)
@@ -124,14 +124,14 @@ final class Scene3DController: ObservableObject {
         }
         guard token == generation else { return }
         renderedVersion = -1
-        await recolor(snapshot: snapshot, version: version, fogOpacity: fogOpacity)
+        await recolor(snapshot: snapshot, version: version, fogStyle: fogStyle)
     }
 
     /// Re-colours buildings and redraws the ground fog after the discovered area changed.
-    func recolor(snapshot: DiscoveredAreaSnapshot, version: Int, fogOpacity: Double) async {
-        guard let frame, version != renderedVersion || fogOpacity != renderedOpacity else { return }
+    func recolor(snapshot: DiscoveredAreaSnapshot, version: Int, fogStyle: FogStyle) async {
+        guard let frame, version != renderedVersion || fogStyle != renderedStyle else { return }
         renderedVersion = version
-        renderedOpacity = fogOpacity
+        renderedStyle = fogStyle
         let token = generation
         let buildings = self.buildings
         let points = self.interiorPoints
@@ -142,7 +142,7 @@ final class Scene3DController: ObservableObject {
                 points[b.id].map(snapshot.isDiscovered) ?? false
             }.map(\.id))
             let mesh = LoD1MeshBuilder.mesh(for: buildings, frame: frame) { discovered.contains($0.id) }
-            let ground = GroundTexture.compose(map: map, rect: rect, snapshot: snapshot, fogOpacity: fogOpacity)
+            let ground = GroundTexture.compose(map: map, rect: rect, snapshot: snapshot, style: fogStyle)
             return (mesh, ground)
         }.value
         guard token == generation else { return }
@@ -269,7 +269,7 @@ struct Map3DScreen: View {
         .onChange(of: Self.stamp(layer)) { _, _ in
             Task { await recolor() }
         }
-        .onChange(of: model.debug.fogOpacity) { _, _ in
+        .onChange(of: model.debug.fogStyle) { _, _ in
             Task { await recolor() }
         }
         .onReceive(tracker.$lastLocation) { location in
@@ -286,13 +286,13 @@ struct Map3DScreen: View {
         let layer = model.displayedState(.lineOfSight)
         await controller.load(
             center: center, snapshot: layer.snapshot, version: Self.stamp(layer),
-            fogOpacity: model.debug.fogOpacity, source: model.buildings
+            fogStyle: model.debug.fogStyle, source: model.buildings
         )
         controller.updateUser(tracker.lastLocation, eyeHeight: eyeHeight)
     }
 
     private func recolor() async {
         let layer = model.displayedState(.lineOfSight)
-        await controller.recolor(snapshot: layer.snapshot, version: Self.stamp(layer), fogOpacity: model.debug.fogOpacity)
+        await controller.recolor(snapshot: layer.snapshot, version: Self.stamp(layer), fogStyle: model.debug.fogStyle)
     }
 }

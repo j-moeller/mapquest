@@ -1,3 +1,4 @@
+import Accelerate
 import MapKit
 import MapQuestCore
 import UIKit
@@ -15,6 +16,12 @@ import UIKit
 /// Pieces overlap their neighbours by a small margin (docs/02-architecture.md);
 /// with even-odd filling, overlaps would be fogged again, so every piece is
 /// clipped to its exact storage tile first (in the background).
+///
+/// Optional effects (`FogStyle`): a system blur under the fog, masked by the same
+/// path, so undiscovered map is frosted as well as darkened; and soft edges – a
+/// raster band inside the discovered areas, three screens wide, in which the fog
+/// fades out over the chosen width (computed in the background, placed like the
+/// heatmap; while it is rebuilt the edges are briefly sharp, never unfogged).
 final class FogLayerView: UIView {
     enum Mode { case fog, heatmap }
 
@@ -23,6 +30,21 @@ final class FogLayerView: UIView {
     private let fogLayer = CAShapeLayer()
     private let boundaryLayer = CAShapeLayer()
     private let positionLayer = CAShapeLayer()
+    /// Soft edges: the fog fading out inside discovered areas.
+    private let bandLayer = CALayer()
+    /// Blur under the fog, masked by the fog's shape and soft band.
+    private let blurView = UIVisualEffectView(effect: nil)
+    private let blurMask = UIView()
+    private let maskShape = CAShapeLayer()
+    private let maskBand = CALayer()
+    private var blurAnimator: UIViewPropertyAnimator?
+    private(set) var style = FogStyle.default
+
+    // Soft-edge band state: the raster and the map rectangle it covers.
+    private var bandRect = MKMapRect.null
+    private var bandScale: Double = 0
+    private var bandNeedsRebuild = true
+    private var isComputingBand = false
     /// Heatmap mode: the map is dimmed and the heat raster drawn on top.
     private let dimLayer = CALayer()
     private let heatLayer = CALayer()
@@ -71,7 +93,33 @@ final class FogLayerView: UIView {
         heatLayer.isHidden = true
         layer.insertSublayer(heatLayer, above: dimLayer)
         fogLayer.fillRule = .evenOdd
-        fogLayer.fillColor = UIColor(red: 0.04, green: 0.06, blue: 0.12, alpha: 0.9).cgColor
+        fogLayer.fillColor = UIColor(red: FogStyle.red, green: FogStyle.green, blue: FogStyle.blue, alpha: 0.9).cgColor
+        for raster in [bandLayer, maskBand] {
+            raster.anchorPoint = .zero
+            raster.position = .zero
+            raster.magnificationFilter = .linear
+            raster.minificationFilter = .linear
+        }
+        layer.insertSublayer(bandLayer, above: fogLayer)
+
+        // The blur lies under everything else, masked like the fog.
+        blurView.isUserInteractionEnabled = false
+        blurView.isHidden = true
+        addSubview(blurView)
+        // Below the fog colour, band and heatmap layers, whatever UIKit's default order.
+        layer.insertSublayer(blurView.layer, at: 0)
+        maskShape.anchorPoint = .zero
+        maskShape.position = .zero
+        maskShape.bounds = CGRect(x: 0, y: 0, width: 1, height: 1)
+        maskShape.fillRule = .evenOdd
+        maskShape.fillColor = UIColor.black.cgColor
+        blurMask.layer.addSublayer(maskShape)
+        blurMask.layer.addSublayer(maskBand)
+        blurView.mask = blurMask
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(applicationWillEnterForeground),
+            name: UIApplication.willEnterForegroundNotification, object: nil
+        )
         boundaryLayer.fillColor = nil
         boundaryLayer.strokeColor = UIColor.systemOrange.withAlphaComponent(0.9).cgColor
 
@@ -94,7 +142,76 @@ final class FogLayerView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         dimLayer.frame = bounds.insetBy(dx: -bounds.width, dy: -bounds.height)
+        blurView.frame = bounds
+        blurMask.frame = blurView.bounds
         sync()
+    }
+
+    // A paused property animator must be stopped before it is released (and it
+    // is removed with the view from the window anyway): stop it when leaving the
+    // window, start it again when coming back.
+    override func willMove(toWindow newWindow: UIWindow?) {
+        super.willMove(toWindow: newWindow)
+        if newWindow == nil { stopBlurAnimator() }
+    }
+
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        if window != nil { applyBlur() }
+    }
+
+    @objc private func applicationWillEnterForeground() {
+        applyBlur()
+    }
+
+    // MARK: Style
+
+    /// Applies opacity, blur and soft edges.
+    func setStyle(_ newStyle: FogStyle) {
+        let old = style
+        style = newStyle
+        let color = UIColor(red: FogStyle.red, green: FogStyle.green, blue: FogStyle.blue, alpha: CGFloat(newStyle.opacity)).cgColor
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        fogLayer.fillColor = color
+        bandLayer.opacity = Float(newStyle.opacity)
+        let soft = newStyle.softness > 0
+        bandLayer.isHidden = !soft || mode != .fog
+        maskBand.isHidden = !soft
+        CATransaction.commit()
+        if newStyle.blur != old.blur { applyBlur() }
+        if newStyle.softness != old.softness {
+            bandNeedsRebuild = true
+            if !soft {
+                bandLayer.contents = nil
+                maskBand.contents = nil
+            }
+            sync()
+        }
+    }
+
+    /// The blur strength is the progress of a paused animation from no effect to a system blur.
+    private func applyBlur() {
+        stopBlurAnimator()
+        let fraction = mode == .fog ? style.blur : 0
+        guard fraction > 0, window != nil else {
+            blurView.isHidden = true
+            return
+        }
+        blurView.isHidden = false
+        let animator = UIViewPropertyAnimator(duration: 1, curve: .linear) { [blurView] in
+            blurView.effect = UIBlurEffect(style: .regular)
+        }
+        animator.pausesOnCompletion = true
+        animator.fractionComplete = CGFloat(min(max(fraction, 0), 1))
+        blurAnimator = animator
+    }
+
+    private func stopBlurAnimator() {
+        guard let animator = blurAnimator else { return }
+        animator.stopAnimation(true)
+        blurAnimator = nil
+        blurView.effect = nil
     }
 
     // MARK: Heatmap
@@ -105,10 +222,12 @@ final class FogLayerView: UIView {
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         fogLayer.isHidden = mode != .fog
+        bandLayer.isHidden = mode != .fog || style.softness <= 0
         dimLayer.isHidden = mode != .heatmap
         heatLayer.isHidden = mode != .heatmap
         CATransaction.commit()
         heatNeedsRebuild = true
+        applyBlur()
         sync()
     }
 
@@ -166,27 +285,124 @@ final class FogLayerView: UIView {
 
     /// Places the heat raster: its pixel grid mapped onto the map rectangle it covers.
     private func placeHeat(on map: MKMapView) {
-        guard !heatRect.isNull, heatLayer.bounds.width > 0 else { return }
-        let width = heatLayer.bounds.width, height = heatLayer.bounds.height
-        let p0 = map.convert(MKMapPoint(x: heatRect.minX, y: heatRect.minY).coordinate, toPointTo: self)
-        let px = map.convert(MKMapPoint(x: heatRect.maxX, y: heatRect.minY).coordinate, toPointTo: self)
-        let py = map.convert(MKMapPoint(x: heatRect.minX, y: heatRect.maxY).coordinate, toPointTo: self)
-        heatLayer.setAffineTransform(CGAffineTransform(
+        place(heatLayer, covering: heatRect, on: map)
+    }
+
+    /// Maps a raster layer's pixel grid onto the map rectangle it covers.
+    private func place(_ raster: CALayer, covering rect: MKMapRect, on map: MKMapView) {
+        guard !rect.isNull, raster.bounds.width > 0 else { return }
+        let width = raster.bounds.width, height = raster.bounds.height
+        let p0 = map.convert(MKMapPoint(x: rect.minX, y: rect.minY).coordinate, toPointTo: self)
+        let px = map.convert(MKMapPoint(x: rect.maxX, y: rect.minY).coordinate, toPointTo: self)
+        let py = map.convert(MKMapPoint(x: rect.minX, y: rect.maxY).coordinate, toPointTo: self)
+        raster.setAffineTransform(CGAffineTransform(
             a: (px.x - p0.x) / width, b: (px.y - p0.y) / width,
             c: (py.x - p0.x) / height, d: (py.y - p0.y) / height,
             tx: p0.x, ty: p0.y
         ))
     }
 
-    // MARK: Inputs
+    // MARK: Soft edges
 
-    func setFogOpacity(_ opacity: Double) {
-        let color = UIColor(red: 0.04, green: 0.06, blue: 0.12, alpha: CGFloat(opacity)).cgColor
-        CATransaction.begin()
-        CATransaction.setDisableActions(true)
-        fogLayer.fillColor = color
-        CATransaction.commit()
+    /// Rasterizes the soft band for an area three screens wide at one pixel per point.
+    private func rebuildBand(visible: MKMapRect, scale: Double) {
+        guard !isComputingBand else {
+            bandNeedsRebuild = true
+            return
+        }
+        bandNeedsRebuild = false
+        isComputingBand = true
+        let rect = visible.insetBy(dx: -visible.size.width, dy: -visible.size.height)
+        let area = MapPointConversion.worldRect(for: rect)
+        let polygons = clipped.filter { $0.key.worldRect.intersects(area) }.values.flatMap { $0 }.filter { $0.bounds.intersects(area) }
+        let softness = style.softness
+        Task { [weak self] in
+            let image = await Task.detached(priority: .userInitiated) {
+                FogLayerView.band(polygons: polygons, rect: rect, scale: scale, softness: softness)
+            }.value
+            guard let self else { return }
+            self.isComputingBand = false
+            CATransaction.begin()
+            CATransaction.setDisableActions(true)
+            for raster in [self.bandLayer, self.maskBand] {
+                raster.contents = image
+                raster.bounds = CGRect(x: 0, y: 0, width: image?.width ?? 1, height: image?.height ?? 1)
+            }
+            CATransaction.commit()
+            self.bandRect = rect
+            self.bandScale = scale
+            self.sync()
+        }
     }
+
+    /// The fog colour inside discovered areas, fading from full at their edges to
+    /// nothing at `softness` points inside: with M the discovered mask and B its
+    /// Gaussian blur (σ = softness / 2, three box blurs), the alpha is
+    /// 1 − clamp(2 B − 1) inside, so it starts at the fog's own opacity at the edge.
+    private nonisolated static func band(polygons: [WorldPolygon], rect: MKMapRect, scale: Double, softness: Double) -> CGImage? {
+        let width = Int((rect.size.width * scale).rounded(.up)), height = Int((rect.size.height * scale).rounded(.up))
+        guard width > 0, height > 0, width * height < 12_000_000, !polygons.isEmpty else { return nil }
+        guard let gray = CGContext(
+            data: nil, width: width, height: height, bitsPerComponent: 8, bytesPerRow: width,
+            space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGImageAlphaInfo.none.rawValue
+        ) else { return nil }
+        // Pixel rows top to bottom like map points.
+        gray.translateBy(x: 0, y: CGFloat(height))
+        gray.scaleBy(x: 1, y: -1)
+        gray.setFillColor(gray: 1, alpha: 1)
+        let s = MapPointConversion.worldUnitsPerMapPoint
+        for polygon in polygons {
+            let path = CGMutablePath()
+            for ring in polygon.rings {
+                for (index, point) in ring.enumerated() {
+                    let p = CGPoint(x: (Double(point.x) / s - rect.minX) * scale, y: (Double(point.y) / s - rect.minY) * scale)
+                    if index == 0 { path.move(to: p) } else { path.addLine(to: p) }
+                }
+                path.closeSubpath()
+            }
+            gray.addPath(path)
+            gray.fillPath(using: .evenOdd)
+        }
+        guard let maskData = gray.data else { return nil }
+        let mask = maskData.bindMemory(to: UInt8.self, capacity: width * height)
+
+        // Three box blurs ≈ Gaussian with σ ≈ radius.
+        let radius = max(1, Int((softness / 2).rounded()))
+        var blurred = [UInt8](repeating: 0, count: width * height)
+        var scratch = [UInt8](repeating: 0, count: width * height)
+        blurred.withUnsafeMutableBytes { blurredBytes in
+            scratch.withUnsafeMutableBytes { scratchBytes in
+                var source = vImage_Buffer(data: UnsafeMutableRawPointer(mask), height: vImagePixelCount(height), width: vImagePixelCount(width), rowBytes: width)
+                var a = vImage_Buffer(data: blurredBytes.baseAddress, height: vImagePixelCount(height), width: vImagePixelCount(width), rowBytes: width)
+                var b = vImage_Buffer(data: scratchBytes.baseAddress, height: vImagePixelCount(height), width: vImagePixelCount(width), rowBytes: width)
+                let size = UInt32(2 * radius + 1)
+                let flags = vImage_Flags(kvImageEdgeExtend)
+                vImageBoxConvolve_Planar8(&source, &a, nil, 0, 0, size, size, 0, flags)
+                vImageBoxConvolve_Planar8(&a, &b, nil, 0, 0, size, size, 0, flags)
+                vImageBoxConvolve_Planar8(&b, &a, nil, 0, 0, size, size, 0, flags)
+            }
+        }
+
+        let red = UInt8(FogStyle.red * 255), green = UInt8(FogStyle.green * 255), blue = UInt8(FogStyle.blue * 255)
+        var pixels = [UInt8](repeating: 0, count: width * height * 4)
+        for i in 0..<(width * height) where mask[i] > 127 {
+            let b = Double(blurred[i]) / 255
+            let alpha = 1 - min(max(2 * b - 1, 0), 1)
+            guard alpha > 0.01 else { continue }
+            pixels[i * 4] = UInt8(Double(red) * alpha)
+            pixels[i * 4 + 1] = UInt8(Double(green) * alpha)
+            pixels[i * 4 + 2] = UInt8(Double(blue) * alpha)
+            pixels[i * 4 + 3] = UInt8(255 * alpha)
+        }
+        guard let provider = CGDataProvider(data: Data(pixels) as CFData) else { return nil }
+        return CGImage(
+            width: width, height: height, bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: width * 4,
+            space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue),
+            provider: provider, decode: nil, shouldInterpolate: true, intent: .defaultIntent
+        )
+    }
+
+    // MARK: Inputs
 
     func setBoundary(_ polygons: [WorldPolygon]) {
         boundary = polygons
@@ -220,6 +436,7 @@ final class FogLayerView: UIView {
             self.clipped = result
             self.isClipping = false
             self.needsRebuild = true
+            self.bandNeedsRebuild = true
             self.sync()
             self.startClipping()
         }
@@ -260,6 +477,10 @@ final class FogLayerView: UIView {
            heatNeedsRebuild || !heatRect.contains(visible) || current > heatScale * 1.5 || current < heatScale / 1.5 {
             rebuildHeat(visible: visible, scale: current)
         }
+        if mode == .fog, style.softness > 0,
+           bandNeedsRebuild || !bandRect.contains(visible) || current > bandScale * 1.5 || current < bandScale / 1.5 {
+            rebuildBand(visible: visible, scale: current)
+        }
 
         // The affine transform path → view, from three points of the path's coordinate system.
         let step = 1_000.0
@@ -276,7 +497,11 @@ final class FogLayerView: UIView {
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         fogLayer.setAffineTransform(transform)
+        maskShape.setAffineTransform(transform)
         boundaryLayer.setAffineTransform(transform)
+        if mode == .fog, style.softness > 0 {
+            for raster in [bandLayer, maskBand] { place(raster, covering: bandRect, on: map) }
+        }
         boundaryLayer.lineWidth = 2 / magnification
         boundaryLayer.lineDashPattern = [NSNumber(value: 6 / magnification), NSNumber(value: 4 / magnification)]
         if mode == .heatmap { placeHeat(on: map) }
@@ -322,6 +547,7 @@ final class FogLayerView: UIView {
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         fogLayer.path = fog
+        maskShape.path = fog
         boundaryLayer.path = outline
         CATransaction.commit()
     }

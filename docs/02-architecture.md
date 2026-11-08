@@ -345,9 +345,9 @@ The fog is a view (`FogLayerView`) directly above MapKit's map content
 (tiles and labels, so unexplored street names are darkened too) and below the
 compass, scale and legal notice. It is one vector path in a `CAShapeLayer`:
 
-1. A rectangle of translucent dark blue (90 % opacity – unexplored areas are
-   clearly dark, but streets stay faintly readable) covering nine times the
-   visible area.
+1. A rectangle of translucent dark blue (90 % by default, adjustable up to
+   100 % – unexplored areas are clearly dark, but streets stay faintly
+   readable) covering nine times the visible area.
 2. Every discovered piece as a hole (even-odd fill). Pieces overlap their
    neighbours by the 2 m margin, which even-odd filling would fog again, so
    they are first clipped to their exact storage tiles – in the background,
@@ -367,6 +367,29 @@ visible area left the covered area. The 2D map has no pitch (the 3D mode shows
 perspective), so an affine transform suffices. The play-area outline and a
 position marker (MapKit's own dot lies below the fog) are drawn by the same
 view.
+
+### Fog blur and soft edges (2D and 3D)
+
+Two optional effects (Settings › Debug, `FogStyle`):
+
+* **Blur under the fog** – a `UIVisualEffectView` below the fog colour, masked
+  by the same fog path (and the soft band), so undiscovered map is frosted as
+  well as darkened. Its strength (0–100 %) is the progress of a paused
+  animation from no effect to the system blur (`UIViewPropertyAnimator`); the
+  animator is stopped when the view leaves the window and restarted when it
+  comes back or the app returns to the foreground. It shows through the fog
+  only below 100 % opacity.
+* **Soft edges** – the fog fades out inside discovered areas over the chosen
+  width: for an area three screens wide, the discovered mask M is rasterized
+  at one pixel per point and blurred (three box blurs, σ = width / 2, vImage)
+  to B; inside M the fog colour gets the alpha 1 − clamp(2B − 1), so it starts
+  at the fog's own opacity at the edge and vanishes at the chosen depth. The
+  band is computed off the main thread and placed like the heatmap; the
+  vector fog stays underneath, so while the band is rebuilt (zoom by 1.5×,
+  leaving the area, new data) the edges are briefly sharp – never unfogged.
+
+The 3D ground texture applies the same style with Core Image: the map is
+blurred where the fog lies and the fog mask is softened with a Gaussian blur.
 
 ### Heatmap rendering (2D)
 

@@ -13,11 +13,13 @@ struct DebugSettingsView: View {
     var body: some View {
         Form {
             Section {
-                ValueSlider(title: "Fog opacity", value: $draft.fogOpacity, range: 0.1...0.95, step: 0.01, format: "%.0f %%", scale: 100)
+                ValueSlider(title: "Fog opacity", value: $draft.fogOpacity, range: 0.1...1, step: 0.01, format: "%.0f %%", scale: 100)
+                ValueSlider(title: "Blur under the fog", value: $draft.fogBlur, range: 0...1, step: 0.05, format: "%.0f %%", scale: 100)
+                ValueSlider(title: "Soft fog edges", value: $draft.fogSoftness, range: 0...40, step: 1, format: "%.0f pt")
             } header: {
                 Text("Map")
             } footer: {
-                Text("Applies immediately.")
+                Text("Applies immediately. The blur shows through the fog only below 100 % opacity; soft edges fade the fog in over the given width inside discovered areas.")
             }
 
             Section {
@@ -103,6 +105,8 @@ struct DebugSettingsView: View {
             // Everything except discovery parameters applies immediately.
             var immediate = model.debug
             immediate.fogOpacity = newValue.fogOpacity
+            immediate.fogBlur = newValue.fogBlur
+            immediate.fogSoftness = newValue.fogSoftness
             immediate.minimumNewAreaPercent = newValue.minimumNewAreaPercent
             immediate.minimumMovement = newValue.minimumMovement
             immediate.placesPositionsOnLongPress = newValue.placesPositionsOnLongPress
@@ -135,6 +139,7 @@ private struct ValueSlider: View {
             }
             .font(.subheadline)
             Slider(value: $value, in: range, step: step)
+                .accessibilityLabel(title)
         }
     }
 }

@@ -30,7 +30,7 @@ struct ContentView: View {
                     aggregate: model.aggregate,
                     heatPoints: model.heatPoints,
                     playArea: model.playArea,
-                    fogOpacity: model.debug.fogOpacity,
+                    fogStyle: model.debug.fogStyle,
                     onLongPress: model.debug.placesPositionsOnLongPress ? { coordinate in
                         Task { await model.placeTestPosition(at: coordinate) }
                     } : nil
