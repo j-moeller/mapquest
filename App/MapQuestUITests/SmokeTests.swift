@@ -53,6 +53,16 @@ final class SmokeTests: XCTestCase {
         XCTAssertTrue(settings.waitForExistence(timeout: 15), "main screen")
         pause(15) // the simulated position (Alexanderplatz) is recorded and the map zooms to it
         screenshot("01-map-2d")
+        // The fog must cover newly exposed map at once (no unfogged flash when zooming out).
+        let map = app.maps.firstMatch
+        if map.exists {
+            map.pinch(withScale: 0.2, velocity: -3)
+            screenshot("01b-zoomed-out-immediately")
+            pause(3)
+            screenshot("01c-zoomed-out")
+            map.pinch(withScale: 5, velocity: 3)
+            pause(2)
+        }
 
         app.buttons["Line of sight"].tap()
         pause(30) // building download and ray casting
@@ -66,6 +76,9 @@ final class SmokeTests: XCTestCase {
         settings.tap()
         XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 5))
         screenshot("04-settings")
+        let downloads = app.switches["Download automatically"]
+        scrollTo(downloads, in: app.collectionViews.firstMatch)
+        screenshot("04b-settings-building-data")
 
         let debug = app.buttons["Debug settings"]
         scrollTo(debug, in: app.collectionViews.firstMatch)
@@ -88,5 +101,9 @@ final class SmokeTests: XCTestCase {
         app.buttons["Radius"].tap()
         pause(3)
         screenshot("06-demo-explorer")
+        if map.exists {
+            map.pinch(withScale: 0.2, velocity: -3)
+            screenshot("07-demo-zoomed-out-immediately")
+        }
     }
 }

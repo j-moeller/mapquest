@@ -279,17 +279,29 @@ discoveries.
 
 ### Fog rendering (2D)
 
-`FogOverlayRenderer.draw(_:zoomScale:in:)` is called by MapKit for each map
-tile, on background threads:
+The fog is a view (`FogLayerView`) directly above MapKit's map content
+(tiles and labels, so unexplored street names are darkened too) and below the
+compass, scale and legal notice. It is one vector path in a `CAShapeLayer`:
 
-1. Fill the tile with translucent dark blue (58 % opacity – unexplored areas
-   stay readable, but clearly darker).
-2. Query the snapshot for pieces intersecting the tile (`MKMapPoint × 16 =
-   world units`).
-3. With blend mode `.clear`, fill every piece (even-odd per piece, so holes
-   stay fogged). Vertices closer than half a screen point are skipped, which
-   keeps zoomed-out rendering cheap.
+1. A rectangle of translucent dark blue (90 % opacity – unexplored areas are
+   clearly dark, but streets stay faintly readable) covering nine times the
+   visible area.
+2. Every discovered piece as a hole (even-odd fill). Pieces overlap their
+   neighbours by the 2 m margin, which even-odd filling would fog again, so
+   they are first clipped to their exact storage tiles – in the background,
+   only for the tiles that changed.
+3. Vertices closer than half a screen point, and holes smaller than a quarter
+   point, are skipped, which keeps zoomed-out paths small.
 
-When the recorder merges new area, only the changed storage tiles are
-invalidated (`setNeedsDisplay(_ mapRect:)`). The fog is drawn above labels so
-unexplored street names are darkened too.
+The path is built in a local coordinate system (screen points at the zoom of
+the last rebuild, relative to the centre of the covered area). While the map
+moves, `mapViewDidChangeVisibleRegion` only updates the layer's affine
+transform (from three converted points), so the fog moves in the same frame
+as the map: newly exposed map is never shown unfogged. (MapKit's asynchronous
+`MKOverlayRenderer`, used before, drew fog tiles after the base map and left
+new areas unfogged for a moment when zooming out.) The path is rebuilt when
+the discovered area changes, the zoom changed by more than 1.5×, or the
+visible area left the covered area. The 2D map has no pitch (the 3D mode shows
+perspective), so an affine transform suffices. The play-area outline and a
+position marker (MapKit's own dot lies below the fog) are drawn by the same
+view.

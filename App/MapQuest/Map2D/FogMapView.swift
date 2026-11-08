@@ -2,7 +2,8 @@ import MapKit
 import MapQuestCore
 import SwiftUI
 
-/// The 2D map: Apple Maps with the fog-of-war overlay and the play-area outline.
+/// The 2D map: Apple Maps with the fog of war and the play-area outline on top
+/// (`FogLayerView`, which moves with the map frame by frame).
 struct FogMapView: UIViewRepresentable {
     var snapshot: DiscoveredAreaSnapshot
     /// Increments whenever `snapshot` changes.
@@ -29,10 +30,21 @@ struct FogMapView: UIViewRepresentable {
         map.showsUserLocation = true
         map.showsCompass = true
         map.showsScale = true
-        map.isPitchEnabled = true
+        // The fog follows the map with an affine transform, which cannot express a
+        // perspective camera; the 3D mode shows the city in perspective.
+        map.isPitchEnabled = false
         map.setRegion(Self.berlin, animated: false)
-        // Above labels, so unexplored street names are darkened as well.
-        map.addOverlay(context.coordinator.fogOverlay, level: .aboveLabels)
+        // Directly above the map content (tiles and labels, so unexplored street names
+        // are darkened too), below MapKit's compass, scale and legal notice.
+        let fog = context.coordinator.fogView
+        fog.frame = map.bounds
+        fog.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        fog.map = map
+        if let content = map.subviews.first {
+            map.insertSubview(fog, aboveSubview: content)
+        } else {
+            map.addSubview(fog)
+        }
 
         let trackingButton = MKUserTrackingButton(mapView: map)
         trackingButton.translatesAutoresizingMaskIntoConstraints = false
@@ -58,19 +70,29 @@ struct FogMapView: UIViewRepresentable {
         context.coordinator.updatePlayArea(playArea, on: map)
     }
 
+    @MainActor
     final class Coordinator: NSObject, MKMapViewDelegate {
-        let fogOverlay = FogOverlay()
-        private(set) var fogRenderer: FogOverlayRenderer
+        let fogView = FogLayerView(frame: .zero)
         private var drawnVersion = -1
         private var drawnLayer: DiscoveryLayerID?
-        private var boundaryOverlays: [MKPolyline] = []
         private var drawnPlayAreaName: String?
+        private var fogOpacity: Double = -1
         weak var map: MKMapView?
         var onLongPress: ((GeoCoordinate) -> Void)?
         private var hasCenteredOnUser = false
 
+        /// The fog moves with the map in the same frame (no asynchronous tile rendering).
+        func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
+            fogView.sync()
+        }
+
+        func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+            fogView.sync()
+        }
+
         /// Zooms to the user once, at the first position fix.
         func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+            fogView.sync()
             guard !hasCenteredOnUser, let location = userLocation.location, location.horizontalAccuracy >= 0 else { return }
             hasCenteredOnUser = true
             mapView.setRegion(
@@ -86,14 +108,14 @@ struct FogMapView: UIViewRepresentable {
         }
 
         func updateFog(opacity: Double) {
-            let current = fogRenderer.fogColor.cgColor.alpha
-            guard abs(current - CGFloat(opacity)) > 0.001 else { return }
-            fogRenderer.fogColor = fogRenderer.fogColor.withAlphaComponent(CGFloat(opacity))
-            fogRenderer.setNeedsDisplay()
+            guard abs(fogOpacity - opacity) > 0.001 else { return }
+            fogOpacity = opacity
+            fogView.setFogOpacity(opacity)
         }
 
         init(snapshot: DiscoveredAreaSnapshot) {
-            fogRenderer = FogOverlayRenderer(overlay: fogOverlay, snapshot: snapshot)
+            super.init()
+            fogView.update(snapshot: snapshot, changedTiles: nil)
         }
 
         func update(snapshot: DiscoveredAreaSnapshot, version: Int, changedTiles: Set<TileKey>?) {
@@ -102,36 +124,13 @@ struct FogMapView: UIViewRepresentable {
             let partial = version == drawnVersion + 1 && snapshot.layer == drawnLayer ? changedTiles : nil
             drawnVersion = version
             drawnLayer = snapshot.layer
-            fogRenderer.update(snapshot: snapshot, changedTiles: partial)
+            fogView.update(snapshot: snapshot, changedTiles: partial)
         }
 
         func updatePlayArea(_ playArea: PlayArea, on map: MKMapView) {
             guard drawnPlayAreaName != playArea.name else { return }
             drawnPlayAreaName = playArea.name
-            map.removeOverlays(boundaryOverlays)
-            boundaryOverlays = playArea.polygons.map { polygon in
-                var coordinates = polygon.exterior.map { point -> CLLocationCoordinate2D in
-                    let c = WebMercator.unproject(point)
-                    return CLLocationCoordinate2D(latitude: c.latitude, longitude: c.longitude)
-                }
-                if let first = coordinates.first { coordinates.append(first) }
-                return MKPolyline(coordinates: coordinates, count: coordinates.count)
-            }
-            map.addOverlays(boundaryOverlays, level: .aboveLabels)
-        }
-
-        func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-            if overlay === fogOverlay {
-                return fogRenderer
-            }
-            if let polyline = overlay as? MKPolyline {
-                let renderer = MKPolylineRenderer(polyline: polyline)
-                renderer.strokeColor = UIColor.systemOrange.withAlphaComponent(0.9)
-                renderer.lineWidth = 2
-                renderer.lineDashPattern = [6, 4]
-                return renderer
-            }
-            return MKOverlayRenderer(overlay: overlay)
+            fogView.setBoundary(playArea.polygons)
         }
     }
 }
