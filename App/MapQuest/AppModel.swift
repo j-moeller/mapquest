@@ -119,6 +119,10 @@ final class AppModel: ObservableObject {
     @Published var viewProgress: Double?
     /// Weighted positions for the heatmap.
     @Published var heatPoints = HeatPoints()
+    /// The debug panel over the map (Debug/DebugPanel.swift).
+    @Published var showsDebugPanel = false
+    /// Open the debug panel once the settings sheet is gone.
+    var opensDebugPanelAfterSettings = false
     /// Whether the 3D scene is shown (it needs the line-of-sight layer).
     @Published var isShowing3D = false {
         didSet { if isShowing3D != oldValue { refreshView() } }

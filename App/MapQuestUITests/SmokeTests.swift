@@ -80,19 +80,6 @@ final class SmokeTests: XCTestCase {
         scrollTo(downloads, in: app.collectionViews.firstMatch)
         screenshot("04b-settings-building-data")
 
-        let debug = app.buttons["Debug settings"]
-        scrollTo(debug, in: app.collectionViews.firstMatch)
-        debug.tap()
-        XCTAssertTrue(app.navigationBars["Debug"].waitForExistence(timeout: 5))
-        screenshot("05-debug-settings")
-        // Half-transparent fog, so the blur under it and the soft edges show in the next screenshots.
-        let opacity = app.sliders["Fog opacity"]
-        if opacity.waitForExistence(timeout: 3) {
-            opacity.adjust(toNormalizedSliderPosition: (0.5 - 0.1) / 0.9)
-            pause(1)
-        }
-        app.navigationBars.buttons.element(boundBy: 0).tap()
-
         // Switch to the demo explorer: imports its walks through the recorder.
         let demo = app.buttons.matching(NSPredicate(format: "label CONTAINS 'Demo explorer'")).firstMatch
         let list = app.collectionViews.firstMatch
@@ -111,6 +98,29 @@ final class SmokeTests: XCTestCase {
             map.pinch(withScale: 0.2, velocity: -3)
             screenshot("07-demo-zoomed-out-immediately")
             pause(2)
+        }
+
+        // The debug panel over the map: sliders and a usable map at the same time.
+        let debugButton = app.buttons["Debug settings"]
+        if debugButton.waitForExistence(timeout: 5) {
+            if map.exists { map.pinch(withScale: 4, velocity: 3) }
+            debugButton.tap()
+            XCTAssertTrue(app.navigationBars["Debug"].waitForExistence(timeout: 5), "debug panel")
+            screenshot("07b-debug-panel")
+            // Half-transparent fog, so the blur under it and the soft edges show from here on.
+            let opacity = app.sliders["Fog opacity"]
+            if opacity.waitForExistence(timeout: 3) {
+                opacity.adjust(toNormalizedSliderPosition: (0.5 - 0.1) / 0.9)
+            }
+            // The map above the panel still pans.
+            if map.exists {
+                map.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.25))
+                    .press(forDuration: 0.05, thenDragTo: map.coordinate(withNormalizedOffset: CGVector(dx: 0.2, dy: 0.35)))
+            }
+            pause(2)
+            screenshot("07c-debug-panel-map-panned")
+            app.navigationBars["Debug"].buttons["Done"].tap()
+            pause(1)
         }
 
         // Time-based view: October 2026 (commutes, walks, a day in Braunschweig).

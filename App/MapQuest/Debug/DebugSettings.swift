@@ -137,6 +137,6 @@ struct FogStyle: Equatable {
 
     static let `default` = DebugSettings.defaults.fogStyle
 
-    /// The fog colour (dark blue).
-    static let red: CGFloat = 0.04, green: CGFloat = 0.06, blue: CGFloat = 0.12
+    /// The fog colour: pitch black.
+    static let red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0
 }

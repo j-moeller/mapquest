@@ -88,7 +88,7 @@ final class FogLayerView: UIView {
             shape.bounds = CGRect(x: 0, y: 0, width: 1, height: 1)
             layer.addSublayer(shape)
         }
-        dimLayer.backgroundColor = UIColor(red: 0.04, green: 0.06, blue: 0.12, alpha: 0.35).cgColor
+        dimLayer.backgroundColor = UIColor(red: FogStyle.red, green: FogStyle.green, blue: FogStyle.blue, alpha: 0.35).cgColor
         dimLayer.isHidden = true
         layer.insertSublayer(dimLayer, at: 0)
         heatLayer.anchorPoint = .zero

@@ -322,11 +322,16 @@ renderer-independent, so a later move to RealityKit only replaces
 
 ### Debug settings
 
-*Settings › Developer › Debug settings* tunes parameters on the device:
+The debug panel tunes parameters on the device. It is a sheet over the map
+(slider button in the map's top bar, or *Settings › Developer › Debug
+settings*) with three heights; at the small and medium heights the map above
+it stays visible and interactive (`presentationBackgroundInteraction`), so
+changes can be watched – and the map panned, zoomed or long-pressed for test
+positions – while tuning (`Debug/DebugPanel.swift`).
 
 | Group | Parameters | Effect |
 |---|---|---|
-| Map | fog opacity | immediate (2D overlay and 3D ground) |
+| Map | fog opacity (black, up to 100 %), blur under the fog, soft fog edges (metres) | immediate (2D overlay and 3D ground) |
 | Radius layer | radius | new layer `circle-<r>m`, rebuilt from the stored positions |
 | Line-of-sight layer | rays, sight at street level, extra sight per metre, maximum sight, street-level threshold, terrain on/off | new layer `viewshed-v3-<terrain>-<hash>`, rebuilt |
 | Recording | new-area threshold, movement before re-evaluating | immediate, for new positions |
@@ -345,7 +350,7 @@ The fog is a view (`FogLayerView`) directly above MapKit's map content
 (tiles and labels, so unexplored street names are darkened too) and below the
 compass, scale and legal notice. It is one vector path in a `CAShapeLayer`:
 
-1. A rectangle of translucent dark blue (90 % by default, adjustable up to
+1. A rectangle of translucent black (90 % by default, adjustable up to
    100 % – unexplored areas are clearly dark, but streets stay faintly
    readable) covering nine times the visible area.
 2. Every discovered piece as a hole (even-odd fill). Pieces overlap their

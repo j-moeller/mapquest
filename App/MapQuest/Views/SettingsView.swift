@@ -133,13 +133,15 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    NavigationLink("Debug settings") {
-                        DebugSettingsView()
+                    Button("Debug settings") {
+                        // The panel opens over the map, so changes can be watched (and the map used) while tuning.
+                        model.opensDebugPanelAfterSettings = true
+                        dismiss()
                     }
                 } header: {
                     Text("Developer")
                 } footer: {
-                    Text("Tune radius, line of sight, fog and recording on the fly, and place test positions.")
+                    Text("Tune radius, line of sight, fog and recording on the fly, and place test positions – in a panel over the map, which stays usable. Also on the map: the slider button at the top.")
                 }
 
                 Section {

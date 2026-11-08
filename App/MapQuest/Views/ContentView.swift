@@ -16,6 +16,7 @@ struct ContentView: View {
     @State private var showsSettings = false
     @AppStorage("ContentView.mode") private var mode: MapMode = .twoD
     @StateObject private var scene3D = Scene3DController()
+    @State private var debugDetent = DebugPanelDetent.small
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -52,6 +53,15 @@ struct ContentView: View {
                     .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
                     ViewBar(showsAggregate: mode == .twoD)
                     Spacer(minLength: 0)
+                    Button {
+                        model.showsDebugPanel.toggle()
+                    } label: {
+                        Image(systemName: "slider.horizontal.3")
+                            .frame(width: 36, height: 30)
+                            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Debug settings")
                 }
                 PermissionBanner()
                 if mode == .threeD {
@@ -68,9 +78,16 @@ struct ContentView: View {
         .onChange(of: model.selectedLayer) { _, _ in
             if model.periodKind != nil { model.refreshView() }
         }
-        .sheet(isPresented: $showsSettings) {
+        .sheet(isPresented: $showsSettings, onDismiss: {
+            if model.opensDebugPanelAfterSettings {
+                model.opensDebugPanelAfterSettings = false
+                debugDetent = DebugPanelDetent.small
+                model.showsDebugPanel = true
+            }
+        }) {
             SettingsView()
         }
+        .debugPanel(isPresented: $model.showsDebugPanel, detent: $debugDetent)
         .alert("MapQuest", isPresented: Binding(
             get: { model.errorMessage != nil },
             set: { if !$0 { model.errorMessage = nil } }
