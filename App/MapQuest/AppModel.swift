@@ -490,7 +490,7 @@ final class AppModel: ObservableObject {
         var lines: [String] = []
         switch outcome {
         case .recorded: lines.append("stored")
-        case .alreadyDiscovered(let evaluated) where evaluated.isEmpty: lines.append("skipped (moved < \(Int(debug.minimumMovement)) m)")
+        case .alreadyDiscovered(let evaluated) where evaluated.isEmpty: lines.append("skipped by the sampler (≈ every \(Int(debug.minimumMovement)) m)")
         case .alreadyDiscovered: lines.append("not stored")
         case .rejected(let reason): lines.append("rejected: \(reason)")
         }
@@ -525,9 +525,13 @@ final class AppModel: ObservableObject {
         }
     }
 
-    /// Writes buffered fixes (when the app goes to the background).
+    /// Writes buffered fixes (when the app goes to the background) and evaluates
+    /// the last fix the sampler skipped.
     func flushTrack() async {
         try? await trackWriter.flush()
+        if profile.recordsLocations, !isRebuilding {
+            _ = try? await recorder.finishSampling()
+        }
     }
 
     func updateTrackSummary() async {

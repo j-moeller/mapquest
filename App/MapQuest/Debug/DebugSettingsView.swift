@@ -54,7 +54,7 @@ struct DebugSettingsView: View {
 
             Section {
                 ValueSlider(title: "New area to store a position", value: $draft.minimumNewAreaPercent, range: 1...50, step: 1, format: "%.0f %%")
-                ValueSlider(title: "Movement before re-evaluating", value: $draft.minimumMovement, range: 0...30, step: 1, format: "%.0f m")
+                ValueSlider(title: "Sampling spacing (evaluate every …)", value: $draft.minimumMovement, range: 1...40, step: 1, format: "%.0f m")
             } header: {
                 Text("Recording")
             } footer: {

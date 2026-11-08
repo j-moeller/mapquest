@@ -8,7 +8,7 @@ import MapQuestCore
 /// another layer, which is rebuilt from the stored positions if it does not exist.
 struct DebugSettings: Codable, Equatable {
     /// Bumped when defaults change in a way stored settings must follow (see `init(from:)`).
-    static let currentVersion = 2
+    static let currentVersion = 3
     var version = DebugSettings.currentVersion
 
     // Rendering
@@ -32,7 +32,8 @@ struct DebugSettings: Codable, Equatable {
 
     // Recording
     var minimumNewAreaPercent: Double = 10
-    var minimumMovement: Double = 5
+    /// Sampling spacing (`CoverageSampler`): about one fix per this many metres is evaluated.
+    var minimumMovement: Double = 10
 
     // Testing
     var placesPositionsOnLongPress: Bool = false
@@ -72,7 +73,10 @@ struct DebugSettings: Codable, Equatable {
         testEyeHeight = value(.testEyeHeight, d.testEyeHeight)
         showsEvaluation = value(.showsEvaluation, d.showsEvaluation)
         // Version 2: the fog became 90 % opaque (was 58 %).
-        if value(.version, 1) < 2 { fogOpacity = d.fogOpacity }
+        let stored = value(.version, 1)
+        if stored < 2 { fogOpacity = d.fogOpacity }
+        // Version 3: the 1 Hz track; fixes are sampled about every 10 m (was: every 5 m).
+        if stored < 3 { minimumMovement = d.minimumMovement }
         version = Self.currentVersion
     }
 
@@ -102,7 +106,7 @@ struct DebugSettings: Codable, Equatable {
     }
 
     var recordingPolicy: RecordingPolicy {
-        RecordingPolicy(minimumNewAreaFraction: minimumNewAreaPercent / 100, minimumMovement: minimumMovement)
+        RecordingPolicy(minimumNewAreaFraction: minimumNewAreaPercent / 100, samplingSpacing: max(minimumMovement, 1))
     }
 
     /// Whether switching from `other` to `self` changes a discovery layer.

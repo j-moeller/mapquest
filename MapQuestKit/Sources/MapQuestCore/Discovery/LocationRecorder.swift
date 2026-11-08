@@ -1,6 +1,6 @@
 import Foundation
 
-/// When a position fix is worth storing.
+/// When a position fix is evaluated and when it is worth storing.
 public struct RecordingPolicy: Hashable, Sendable {
     /// Fixes less accurate than this (metres, 1σ) are ignored.
     public var maximumHorizontalAccuracy: Double
@@ -8,32 +8,23 @@ public struct RecordingPolicy: Hashable, Sendable {
     public var minimumNewAreaFraction: Double
     /// … or at least this much area (m²) is new.
     public var minimumNewAreaSquareMeters: Double
-    /// Fixes closer than this (metres) to the last evaluated fix are not evaluated again …
-    public var minimumMovement: Double
-    /// … unless the altitude changed by at least this much (metres; only with valid altitudes).
-    public var minimumClimb: Double
+    /// Which fixes are evaluated at all (`CoverageSampler`): about one per
+    /// `sampling.spacing` metres of movement, none while standing still.
+    public var sampling: CoverageSampler.Configuration
 
     public init(
         maximumHorizontalAccuracy: Double = 50,
         minimumNewAreaFraction: Double = 0.1,
         minimumNewAreaSquareMeters: Double = 2_000,
-        minimumMovement: Double = 5,
+        samplingSpacing: Double = 10,
         minimumClimb: Double = 3
     ) {
         self.maximumHorizontalAccuracy = maximumHorizontalAccuracy
         self.minimumNewAreaFraction = minimumNewAreaFraction
         self.minimumNewAreaSquareMeters = minimumNewAreaSquareMeters
-        self.minimumMovement = minimumMovement
-        self.minimumClimb = minimumClimb
-    }
-
-    /// Whether `sample` is close enough to `previous` that evaluating it again cannot reveal much.
-    public func isNegligibleMove(from previous: LocationSample, to sample: LocationSample) -> Bool {
-        guard previous.coordinate.distance(to: sample.coordinate) < minimumMovement else { return false }
-        if previous.hasValidAltitude, sample.hasValidAltitude {
-            return abs(sample.altitude - previous.altitude) < minimumClimb
-        }
-        return true
+        self.sampling = CoverageSampler.Configuration(
+            spacing: samplingSpacing, minimumClimb: minimumClimb, maximumAccuracy: maximumHorizontalAccuracy
+        )
     }
 
     public func isSignificant(_ evaluation: DiscoveryEvaluation) -> Bool {
@@ -53,8 +44,8 @@ public enum RecordingOutcome: Sendable {
 
     /// The fix was not considered.
     case rejected(RejectionReason)
-    /// The fix revealed (almost) nothing new and was not stored. The evaluations are
-    /// empty if the fix was too close to the previous one to be evaluated at all.
+    /// Nothing (significantly) new was revealed and nothing was stored. The
+    /// evaluations are empty if the sampler skipped the fix (see `CoverageSampler`).
     case alreadyDiscovered([DiscoveryEvaluation])
     /// The fix was stored and merged into every layer.
     case recorded(LocationSample, [DiscoveryUpdate])
@@ -85,8 +76,8 @@ public actor LocationRecorder {
     public private(set) var staleLayers: Set<DiscoveryLayerID> = []
     /// The most recent evaluation error per layer.
     public private(set) var lastErrors: [DiscoveryLayerID: String] = [:]
-    /// The last fix that was evaluated (viewsheds from high points take up to a second).
-    private var lastEvaluated: LocationSample?
+    /// Decides which fixes are evaluated: about one per 10 m of movement.
+    private var sampler: CoverageSampler
     /// The evaluations of the last evaluated fix, one per layer that could be evaluated.
     public private(set) var lastEvaluations: [DiscoveryEvaluation] = []
     /// The most recent error writing the track.
@@ -101,10 +92,14 @@ public actor LocationRecorder {
         self.policy = policy
         self.playArea = playArea
         self.track = track
+        self.sampler = CoverageSampler(configuration: policy.sampling)
     }
 
     public func setPlayArea(_ area: PlayArea) { playArea = area }
-    public func setPolicy(_ policy: RecordingPolicy) { self.policy = policy }
+    public func setPolicy(_ policy: RecordingPolicy) {
+        if policy.sampling != self.policy.sampling { sampler = CoverageSampler(configuration: policy.sampling) }
+        self.policy = policy
+    }
     public func setEngines(_ engines: [DiscoveryEngine]) { self.engines = engines }
 
     /// Processes one position fix.
@@ -121,11 +116,30 @@ public actor LocationRecorder {
         }
         guard sample.horizontalAccuracy <= policy.maximumHorizontalAccuracy else { return .rejected(.inaccurate) }
         guard playArea.contains(sample.coordinate) else { return .rejected(.outsidePlayArea) }
-        if let previous = lastEvaluated, policy.isNegligibleMove(from: previous, to: sample) {
-            return .alreadyDiscovered([])
+        // Most fixes reveal nothing the neighbouring ones do not: evaluate only the sampled ones.
+        let candidates = sampler.add(sample)
+        guard !candidates.isEmpty else { return .alreadyDiscovered([]) }
+        var outcome = RecordingOutcome.alreadyDiscovered([])
+        for candidate in candidates {
+            let result = try await evaluateAndStore(candidate)
+            if result.isRecorded || !outcome.isRecorded { outcome = result }
         }
-        lastEvaluated = sample
+        return outcome
+    }
 
+    /// Evaluates the last fix the sampler skipped (e.g. when tracking stops), so
+    /// the end of a walk is not lost.
+    @discardableResult
+    public func finishSampling() async throws -> RecordingOutcome? {
+        var outcome: RecordingOutcome?
+        for candidate in sampler.finish() {
+            outcome = try await evaluateAndStore(candidate)
+        }
+        return outcome
+    }
+
+    /// Evaluates a sampled fix in every layer and stores it if it reveals enough.
+    private func evaluateAndStore(_ sample: LocationSample) async throws -> RecordingOutcome {
         var evaluated: [(engine: DiscoveryEngine, evaluation: DiscoveryEvaluation)] = []
         var failures: [(layer: DiscoveryLayerID, error: Error)] = []
         for engine in engines {

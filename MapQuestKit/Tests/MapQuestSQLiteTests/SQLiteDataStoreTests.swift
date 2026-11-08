@@ -130,6 +130,7 @@ final class SQLiteDiscoveryIntegrationTests: XCTestCase {
             let engine = DiscoveryEngine(model: model, store: store)
             let recorder = LocationRecorder(store: store, engines: [engine])
             for sample in walk { _ = try await recorder.record(sample) }
+            try await recorder.finishSampling()
             storedCount = try await store.sampleCount()
             area = await engine.snapshot().totalAreaSquareMeters
         }
