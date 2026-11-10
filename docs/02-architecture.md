@@ -387,6 +387,14 @@ OpenStreetMap vector data, leaving out every label and icon:
   beyond zoom 14 the zoom-14 data is drawn enlarged, so lines stay sharp up
   to zoom 21. Three palettes: streets, light, dark.
 
+**Start-up.** The map opens where it was left (saved after every move), whose
+map data is on disk and appears at once; without a saved view, around the last
+position iOS knows. It does not wait for the first GPS fix and does not
+animate to it (an animated zoom draws every zoom level in between, often
+without cached data): if the user is out of sight at the first fix, the map is
+centred on them at the same zoom. While a tile's own data is loading, a
+coarser tile drawn from data already on disk is shown enlarged.
+
 Apple's map is switched off by a `GroundTileOverlay`
 (`canReplaceMapContent`) that only shows a dark ground where nothing is drawn
 yet. The only names on the map are the bundled cities and their districts

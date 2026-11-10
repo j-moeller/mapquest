@@ -23,10 +23,43 @@ struct FogMapView: UIViewRepresentable {
     /// Called with the coordinate of a long press (debug: place a test position); `nil` disables it.
     var onLongPress: ((GeoCoordinate) -> Void)?
 
-    static let berlin = MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: 52.5200, longitude: 13.4050),
-        latitudinalMeters: 12_000, longitudinalMeters: 12_000
+    /// Shown on the very first launch without any known position.
+    static let overview = MKCoordinateRegion(
+        center: CLLocationCoordinate2D(latitude: 51.2, longitude: 10.4),
+        span: MKCoordinateSpan(latitudeDelta: 8, longitudeDelta: 10)
     )
+    private static let regionKey = "FogMapView.region"
+
+    /// Where the map opens: where it was left (its map data is cached, so it
+    /// appears at once), else around the last position iOS knows (no waiting for
+    /// GPS), else an overview. `followsUser`: centre on the first fix.
+    static func initialRegion() -> (region: MKCoordinateRegion, followsUser: Bool) {
+        if let values = UserDefaults.standard.array(forKey: regionKey) as? [Double], values.count == 4 {
+            let region = MKCoordinateRegion(
+                center: CLLocationCoordinate2D(latitude: values[0], longitude: values[1]),
+                span: MKCoordinateSpan(latitudeDelta: values[2], longitudeDelta: values[3])
+            )
+            if isValid(region) { return (region, false) }
+        }
+        if let location = CLLocationManager().location, location.horizontalAccuracy >= 0 {
+            return (MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 1_500, longitudinalMeters: 1_500), false)
+        }
+        return (overview, true)
+    }
+
+    static func saveRegion(_ region: MKCoordinateRegion) {
+        guard isValid(region) else { return }
+        UserDefaults.standard.set(
+            [region.center.latitude, region.center.longitude, region.span.latitudeDelta, region.span.longitudeDelta],
+            forKey: regionKey
+        )
+    }
+
+    private static func isValid(_ region: MKCoordinateRegion) -> Bool {
+        CLLocationCoordinate2DIsValid(region.center) && abs(region.center.latitude) < 85
+            && region.span.latitudeDelta > 0 && region.span.latitudeDelta <= 90
+            && region.span.longitudeDelta > 0 && region.span.longitudeDelta <= 180
+    }
 
     func makeCoordinator() -> Coordinator {
         Coordinator(content: FogMapRenderer.Content(tiles: BaseMapTiles.shared(baseMap), snapshot: snapshot, style: fogStyle))
@@ -44,7 +77,9 @@ struct FogMapView: UIViewRepresentable {
         map.showsScale = true
         // The 3D mode shows the city in perspective.
         map.isPitchEnabled = false
-        map.setRegion(Self.berlin, animated: false)
+        let start = Self.initialRegion()
+        map.setRegion(start.region, animated: false)
+        context.coordinator.followsFirstFix = start.followsUser
         map.register(MapLabelView.self, forAnnotationViewWithReuseIdentifier: MapLabelView.reuseIdentifier)
 
         // Apple's map is replaced by a dark ground; the base map and the fog lie on it.
@@ -118,6 +153,8 @@ struct FogMapView: UIViewRepresentable {
         weak var map: MKMapView?
         var onLongPress: ((GeoCoordinate) -> Void)?
         private var hasCenteredOnUser = false
+        /// The map opened without a known position: zoom to the first fix.
+        var followsFirstFix = false
 
         init(content: FogMapRenderer.Content) {
             self.content = content
@@ -157,17 +194,25 @@ struct FogMapView: UIViewRepresentable {
         func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
             heatView.sync()
             updateLabelVisibility(on: mapView)
+            // Reopen here next time (its map data is cached by then).
+            FogMapView.saveRegion(mapView.region)
         }
 
-        /// Zooms to the user once, at the first position fix.
+        /// At the first position fix: zoom to the user if the map opened without a
+        /// position, otherwise centre on the user only if they are out of sight
+        /// (keeping the zoom). No animation: it would draw every zoom level in between.
         func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
             heatView.sync()
             guard !hasCenteredOnUser, let location = userLocation.location, location.horizontalAccuracy >= 0 else { return }
             hasCenteredOnUser = true
-            mapView.setRegion(
-                MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 1_500, longitudinalMeters: 1_500),
-                animated: true
-            )
+            if followsFirstFix {
+                mapView.setRegion(
+                    MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 1_500, longitudinalMeters: 1_500),
+                    animated: false
+                )
+            } else if !mapView.visibleMapRect.contains(MKMapPoint(location.coordinate)) {
+                mapView.setCenter(location.coordinate, animated: false)
+            }
         }
 
         @objc func handleLongPress(_ recognizer: UILongPressGestureRecognizer) {

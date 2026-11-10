@@ -335,20 +335,25 @@ final class BaseMapTiles: @unchecked Sendable {
     }
 
     /// The best image for a tile: the tile itself or the matching part of an
-    /// ancestor already drawn (blurrier). The rectangle is in the image's pixels, origin top left.
+    /// ancestor (blurrier). The rectangle is in the image's pixels, origin top left.
     func bestImage(for tile: TileKey) -> (image: CGImage, crop: CGRect, exact: Bool)? {
         if let image = cachedImage(tile) {
             return (image, CGRect(x: 0, y: 0, width: image.width, height: image.height), true)
         }
         guard tile.zoom > 0 else { return nil }
-        for levels in 1...min(8, tile.zoom) {
-            let ancestor = TileKey(zoom: tile.zoom - levels, x: tile.x >> levels, y: tile.y >> levels)
-            guard let image = cachedImage(ancestor, draw: false) else { continue }
-            let parts = 1 << levels
-            let size = Double(image.width) / Double(parts)
-            guard size >= 2 else { return nil }
-            let dx = tile.x - (ancestor.x << levels), dy = tile.y - (ancestor.y << levels)
-            return (image, CGRect(x: Double(dx) * size, y: Double(dy) * size, width: size, height: size), false)
+        // Coarser tiles: one already drawn, else one drawn now from stored map data
+        // (after a restart memory is empty, but the disk cache is not).
+        for draw in [false, true] {
+            for levels in 1...min(8, tile.zoom) {
+                let ancestor = TileKey(zoom: tile.zoom - levels, x: tile.x >> levels, y: tile.y >> levels)
+                if draw, !store.hasTile(store.source(for: ancestor)) { continue }
+                guard let image = cachedImage(ancestor, draw: draw) else { continue }
+                let parts = 1 << levels
+                let size = Double(image.width) / Double(parts)
+                guard size >= 2 else { break }
+                let dx = tile.x - (ancestor.x << levels), dy = tile.y - (ancestor.y << levels)
+                return (image, CGRect(x: Double(dx) * size, y: Double(dy) * size, width: size, height: size), false)
+            }
         }
         return nil
     }
