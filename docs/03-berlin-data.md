@@ -10,6 +10,7 @@ Berlin, where it comes from, and how to regenerate it.
 | Base map | OpenStreetMap vector tiles from OpenFreeMap (OpenMapTiles schema), drawn on the device without labels | ODbL 1.0 (© OpenStreetMap contributors), © OpenMapTiles; OpenFreeMap: free, no key | – (loaded on demand, cached on the device) |
 | District boundaries (12 Bezirke) | Amt für Statistik Berlin-Brandenburg, merged from localities by [m-hoerz/berlin-shapes](https://github.com/m-hoerz/berlin-shapes) | CC BY 3.0 DE | `App/MapQuest/Resources/Berlin/berlin-districts.geojson` |
 | City outline | Union of the districts (slivers closed, simplified to 2 m) | CC BY 3.0 DE | `App/MapQuest/Resources/Berlin/berlin-boundary.geojson` |
+| Sights (119, all 12 districts) | Curated list (`Tools/capture/berlin_sights.csv`); positions from OpenStreetMap points of interest via OpenFreeMap vector tiles (`Tools/capture/locate_sights.py`), 7 open areas placed by hand | ODbL 1.0 (© OpenStreetMap contributors) | `App/MapQuest/Resources/Berlin/berlin-sights.json` |
 | Demo explorer track (1 Hz, TrackCodec) | Generated (`Tools/berlin/make_demo_data.py`) | – | `App/MapQuest/Resources/Berlin/demo-track.mqtrack` |
 | Simulator walk | Generated, Brandenburger Tor → Alexanderplatz | – | `App/Simulation/BerlinWalk.gpx` |
 
@@ -37,6 +38,29 @@ The play-area code is global: replacing the two GeoJSON files (or using
 pip install shapely
 python3 Tools/berlin/prepare_play_area.py
 python3 Tools/berlin/make_demo_data.py
+```
+
+### Sights
+
+The capture component's sights are a curated list of 119 places in all twelve
+districts – landmarks, museums, palaces, churches, viewpoints, memorials,
+parks, squares and more – each with a capture radius (30–150 m).
+`Tools/capture/locate_sights.py` finds each one by name among the
+OpenStreetMap points of interest of the zoom-14 OpenFreeMap tiles around its
+approximate position: stops, entrances and signs only if nothing else
+matches, then the aliases in order, exact names before partial ones, classes
+fitting the category, the nearest. Seven places without a suitable point
+(Tempelhofer Feld, the zoo's Elefantentor, Hauptbahnhof, Sony Center,
+Gasometer, Luftbrückendenkmal, Hufeisensiedlung) keep a position set by hand
+(`@manual`). The script reports every match with its distance from the
+approximate position for review.
+
+```bash
+pip install mapbox-vector-tile
+```
+
+```bash
+python3 Tools/capture/locate_sights.py Tools/capture/berlin_sights.csv --cache build-sights App/MapQuest/Resources/Berlin/berlin-sights.json
 ```
 
 ### Simulating a walk

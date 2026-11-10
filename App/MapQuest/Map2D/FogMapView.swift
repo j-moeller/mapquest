@@ -20,6 +20,10 @@ struct FogMapView: UIViewRepresentable {
     /// Opacity, blur and edge softness of the fog over undiscovered areas.
     var fogStyle = FogStyle.default
     var baseMap = BaseMapStyle.streets
+    /// Sights to mark (capture component): captured ones, or all in debug mode.
+    var sightPins: [SightPin] = []
+    /// A sight to centre the map on (once per request).
+    var focus: SightFocus?
     /// Called with the coordinate of a long press (debug: place a test position); `nil` disables it.
     var onLongPress: ((GeoCoordinate) -> Void)?
 
@@ -81,6 +85,7 @@ struct FogMapView: UIViewRepresentable {
         map.setRegion(start.region, animated: false)
         context.coordinator.followsFirstFix = start.followsUser
         map.register(MapLabelView.self, forAnnotationViewWithReuseIdentifier: MapLabelView.reuseIdentifier)
+        map.register(SightAnnotationView.self, forAnnotationViewWithReuseIdentifier: SightAnnotationView.reuseIdentifier)
 
         // Apple's map is replaced by a dark ground; the base map and the fog lie on it.
         map.addOverlay(GroundTileOverlay(color: UIColor(white: 0.1, alpha: 1)), level: .aboveLabels)
@@ -135,11 +140,14 @@ struct FogMapView: UIViewRepresentable {
             coordinator.heatView.setHeatPoints(heatPoints.points, version: heatPoints.version)
         }
         coordinator.updateCities(cities, on: map)
+        coordinator.sights.update(sightPins, on: map)
+        coordinator.sights.focus(focus, on: map)
     }
 
     @MainActor
     final class Coordinator: NSObject, MKMapViewDelegate {
         let fogOverlay = FogMapOverlay()
+        let sights = SightAnnotationController()
         let heatView = HeatmapLayerView(frame: .zero)
         /// What the fog renderer shows (kept here as well: MapKit creates the renderer lazily).
         private var content: FogMapRenderer.Content
@@ -183,6 +191,9 @@ struct FogMapView: UIViewRepresentable {
         }
 
         func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+            if annotation is SightAnnotation {
+                return mapView.dequeueReusableAnnotationView(withIdentifier: SightAnnotationView.reuseIdentifier, for: annotation)
+            }
             guard annotation is MapLabelAnnotation else { return nil }
             return mapView.dequeueReusableAnnotationView(withIdentifier: MapLabelView.reuseIdentifier, for: annotation)
         }

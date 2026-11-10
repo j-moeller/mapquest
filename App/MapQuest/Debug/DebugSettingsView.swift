@@ -82,6 +82,7 @@ struct DebugSettingsView: View {
                 }
                 .disabled(tracker.lastLocation == nil || !model.profile.recordsLocations)
                 Toggle("Show evaluation details", isOn: $draft.showsEvaluation)
+                Toggle("Show all sights on the map", isOn: $draft.showsAllSights)
             } header: {
                 Text("Testing")
             } footer: {
@@ -120,6 +121,7 @@ struct DebugSettingsView: View {
             immediate.placesPositionsOnLongPress = newValue.placesPositionsOnLongPress
             immediate.testEyeHeight = newValue.testEyeHeight
             immediate.showsEvaluation = newValue.showsEvaluation
+            immediate.showsAllSights = newValue.showsAllSights
             if immediate != model.debug {
                 Task { await model.applyDebugSettings(immediate) }
             }

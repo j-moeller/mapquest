@@ -819,6 +819,8 @@ final class AppModel: ObservableObject {
             }
             sampleCount = 0
             await refreshAll()
+            // Other components (captures) forget what depended on the deleted area.
+            NotificationCenter.default.post(name: .discoveredDataDeleted, object: profile.id)
         } catch {
             errorMessage = "Delete failed: \(error.localizedDescription)"
         }

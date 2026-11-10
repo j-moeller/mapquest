@@ -238,6 +238,46 @@ reveals the radius circle (the default map, docs/05). Berlin: docs/03-berlin-dat
 docs/06-braunschweig-data.md; Peine (official outline and LoD2 buildings, no
 districts): docs/07-peine-data.md.
 
+## Capture (the capture component)
+
+A separate component on top of the discovered area: **sights** – 119 places
+all over Berlin (every district), from a curated list – are *captured* once the
+fog of war around them is lifted. It only reads the discovered area and keeps
+its own data; nothing else depends on it.
+
+* **Sights** (`MapQuestCore/Capture/Sight.swift`): ID, name, category
+  (landmark, museum, palace, church, viewpoint, memorial, park, square,
+  culture, monument, zoo, bridge, stadium), position and capture radius
+  (30–150 m; larger for open areas). Bundled per city as
+  `<city>-sights.json` (Berlin: docs/03-berlin-data.md); `SightCatalog`
+  merges them.
+* **Capture rule** (`SightCapture`): a sight is captured when discovered area
+  of any layer (radius or line of sight, all time) lies within its radius –
+  walking up to it, or seeing it from a distance. The capture date is the
+  first discovery of that area. Captures are kept once made (a rebuild with
+  other parameters does not take them away); deleting a data source's
+  discovered area deletes its captures.
+* **Log** (`CaptureLog`, `FileCaptureStore`): one JSON file per data source
+  in `Application Support/MapQuest/Captures`, separate from the data stores;
+  per capture the dates and whether it was celebrated.
+* **App** (`App/MapQuest/Capture`): `CaptureModel` re-checks the
+  uncaptured sights (off the main thread) whenever the selected data source's
+  discovered area changes. New captures of a recording data source are
+  celebrated by `CaptureCelebrationView` – a golden medallion with the
+  sight's icon bursts in over the dimmed screen with turning rays and flying
+  sparks (haptic success; reduced motion: a fade); it ends after 4.5 s, a tap
+  anywhere ends it at once. One capture at a time; more than three waiting
+  (e.g. the first check of earlier discoveries) are celebrated together.
+  View-only data sources record captures without celebrating.
+* **Views**: the trophy button in the status panel (number of captures)
+  opens the list of available sights (nearest first) and captured ones
+  (newest first); tapping one shows it on the 2D map. On the 2D map captured
+  sights are golden badges with their category icon (annotations, above the
+  fog; a callout gives name and date); *Debug › Show all sights* marks the
+  others as grey "?". In 3D every sight in the scene floats as a turning gem
+  on a beam – gold with its name once captured, grey "?" otherwise – and the
+  building of a captured sight is drawn in gold.
+
 ## 3D discovery (line of sight)
 
 ### Buildings
@@ -301,6 +341,8 @@ marks the 3D layer as *stale*, and the app offers a rebuild once online.
 | `App/MapQuest/Map2D/MapLabels.swift` | City and district names above the fog |
 | `App/MapQuest/Map2D/HeatmapLayerView.swift` | Heatmap raster and dimming over the map |
 | `App/MapQuest/Map2D/FogMapView.swift` | `MKMapView` wrapper: overlays, labels, outlines, user tracking |
+| `App/MapQuest/Capture/*` | Capture component: model, sight list, capture animation, map badges, 3D markers |
+| `MapQuestKit/Sources/MapQuestCore/Capture/*` | Sights, capture rule, capture log and its file store |
 | `App/MapQuest/Map3D/*` | SceneKit scene: extruded buildings, fogged ground, user marker |
 | `App/MapQuest/Debug/*` | Debug settings (parameters, test positions, evaluation overlay) |
 | `App/MapQuest/BundledBuildings.swift` | Unpacks the bundled building databases (one per city) |

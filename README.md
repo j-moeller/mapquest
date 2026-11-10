@@ -9,12 +9,13 @@ names are written, above the fog. Berlin, Braunschweig and Peine
 additionally have bundled 3D building and terrain data for the line-of-sight
 reveal.
 
-The app has three major components:
+The app has four major components:
 
 | Component | Responsibility |
 |---|---|
 | **Location tracking** | Records the position about once per second in a compact track (≈ 6 bytes per fix); the positions that reveal new parts of the map drive the fog of war |
 | **Discovered area** | Turns stored positions into discovered-area polygons, merges adjacent areas into regions, keeps disconnected areas apart; it is a cache that can always be rebuilt from the positions |
+| **Capture** | 119 Berlin sights (all districts) are captured once the fog around them lifts: a capture animation, a list of available and captured sights, golden badges on the map and gems in 3D |
 | **Map display** | 2D: a label-free base map with a black fog (80 %, blurred map underneath) drawn into it, the discovered area cut out. 3D: buildings that block the view; seen buildings are revealed |
 
 ## How it works
@@ -61,6 +62,12 @@ The app has three major components:
   periods; in 2D the *Radius / Line of sight* picker chooses the layer.
 * The panel shows discovered area, share of the current city, regions and stored
   positions; tap the chevron to collapse it on small screens (iPhone 13 mini).
+* **Sights**: walk up to (or see) one of 119 Berlin sights and it is captured,
+  with an animation (tap to skip). The trophy button in the panel lists
+  available sights (nearest first) and captured ones; tap one to see it on
+  the map. Captured sights are golden badges on the map and golden buildings
+  with floating gems in 3D. *Debug › Show all sights* marks the uncaptured
+  ones too.
 * **Settings** switch the data source (*My discoveries*, *Sandbox (testing)*,
   the view-only *Demo explorer*, or a **remote account** on a MapQuest server
   backed by PostgreSQL), show per-district coverage, rebuild the discovered
@@ -167,6 +174,7 @@ The UI smoke test (`App/MapQuestUITests`, iPhone 13 mini) runs from Xcode
 - [x] Braunschweig as a second city (docs/06)
 - [x] Fog of war everywhere; 3D data downloads only around the bundled cities
 - [x] Peine as a third city, from official data only (docs/07)
+- [x] Capture component: Berlin sights captured by uncovering them
 
 ## Known limitations and next steps
 

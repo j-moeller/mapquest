@@ -21,6 +21,11 @@ final class Scene3DController: ObservableObject {
     let halfSize: Double = 700
 
     private let buildingsNode = SCNNode()
+    /// Buildings of captured sights, in gold (capture component).
+    private let sightBuildingsNode = SCNNode()
+    private let sightsNode = SCNNode()
+    private var sightPins: [SightPin] = []
+    private var capturedBuildings: Set<Int64> = []
     private let groundNode = SCNNode()
     private let userNode = SCNNode()
     private var frame: LocalFrame?
@@ -68,6 +73,8 @@ final class Scene3DController: ObservableObject {
 
         scene.rootNode.addChildNode(groundNode)
         scene.rootNode.addChildNode(buildingsNode)
+        scene.rootNode.addChildNode(sightBuildingsNode)
+        scene.rootNode.addChildNode(sightsNode)
         scene.rootNode.addChildNode(userNode)
     }
 
@@ -96,6 +103,7 @@ final class Scene3DController: ObservableObject {
         buildingCount = 0
         mapImage = nil
         status = "Loading buildings…"
+        placeSights()
         renderedVersion = -1
         await recolor(snapshot: snapshot, version: version, fogStyle: fogStyle)
 
@@ -118,6 +126,7 @@ final class Scene3DController: ObservableObject {
         buildings = loaded
         interiorPoints = points
         buildingCount = loaded.count
+        placeSights()
         if coverage.coveredTiles.isEmpty {
             status = "No building data for this area yet (offline?)"
         } else if coverage.coveredTiles.count < coverage.versions.count {
@@ -138,18 +147,23 @@ final class Scene3DController: ObservableObject {
         let token = generation
         let buildings = self.buildings
         let points = self.interiorPoints
+        let golden = capturedBuildings
         let rect = frame.worldRect(halfSize: halfSize)
         let map = mapImage
-        let (mesh, ground) = await Task.detached(priority: .userInitiated) {
+        let (mesh, goldMesh, ground) = await Task.detached(priority: .userInitiated) {
             let discovered = Set(buildings.filter { b in
                 points[b.id].map(snapshot.isDiscovered) ?? false
             }.map(\.id))
-            let mesh = LoD1MeshBuilder.mesh(for: buildings, frame: frame) { discovered.contains($0.id) }
+            let mesh = LoD1MeshBuilder.mesh(for: buildings.filter { !golden.contains($0.id) }, frame: frame) { discovered.contains($0.id) }
+            let goldMesh = LoD1MeshBuilder.mesh(
+                for: buildings.filter { golden.contains($0.id) }, frame: frame, style: SightMarkers3D.captureStyle
+            ) { _ in true }
             let ground = GroundTexture.compose(map: map, rect: rect, snapshot: snapshot, style: fogStyle)
-            return (mesh, ground)
+            return (mesh, goldMesh, ground)
         }.value
         guard token == generation else { return }
         buildingsNode.geometry = mesh.isEmpty ? nil : SCNGeometry.make(from: mesh)
+        sightBuildingsNode.geometry = goldMesh.isEmpty ? nil : SCNGeometry.make(from: goldMesh)
 
         let plane = SCNPlane(width: CGFloat(2 * halfSize), height: CGFloat(2 * halfSize))
         let material = SCNMaterial()
@@ -158,6 +172,34 @@ final class Scene3DController: ObservableObject {
         plane.materials = [material]
         groundNode.geometry = plane
         groundNode.eulerAngles = SCNVector3(-Float.pi / 2, 0, 0) // lie flat, texture top = north
+    }
+
+    // MARK: Sights (capture component)
+
+    /// Shows sights in the scene; call `recolor` afterwards (captured buildings turn gold).
+    func setSights(_ pins: [SightPin]) {
+        guard pins != sightPins else { return }
+        sightPins = pins
+        placeSights()
+    }
+
+    /// Markers for the sights inside the scene; buildings of captured sights.
+    private func placeSights() {
+        sightsNode.childNodes.forEach { $0.removeFromParentNode() }
+        guard let frame else { return }
+        var golden: Set<Int64> = []
+        for pin in sightPins {
+            let p = frame.local(pin.sight.point)
+            guard max(abs(p.x), abs(p.z)) <= halfSize else { continue }
+            let building = SightMarkers3D.building(at: pin.sight, in: buildings)
+            if pin.isCaptured, let building { golden.insert(building.id) }
+            let height = Float((building?.height ?? 0) + 24)
+            sightsNode.addChildNode(SightMarkers3D.node(for: pin, x: Float(p.x), z: Float(p.z), height: height))
+        }
+        if golden != capturedBuildings {
+            capturedBuildings = golden
+            renderedVersion = -1
+        }
     }
 
     /// Moves the position marker (at eye height).
@@ -237,6 +279,7 @@ struct Scene3DOverlay: View {
 struct Map3DScreen: View {
     @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var tracker: LocationTracker
+    @EnvironmentObject private var captures: CaptureModel
     @ObservedObject var controller: Scene3DController
 
     static let fallbackCenter = GeoCoordinate(latitude: 52.521918, longitude: 13.413215) // Alexanderplatz
@@ -275,6 +318,11 @@ struct Map3DScreen: View {
         .onChange(of: model.debug.fogStyle) { _, _ in
             Task { await recolor() }
         }
+        // All sights are shown in 3D; captured ones in gold with their building.
+        .onChange(of: captures.pins(showingAll: true)) { _, pins in
+            controller.setSights(pins)
+            Task { await recolor() }
+        }
         .onReceive(tracker.$lastLocation) { location in
             controller.updateUser(location, eyeHeight: eyeHeight)
         }
@@ -286,6 +334,7 @@ struct Map3DScreen: View {
     }
 
     private func reload() async {
+        controller.setSights(captures.pins(showingAll: true))
         let layer = model.displayedState(.lineOfSight)
         await controller.load(
             center: center, snapshot: layer.snapshot, version: Self.stamp(layer),

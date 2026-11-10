@@ -3,6 +3,7 @@ import SwiftUI
 @main
 struct MapQuestApp: App {
     @StateObject private var model = AppModel()
+    @StateObject private var captures = CaptureModel()
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some Scene {
@@ -10,6 +11,7 @@ struct MapQuestApp: App {
             RootView()
                 .environmentObject(model)
                 .environmentObject(model.tracker)
+                .environmentObject(captures)
         }
         .onChange(of: scenePhase) { _, phase in
             // Buffered track fixes are written before the app may be suspended.

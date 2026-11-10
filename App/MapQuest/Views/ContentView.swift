@@ -13,6 +13,7 @@ enum MapMode: String, CaseIterable, Identifiable {
 struct ContentView: View {
     @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var tracker: LocationTracker
+    @EnvironmentObject private var captures: CaptureModel
     @State private var showsSettings = false
     @AppStorage("ContentView.mode") private var mode: MapMode = .twoD
     @StateObject private var scene3D = Scene3DController()
@@ -33,6 +34,8 @@ struct ContentView: View {
                     cities: model.cities,
                     fogStyle: model.debug.fogStyle,
                     baseMap: model.debug.baseMap,
+                    sightPins: captures.pins(showingAll: model.debug.showsAllSights),
+                    focus: captures.focus,
                     onLongPress: model.debug.placesPositionsOnLongPress ? { coordinate in
                         Task { await model.placeTestPosition(at: coordinate) }
                     } : nil
@@ -84,6 +87,12 @@ struct ContentView: View {
             }
             .padding()
         }
+        .modifier(CaptureHooks(captures: captures))
+        // The capture component follows the discovered area of the selected data source.
+        .task(id: captureInput) { updateCaptures() }
+        .onChange(of: captures.focus) { _, focus in
+            if focus != nil { mode = .twoD }
+        }
         .onAppear { model.isShowing3D = mode == .threeD }
         .onChange(of: mode) { _, newMode in model.isShowing3D = newMode == .threeD }
         .onChange(of: model.selectedLayer) { _, _ in
@@ -107,6 +116,20 @@ struct ContentView: View {
         } message: {
             Text(model.errorMessage ?? "")
         }
+    }
+}
+
+extension ContentView {
+    /// Changes whenever the selected data source or its discovered area changes.
+    private var captureInput: String {
+        "\(model.profile.id)|\(model.state(.radius).version)|\(model.state(.lineOfSight).version)"
+    }
+
+    private func updateCaptures() {
+        captures.update(
+            sourceID: model.profile.id, recordsLocations: model.profile.recordsLocations,
+            snapshots: MapLayer.allCases.map { model.state($0).snapshot }
+        )
     }
 }
 
@@ -138,6 +161,7 @@ struct StatusPanel: View {
                 .accessibilityLabel(collapsed ? "Show details" : "Hide details")
                 Spacer(minLength: 4)
                 if model.isBusy { ProgressView() }
+                CaptureButton()
                 Toggle("Tracking", isOn: Binding(
                     get: { tracker.isTrackingEnabled },
                     set: { tracker.isTrackingEnabled = $0 }
