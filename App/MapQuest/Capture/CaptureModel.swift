@@ -320,6 +320,7 @@ extension SightCategory {
         case .fountain: return "drop.fill"
         case .market: return "basket.fill"
         case .government: return "building.2.fill"
+        case .cemetery: return "moon.stars.fill"
         }
     }
 
@@ -341,6 +342,7 @@ extension SightCategory {
         case .fountain: return "Fountain"
         case .market: return "Market"
         case .government: return "Seat of government"
+        case .cemetery: return "Cemetery"
         }
     }
 }

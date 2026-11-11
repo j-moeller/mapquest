@@ -39,6 +39,8 @@ public enum BerlinHistory {
     static func month(_ year: Int, _ month: Int) -> Int { year * 12 + month - 1 }
 
     public static let eras: [HistoricalEra] = [
+        era("slavic", "Slavic lands", "until 1157", month(700, 1),
+            "Before Brandenburg: Slavic tribes – the Hevelli at Spandau, the Sprevane at Köpenick – hold the land on the Havel and Spree, until Albert the Bear defeats Jaxa of Köpenick and takes Brandenburg in 1157."),
         era("margraviate", "Margraviate of Brandenburg", "1157–1415", month(1157, 6),
             "Berlin and Cölln, first recorded in 1244 and 1237, grow up as twin trading towns on the Spree under the margraves of Brandenburg."),
         era("electorate", "Electorate of Brandenburg", "1415–1701", month(1415, 4),
@@ -66,6 +68,8 @@ public enum BerlinHistory {
     ]
 
     public static let rulers: [Ruler] = [
+        ruler("Slavic princes", "Hevelli and Sprevane tribes", "until 1157", "slavic", month(700, 1)),
+
         ruler("Ascanian margraves", "Margraves of Brandenburg", "1157–1320", "margraviate", month(1157, 6)),
         ruler("Wittelsbach margraves", "Margraves of Brandenburg", "1323–1373", "margraviate", month(1323, 4)),
         ruler("Luxembourg margraves", "Margraves of Brandenburg", "1373–1415", "margraviate", month(1373, 8)),
@@ -123,7 +127,7 @@ public enum BerlinHistory {
     ]
 
     /// The era of a year. While the city was divided, the half given by `sector`
-    /// (without one: "Divided Berlin"). Nil before 1157.
+    /// (without one: "Divided Berlin"). Nil before the Slavic settlement (700).
     public static func era(in year: Int, sector: BerlinSector? = nil) -> HistoricalEra? {
         let time = month(year, 7)
         let begun = eras.filter { $0.start <= time }

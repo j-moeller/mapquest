@@ -1215,6 +1215,312 @@
    "longitude": 13.0915,
    "radius": 60,
    "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "weisse-stadt",
+   "name": "Weiße Stadt",
+   "category": "landmark",
+   "latitude": 52.56917,
+   "longitude": 13.35278,
+   "radius": 100,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "flughafen-tegel",
+   "name": "Flughafen Tegel",
+   "category": "landmark",
+   "latitude": 52.5538,
+   "longitude": 13.2895,
+   "radius": 150,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "dicke-marie",
+   "name": "Dicke Marie",
+   "category": "park",
+   "latitude": 52.59357,
+   "longitude": 13.264987,
+   "radius": 30,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "russischer-friedhof-tegel",
+   "name": "Russischer Friedhof Tegel",
+   "category": "cemetery",
+   "latitude": 52.57767,
+   "longitude": 13.30067,
+   "radius": 60,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "siedlung-schillerpark",
+   "name": "Siedlung Schillerpark",
+   "category": "landmark",
+   "latitude": 52.5605,
+   "longitude": 13.3495,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "volkspark-rehberge",
+   "name": "Volkspark Rehberge",
+   "category": "park",
+   "latitude": 52.551479,
+   "longitude": 13.330375,
+   "radius": 150,
+   "district": "Mitte"
+  },
+  {
+   "id": "alte-nazarethkirche",
+   "name": "Alte Nazarethkirche",
+   "category": "church",
+   "latitude": 52.546936,
+   "longitude": 13.359508,
+   "radius": 30,
+   "district": "Mitte"
+  },
+  {
+   "id": "strandbad-ploetzensee",
+   "name": "Strandbad Plötzensee",
+   "category": "landmark",
+   "latitude": 52.543527,
+   "longitude": 13.329361,
+   "radius": 60,
+   "district": "Mitte"
+  },
+  {
+   "id": "gedenkstaette-ploetzensee",
+   "name": "Gedenkstätte Plötzensee",
+   "category": "memorial",
+   "latitude": 52.540867,
+   "longitude": 13.322816,
+   "radius": 40,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "dorotheenstaedtischer-friedhof",
+   "name": "Dorotheenstädtischer Friedhof",
+   "category": "cemetery",
+   "latitude": 52.528411,
+   "longitude": 13.383704,
+   "radius": 60,
+   "district": "Mitte"
+  },
+  {
+   "id": "kolk",
+   "name": "Kolk (Altstadt Spandau)",
+   "category": "square",
+   "latitude": 52.539458,
+   "longitude": 13.207625,
+   "radius": 50,
+   "district": "Spandau"
+  },
+  {
+   "id": "fort-hahneberg",
+   "name": "Fort Hahneberg",
+   "category": "landmark",
+   "latitude": 52.521811,
+   "longitude": 13.138306,
+   "radius": 100,
+   "district": "Spandau"
+  },
+  {
+   "id": "flugplatz-gatow",
+   "name": "Militärhistorisches Museum Flugplatz Gatow",
+   "category": "museum",
+   "latitude": 52.471937,
+   "longitude": 13.138734,
+   "radius": 100,
+   "district": "Spandau"
+  },
+  {
+   "id": "siemensstadt",
+   "name": "Großsiedlung Siemensstadt",
+   "category": "landmark",
+   "latitude": 52.538205,
+   "longitude": 13.27871,
+   "radius": 100,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "museum-karlshorst",
+   "name": "Museum Berlin-Karlshorst",
+   "category": "museum",
+   "latitude": 52.486145,
+   "longitude": 13.539845,
+   "radius": 50,
+   "district": "Lichtenberg"
+  },
+  {
+   "id": "gedenkstaette-sozialisten",
+   "name": "Gedenkstätte der Sozialisten",
+   "category": "cemetery",
+   "latitude": 52.514921,
+   "longitude": 13.511227,
+   "radius": 50,
+   "district": "Lichtenberg"
+  },
+  {
+   "id": "rathaus-lichtenberg",
+   "name": "Rathaus Lichtenberg",
+   "category": "government",
+   "latitude": 52.515783,
+   "longitude": 13.479838,
+   "radius": 50,
+   "district": "Lichtenberg"
+  },
+  {
+   "id": "orankesee",
+   "name": "Orankesee",
+   "category": "park",
+   "latitude": 52.548889,
+   "longitude": 13.4825,
+   "radius": 100,
+   "district": "Lichtenberg"
+  },
+  {
+   "id": "spreepark",
+   "name": "Spreepark",
+   "category": "park",
+   "latitude": 52.485833,
+   "longitude": 13.487778,
+   "radius": 120,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "regattastrecke-gruenau",
+   "name": "Regattastrecke Grünau",
+   "category": "stadium",
+   "latitude": 52.410767,
+   "longitude": 13.605478,
+   "radius": 100,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "wasserwerk-friedrichshagen",
+   "name": "Museum im Wasserwerk Friedrichshagen",
+   "category": "museum",
+   "latitude": 52.451825,
+   "longitude": 13.642648,
+   "radius": 60,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "strandbad-mueggelsee",
+   "name": "Strandbad Müggelsee",
+   "category": "landmark",
+   "latitude": 52.4454,
+   "longitude": 13.6762,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "aerodynamischer-park",
+   "name": "Aerodynamischer Park",
+   "category": "park",
+   "latitude": 52.431944,
+   "longitude": 13.528889,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "gartenstadt-falkenberg",
+   "name": "Gartenstadt Falkenberg",
+   "category": "landmark",
+   "latitude": 52.410278,
+   "longitude": 13.564722,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "marzahner-muehle",
+   "name": "Marzahner Bockwindmühle",
+   "category": "landmark",
+   "latitude": 52.544,
+   "longitude": 13.5635,
+   "radius": 30,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "gruenderzeitmuseum",
+   "name": "Gründerzeitmuseum Mahlsdorf",
+   "category": "museum",
+   "latitude": 52.5024,
+   "longitude": 13.6139,
+   "radius": 40,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "zwangslager-marzahn",
+   "name": "Gedenkstein Zwangslager Marzahn",
+   "category": "memorial",
+   "latitude": 52.5485,
+   "longitude": 13.5415,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "juedischer-friedhof-weissensee",
+   "name": "Jüdischer Friedhof Weißensee",
+   "category": "cemetery",
+   "latitude": 52.544722,
+   "longitude": 13.458333,
+   "radius": 80,
+   "district": "Pankow"
+  },
+  {
+   "id": "ehrenmal-schoenholzer-heide",
+   "name": "Sowjetisches Ehrenmal Schönholzer Heide",
+   "category": "memorial",
+   "latitude": 52.581667,
+   "longitude": 13.3725,
+   "radius": 60,
+   "district": "Pankow"
+  },
+  {
+   "id": "buergerpark-pankow",
+   "name": "Bürgerpark Pankow",
+   "category": "park",
+   "latitude": 52.569444,
+   "longitude": 13.393056,
+   "radius": 100,
+   "district": "Pankow"
+  },
+  {
+   "id": "rathaus-pankow",
+   "name": "Rathaus Pankow",
+   "category": "government",
+   "latitude": 52.568992,
+   "longitude": 13.402312,
+   "radius": 50,
+   "district": "Pankow"
+  },
+  {
+   "id": "weisser-see",
+   "name": "Weißer See",
+   "category": "park",
+   "latitude": 52.554167,
+   "longitude": 13.464028,
+   "radius": 100,
+   "district": "Pankow"
+  },
+  {
+   "id": "carl-legien",
+   "name": "Wohnstadt Carl Legien",
+   "category": "landmark",
+   "latitude": 52.546389,
+   "longitude": 13.432778,
+   "radius": 80,
+   "district": "Pankow"
+  },
+  {
+   "id": "schlosskirche-buch",
+   "name": "Schlosskirche Buch",
+   "category": "church",
+   "latitude": 52.6354,
+   "longitude": 13.4986,
+   "radius": 30,
+   "district": "Pankow"
   }
  ]
 }

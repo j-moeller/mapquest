@@ -15,7 +15,7 @@ The app has four major components:
 |---|---|
 | **Location tracking** | Records the position about once per second in a compact track (≈ 6 bytes per fix); the positions that reveal new parts of the map drive the fog of war |
 | **Discovered area** | Turns stored positions into discovered-area polygons, merges adjacent areas into regions, keeps disconnected areas apart; it is a cache that can always be rebuilt from the positions |
-| **Capture** | 135 Berlin sights (all districts) are captured once you have been there (the radius view covers them): a capture animation, a list of available and captured sights, golden badges on the map and gems in 3D; 68 achievements (eras, architects, districts, collections, stories) |
+| **Capture** | 169 Berlin sights (all districts, the outer ones too) are captured once you have been there (the radius view covers them): a capture animation, a list of available and captured sights, golden badges on the map and gems in 3D; 74 achievements (eras, architects, districts, collections, stories) |
 | **Map display** | 2D: a label-free base map with a black fog (80 %, blurred map underneath) drawn into it, the discovered area cut out. 3D: buildings that block the view; seen buildings are revealed |
 
 ## How it works
@@ -62,7 +62,7 @@ The app has four major components:
   periods; in 2D the *Radius / Line of sight* picker chooses the layer.
 * The panel shows discovered area, share of the current city, regions and stored
   positions; tap the chevron to collapse it on small screens (iPhone 13 mini).
-* **Sights**: walk up to one of 135 Berlin sights – until the circles of the
+* **Sights**: walk up to one of 169 Berlin sights – until the circles of the
   radius view cover it – and it is captured, with an animation (tap to skip):
   it appears on your map and unlocks its entry – a photorealistic 3D view
   (Apple's 3D city model, where available) or its photo, description and
@@ -71,7 +71,7 @@ The app has four major components:
   commissioned it, who ruled Berlin then and in which era. The trophy button
   in the panel lists all sights, nearest first or *Through time* (by year, in
   Berlin's eras) – captured ones in orange, the others in grey; tap one to
-  see it on the map. **Achievements** (third tab, 68): every church,
+  see it on the map. **Achievements** (third tab, 74): every church,
   fountain, market or museum; everything from an era; the works of Schinkel,
   Knobelsdorff or Blankenstein; every sight of a district; themed walks such
   as Museum Island, the Wall or Spy City; and milestones. Each shows what is

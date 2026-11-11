@@ -3,7 +3,7 @@ import Foundation
 /// What kind of place a sight is (icons and grouping).
 public enum SightCategory: String, Codable, CaseIterable, Sendable {
     case landmark, museum, palace, church, viewpoint, memorial, park, square, culture, monument, zoo, bridge, stadium
-    case fountain, market, government
+    case fountain, market, government, cemetery
 
     /// Unknown categories (newer data) count as landmarks.
     public init(from decoder: Decoder) throws {

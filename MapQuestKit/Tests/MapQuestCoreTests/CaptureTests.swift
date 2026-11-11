@@ -31,7 +31,7 @@ final class CaptureTests: XCTestCase {
 
     func testBundledBerlinSights() throws {
         let catalog = try Self.berlinSights()
-        XCTAssertEqual(catalog.count, 135)
+        XCTAssertEqual(catalog.count, 169)
         let berlin = try GeoJSON.playArea(named: "Berlin", from: Data(contentsOf: BraunschweigDataTests.root.appendingPathComponent("Berlin/berlin-boundary.geojson")))
         let districts = try GeoJSON.polygonFeatures(from: Data(contentsOf: BraunschweigDataTests.root.appendingPathComponent("Berlin/berlin-districts.geojson")))
             .map { PlayArea(name: $0.properties["name"] ?? "", polygons: $0.polygons) }
@@ -201,7 +201,9 @@ final class SightHistoryTests: XCTestCase {
         func ruler(_ year: Int, _ sector: BerlinSector? = nil) -> String? { BerlinHistory.ruler(in: year, sector: sector)?.name }
         func era(_ year: Int, _ sector: BerlinSector? = nil) -> String? { BerlinHistory.era(in: year, sector: sector)?.id }
 
-        XCTAssertNil(BerlinHistory.context(in: 1100), "before Brandenburg")
+        XCTAssertNil(BerlinHistory.context(in: 500), "before the Slavic settlement")
+        XCTAssertEqual(era(1107), "slavic", "before Brandenburg")
+        XCTAssertEqual(ruler(1107), "Slavic princes")
         XCTAssertEqual(era(1230), "margraviate")
         XCTAssertEqual(ruler(1230), "Ascanian margraves")
         XCTAssertEqual(ruler(1542), "Joachim II Hector")
@@ -256,9 +258,11 @@ final class SightHistoryTests: XCTestCase {
         for (id, history) in catalog.entries {
             XCTAssertNotNil(sights[id], "\(id) is a sight")
             let year = try XCTUnwrap(history.year, id)
-            XCTAssertTrue((1157...2026).contains(year), id)
+            XCTAssertTrue((1100...2026).contains(year), id)
             XCTAssertNotNil(history.built, id)
-            XCTAssertNotNil(history.sector, id)
+            if (1949...1990).contains(year) {
+                XCTAssertNotNil(history.sector, "\(id): built in the divided city, its side decides the ruler")
+            }
             XCTAssertNotNil(history.context?.ruler, "\(id): a ruler in \(year)")
             for paragraph in history.historyParagraphs {
                 for markup in ["{{", "}}", "[[", "]]", "<ref", "()", "''"] {
@@ -339,22 +343,32 @@ final class AchievementTests: XCTestCase {
         }
         XCTAssertEqual(book.entries.filter { $0.achievement.group == .districts }.count, 12)
 
-        XCTAssertEqual(try members("architect-schinkel"), ["altes-museum", "konzerthaus", "neue-wache", "kreuzbergdenkmal", "schloss-glienicke", "schloss-tegel"])
+        XCTAssertEqual(try members("architect-schinkel"), ["altes-museum", "konzerthaus", "neue-wache", "kreuzbergdenkmal", "schloss-glienicke", "schloss-tegel", "alte-nazarethkirche"])
         XCTAssertEqual(try members("fountains").count, 7)
         XCTAssertEqual(try members("markets"), ["hackescher-markt", "markthalle-neun", "arminiusmarkthalle", "ackerhalle", "winterfeldtplatz", "gendarmenmarkt"])
-        XCTAssertEqual(try members("churches").count, 11)
+        XCTAssertEqual(try members("churches").count, 13)
+        XCTAssertEqual(try members("cemeteries").count, 4)
+        XCTAssertEqual(try members("housing-estates"), try members("world-heritage").subtracting(members("museum-island")).subtracting(["pfaueninsel", "schloss-glienicke", "nikolskoe"]),
+                       "the six estates are World Heritage")
+        XCTAssertEqual(try members("architect-taut"), ["hufeisensiedlung", "siedlung-schillerpark", "gartenstadt-falkenberg", "carl-legien"])
+        XCTAssertEqual(try members("town-halls").count, 8)
+        XCTAssertTrue(try members("olympic-1936").contains("regattastrecke-gruenau"))
         XCTAssertEqual(try members("architect-blankenstein"), ["nikolaikirche", "markthalle-neun", "arminiusmarkthalle", "ackerhalle"],
                        "names match without their notes (towers, 1878)")
         XCTAssertTrue(try members("old-fritz").isSuperset(of: ["staatsoper", "hedwigs-kathedrale", "franzoesischer-dom"]))
-        XCTAssertEqual(try members("era-margraviate"), ["nikolaikirche", "marienkirche", "nikolaikirche-spandau"])
+        XCTAssertEqual(try members("era-margraviate"), ["dicke-marie", "kolk", "nikolaikirche", "marienkirche", "nikolaikirche-spandau"],
+                       "with the oak from the Slavic era")
         XCTAssertTrue(try members("era-east").contains("fernsehturm"))
         XCTAssertTrue(try members("era-west").contains("philharmonie"))
-        XCTAssertEqual(try members("district-spandau"), ["zitadelle", "nikolaikirche-spandau", "rathaus-spandau"])
+        XCTAssertEqual(try members("district-spandau"), ["kolk", "zitadelle", "nikolaikirche-spandau", "rathaus-spandau", "fort-hahneberg", "flugplatz-gatow"])
+        for (district, minimum) in [("reinickendorf", 8), ("lichtenberg", 9), ("treptow-koepenick", 11), ("marzahn-hellersdorf", 6), ("pankow", 15)] {
+            XCTAssertGreaterThanOrEqual(try members("district-\(district)").count, minimum, district)
+        }
         XCTAssertTrue(try members("style-brick").isSuperset(of: ["marienkirche", "oberbaumbruecke"]), "Brick Gothic and its revival")
         let all = try XCTUnwrap(book["all-sights"])
         XCTAssertEqual(all.target, catalog.count)
         XCTAssertEqual(book["captures-10"]?.target, 10)
-        XCTAssertEqual(book["era-margraviate"]?.members.first, "nikolaikirche", "oldest first")
+        XCTAssertEqual(book["era-margraviate"]?.members.first, "dicke-marie", "oldest first")
     }
 
     func testProgressAndUnlocks() throws {

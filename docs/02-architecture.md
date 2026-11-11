@@ -240,14 +240,15 @@ districts): docs/07-peine-data.md.
 
 ## Capture (the capture component)
 
-A separate component on top of the discovered area: **sights** – 135 places
+A separate component on top of the discovered area: **sights** – 169 places
 all over Berlin (every district), from a curated list – are *captured* once the
 fog of war around them is lifted. It only reads the discovered area and keeps
 its own data; nothing else depends on it.
 
 * **Sights** (`MapQuestCore/Capture/Sight.swift`): ID, name, category
   (landmark, museum, palace, church, viewpoint, memorial, park, square,
-  culture, monument, zoo, bridge, stadium, fountain, market, government),
+  culture, monument, zoo, bridge, stadium, fountain, market, government,
+  cemetery),
   position, extent (30–150 m; larger for open areas) and district. Bundled per city as
   `<city>-sights.json` (Berlin: docs/03-berlin-data.md); `SightCatalog`
   merges them.
@@ -303,8 +304,8 @@ its own data; nothing else depends on it.
   as plain text (display templates expanded, references dropped), whole
   paragraphs up to about 1,800 characters. The ruler is not stored:
   `BerlinHistory` maps a year (read in July: in a year of succession the
-  ruler of July counts) and the sector to the era – Margraviate and
-  Electorate of Brandenburg, Kingdom of Prussia, German Empire, Weimar
+  ruler of July counts) and the sector to the era – Slavic lands (before
+  1157: an oak in Tegel is that old), Margraviate and Electorate of Brandenburg, Kingdom of Prussia, German Empire, Weimar
   Republic, Nazi Germany, Allied occupation, East Berlin (GDR) / West Berlin,
   reunified Germany – and its ruler: margraves, electors, kings and emperors,
   Reich presidents, the dictator, the Allied Kommandatura, the SED leaders in
@@ -341,7 +342,7 @@ its own data; nothing else depends on it.
 ## Achievements
 
 Goals made of sights (`MapQuestCore/Capture/Achievement.swift`,
-`<city>-achievements.json`; Berlin has 68). Each has a group, title,
+`<city>-achievements.json`; Berlin has 74). Each has a group, title,
 description, SF Symbol and a **rule** that picks its sights from the catalog
 and the historical facts: categories (all churches, fountains, museums…),
 the era of the year built (`BerlinHistory`, East and West apart), an
@@ -359,11 +360,14 @@ achievements a capture **unlocks** (complete with it and every capture
 celebrated before, not without it), shown in the capture animation.
 
 * **Groups**: Milestones, Collections (categories and curated sets: seats of
-  power, town halls, border bridges, both zoos), Stories (themed walks),
+  power, town halls, border bridges, both zoos, cemeteries), Stories (themed
+  walks: World Heritage and its six housing estates, 8 May 1945, the airfields,
+  Wedding…),
   Through time (one per era), Styles, Master builders (architects with at
   least three works; Friedrich Schulze's two parliaments as a story), and
   Districts (all twelve). Every sight belongs to exactly one era and one
-  district achievement (tested).
+  district achievement (tested; the oak from the Slavic era counts towards
+  *Medieval Roots*).
 * **Views**: the sight list's third tab, *Achievements* – "Almost there"
   (the three started ones with the fewest sights to go), then the groups with
   medals (gold when complete, a progress ring otherwise). An achievement's
