@@ -74,8 +74,15 @@ schemes:
       config: Debug
       targets:
         - MapQuestUITests
+      # See run.
+      enableGPUValidationMode: false
     run:
       config: Debug
+      # Metal API Validation off: Apple's own renderers (MapKit's photorealistic 3D,
+      # SceneKit) trip it ("…colorAttachment[0] has usage (0x01) which doesn't
+      # specify MTLTextureUsageRenderTarget") and stop the app in Debug runs; MapQuest
+      # has no Metal code of its own. Release builds never validate.
+      enableGPUValidationMode: false
       # No default simulated location: the app uses the real position. A walk can
       # still be picked while running (Debug › Simulate Location › BerlinWalk).
       simulateLocation:
