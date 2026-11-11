@@ -240,15 +240,15 @@ districts): docs/07-peine-data.md.
 
 ## Capture (the capture component)
 
-A separate component on top of the discovered area: **sights** – 119 places
+A separate component on top of the discovered area: **sights** – 135 places
 all over Berlin (every district), from a curated list – are *captured* once the
 fog of war around them is lifted. It only reads the discovered area and keeps
 its own data; nothing else depends on it.
 
 * **Sights** (`MapQuestCore/Capture/Sight.swift`): ID, name, category
   (landmark, museum, palace, church, viewpoint, memorial, park, square,
-  culture, monument, zoo, bridge, stadium), position and extent
-  (30–150 m; larger for open areas). Bundled per city as
+  culture, monument, zoo, bridge, stadium, fountain, market, government),
+  position, extent (30–150 m; larger for open areas) and district. Bundled per city as
   `<city>-sights.json` (Berlin: docs/03-berlin-data.md); `SightCatalog`
   merges them.
 * **Capture rule** (`SightCapture`): a sight is captured when you have been
@@ -337,6 +337,40 @@ its own data; nothing else depends on it.
   others as grey "?". In 3D every sight in the scene floats as a turning gem
   on a beam – gold with its name once captured, grey "?" otherwise – and the
   building of a captured sight is drawn in gold.
+
+## Achievements
+
+Goals made of sights (`MapQuestCore/Capture/Achievement.swift`,
+`<city>-achievements.json`; Berlin has 68). Each has a group, title,
+description, SF Symbol and a **rule** that picks its sights from the catalog
+and the historical facts: categories (all churches, fountains, museums…),
+the era of the year built (`BerlinHistory`, East and West apart), an
+architect or client (compared without a note in parentheses, so “Hermann
+Blankenstein (towers, 1878)” counts for Blankenstein), architectural styles,
+a district, or an explicit list for themed stories (Museum Island, the Wall,
+Spy City, Old Fritz…); `include`/`exclude` adjust a selection, `count`/`all`
+are milestones (1, 10, 25, 50, 100, all captures). Rules, not lists: a sight
+added to the catalog joins its era, district, category and architect without
+editing the achievements. `AchievementBook` resolves them once (members
+oldest first; rules picking fewer than two sights are left out) and derives
+everything else from the capture log – nothing more is stored: progress,
+completion (the date of the capture that reached the target), and which
+achievements a capture **unlocks** (complete with it and every capture
+celebrated before, not without it), shown in the capture animation.
+
+* **Groups**: Milestones, Collections (categories and curated sets: seats of
+  power, town halls, border bridges, both zoos), Stories (themed walks),
+  Through time (one per era), Styles, Master builders (architects with at
+  least three works; Friedrich Schulze's two parliaments as a story), and
+  Districts (all twelve). Every sight belongs to exactly one era and one
+  district achievement (tested).
+* **Views**: the sight list's third tab, *Achievements* – "Almost there"
+  (the three started ones with the fewest sights to go), then the groups with
+  medals (gold when complete, a progress ring otherwise). An achievement's
+  page shows its description, progress or completion date, *Next up* (the
+  nearest sight still missing, with *Show on map*) and its sights by year.
+  Each entry lists the achievements its sight counts towards (also when
+  locked, as an incentive).
 
 ## 3D discovery (line of sight)
 

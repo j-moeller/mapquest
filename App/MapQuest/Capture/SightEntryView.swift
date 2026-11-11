@@ -144,6 +144,8 @@ struct SightEntryView: View {
                     .padding(.top, 4)
                 historyText(history)
             }
+            SightAchievements(sight: sight)
+                .padding(.top, 4)
             if shows3D, let photo = info?.image {
                 SightPhotoView(url: photo.url)
                     .frame(height: 210)
@@ -171,6 +173,7 @@ struct SightEntryView: View {
                       systemImage: "location.fill")
                     .font(.subheadline)
             }
+            SightAchievements(sight: sight)
             actions
         }
         .padding(.horizontal)

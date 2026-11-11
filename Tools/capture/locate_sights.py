@@ -9,12 +9,15 @@ matches one of the aliases; the best match within 2 km gives the exact position
 (© OpenStreetMap contributors, ODbL): not a stop, entrance or sign if anything
 else matches, then earlier aliases first, exact names before partial ones,
 classes fitting the category, the nearest. Aliases "@manual" keep the given
-position (open areas without a point, e.g. Tempelhofer Feld). Sights without a
-match are left out and reported. Tiles are cached in --cache.
+position (open areas without a point, e.g. Tempelhofer Feld, or fountains the
+tiles lack; positions from Wikidata). Sights without a match are left out and
+reported. Tiles are cached in --cache. With --districts (a GeoJSON of named
+polygons), every sight gets the district it lies in.
 
 Usage: pip install mapbox-vector-tile
        python3 Tools/capture/locate_sights.py Tools/capture/berlin_sights.csv \
-           --cache build-sights App/MapQuest/Resources/Berlin/berlin-sights.json
+           --cache build-sights --districts App/MapQuest/Resources/Berlin/berlin-districts.geojson \
+           App/MapQuest/Resources/Berlin/berlin-sights.json
 """
 import argparse
 import csv
@@ -42,6 +45,9 @@ PREFERRED = {
     "culture": {"theatre", "music", "cinema", "art_gallery"},
     "memorial": {"monument", "attraction", "museum"},
     "monument": {"monument", "attraction"},
+    "fountain": {"attraction", "art_gallery"},
+    "market": {"grocery", "marketplace", "attraction"},
+    "government": {"town_hall", "office"},
 }
 
 
@@ -158,13 +164,43 @@ def locate(tiles: Tiles, sight: dict):
     return best
 
 
+def inside(point, ring) -> bool:
+    """Even-odd rule; point and ring as (lon, lat)."""
+    x, y = point
+    result = False
+    for (x1, y1), (x2, y2) in zip(ring, ring[1:] + ring[:1]):
+        if (y1 > y) != (y2 > y) and x < (x2 - x1) * (y - y1) / (y2 - y1) + x1:
+            result = not result
+    return result
+
+
+def read_districts(path: pathlib.Path):
+    """(name, polygons) per feature; a polygon is a list of rings (exterior first)."""
+    result = []
+    for feature in json.loads(path.read_text(encoding="utf-8"))["features"]:
+        geometry = feature["geometry"]
+        polygons = [geometry["coordinates"]] if geometry["type"] == "Polygon" else geometry["coordinates"]
+        result.append((feature["properties"]["name"], polygons))
+    return result
+
+
+def district_of(districts, lat: float, lon: float):
+    for name, polygons in districts:
+        for rings in polygons:
+            if inside((lon, lat), rings[0]) and not any(inside((lon, lat), hole) for hole in rings[1:]):
+                return name
+    return None
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("sights", type=pathlib.Path)
     parser.add_argument("--cache", type=pathlib.Path, required=True)
+    parser.add_argument("--districts", type=pathlib.Path, help="GeoJSON of the city's districts (named polygons)")
     parser.add_argument("output", type=pathlib.Path)
     args = parser.parse_args()
     tiles = Tiles(args.cache)
+    districts = read_districts(args.districts) if args.districts else []
     with open(args.sights, encoding="utf-8") as f:
         rows = list(csv.DictReader(f, delimiter=";"))
     found, missing = [], []
@@ -187,9 +223,15 @@ def main():
             "id": row["id"], "name": row["name"], "category": row["category"],
             "latitude": round(lat, 6), "longitude": round(lon, 6), "radius": int(row["radius"]),
         })
+    for sight in found:
+        if districts:
+            sight["district"] = district_of(districts, sight["latitude"], sight["longitude"])
+            if not sight["district"]:
+                print(f"OUTSIDE the districts: {sight['id']}", file=sys.stderr)
     document = {
         "source": "Curated list (Tools/capture/berlin_sights.csv), positions from OpenStreetMap "
-                  "points of interest via OpenFreeMap vector tiles (© OpenStreetMap contributors, ODbL)",
+                  "points of interest via OpenFreeMap vector tiles (© OpenStreetMap contributors, ODbL); "
+                  "positions marked @manual from Wikidata (CC0)",
         "sights": found,
     }
     args.output.write_text(json.dumps(document, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")

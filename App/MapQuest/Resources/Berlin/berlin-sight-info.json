@@ -1339,7 +1339,7 @@
    "title": "Köpenick Palace",
    "language": "en",
    "url": "https://en.wikipedia.org/wiki/K%C3%B6penick_Palace",
-   "text": "Schloss Köpenick (English: Köpenick Palace) is a Baroque water palace of the Hohenzollern electors of Brandenburg which stands on an island in the Dahme River surrounded by an English-style park and gives its name to Köpenick, a district of Berlin.\n\nThe castle was originally built on the foundations of a Slavic castle (6th century) in 1558 as a hunting lodge by order of Elector Joachim II Hector of Brandenburg. The building in a Renaissance style was located on the river island at the site of the former medieval fort. Joachim II died here in 1571. In 1631 it served as the headquarters of King Gustavus Adolphus of Sweden, where he - without results - asked his brother-in-law Elector George William for assistance in the Thirty Years' War.\n\nFrederick I of Prussia had the lodge rebuilt and enlarged from 1677 and lived here together with his first wife Elizabeth Henrietta of Hesse-Kassel. In 1730 Frederick II of Prussia, then Crown Prince, and his friend Hans Hermann von Katte faced the court-martial for desertion at Schloss Köpenick. Today the castle surrounded by a small park serves as the Museum of Decorative Arts, run by the Prussian Cultural Heritage Foundation as part of the Berlin State Museums.",
+   "text": "Schloss Köpenick (English: Köpenick Palace) is a Baroque water palace of the Hohenzollern electors of Brandenburg which stands on an island in the Dahme River surrounded by an English-style park and gives its name to Köpenick, a district of Berlin.\n\nThe castle was originally built on the foundations of a Slavic castle (6th century) in 1558 as a hunting lodge by order of Elector Joachim II Hector of Brandenburg. The building in a Renaissance style was located on the river island at the site of the former medieval fort. Joachim II died here in 1571. In 1631 it served as the headquarters of King Gustavus Adolphus of Sweden, where he – without results – asked his brother-in-law Elector George William for assistance in the Thirty Years' War.\n\nFrederick I of Prussia had the lodge rebuilt and enlarged from 1677 and lived here together with his first wife Elizabeth Henrietta of Hesse-Kassel. In 1730 Frederick II of Prussia, then Crown Prince, and his friend Hans Hermann von Katte faced the court-martial for desertion at Schloss Köpenick. Today the castle surrounded by a small park serves as the Museum of Decorative Arts, run by the Prussian Cultural Heritage Foundation as part of the Berlin State Museums.",
    "image": {
     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/52/Berlin-Koepenick_Schloss1_05-2014.jpg/960px-Berlin-Koepenick_Schloss1_05-2014.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
     "page": "https://commons.wikimedia.org/wiki/File:Berlin-Koepenick_Schloss1_05-2014.jpg",
@@ -1522,6 +1522,214 @@
     "artist": "Josue007",
     "license": "CC BY-SA 3.0",
     "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+   }
+  },
+  "brunnen-voelkerfreundschaft": {
+   "title": "Brunnen der Völkerfreundschaft (Berlin)",
+   "language": "de",
+   "url": "https://de.wikipedia.org/wiki/Brunnen_der_V%C3%B6lkerfreundschaft_(Berlin)",
+   "text": "Der Brunnen der Völkerfreundschaft ist ein Baudenkmal auf dem Alexanderplatz im Berliner Ortsteil Mitte. Er wurde 1969–1970 vom Kollektiv Walter Womacka im Stil der sozialistischen Moderne errichtet. Das Wasser des Brunnens fließt über 17 Schalen und acht Auslässe vom kleineren oberen Becken ins größere untere Becken.",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c0/Berlin_07-2011_%28ubt-32%29.JPG/960px-Berlin_07-2011_%28ubt-32%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "page": "https://commons.wikimedia.org/wiki/File:Berlin_07-2011_(ubt-32).JPG",
+    "artist": "Tomasz Sienicki [user: tsca, mail: tomasz.sienicki at gmail.com]",
+    "license": "CC BY 3.0",
+    "licenseURL": "https://creativecommons.org/licenses/by/3.0"
+   }
+  },
+  "wrangelbrunnen": {
+   "title": "Wrangelbrunnen",
+   "language": "de",
+   "url": "https://de.wikipedia.org/wiki/Wrangelbrunnen",
+   "text": "Der Wrangelbrunnen ist eine Brunnenanlage in Berlin-Kreuzberg im Graefekiez. Er wurde von dem Berliner Bildhauer Hugo Hagen geschaffen und nach dem preußischen Generalfeldmarschall Friedrich von Wrangel benannt. Der ursprüngliche Standort des Brunnens war der Kemperplatz in Berlin-Tiergarten, wo er am 22. März 1877 eingeweiht wurde. 25 Jahre später wurde er an seinen jetzigen Standort (Grimmstraße / Urbanstraße) versetzt, da an seinem alten Standort der Rolandbrunnen aufgestellt werden sollte.",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Wrangelbrunnen-Mutter_Erde_fec.jpg/960px-Wrangelbrunnen-Mutter_Erde_fec.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "page": "https://commons.wikimedia.org/wiki/File:Wrangelbrunnen-Mutter_Erde_fec.jpg",
+    "artist": "Mutter Erde",
+    "license": "Attribution",
+    "licenseURL": null
+   }
+  },
+  "spindlerbrunnen": {
+   "title": "Spindlerbrunnen",
+   "language": "de",
+   "url": "https://de.wikipedia.org/wiki/Spindlerbrunnen",
+   "text": "Der Spindlerbrunnen ist eine Brunnenanlage auf dem Spittelmarkt in Berlin-Mitte. Er entstand Ende des 19. Jahrhunderts und wechselte im Laufe der Jahre mehrfach seinen Standort.",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/26/Berlin-Mitte_Spindlerbrunnen_am_Spittelmarkt.jpg/960px-Berlin-Mitte_Spindlerbrunnen_am_Spittelmarkt.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "page": "https://commons.wikimedia.org/wiki/File:Berlin-Mitte_Spindlerbrunnen_am_Spittelmarkt.jpg",
+    "artist": "Assenmacher",
+    "license": "CC BY-SA 3.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+   }
+  },
+  "stierbrunnen": {
+   "title": "Arnswalder Platz",
+   "language": "de",
+   "url": "https://de.wikipedia.org/wiki/Arnswalder_Platz",
+   "text": "Der Arnswalder Platz ist eine denkmalgeschützte, rechteckige Parkanlage im Berliner Bezirk Pankow, Ortsteil Prenzlauer Berg, im Bötzowviertel. Er beherbergt den Brunnen der Fruchtbarkeit (besser bekannt als Stierbrunnen), Spielplätze und ein kleines Areal mit altem Baumbestand.",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cf/Arnswalder_Platz_gesamt.jpg/960px-Arnswalder_Platz_gesamt.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "page": "https://commons.wikimedia.org/wiki/File:Arnswalder_Platz_gesamt.jpg",
+    "artist": "Angela Monika Arnold",
+    "license": "CC BY-SA 2.0 de",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/2.0/de/deed.en"
+   }
+  },
+  "weltkugelbrunnen": {
+   "title": "Weltkugelbrunnen",
+   "language": "en",
+   "url": "https://en.wikipedia.org/wiki/Weltkugelbrunnen",
+   "text": "The Weltkugelbrunnen (English: World Fountain) is a water feature in front of the Europa-Center in Breitscheidplatz, Berlin.",
+   "image": {
+    "url": "https://upload.wikimedia.org/wikipedia/commons/c/c2/Joachim_Schmettau%2C_Erdkugelbrunnen_aka_Weltkugelbrunnen.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "page": "https://commons.wikimedia.org/wiki/File:Joachim_Schmettau,_Erdkugelbrunnen_aka_Weltkugelbrunnen.jpg",
+    "artist": "Dieter Brügmann",
+    "license": "CC BY-SA 3.0",
+    "licenseURL": "http://creativecommons.org/licenses/by-sa/3.0/"
+   }
+  },
+  "hackescher-markt": {
+   "title": "Hackescher Markt",
+   "language": "en",
+   "url": "https://en.wikipedia.org/wiki/Hackescher_Markt",
+   "text": "Hackescher Markt (\"Hacke's Market\") is a square in the central Mitte locality of Berlin, Germany, situated at the eastern end of Oranienburger Strasse. It is an important transport hub and a starting point for the city's nightlife.",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Rosenberg_Hackescher_Markt_02_1780.jpg/960px-Rosenberg_Hackescher_Markt_02_1780.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "page": "https://commons.wikimedia.org/wiki/File:Rosenberg_Hackescher_Markt_02_1780.jpg",
+    "artist": "Johann Georg Rosenberg",
+    "license": "Public domain",
+    "licenseURL": null
+   }
+  },
+  "markthalle-neun": {
+   "title": "Markthalle IX",
+   "language": "de",
+   "url": "https://de.wikipedia.org/wiki/Markthalle_IX",
+   "text": "Die Markthalle IX, auch Eisenbahnmarkthalle genannt, ist eine von ehemals 14 städtischen Markthallen in Berlin, die Ende des 19. Jahrhunderts in den damaligen Bezirken Berlins errichtet wurden. Sie ersetzten die offenen Märkte auf verschiedenen städtischen Plätzen und garantierten bessere hygienische Bedingungen sowie die effiziente Versorgung der wachsenden Bevölkerung. Die Markthalle IX im Ortsteil Kreuzberg wurde 1891 eröffnet. Nach wirtschaftlichen Aufwärts- und Abwärtsentwicklungen im 20. Jahrhundert wurde sie stetig weiter benutzt. In den 1990er Jahren übernahmen große Lebensmitteldiscounter immer mehr zusammenhängende Verkaufsflächen, das gesamte denkmalgeschützte Gebäude verkam jedoch. Seit Oktober 2011 gibt es drei private Betreiber, die ein Konzept des kleinteiligen Angebotes in der Halle durchführen. Seit 2014 wurde in der Markthalle IX alle zwei Jahre das Festival Stadt, Land, Food veranstaltet, das inzwischen eingestellt wurde.",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/Berlin%2C_Kreuzberg%2C_Eisenbahnstrasse_42-43%2C_Markthalle_IX.jpg/960px-Berlin%2C_Kreuzberg%2C_Eisenbahnstrasse_42-43%2C_Markthalle_IX.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "page": "https://commons.wikimedia.org/wiki/File:Berlin,_Kreuzberg,_Eisenbahnstrasse_42-43,_Markthalle_IX.jpg",
+    "artist": "Jörg Zägel",
+    "license": "CC BY-SA 3.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+   }
+  },
+  "arminiusmarkthalle": {
+   "title": "Moabiter Markthalle",
+   "language": "de",
+   "url": "https://de.wikipedia.org/wiki/Moabiter_Markthalle",
+   "text": "Die Moabiter Markthalle (auch: Arminiusmarkthalle), als Markthalle X 1891 eröffnet, wurde nach den Plänen des Architekten Hermann Blankenstein innerhalb von nur einem Jahr errichtet. Der Haupteingang der Markthalle befindet sich an der Arminiusstraße im Berliner Ortsteil Moabit. Umgeben wird das Gebäude von der Bremer Straße (westlich), der Bugenhagenstraße (nördlich) und der Jonasstraße (östlich).",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/Berlin_Moabit_market_hall.jpg/960px-Berlin_Moabit_market_hall.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "page": "https://commons.wikimedia.org/wiki/File:Berlin_Moabit_market_hall.jpg",
+    "artist": "Doris Antony, Berlin",
+    "license": "CC BY-SA 3.0",
+    "licenseURL": "http://creativecommons.org/licenses/by-sa/3.0/"
+   }
+  },
+  "ackerhalle": {
+   "title": "Ackerhalle",
+   "language": "de",
+   "url": "https://de.wikipedia.org/wiki/Ackerhalle",
+   "text": "Die Ackerhalle, historische Bezeichnung Markthalle VI, im Berliner Ortsteil Mitte ist eine von 14 Markthallen, die der Berliner Magistrat zwischen 1886 und 1892 für den Einzelhandel errichten ließ und von denen heute nur noch sechs erhalten sind. Sie befindet sich in der Ackerstraße 23–26, Ecke Invalidenstraße 158 in der Oranienburger Vorstadt.",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Berlin%2C_Mitte%2C_Invalidenstrasse_158%2C_Markthalle_VI%2C_Ackerhalle.jpg/960px-Berlin%2C_Mitte%2C_Invalidenstrasse_158%2C_Markthalle_VI%2C_Ackerhalle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "page": "https://commons.wikimedia.org/wiki/File:Berlin,_Mitte,_Invalidenstrasse_158,_Markthalle_VI,_Ackerhalle.jpg",
+    "artist": "Jörg Zägel",
+    "license": "CC BY-SA 3.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+   }
+  },
+  "winterfeldtplatz": {
+   "title": "Winterfeldtplatz",
+   "language": "de",
+   "url": "https://de.wikipedia.org/wiki/Winterfeldtplatz",
+   "text": "Der Winterfeldtplatz liegt im Berliner Ortsteil Schöneberg des Bezirks Tempelhof-Schöneberg. Der in Nord-Süd-Richtung ausgerichtete Platz ist rund 280 Meter lang und 80 Meter breit. Auf seinem südlichen Ende steht die katholische Kirche St. Matthias. Auf dem 1893 nach dem preußischen General Hans Karl von Winterfeldt benannten Areal findet jeden Mittwoch und Samstag der größte Wochenmarkt Berlins statt.\n\nRund 200 Meter weiter nördlich liegt der Nollendorfplatz mit dem gleichnamigen U-Bahnhof. Von dort geht die Straßenachse weiter über den Lützowplatz bis hin zum Großen Stern mit der Siegessäule im Tiergarten.",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Winterfeldtplatz_20160504_10.jpg/960px-Winterfeldtplatz_20160504_10.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "page": "https://commons.wikimedia.org/wiki/File:Winterfeldtplatz_20160504_10.jpg",
+    "artist": "Sebastian Rittau",
+    "license": "CC BY 4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by/4.0"
+   }
+  },
+  "bundesrat": {
+   "title": "Prussian House of Lords",
+   "language": "en",
+   "url": "https://en.wikipedia.org/wiki/Prussian_House_of_Lords",
+   "text": "The Prussian House of Lords (German: Preußisches Herrenhaus) in Berlin was the upper house of the Landtag of Prussia (German: Preußischer Landtag), the parliament of Prussia from 1850 to 1918. Together with the lower house, the House of Representatives (German: Abgeordnetenhaus), it formed the Prussian bicameral legislature. The building is now used as the seat of the German Bundesrat at Leipziger Straße.",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/03/Berlin_Herrenhaus_1900.jpg/960px-Berlin_Herrenhaus_1900.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "page": "https://commons.wikimedia.org/wiki/File:Berlin_Herrenhaus_1900.jpg",
+    "artist": "Unknown authorUnknown author",
+    "license": "Public domain",
+    "licenseURL": null
+   }
+  },
+  "abgeordnetenhaus": {
+   "title": "Berlin House of Representatives",
+   "language": "en",
+   "url": "https://en.wikipedia.org/wiki/Berlin_House_of_Representatives",
+   "text": "The Berlin House of Representatives (German: Abgeordnetenhaus is the state parliament (Landtag) of Berlin, Germany according to the city-state's constitution. In 1993, the parliament moved from Rathaus Schöneberg to its present house on Niederkirchnerstraße in Mitte, which from 1899 until 1934 was the seat of the Prussian House of Representatives. The current president of the parliament is Cornelia Seibeld (CDU).",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/Abgeordnetenhaus.jpg/960px-Abgeordnetenhaus.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "page": "https://commons.wikimedia.org/wiki/File:Abgeordnetenhaus.jpg",
+    "artist": "Abghs",
+    "license": "CC BY-SA 4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+   }
+  },
+  "detlev-rohwedder-haus": {
+   "title": "Detlev-Rohwedder-Haus",
+   "language": "en",
+   "url": "https://en.wikipedia.org/wiki/Detlev-Rohwedder-Haus",
+   "text": "The Detlev-Rohwedder-Haus (Detlev Rohwedder House) is a building in Berlin that, at the time of its construction, was the largest office building in Europe. It was constructed between February 1935 and August 1936 to house the German Ministry of Aviation (German: Reichsluftfahrtministerium - RLM), headed by Hermann Göring.\n\nDuring the German Democratic Republic (East Germany) it was known as the Haus der Ministerien (\"House of Ministries\"). In 1992, it was named the Detlev Rohwedder Building, in honour of Detlev Karsten Rohwedder, the former President of the Treuhand, which had its headquarters there 1991–1995, who was assassinated by far-left terrorist group Red Army Faction in 1991. Since 1999, the building has been the seat of the German Finance Ministry.",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/67/Berlin_Finanzministerium_Wilhelmstr_asv2019-07.jpg/960px-Berlin_Finanzministerium_Wilhelmstr_asv2019-07.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "page": "https://commons.wikimedia.org/wiki/File:Berlin_Finanzministerium_Wilhelmstr_asv2019-07.jpg",
+    "artist": "A.Savin",
+    "license": "FAL",
+    "licenseURL": "http://artlibre.org/licence/lal/en"
+   }
+  },
+  "rathaus-charlottenburg": {
+   "title": "Charlottenburg Town Hall",
+   "language": "en",
+   "url": "https://en.wikipedia.org/wiki/Charlottenburg_Town_Hall",
+   "text": "Charlottenburg Town Hall (German: Rathaus Charlottenburg) is an administrative building situated in the Charlottenburg locality of Berlin in Germany. It was built between 1899 and 1905 at the behest of the then independent city of Charlottenburg in the Prussian province of Brandenburg.",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/Rathaus_Charlottenburg_Berlin_Otto-Suhr-Allee_07-2015.jpg/960px-Rathaus_Charlottenburg_Berlin_Otto-Suhr-Allee_07-2015.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "page": "https://commons.wikimedia.org/wiki/File:Rathaus_Charlottenburg_Berlin_Otto-Suhr-Allee_07-2015.jpg",
+    "artist": "A.Savin",
+    "license": "CC BY-SA 3.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+   }
+  },
+  "rathaus-spandau": {
+   "title": "Rathaus Spandau",
+   "language": "en",
+   "url": "https://en.wikipedia.org/wiki/Rathaus_Spandau",
+   "text": "The Rathaus Spandau is the town hall of the borough of Spandau in the western suburbs of Berlin, Germany. It was designed by Heinrich Reinhardt and Georg Süßenguth, and was built between 1910 and 1913. Until 1920, when Spandau was incorporated into Greater Berlin, it was the city hall of the independent city of Spandau.\n\nThe Rathaus Spandau is situated on Carl-Schurz-Straße at the southern edge of the Altstadt Spandau. The Rathaus Spandau station, on U-Bahn line U7, and the Berlin-Spandau station, served by S-Bahn, regional and intercity railway routes, are both situated nearby.",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/27/Rathaus_B-Spandau_07-2017.jpg/960px-Rathaus_B-Spandau_07-2017.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "page": "https://commons.wikimedia.org/wiki/File:Rathaus_B-Spandau_07-2017.jpg",
+    "artist": "A.Savin",
+    "license": "FAL",
+    "licenseURL": "http://artlibre.org/licence/lal/en"
+   }
+  },
+  "glienicker-bruecke": {
+   "title": "Glienicke Bridge",
+   "language": "en",
+   "url": "https://en.wikipedia.org/wiki/Glienicke_Bridge",
+   "text": "The Glienicke Bridge (German: Glienicker Brücke, ) is a bridge across the Havel River in Germany, connecting the Wannsee district of Berlin with the Brandenburg capital, Potsdam. It is named after nearby Glienicke Palace. The current bridge, the fourth on the site, was completed in 1907, although major reconstruction was necessary after it was damaged during World War II.\n\nDuring the Cold War, this portion of the Havel River formed the border between West Berlin and East Germany. The bridge was thus a crossing of the inner German border and was therefore used several times for the exchange of captured spies, becoming known as the Bridge of Spies.",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/48/Glienicker_Br%C3%BCcke.JPG/960px-Glienicker_Br%C3%BCcke.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "page": "https://commons.wikimedia.org/wiki/File:Glienicker_Br%C3%BCcke.JPG",
+    "artist": "Uwca at German Wikipedia",
+    "license": "Public domain",
+    "licenseURL": null
    }
   }
  }

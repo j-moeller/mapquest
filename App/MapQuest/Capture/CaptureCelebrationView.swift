@@ -24,7 +24,7 @@ struct CaptureCelebrationView: View {
     @State private var spin = false
     @State private var finished = false
 
-    private static let duration: Double = 4.5
+    private static let baseDuration: Double = 4.5
     private static let sparks = 22
 
     var body: some View {
@@ -85,6 +85,10 @@ struct CaptureCelebrationView: View {
                     .padding(.horizontal, 12)
                     .padding(.vertical, 6)
                     .background(Color.orange.opacity(0.85), in: Capsule())
+                if !celebration.achievements.isEmpty {
+                    achievementBanner
+                        .scaleEffect(appeared ? 1 : 0.6)
+                }
                 buttons
                     .padding(.top, 6)
                 Text("Tap anywhere to continue")
@@ -107,11 +111,37 @@ struct CaptureCelebrationView: View {
                 withAnimation(.easeOut(duration: 1.3).delay(0.15)) { burst = true }
                 withAnimation(.linear(duration: 12).repeatForever(autoreverses: false)) { spin = true }
             }
-            try? await Task.sleep(nanoseconds: UInt64(Self.duration * 1_000_000_000))
+            try? await Task.sleep(nanoseconds: UInt64(duration * 1_000_000_000))
             // Gone already (tapped away, or replaced): nothing more to finish.
             guard !Task.isCancelled else { return }
             finish()
         }
+    }
+
+    /// Longer when achievements were unlocked, to read them.
+    private var duration: Double { celebration.achievements.isEmpty ? Self.baseDuration : Self.baseDuration + 2 }
+
+    /// The achievements these captures completed (three at most, then how many more).
+    private var achievementBanner: some View {
+        VStack(spacing: 6) {
+            Text(celebration.achievements.count == 1 ? "ACHIEVEMENT UNLOCKED" : "ACHIEVEMENTS UNLOCKED")
+                .font(.caption.weight(.heavy))
+                .foregroundStyle(Color.captureGold)
+            ForEach(celebration.achievements.prefix(3), id: \.id) { achievement in
+                Label(achievement.title, systemImage: AchievementMedal.symbol(achievement.symbol))
+                    .font(.subheadline.weight(.bold))
+                    .foregroundStyle(.black)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 5)
+                    .background(Color.captureGold, in: Capsule())
+            }
+            if celebration.achievements.count > 3 {
+                Text("and \(celebration.achievements.count - 3) more")
+                    .font(.caption)
+                    .foregroundStyle(.white.opacity(0.8))
+            }
+        }
+        .accessibilityElement(children: .combine)
     }
 
     @ViewBuilder

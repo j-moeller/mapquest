@@ -1,3 +1,4 @@
+import CoreLocation
 import Foundation
 import MapQuestCore
 import SwiftUI
@@ -7,12 +8,14 @@ import SwiftUI
 /// It only reads the discovered area of the selected data source and keeps its
 /// own log per data source (`FileCaptureStore`), separate from the data stores.
 
-/// What the capture animation shows: one sight, or several at once.
+/// What the capture animation shows: one sight, or several at once, and the
+/// achievements these captures complete.
 struct Celebration: Identifiable, Equatable {
     let id = UUID()
     let sights: [Sight]
     let capturedCount: Int
     let totalCount: Int
+    var achievements: [Achievement] = []
 }
 
 /// A request to show a sight on the 2D map.
@@ -37,6 +40,8 @@ final class CaptureModel: ObservableObject {
     let infos: SightInfoCatalog
     /// The sights' historical facts (unlocked with their entries).
     let histories: SightHistoryCatalog
+    /// The achievements of the bundled cities, resolved against their sights.
+    let achievements: AchievementBook
     /// Sights in cities with photorealistic 3D buildings (Apple Maps): their entries show them.
     let photorealistic3D: Set<String>
     @Published private(set) var log = CaptureLog()
@@ -66,9 +71,13 @@ final class CaptureModel: ObservableObject {
     }
 
     init(bundle: Bundle = .main) {
-        catalog = Self.loadCatalog(bundle)
+        // Locals: `self` cannot be read before all its properties are set.
+        let catalog = Self.loadCatalog(bundle)
+        let histories = Self.loadHistories(bundle)
+        self.catalog = catalog
         infos = Self.loadInfos(bundle)
-        histories = Self.loadHistories(bundle)
+        self.histories = histories
+        achievements = AchievementBook(achievements: Self.loadAchievements(bundle), catalog: catalog, histories: histories)
         photorealistic3D = Set(Cities.all.filter(\.hasPhotorealistic3D).flatMap { city in
             Self.loadCatalog(bundle, cities: [city]).sights.map(\.id)
         })
@@ -90,6 +99,15 @@ final class CaptureModel: ObservableObject {
                   let data = try? Data(contentsOf: url) else { return nil }
             return try? SightHistoryCatalog.decode(data)
         })
+    }
+
+    /// The achievements of all bundled cities (`<city>-achievements.json`).
+    static func loadAchievements(_ bundle: Bundle) -> [Achievement] {
+        Cities.all.flatMap { city -> [Achievement] in
+            guard let url = bundle.url(forResource: "\(city.id)-achievements", withExtension: "json"),
+                  let data = try? Data(contentsOf: url) else { return [] }
+            return (try? Achievement.decodeList(data)) ?? []
+        }
     }
 
     /// The sight lists of the bundled cities (`<city>-sights.json`).
@@ -188,7 +206,12 @@ final class CaptureModel: ObservableObject {
             persist()
             return
         }
-        celebration = Celebration(sights: sights, capturedCount: log.records.count, totalCount: catalog.count)
+        // Achievements completed by these captures: complete with them and every capture
+        // celebrated before, not without them (later captures are celebrated later).
+        let ids = sights.map(\.id)
+        let celebrated = Set(log.records.values.filter(\.celebrated).map(\.sightID)).union(ids)
+        celebration = Celebration(sights: sights, capturedCount: log.records.count, totalCount: catalog.count,
+                                  achievements: achievements.unlocked(by: ids, captured: celebrated))
     }
 
     /// The animation ended or was tapped away.
@@ -206,6 +229,27 @@ final class CaptureModel: ObservableObject {
     // MARK: Views
 
     var capturedCount: Int { log.records.count }
+
+    /// Progress of every achievement.
+    var achievementProgress: [AchievementProgress] { achievements.progress(log) }
+
+    /// Progress of the achievements a sight counts towards (milestones aside).
+    func achievementProgress(containing sight: Sight) -> [AchievementProgress] {
+        achievements.entries
+            .filter { !$0.achievement.rule.isMilestone && $0.members.contains(sight.id) }
+            .map { achievements.progress(of: $0, records: log.records) }
+    }
+
+    /// The sight to go for next in an achievement: the nearest one not captured yet
+    /// (without a position, the first in its list).
+    func nextSight(in progress: AchievementProgress, from location: CLLocation?) -> Sight? {
+        let open = progress.members.filter { !progress.captured.contains($0) }.compactMap { catalog[$0] }
+        guard let location else { return open.first }
+        return open.min { a, b in
+            location.distance(from: CLLocation(latitude: a.latitude, longitude: a.longitude))
+                < location.distance(from: CLLocation(latitude: b.latitude, longitude: b.longitude))
+        }
+    }
 
     /// Pins for the maps: captured sights, and the others too when `showingAll`.
     func pins(showingAll: Bool) -> [SightPin] {
@@ -273,6 +317,9 @@ extension SightCategory {
         case .zoo: return "pawprint.fill"
         case .bridge: return "water.waves"
         case .stadium: return "sportscourt.fill"
+        case .fountain: return "drop.fill"
+        case .market: return "basket.fill"
+        case .government: return "building.2.fill"
         }
     }
 
@@ -291,6 +338,9 @@ extension SightCategory {
         case .zoo: return "Zoo"
         case .bridge: return "Bridge"
         case .stadium: return "Stadium"
+        case .fountain: return "Fountain"
+        case .market: return "Market"
+        case .government: return "Seat of government"
         }
     }
 }

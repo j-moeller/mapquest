@@ -5,15 +5,16 @@ import SwiftUI
 /// All sights in one list – captured ones in orange, the others in grey – either
 /// nearest first (when the position is known) or through time: by the year they
 /// were built, in Berlin's eras. Tapping one opens its entry (locked until
-/// captured), which can show it on the map.
+/// captured), which can show it on the map. The third tab lists the achievements.
 struct CaptureListView: View {
     enum Order: String, CaseIterable, Identifiable {
-        case nearby, timeline
+        case nearby, timeline, achievements
         var id: String { rawValue }
         var title: String {
             switch self {
             case .nearby: return "Nearby"
             case .timeline: return "Through time"
+            case .achievements: return "Achievements"
             }
         }
     }
@@ -37,6 +38,12 @@ struct CaptureListView: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("\(captures.capturedCount) of \(captures.catalog.count) sights captured")
                             .font(.headline)
+                        if order == .achievements {
+                            let progress = captures.achievementProgress
+                            Text("\(progress.filter(\.isComplete).count) of \(progress.count) achievements")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
                         ProgressView(value: Double(captures.capturedCount), total: Double(max(captures.catalog.count, 1)))
                             .tint(.orange)
                         Picker("Order", selection: $order) {
@@ -49,9 +56,7 @@ struct CaptureListView: View {
                     }
                     .padding(.vertical, 4)
                 } footer: {
-                    Text(order == .nearby
-                         ? "A sight is captured once you have been there: when the circles of the radius view cover it (large parks and squares: when they reach into them). Seeing it from a distance does not count."
-                         : "Berlin's history in its sights, by the year they were built. Capture a sight to learn who built it, who ruled at the time, and its story.")
+                    Text(footer)
                 }
                 switch order {
                 case .nearby:
@@ -60,6 +65,8 @@ struct CaptureListView: View {
                             row(sight, record: captures.log.records[sight.id])
                         }
                     }
+                case .achievements:
+                    AchievementSections()
                 case .timeline:
                     ForEach(timeline) { group in
                         Section {
@@ -79,6 +86,17 @@ struct CaptureListView: View {
                     Button("Done") { dismiss() }
                 }
             }
+        }
+    }
+
+    private var footer: String {
+        switch order {
+        case .nearby:
+            return "A sight is captured once you have been there: when the circles of the radius view cover it (large parks and squares: when they reach into them). Seeing it from a distance does not count."
+        case .timeline:
+            return "Berlin's history in its sights, by the year they were built. Capture a sight to learn who built it, who ruled at the time, and its story."
+        case .achievements:
+            return "Complete collections, eras, districts and the works of Berlin's great architects by capturing their sights. Each sight's entry shows what it counts towards."
         }
     }
 

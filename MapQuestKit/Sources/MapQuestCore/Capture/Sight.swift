@@ -3,6 +3,7 @@ import Foundation
 /// What kind of place a sight is (icons and grouping).
 public enum SightCategory: String, Codable, CaseIterable, Sendable {
     case landmark, museum, palace, church, viewpoint, memorial, park, square, culture, monument, zoo, bridge, stadium
+    case fountain, market, government
 
     /// Unknown categories (newer data) count as landmarks.
     public init(from decoder: Decoder) throws {
@@ -22,14 +23,18 @@ public struct Sight: Codable, Hashable, Identifiable, Sendable {
     public var longitude: Double
     /// The extent of the sight around its position, in metres (larger for open areas).
     public var radius: Double
+    /// The city district it lies in (e.g. "Friedrichshain-Kreuzberg"), if known.
+    public var district: String?
 
-    public init(id: String, name: String, category: SightCategory, latitude: Double, longitude: Double, radius: Double = 40) {
+    public init(id: String, name: String, category: SightCategory, latitude: Double, longitude: Double, radius: Double = 40,
+                district: String? = nil) {
         self.id = id
         self.name = name
         self.category = category
         self.latitude = latitude
         self.longitude = longitude
         self.radius = radius
+        self.district = district
     }
 
     /// How close the discovered area (circles of 50 m around positions) must come to
@@ -56,7 +61,7 @@ public struct SightCatalog: Sendable {
         self.index = index
     }
 
-    /// Reads a sight list: `{"source": …, "sights": [{id, name, category, latitude, longitude, radius}]}`.
+    /// Reads a sight list: `{"source": …, "sights": [{id, name, category, latitude, longitude, radius, district}]}`.
     public static func decode(_ data: Data) throws -> SightCatalog {
         struct Document: Decodable { var sights: [Sight] }
         return SightCatalog(sights: try JSONDecoder().decode(Document.self, from: data).sights)

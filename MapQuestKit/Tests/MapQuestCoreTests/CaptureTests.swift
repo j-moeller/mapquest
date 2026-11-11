@@ -31,10 +31,14 @@ final class CaptureTests: XCTestCase {
 
     func testBundledBerlinSights() throws {
         let catalog = try Self.berlinSights()
-        XCTAssertEqual(catalog.count, 119)
+        XCTAssertEqual(catalog.count, 135)
         let berlin = try GeoJSON.playArea(named: "Berlin", from: Data(contentsOf: BraunschweigDataTests.root.appendingPathComponent("Berlin/berlin-boundary.geojson")))
+        let districts = try GeoJSON.polygonFeatures(from: Data(contentsOf: BraunschweigDataTests.root.appendingPathComponent("Berlin/berlin-districts.geojson")))
+            .map { PlayArea(name: $0.properties["name"] ?? "", polygons: $0.polygons) }
         for sight in catalog.sights {
             XCTAssertTrue(berlin.contains(sight.coordinate), "\(sight.name) lies in Berlin")
+            let district = try XCTUnwrap(districts.first { $0.name == sight.district }, "\(sight.name) has a district")
+            XCTAssertTrue(district.contains(sight.coordinate), "\(sight.name) lies in \(district.name)")
             XCTAssertTrue((30...150).contains(sight.radius), sight.name)
             XCTAssertFalse(sight.name.isEmpty)
         }
@@ -43,6 +47,10 @@ final class CaptureTests: XCTestCase {
         XCTAssertEqual(gate.latitude, 52.5163, accuracy: 0.001)
         XCTAssertEqual(gate.longitude, 13.3777, accuracy: 0.001)
         XCTAssertEqual(Set(catalog.sights.map(\.category)).count, SightCategory.allCases.count, "every category is used")
+        XCTAssertEqual(Set(catalog.sights.compactMap(\.district)).count, 12, "sights in every district")
+        XCTAssertEqual(catalog["neptunbrunnen"]?.category, .fountain)
+        XCTAssertEqual(catalog["reichstag"]?.category, .government)
+        XCTAssertEqual(catalog["markthalle-neun"]?.district, "Friedrichshain-Kreuzberg")
     }
 
     func testCaptureRule() throws {
@@ -293,5 +301,119 @@ final class SightHistoryTests: XCTestCase {
         let merged = SightHistoryCatalog.merged([catalog, SightHistoryCatalog(entries: ["a": SightHistory(year: 2000), "c": SightHistory()])])
         XCTAssertEqual(merged["a"]?.year, 1900, "the first catalog wins")
         XCTAssertNotNil(merged["c"])
+    }
+}
+
+final class AchievementTests: XCTestCase {
+    static func berlinBook() throws -> (AchievementBook, [Achievement], SightCatalog) {
+        let root = BraunschweigDataTests.root.appendingPathComponent("Berlin")
+        let catalog = try CaptureTests.berlinSights()
+        let histories = try SightHistoryCatalog.decode(Data(contentsOf: root.appendingPathComponent("berlin-sight-history.json")))
+        let achievements = try Achievement.decodeList(Data(contentsOf: root.appendingPathComponent("berlin-achievements.json")))
+        return (AchievementBook(achievements: achievements, catalog: catalog, histories: histories), achievements, catalog)
+    }
+
+    func testBundledBerlinAchievements() throws {
+        let (book, achievements, catalog) = try Self.berlinBook()
+        XCTAssertEqual(Set(achievements.map(\.id)).count, achievements.count, "unique IDs")
+        XCTAssertEqual(book.skipped, [], "every achievement picks at least two sights")
+        XCTAssertEqual(book.entries.count, achievements.count)
+        XCTAssertGreaterThanOrEqual(achievements.count, 60)
+        for entry in book.entries {
+            let achievement = entry.achievement
+            XCTAssertFalse(achievement.title.isEmpty, achievement.id)
+            XCTAssertGreaterThan(achievement.description.count, 30, achievement.id)
+            XCTAssertFalse(achievement.symbol.isEmpty, achievement.id)
+            for id in entry.members { XCTAssertNotNil(catalog[id], "\(achievement.id): \(id) is a sight") }
+            for id in (achievement.rule.sights ?? []) + (achievement.rule.include ?? []) {
+                XCTAssertNotNil(catalog[id], "\(achievement.id) lists \(id)")
+            }
+        }
+        func members(_ id: String) throws -> Set<String> { Set(try XCTUnwrap(book[id], id).members) }
+
+        // The sights every era, district or milestone covers: each sight is in exactly one era and one district.
+        for group in [AchievementGroup.eras, .districts] {
+            let entries = book.entries.filter { $0.achievement.group == group }
+            XCTAssertEqual(entries.reduce(0) { $0 + $1.members.count }, catalog.count, "\(group): each sight once")
+            XCTAssertEqual(Set(entries.flatMap(\.members)).count, catalog.count, "\(group): all sights")
+        }
+        XCTAssertEqual(book.entries.filter { $0.achievement.group == .districts }.count, 12)
+
+        XCTAssertEqual(try members("architect-schinkel"), ["altes-museum", "konzerthaus", "neue-wache", "kreuzbergdenkmal", "schloss-glienicke", "schloss-tegel"])
+        XCTAssertEqual(try members("fountains").count, 7)
+        XCTAssertEqual(try members("markets"), ["hackescher-markt", "markthalle-neun", "arminiusmarkthalle", "ackerhalle", "winterfeldtplatz", "gendarmenmarkt"])
+        XCTAssertEqual(try members("churches").count, 11)
+        XCTAssertEqual(try members("architect-blankenstein"), ["nikolaikirche", "markthalle-neun", "arminiusmarkthalle", "ackerhalle"],
+                       "names match without their notes (towers, 1878)")
+        XCTAssertTrue(try members("old-fritz").isSuperset(of: ["staatsoper", "hedwigs-kathedrale", "franzoesischer-dom"]))
+        XCTAssertEqual(try members("era-margraviate"), ["nikolaikirche", "marienkirche", "nikolaikirche-spandau"])
+        XCTAssertTrue(try members("era-east").contains("fernsehturm"))
+        XCTAssertTrue(try members("era-west").contains("philharmonie"))
+        XCTAssertEqual(try members("district-spandau"), ["zitadelle", "nikolaikirche-spandau", "rathaus-spandau"])
+        XCTAssertTrue(try members("style-brick").isSuperset(of: ["marienkirche", "oberbaumbruecke"]), "Brick Gothic and its revival")
+        let all = try XCTUnwrap(book["all-sights"])
+        XCTAssertEqual(all.target, catalog.count)
+        XCTAssertEqual(book["captures-10"]?.target, 10)
+        XCTAssertEqual(book["era-margraviate"]?.members.first, "nikolaikirche", "oldest first")
+    }
+
+    func testProgressAndUnlocks() throws {
+        let sights = [
+            Sight(id: "a", name: "A", category: .church, latitude: 52.52, longitude: 13.40, district: "X"),
+            Sight(id: "b", name: "B", category: .church, latitude: 52.53, longitude: 13.41, district: "Y"),
+            Sight(id: "c", name: "C", category: .fountain, latitude: 52.54, longitude: 13.42, district: "X"),
+        ]
+        let catalog = SightCatalog(sights: sights)
+        let histories = SightHistoryCatalog(entries: [
+            "a": SightHistory(year: 1788, architects: ["Carl Gotthard Langhans"]),
+            "b": SightHistory(year: 1250, architects: ["Carl Gotthard Langhans (spire, 1790)"]),
+            "c": SightHistory(year: 1900),
+        ])
+        let achievements = [
+            Achievement(id: "churches", group: .collections, title: "Churches", description: "", symbol: "bell", rule: AchievementRule(categories: [.church])),
+            Achievement(id: "x", group: .districts, title: "X", description: "", symbol: "map", rule: AchievementRule(district: "X")),
+            Achievement(id: "langhans", group: .architects, title: "L", description: "", symbol: "p", rule: AchievementRule(architect: "Carl Gotthard Langhans")),
+            Achievement(id: "listed", group: .stories, title: "S", description: "", symbol: "s", rule: AchievementRule(sights: ["c", "a"], exclude: ["a"])),
+            Achievement(id: "two", group: .milestones, title: "2", description: "", symbol: "2", rule: AchievementRule(count: 2)),
+            Achievement(id: "many", group: .milestones, title: "9", description: "", symbol: "9", rule: AchievementRule(count: 9)),
+            Achievement(id: "all", group: .milestones, title: "All", description: "", symbol: "a", rule: AchievementRule(all: true)),
+            Achievement(id: "churches", group: .collections, title: "Duplicate", description: "", symbol: "d", rule: AchievementRule(categories: [.fountain])),
+        ]
+        let book = AchievementBook(achievements: achievements, catalog: catalog, histories: histories)
+        XCTAssertEqual(book.skipped, ["listed"], "one sight left: too few")
+        XCTAssertEqual(book.entries.map(\.achievement.id), ["churches", "x", "langhans", "two", "many", "all"], "the first of a duplicate ID wins")
+        XCTAssertEqual(book["churches"]?.members, ["b", "a"], "oldest first")
+        XCTAssertEqual(book["langhans"]?.members, ["b", "a"])
+        XCTAssertEqual(book["many"]?.target, 3, "at most all sights")
+
+        var log = CaptureLog()
+        let t1 = Date(timeIntervalSince1970: 1_000), t2 = Date(timeIntervalSince1970: 2_000), t3 = Date(timeIntervalSince1970: 3_000)
+        log.records["a"] = CaptureRecord(sightID: "a", capturedAt: t2, recordedAt: t2, celebrated: true)
+        var progress = Dictionary(uniqueKeysWithValues: book.progress(log).map { ($0.id, $0) })
+        XCTAssertEqual(progress["churches"]?.count, 1)
+        XCTAssertEqual(progress["churches"]?.remaining, 1)
+        XCTAssertEqual(progress["churches"]?.fraction, 0.5)
+        XCTAssertFalse(progress["churches"]?.isComplete ?? true)
+        XCTAssertNil(progress["churches"]?.completedAt)
+
+        log.records["b"] = CaptureRecord(sightID: "b", capturedAt: t1, recordedAt: t3, celebrated: false)
+        progress = Dictionary(uniqueKeysWithValues: book.progress(log).map { ($0.id, $0) })
+        XCTAssertTrue(progress["churches"]?.isComplete ?? false)
+        XCTAssertEqual(progress["churches"]?.completedAt, t2, "the later of the two captures completed it")
+        XCTAssertEqual(progress["two"]?.completedAt, t2)
+        XCTAssertFalse(progress["x"]?.isComplete ?? true)
+
+        // Capturing b completes the churches, Langhans and two captures – not X (c is missing).
+        XCTAssertEqual(book.unlocked(by: ["b"], captured: ["a", "b"]).map(\.id), ["churches", "langhans", "two"])
+        XCTAssertEqual(book.unlocked(by: ["c"], captured: ["a", "b", "c"]).map(\.id), ["x", "many", "all"])
+        XCTAssertEqual(book.unlocked(by: ["a"], captured: ["a"]).map(\.id), [], "nothing complete with one sight")
+        XCTAssertEqual(book.completed(captured: ["a", "b", "c"]).count, 6)
+    }
+
+    func testRuleNames() {
+        XCTAssertEqual(AchievementRule.name("Carl von Gontard (tower)"), "Carl von Gontard")
+        XCTAssertEqual(AchievementRule.name("Gerkan, Marg and Partners"), "Gerkan, Marg and Partners")
+        XCTAssertEqual(AchievementRule.name("Meinhard von Gerkan (gmp)"), "Meinhard von Gerkan")
+        XCTAssertEqual(AchievementRule.name("Frederick III, Elector of Brandenburg (King Frederick I from 1701)"), "Frederick III, Elector of Brandenburg")
     }
 }

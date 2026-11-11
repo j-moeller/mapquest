@@ -10,7 +10,8 @@ Berlin, where it comes from, and how to regenerate it.
 | Base map | OpenStreetMap vector tiles from OpenFreeMap (OpenMapTiles schema), drawn on the device without labels | ODbL 1.0 (© OpenStreetMap contributors), © OpenMapTiles; OpenFreeMap: free, no key | – (loaded on demand, cached on the device) |
 | District boundaries (12 Bezirke) | Amt für Statistik Berlin-Brandenburg, merged from localities by [m-hoerz/berlin-shapes](https://github.com/m-hoerz/berlin-shapes) | CC BY 3.0 DE | `App/MapQuest/Resources/Berlin/berlin-districts.geojson` |
 | City outline | Union of the districts (slivers closed, simplified to 2 m) | CC BY 3.0 DE | `App/MapQuest/Resources/Berlin/berlin-boundary.geojson` |
-| Sights (119, all 12 districts) | Curated list (`Tools/capture/berlin_sights.csv`); positions from OpenStreetMap points of interest via OpenFreeMap vector tiles (`Tools/capture/locate_sights.py`), 7 open areas placed by hand | ODbL 1.0 (© OpenStreetMap contributors) | `App/MapQuest/Resources/Berlin/berlin-sights.json` |
+| Sights (135, all 12 districts) | Curated list (`Tools/capture/berlin_sights.csv`); positions from OpenStreetMap points of interest via OpenFreeMap vector tiles (`Tools/capture/locate_sights.py`), 16 placed by hand or from Wikidata; district from the district polygons | ODbL 1.0 (© OpenStreetMap contributors); Wikidata CC0 | `App/MapQuest/Resources/Berlin/berlin-sights.json` |
+| Achievements (68) | Hand-written rules over the sights and their historical facts | – | `App/MapQuest/Resources/Berlin/berlin-achievements.json` |
 | Sight entries (text and photo) | Wikipedia introductions (English, else German) and lead photos from Wikimedia Commons (`Tools/capture/fetch_sight_info.py`) | Texts CC BY-SA 4.0; photos per entry (author and licence in the file) | `App/MapQuest/Resources/Berlin/berlin-sight-info.json` |
 | Sight history (dates, style, architects, clients, history texts) | Wikidata and the articles' infoboxes, checked by hand (`Tools/capture/berlin_sight_history.csv`); the articles' history sections (`Tools/capture/fetch_sight_history.py`); rulers and eras in `BerlinHistory` | Facts: Wikidata CC0; history texts CC BY-SA 4.0 | `App/MapQuest/Resources/Berlin/berlin-sight-history.json` |
 | Demo explorer track (1 Hz, TrackCodec) | Generated (`Tools/berlin/make_demo_data.py`) | – | `App/MapQuest/Resources/Berlin/demo-track.mqtrack` |
@@ -44,9 +45,10 @@ python3 Tools/berlin/make_demo_data.py
 
 ### Sights
 
-The capture component's sights are a curated list of 119 places in all twelve
+The capture component's sights are a curated list of 135 places in all twelve
 districts – landmarks, museums, palaces, churches, viewpoints, memorials,
-parks, squares and more – each with a capture radius (30–150 m).
+parks, squares, fountains, markets and market halls, seats of government and
+town halls, and more – each with a capture radius (30–150 m).
 `Tools/capture/locate_sights.py` finds each one by name among the
 OpenStreetMap points of interest of the zoom-14 OpenFreeMap tiles around its
 approximate position: stops, entrances and signs only if nothing else
@@ -54,18 +56,21 @@ matches, then the aliases in order, exact names before partial ones, classes
 fitting the category, the nearest. Seven places without a suitable point
 (Tempelhofer Feld, the zoo's Elefantentor, Hauptbahnhof, Sony Center,
 Gasometer, Luftbrückendenkmal, Hufeisensiedlung) keep a position set by hand
-(`@manual`). The script reports every match with its distance from the
-approximate position for review.
+(`@manual`), as do places the tiles lack or misplace (five fountains, the
+Ackerhalle, Winterfeldtplatz, Detlev-Rohwedder-Haus, Glienicker Brücke), with
+their Wikidata coordinates. With `--districts` every sight gets the district
+whose polygon contains it. The script reports every match with its distance
+from the approximate position for review.
 
 ```bash
 pip install mapbox-vector-tile
 ```
 
 ```bash
-python3 Tools/capture/locate_sights.py Tools/capture/berlin_sights.csv --cache build-sights App/MapQuest/Resources/Berlin/berlin-sights.json
+python3 Tools/capture/locate_sights.py Tools/capture/berlin_sights.csv --cache build-sights --districts App/MapQuest/Resources/Berlin/berlin-districts.geojson App/MapQuest/Resources/Berlin/berlin-sights.json
 ```
 
-Their entries (`berlin-sight-info.json`, all 119, 115 with a photo; logos and other drawings are skipped) are
+Their entries (`berlin-sight-info.json`, all 135, 131 with a photo; logos and other drawings are skipped) are
 built by `Tools/capture/fetch_sight_info.py` from Wikipedia and Wikimedia
 Commons (docs/02, "Capture"); `Tools/capture/berlin_sight_articles.csv` fixes
 the eleven sights whose name is no article (e.g. Reichstag, Altes Museum,
@@ -77,8 +82,8 @@ so a re-run only fetches what is new.
 python3 Tools/capture/fetch_sight_info.py App/MapQuest/Resources/Berlin/berlin-sights.json App/MapQuest/Resources/Berlin/berlin-sight-info.json --cache build-sights/wiki --aliases Tools/capture/berlin_sights.csv --overrides Tools/capture/berlin_sight_articles.csv
 ```
 
-Their historical facts (`berlin-sight-history.json`: all 119 dated, about 100
-with architects, style and client, 81 with a history section) are built by
+Their historical facts (`berlin-sight-history.json`: all 135 dated, about 115
+with architects, style and client, 90 with a history section) are built by
 `Tools/capture/fetch_sight_history.py` from the same articles and their
 Wikidata items (docs/02, "Capture"), with the hand-checked table
 `Tools/capture/berlin_sight_history.csv` taking precedence: the year a

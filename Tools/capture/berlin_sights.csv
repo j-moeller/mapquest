@@ -1,6 +1,6 @@
 id;name;category;lat;lon;radius;aliases
 brandenburger-tor;Brandenburger Tor;monument;52.5163;13.3777;40;Brandenburger Tor
-reichstag;Reichstagsgebäude;landmark;52.5186;13.3762;50;Reichstagsgebäude|Reichstag|Deutscher Bundestag
+reichstag;Reichstagsgebäude;government;52.5186;13.3762;50;Reichstagsgebäude|Reichstag|Deutscher Bundestag
 fernsehturm;Berliner Fernsehturm;viewpoint;52.5208;13.4094;40;Berliner Fernsehturm|Fernsehturm
 berliner-dom;Berliner Dom;church;52.5191;13.4010;40;Berliner Dom
 pergamonmuseum;Pergamonmuseum;museum;52.5212;13.3967;40;Pergamonmuseum
@@ -9,8 +9,8 @@ neues-museum;Neues Museum;museum;52.5205;13.3977;40;Neues Museum
 alte-nationalgalerie;Alte Nationalgalerie;museum;52.5208;13.3982;40;Alte Nationalgalerie
 bode-museum;Bode-Museum;museum;52.5219;13.3946;40;Bode-Museum
 humboldt-forum;Humboldt Forum;palace;52.5172;13.4025;50;Humboldt Forum|Berliner Schloss|Humboldt-Forum
-rotes-rathaus;Rotes Rathaus;landmark;52.5185;13.4083;40;Rotes Rathaus|Berliner Rathaus
-neptunbrunnen;Neptunbrunnen;monument;52.5192;13.4067;30;Neptunbrunnen
+rotes-rathaus;Rotes Rathaus;government;52.5185;13.4083;40;Rotes Rathaus|Berliner Rathaus
+neptunbrunnen;Neptunbrunnen;fountain;52.5192;13.4067;30;Neptunbrunnen
 marienkirche;St. Marienkirche;church;52.5208;13.4065;30;St. Marienkirche|Marienkirche
 weltzeituhr;Weltzeituhr;landmark;52.5213;13.4133;30;Weltzeituhr|Urania-Weltzeituhr
 alexanderplatz;Alexanderplatz;square;52.5219;13.4132;80;Alexanderplatz
@@ -32,7 +32,7 @@ neue-synagoge;Neue Synagoge;landmark;52.5248;13.3946;30;Neue Synagoge|Centrum Ju
 naturkundemuseum;Museum für Naturkunde;museum;52.5300;13.3790;40;Museum für Naturkunde
 hamburger-bahnhof;Hamburger Bahnhof;museum;52.5283;13.3720;40;Hamburger Bahnhof|Hamburger Bahnhof – Nationalgalerie der Gegenwart|Hamburger Bahnhof - Nationalgalerie der Gegenwart
 hauptbahnhof;Berlin Hauptbahnhof;landmark;52.5251;13.3694;60;@manual
-kanzleramt;Bundeskanzleramt;landmark;52.5203;13.3691;50;Bundeskanzleramt
+kanzleramt;Bundeskanzleramt;government;52.5203;13.3691;50;Bundeskanzleramt
 hkw;Haus der Kulturen der Welt;culture;52.5186;13.3650;40;Haus der Kulturen der Welt
 mauer-gedenkstaette;Gedenkstätte Berliner Mauer;memorial;52.5352;13.3903;60;Gedenkstätte Berliner Mauer
 potsdamer-platz;Potsdamer Platz;square;52.5096;13.3759;60;Potsdamer Platz
@@ -51,7 +51,7 @@ east-side-gallery;East Side Gallery;landmark;52.5050;13.4397;60;East Side Galler
 oberbaumbruecke;Oberbaumbrücke;bridge;52.5018;13.4456;40;Oberbaumbrücke
 frankfurter-tor;Frankfurter Tor;landmark;52.5158;13.4543;50;Frankfurter Tor
 strausberger-platz;Strausberger Platz;square;52.5182;13.4283;60;Strausberger Platz
-maerchenbrunnen;Märchenbrunnen;monument;52.5272;13.4290;40;Märchenbrunnen
+maerchenbrunnen;Märchenbrunnen;fountain;52.5272;13.4290;40;Märchenbrunnen
 topographie;Topographie des Terrors;museum;52.5066;13.3837;40;Topographie des Terrors
 gropius-bau;Gropius Bau;museum;52.5066;13.3818;40;Gropius Bau|Martin-Gropius-Bau
 juedisches-museum;Jüdisches Museum Berlin;museum;52.5020;13.3946;40;Jüdisches Museum Berlin|Jüdisches Museum
@@ -94,17 +94,17 @@ nikolskoe;Kirche St. Peter und Paul;church;52.4280;13.1400;60;Kirche St. Peter u
 tempelhofer-feld;Tempelhofer Feld;park;52.4733;13.4019;150;@manual
 flughafen-tempelhof;Flughafen Tempelhof;landmark;52.4840;13.3880;80;Flughafen Berlin-Tempelhof|Flughafen Tempelhof|Flughafengebäude Tempelhof
 luftbrueckendenkmal;Luftbrückendenkmal;memorial;52.4846;13.3866;40;@manual
-rathaus-schoeneberg;Rathaus Schöneberg;landmark;52.4850;13.3440;40;Rathaus Schöneberg
+rathaus-schoeneberg;Rathaus Schöneberg;government;52.4850;13.3440;40;Rathaus Schöneberg
 gasometer;Gasometer Schöneberg;landmark;52.4820;13.3569;80;@manual
 schloss-britz;Schloss Britz;palace;52.4440;13.4370;40;Schloss Britz|Gutshof Britz
 britzer-garten;Britzer Garten;park;52.4290;13.4180;120;Britzer Garten
 hufeisensiedlung;Hufeisensiedlung;landmark;52.4490;13.4505;100;@manual
 koernerpark;Körnerpark;park;52.4710;13.4370;60;Körnerpark
-rathaus-neukoelln;Rathaus Neukölln;landmark;52.4815;13.4350;40;Rathaus Neukölln
+rathaus-neukoelln;Rathaus Neukölln;government;52.4815;13.4350;40;Rathaus Neukölln
 ehrenmal-treptow;Sowjetisches Ehrenmal Treptow;memorial;52.4860;13.4710;80;Sowjetisches Ehrenmal|Sowjetisches Ehrenmal Treptower Park
 archenhold;Archenhold-Sternwarte;museum;52.4860;13.4770;40;Archenhold-Sternwarte
 schloss-koepenick;Schloss Köpenick;palace;52.4440;13.5730;50;Schloss Köpenick
-rathaus-koepenick;Rathaus Köpenick;landmark;52.4460;13.5760;40;Rathaus Köpenick
+rathaus-koepenick;Rathaus Köpenick;government;52.4460;13.5760;40;Rathaus Köpenick
 mueggelturm;Müggelturm;viewpoint;52.4175;13.6380;40;Müggelturm
 gaerten-der-welt;Gärten der Welt;park;52.5390;13.5770;120;Gärten der Welt
 schloss-biesdorf;Schloss Biesdorf;palace;52.5050;13.5600;50;Schloss Biesdorf
@@ -118,3 +118,19 @@ schloss-tegel;Schloss Tegel;palace;52.5960;13.2690;50;Schloss Tegel|Humboldtschl
 borsigturm;Borsigturm;landmark;52.5880;13.2850;40;Borsigturm
 tegeler-hafen;Greenwichpromenade;landmark;52.5870;13.2780;60;Greenwichpromenade
 buddhistisches-haus;Buddhistisches Haus;landmark;52.6340;13.3080;40;Buddhistisches Haus|Das Buddhistische Haus
+brunnen-voelkerfreundschaft;Brunnen der Völkerfreundschaft;fountain;52.522;13.4128;30;@manual
+wrangelbrunnen;Wrangelbrunnen;fountain;52.4921;13.4131;30;@manual
+spindlerbrunnen;Spindlerbrunnen;fountain;52.5119;13.4011;30;@manual
+stierbrunnen;Stierbrunnen;fountain;52.5331;13.4372;60;@manual
+weltkugelbrunnen;Weltkugelbrunnen;fountain;52.504652;13.33649;30;@manual
+hackescher-markt;Hackescher Markt;market;52.5233;13.4028;50;Hackescher Markt
+markthalle-neun;Markthalle Neun;market;52.5022;13.4315;40;Markthalle IX|Markthalle Neun
+arminiusmarkthalle;Arminiusmarkthalle;market;52.5278;13.3386;40;Arminiusmarkthalle|Markthalle Moabit|Moabiter Markthalle
+ackerhalle;Ackerhalle;market;52.5321;13.3970;40;@manual
+winterfeldtplatz;Winterfeldtplatz;market;52.495;13.35472;80;@manual
+bundesrat;Bundesrat (Preußisches Herrenhaus);government;52.50917;13.38139;50;Bundesrat|Preußisches Herrenhaus
+abgeordnetenhaus;Abgeordnetenhaus von Berlin;government;52.507984;13.38157;50;Abgeordnetenhaus von Berlin|Abgeordnetenhaus
+detlev-rohwedder-haus;Detlev-Rohwedder-Haus;government;52.508675;13.384058;60;@manual
+rathaus-charlottenburg;Rathaus Charlottenburg;government;52.51778;13.30861;50;Rathaus Charlottenburg
+rathaus-spandau;Rathaus Spandau;government;52.535;13.20028;50;Rathaus Spandau
+glienicker-bruecke;Glienicker Brücke;bridge;52.4137;13.0915;60;@manual

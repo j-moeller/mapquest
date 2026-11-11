@@ -1,5 +1,5 @@
 {
- "source": "Curated list (Tools/capture/berlin_sights.csv), positions from OpenStreetMap points of interest via OpenFreeMap vector tiles (© OpenStreetMap contributors, ODbL)",
+ "source": "Curated list (Tools/capture/berlin_sights.csv), positions from OpenStreetMap points of interest via OpenFreeMap vector tiles (© OpenStreetMap contributors, ODbL); positions marked @manual from Wikidata (CC0)",
  "sights": [
   {
    "id": "brandenburger-tor",
@@ -7,15 +7,17 @@
    "category": "monument",
    "latitude": 52.51627,
    "longitude": 13.377705,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "reichstag",
    "name": "Reichstagsgebäude",
-   "category": "landmark",
+   "category": "government",
    "latitude": 52.518653,
    "longitude": 13.376101,
-   "radius": 50
+   "radius": 50,
+   "district": "Mitte"
   },
   {
    "id": "fernsehturm",
@@ -23,7 +25,8 @@
    "category": "viewpoint",
    "latitude": 52.52082,
    "longitude": 13.40942,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "berliner-dom",
@@ -31,7 +34,8 @@
    "category": "church",
    "latitude": 52.519084,
    "longitude": 13.401094,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "pergamonmuseum",
@@ -39,7 +43,8 @@
    "category": "museum",
    "latitude": 52.520934,
    "longitude": 13.395628,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "altes-museum",
@@ -47,7 +52,8 @@
    "category": "museum",
    "latitude": 52.519456,
    "longitude": 13.398787,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "neues-museum",
@@ -55,7 +61,8 @@
    "category": "museum",
    "latitude": 52.520154,
    "longitude": 13.397736,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "alte-nationalgalerie",
@@ -63,7 +70,8 @@
    "category": "museum",
    "latitude": 52.520863,
    "longitude": 13.398267,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "bode-museum",
@@ -71,7 +79,8 @@
    "category": "museum",
    "latitude": 52.521653,
    "longitude": 13.395,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "humboldt-forum",
@@ -79,23 +88,26 @@
    "category": "palace",
    "latitude": 52.51703,
    "longitude": 13.401228,
-   "radius": 50
+   "radius": 50,
+   "district": "Mitte"
   },
   {
    "id": "rotes-rathaus",
    "name": "Rotes Rathaus",
-   "category": "landmark",
+   "category": "government",
    "latitude": 52.518271,
    "longitude": 13.407832,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "neptunbrunnen",
    "name": "Neptunbrunnen",
-   "category": "monument",
+   "category": "fountain",
    "latitude": 52.519596,
    "longitude": 13.406845,
-   "radius": 30
+   "radius": 30,
+   "district": "Mitte"
   },
   {
    "id": "marienkirche",
@@ -103,7 +115,8 @@
    "category": "church",
    "latitude": 52.520549,
    "longitude": 13.407177,
-   "radius": 30
+   "radius": 30,
+   "district": "Mitte"
   },
   {
    "id": "weltzeituhr",
@@ -111,7 +124,8 @@
    "category": "landmark",
    "latitude": 52.521163,
    "longitude": 13.413303,
-   "radius": 30
+   "radius": 30,
+   "district": "Mitte"
   },
   {
    "id": "alexanderplatz",
@@ -119,7 +133,8 @@
    "category": "square",
    "latitude": 52.521666,
    "longitude": 13.413191,
-   "radius": 80
+   "radius": 80,
+   "district": "Mitte"
   },
   {
    "id": "nikolaikirche",
@@ -127,7 +142,8 @@
    "category": "church",
    "latitude": 52.516825,
    "longitude": 13.40751,
-   "radius": 30
+   "radius": 30,
+   "district": "Mitte"
   },
   {
    "id": "gendarmenmarkt",
@@ -135,7 +151,8 @@
    "category": "square",
    "latitude": 52.513609,
    "longitude": 13.392291,
-   "radius": 60
+   "radius": 60,
+   "district": "Mitte"
   },
   {
    "id": "konzerthaus",
@@ -143,7 +160,8 @@
    "category": "culture",
    "latitude": 52.513541,
    "longitude": 13.391862,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "franzoesischer-dom",
@@ -151,7 +169,8 @@
    "category": "church",
    "latitude": 52.514376,
    "longitude": 13.392441,
-   "radius": 30
+   "radius": 30,
+   "district": "Mitte"
   },
   {
    "id": "deutscher-dom",
@@ -159,7 +178,8 @@
    "category": "church",
    "latitude": 52.512731,
    "longitude": 13.392709,
-   "radius": 30
+   "radius": 30,
+   "district": "Mitte"
   },
   {
    "id": "bebelplatz",
@@ -167,7 +187,8 @@
    "category": "square",
    "latitude": 52.516201,
    "longitude": 13.395338,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "staatsoper",
@@ -175,7 +196,8 @@
    "category": "culture",
    "latitude": 52.516704,
    "longitude": 13.394737,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "hedwigs-kathedrale",
@@ -183,7 +205,8 @@
    "category": "church",
    "latitude": 52.515754,
    "longitude": 13.394845,
-   "radius": 30
+   "radius": 30,
+   "district": "Mitte"
   },
   {
    "id": "neue-wache",
@@ -191,7 +214,8 @@
    "category": "memorial",
    "latitude": 52.517905,
    "longitude": 13.395537,
-   "radius": 30
+   "radius": 30,
+   "district": "Mitte"
   },
   {
    "id": "dhm",
@@ -199,7 +223,8 @@
    "category": "museum",
    "latitude": 52.517749,
    "longitude": 13.397022,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "humboldt-universitaet",
@@ -207,7 +232,8 @@
    "category": "landmark",
    "latitude": 52.518581,
    "longitude": 13.3936,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "holocaust-mahnmal",
@@ -215,7 +241,8 @@
    "category": "memorial",
    "latitude": 52.513874,
    "longitude": 13.378735,
-   "radius": 60
+   "radius": 60,
+   "district": "Mitte"
   },
   {
    "id": "checkpoint-charlie",
@@ -223,7 +250,8 @@
    "category": "landmark",
    "latitude": 52.507432,
    "longitude": 13.390381,
-   "radius": 30
+   "radius": 30,
+   "district": "Friedrichshain-Kreuzberg"
   },
   {
    "id": "hackesche-hoefe",
@@ -231,7 +259,8 @@
    "category": "landmark",
    "latitude": 52.524538,
    "longitude": 13.401223,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "neue-synagoge",
@@ -239,7 +268,8 @@
    "category": "landmark",
    "latitude": 52.524985,
    "longitude": 13.394319,
-   "radius": 30
+   "radius": 30,
+   "district": "Mitte"
   },
   {
    "id": "naturkundemuseum",
@@ -247,7 +277,8 @@
    "category": "museum",
    "latitude": 52.530491,
    "longitude": 13.379116,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "hamburger-bahnhof",
@@ -255,7 +286,8 @@
    "category": "museum",
    "latitude": 52.528441,
    "longitude": 13.37204,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "hauptbahnhof",
@@ -263,15 +295,17 @@
    "category": "landmark",
    "latitude": 52.5251,
    "longitude": 13.3694,
-   "radius": 60
+   "radius": 60,
+   "district": "Mitte"
   },
   {
    "id": "kanzleramt",
    "name": "Bundeskanzleramt",
-   "category": "landmark",
+   "category": "government",
    "latitude": 52.520194,
    "longitude": 13.369128,
-   "radius": 50
+   "radius": 50,
+   "district": "Mitte"
   },
   {
    "id": "hkw",
@@ -279,7 +313,8 @@
    "category": "culture",
    "latitude": 52.51879,
    "longitude": 13.364836,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "mauer-gedenkstaette",
@@ -287,7 +322,8 @@
    "category": "memorial",
    "latitude": 52.535301,
    "longitude": 13.389555,
-   "radius": 60
+   "radius": 60,
+   "district": "Mitte"
   },
   {
    "id": "potsdamer-platz",
@@ -295,7 +331,8 @@
    "category": "square",
    "latitude": 52.509802,
    "longitude": 13.375592,
-   "radius": 60
+   "radius": 60,
+   "district": "Mitte"
   },
   {
    "id": "sony-center",
@@ -303,7 +340,8 @@
    "category": "landmark",
    "latitude": 52.5098,
    "longitude": 13.3733,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "philharmonie",
@@ -311,7 +349,8 @@
    "category": "culture",
    "latitude": 52.509989,
    "longitude": 13.369605,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "neue-nationalgalerie",
@@ -319,7 +358,8 @@
    "category": "museum",
    "latitude": 52.50704,
    "longitude": 13.36762,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "siegessaeule",
@@ -327,7 +367,8 @@
    "category": "viewpoint",
    "latitude": 52.51451,
    "longitude": 13.350111,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "schloss-bellevue",
@@ -335,7 +376,8 @@
    "category": "palace",
    "latitude": 52.517285,
    "longitude": 13.352433,
-   "radius": 50
+   "radius": 50,
+   "district": "Mitte"
   },
   {
    "id": "ehrenmal-tiergarten",
@@ -343,7 +385,8 @@
    "category": "memorial",
    "latitude": 52.516694,
    "longitude": 13.371917,
-   "radius": 30
+   "radius": 30,
+   "district": "Mitte"
   },
   {
    "id": "zoo",
@@ -351,7 +394,8 @@
    "category": "zoo",
    "latitude": 52.5051,
    "longitude": 13.3377,
-   "radius": 50
+   "radius": 50,
+   "district": "Charlottenburg-Wilmersdorf"
   },
   {
    "id": "maerkisches-museum",
@@ -359,7 +403,8 @@
    "category": "museum",
    "latitude": 52.513531,
    "longitude": 13.414607,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "futurium",
@@ -367,7 +412,8 @@
    "category": "museum",
    "latitude": 52.524029,
    "longitude": 13.374342,
-   "radius": 40
+   "radius": 40,
+   "district": "Mitte"
   },
   {
    "id": "humboldthain",
@@ -375,7 +421,8 @@
    "category": "viewpoint",
    "latitude": 52.547333,
    "longitude": 13.384776,
-   "radius": 60
+   "radius": 60,
+   "district": "Mitte"
   },
   {
    "id": "monbijoupark",
@@ -383,7 +430,8 @@
    "category": "park",
    "latitude": 52.523203,
    "longitude": 13.396974,
-   "radius": 80
+   "radius": 80,
+   "district": "Mitte"
   },
   {
    "id": "east-side-gallery",
@@ -391,7 +439,8 @@
    "category": "landmark",
    "latitude": 52.504454,
    "longitude": 13.440839,
-   "radius": 60
+   "radius": 60,
+   "district": "Friedrichshain-Kreuzberg"
   },
   {
    "id": "oberbaumbruecke",
@@ -399,7 +448,8 @@
    "category": "bridge",
    "latitude": 52.501728,
    "longitude": 13.445731,
-   "radius": 40
+   "radius": 40,
+   "district": "Friedrichshain-Kreuzberg"
   },
   {
    "id": "frankfurter-tor",
@@ -407,7 +457,8 @@
    "category": "landmark",
    "latitude": 52.516547,
    "longitude": 13.454025,
-   "radius": 50
+   "radius": 50,
+   "district": "Friedrichshain-Kreuzberg"
   },
   {
    "id": "strausberger-platz",
@@ -415,15 +466,17 @@
    "category": "square",
    "latitude": 52.51815,
    "longitude": 13.4282,
-   "radius": 60
+   "radius": 60,
+   "district": "Friedrichshain-Kreuzberg"
   },
   {
    "id": "maerchenbrunnen",
    "name": "Märchenbrunnen",
-   "category": "monument",
+   "category": "fountain",
    "latitude": 52.527939,
    "longitude": 13.426779,
-   "radius": 40
+   "radius": 40,
+   "district": "Friedrichshain-Kreuzberg"
   },
   {
    "id": "topographie",
@@ -431,7 +484,8 @@
    "category": "museum",
    "latitude": 52.506214,
    "longitude": 13.384153,
-   "radius": 40
+   "radius": 40,
+   "district": "Friedrichshain-Kreuzberg"
   },
   {
    "id": "gropius-bau",
@@ -439,7 +493,8 @@
    "category": "museum",
    "latitude": 52.506622,
    "longitude": 13.381948,
-   "radius": 40
+   "radius": 40,
+   "district": "Friedrichshain-Kreuzberg"
   },
   {
    "id": "juedisches-museum",
@@ -447,7 +502,8 @@
    "category": "museum",
    "latitude": 52.501871,
    "longitude": 13.396207,
-   "radius": 40
+   "radius": 40,
+   "district": "Friedrichshain-Kreuzberg"
   },
   {
    "id": "technikmuseum",
@@ -455,7 +511,8 @@
    "category": "museum",
    "latitude": 52.497182,
    "longitude": 13.37593,
-   "radius": 60
+   "radius": 60,
+   "district": "Friedrichshain-Kreuzberg"
   },
   {
    "id": "kreuzbergdenkmal",
@@ -463,7 +520,8 @@
    "category": "viewpoint",
    "latitude": 52.487648,
    "longitude": 13.381476,
-   "radius": 40
+   "radius": 40,
+   "district": "Friedrichshain-Kreuzberg"
   },
   {
    "id": "berlinische-galerie",
@@ -471,7 +529,8 @@
    "category": "museum",
    "latitude": 52.503906,
    "longitude": 13.398235,
-   "radius": 40
+   "radius": 40,
+   "district": "Friedrichshain-Kreuzberg"
   },
   {
    "id": "molecule-man",
@@ -479,7 +538,8 @@
    "category": "monument",
    "latitude": 52.496976,
    "longitude": 13.458949,
-   "radius": 60
+   "radius": 60,
+   "district": "Friedrichshain-Kreuzberg"
   },
   {
    "id": "mauerpark",
@@ -487,7 +547,8 @@
    "category": "park",
    "latitude": 52.543715,
    "longitude": 13.401931,
-   "radius": 80
+   "radius": 80,
+   "district": "Pankow"
   },
   {
    "id": "kulturbrauerei",
@@ -495,7 +556,8 @@
    "category": "landmark",
    "latitude": 52.538603,
    "longitude": 13.412434,
-   "radius": 50
+   "radius": 50,
+   "district": "Pankow"
   },
   {
    "id": "wasserturm",
@@ -503,7 +565,8 @@
    "category": "landmark",
    "latitude": 52.534185,
    "longitude": 13.418598,
-   "radius": 40
+   "radius": 40,
+   "district": "Pankow"
   },
   {
    "id": "kollwitzplatz",
@@ -511,7 +574,8 @@
    "category": "square",
    "latitude": 52.536054,
    "longitude": 13.417042,
-   "radius": 50
+   "radius": 50,
+   "district": "Pankow"
   },
   {
    "id": "planetarium",
@@ -519,7 +583,8 @@
    "category": "museum",
    "latitude": 52.543056,
    "longitude": 13.428141,
-   "radius": 40
+   "radius": 40,
+   "district": "Pankow"
   },
   {
    "id": "gethsemanekirche",
@@ -527,7 +592,8 @@
    "category": "church",
    "latitude": 52.547721,
    "longitude": 13.416168,
-   "radius": 30
+   "radius": 30,
+   "district": "Pankow"
   },
   {
    "id": "schloss-schoenhausen",
@@ -535,7 +601,8 @@
    "category": "palace",
    "latitude": 52.578348,
    "longitude": 13.405697,
-   "radius": 50
+   "radius": 50,
+   "district": "Pankow"
   },
   {
    "id": "zionskirche",
@@ -543,7 +610,8 @@
    "category": "church",
    "latitude": 52.534648,
    "longitude": 13.403733,
-   "radius": 30
+   "radius": 30,
+   "district": "Mitte"
   },
   {
    "id": "gedaechtniskirche",
@@ -551,7 +619,8 @@
    "category": "church",
    "latitude": 52.504895,
    "longitude": 13.334613,
-   "radius": 40
+   "radius": 40,
+   "district": "Charlottenburg-Wilmersdorf"
   },
   {
    "id": "schloss-charlottenburg",
@@ -559,7 +628,8 @@
    "category": "palace",
    "latitude": 52.520983,
    "longitude": 13.295699,
-   "radius": 60
+   "radius": 60,
+   "district": "Charlottenburg-Wilmersdorf"
   },
   {
    "id": "funkturm",
@@ -567,7 +637,8 @@
    "category": "viewpoint",
    "latitude": 52.505029,
    "longitude": 13.278142,
-   "radius": 40
+   "radius": 40,
+   "district": "Charlottenburg-Wilmersdorf"
   },
   {
    "id": "kadewe",
@@ -575,7 +646,8 @@
    "category": "landmark",
    "latitude": 52.501871,
    "longitude": 13.341093,
-   "radius": 40
+   "radius": 40,
+   "district": "Tempelhof-Schöneberg"
   },
   {
    "id": "olympiastadion",
@@ -583,7 +655,8 @@
    "category": "stadium",
    "latitude": 52.514585,
    "longitude": 13.239813,
-   "radius": 80
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
   },
   {
    "id": "glockenturm",
@@ -591,7 +664,8 @@
    "category": "viewpoint",
    "latitude": 52.513978,
    "longitude": 13.231879,
-   "radius": 40
+   "radius": 40,
+   "district": "Charlottenburg-Wilmersdorf"
   },
   {
    "id": "teufelsberg",
@@ -599,7 +673,8 @@
    "category": "viewpoint",
    "latitude": 52.497717,
    "longitude": 13.242956,
-   "radius": 80
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
   },
   {
    "id": "grunewaldturm",
@@ -607,7 +682,8 @@
    "category": "viewpoint",
    "latitude": 52.478193,
    "longitude": 13.196731,
-   "radius": 40
+   "radius": 40,
+   "district": "Charlottenburg-Wilmersdorf"
   },
   {
    "id": "jagdschloss-grunewald",
@@ -615,7 +691,8 @@
    "category": "palace",
    "latitude": 52.467371,
    "longitude": 13.261507,
-   "radius": 50
+   "radius": 50,
+   "district": "Steglitz-Zehlendorf"
   },
   {
    "id": "waldbuehne",
@@ -623,7 +700,8 @@
    "category": "culture",
    "latitude": 52.515548,
    "longitude": 13.229524,
-   "radius": 60
+   "radius": 60,
+   "district": "Charlottenburg-Wilmersdorf"
   },
   {
    "id": "corbusierhaus",
@@ -631,7 +709,8 @@
    "category": "landmark",
    "latitude": 52.510201,
    "longitude": 13.243895,
-   "radius": 40
+   "radius": 40,
+   "district": "Charlottenburg-Wilmersdorf"
   },
   {
    "id": "deutsche-oper",
@@ -639,7 +718,8 @@
    "category": "culture",
    "latitude": 52.512143,
    "longitude": 13.308375,
-   "radius": 40
+   "radius": 40,
+   "district": "Charlottenburg-Wilmersdorf"
   },
   {
    "id": "zitadelle",
@@ -647,7 +727,8 @@
    "category": "palace",
    "latitude": 52.541033,
    "longitude": 13.212744,
-   "radius": 80
+   "radius": 80,
+   "district": "Spandau"
   },
   {
    "id": "nikolaikirche-spandau",
@@ -655,7 +736,8 @@
    "category": "church",
    "latitude": 52.538361,
    "longitude": 13.205341,
-   "radius": 30
+   "radius": 30,
+   "district": "Spandau"
   },
   {
    "id": "pfaueninsel",
@@ -663,7 +745,8 @@
    "category": "palace",
    "latitude": 52.43092,
    "longitude": 13.119854,
-   "radius": 80
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
   },
   {
    "id": "wannsee-konferenz",
@@ -671,7 +754,8 @@
    "category": "memorial",
    "latitude": 52.432922,
    "longitude": 13.165601,
-   "radius": 40
+   "radius": 40,
+   "district": "Steglitz-Zehlendorf"
   },
   {
    "id": "strandbad-wannsee",
@@ -679,7 +763,8 @@
    "category": "landmark",
    "latitude": 52.438171,
    "longitude": 13.178036,
-   "radius": 80
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
   },
   {
    "id": "liebermann-villa",
@@ -687,7 +772,8 @@
    "category": "museum",
    "latitude": 52.428771,
    "longitude": 13.164888,
-   "radius": 40
+   "radius": 40,
+   "district": "Steglitz-Zehlendorf"
   },
   {
    "id": "botanischer-garten",
@@ -695,7 +781,8 @@
    "category": "park",
    "latitude": 52.454398,
    "longitude": 13.304121,
-   "radius": 100
+   "radius": 100,
+   "district": "Steglitz-Zehlendorf"
   },
   {
    "id": "bierpinsel",
@@ -703,7 +790,8 @@
    "category": "landmark",
    "latitude": 52.461455,
    "longitude": 13.32471,
-   "radius": 30
+   "radius": 30,
+   "district": "Steglitz-Zehlendorf"
   },
   {
    "id": "bruecke-museum",
@@ -711,7 +799,8 @@
    "category": "museum",
    "latitude": 52.466933,
    "longitude": 13.274751,
-   "radius": 40
+   "radius": 40,
+   "district": "Steglitz-Zehlendorf"
   },
   {
    "id": "alliiertenmuseum",
@@ -719,7 +808,8 @@
    "category": "museum",
    "latitude": 52.455689,
    "longitude": 13.272321,
-   "radius": 40
+   "radius": 40,
+   "district": "Steglitz-Zehlendorf"
   },
   {
    "id": "schloss-glienicke",
@@ -727,7 +817,8 @@
    "category": "palace",
    "latitude": 52.413928,
    "longitude": 13.095499,
-   "radius": 50
+   "radius": 50,
+   "district": "Steglitz-Zehlendorf"
   },
   {
    "id": "nikolskoe",
@@ -735,7 +826,8 @@
    "category": "church",
    "latitude": 52.423288,
    "longitude": 13.1187,
-   "radius": 60
+   "radius": 60,
+   "district": "Steglitz-Zehlendorf"
   },
   {
    "id": "tempelhofer-feld",
@@ -743,7 +835,8 @@
    "category": "park",
    "latitude": 52.4733,
    "longitude": 13.4019,
-   "radius": 150
+   "radius": 150,
+   "district": "Tempelhof-Schöneberg"
   },
   {
    "id": "flughafen-tempelhof",
@@ -751,7 +844,8 @@
    "category": "landmark",
    "latitude": 52.480297,
    "longitude": 13.388633,
-   "radius": 80
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
   },
   {
    "id": "luftbrueckendenkmal",
@@ -759,15 +853,17 @@
    "category": "memorial",
    "latitude": 52.4846,
    "longitude": 13.3866,
-   "radius": 40
+   "radius": 40,
+   "district": "Tempelhof-Schöneberg"
   },
   {
    "id": "rathaus-schoeneberg",
    "name": "Rathaus Schöneberg",
-   "category": "landmark",
+   "category": "government",
    "latitude": 52.484825,
    "longitude": 13.344103,
-   "radius": 40
+   "radius": 40,
+   "district": "Tempelhof-Schöneberg"
   },
   {
    "id": "gasometer",
@@ -775,7 +871,8 @@
    "category": "landmark",
    "latitude": 52.482,
    "longitude": 13.3569,
-   "radius": 80
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
   },
   {
    "id": "schloss-britz",
@@ -783,7 +880,8 @@
    "category": "palace",
    "latitude": 52.446905,
    "longitude": 13.437899,
-   "radius": 40
+   "radius": 40,
+   "district": "Neukölln"
   },
   {
    "id": "britzer-garten",
@@ -791,7 +889,8 @@
    "category": "park",
    "latitude": 52.433782,
    "longitude": 13.417284,
-   "radius": 120
+   "radius": 120,
+   "district": "Neukölln"
   },
   {
    "id": "hufeisensiedlung",
@@ -799,7 +898,8 @@
    "category": "landmark",
    "latitude": 52.449,
    "longitude": 13.4505,
-   "radius": 100
+   "radius": 100,
+   "district": "Neukölln"
   },
   {
    "id": "koernerpark",
@@ -807,15 +907,17 @@
    "category": "park",
    "latitude": 52.471318,
    "longitude": 13.43791,
-   "radius": 60
+   "radius": 60,
+   "district": "Neukölln"
   },
   {
    "id": "rathaus-neukoelln",
    "name": "Rathaus Neukölln",
-   "category": "landmark",
+   "category": "government",
    "latitude": 52.481565,
    "longitude": 13.436515,
-   "radius": 40
+   "radius": 40,
+   "district": "Neukölln"
   },
   {
    "id": "ehrenmal-treptow",
@@ -823,7 +925,8 @@
    "category": "memorial",
    "latitude": 52.487664,
    "longitude": 13.46882,
-   "radius": 80
+   "radius": 80,
+   "district": "Treptow-Köpenick"
   },
   {
    "id": "archenhold",
@@ -831,7 +934,8 @@
    "category": "museum",
    "latitude": 52.485854,
    "longitude": 13.47633,
-   "radius": 40
+   "radius": 40,
+   "district": "Treptow-Köpenick"
   },
   {
    "id": "schloss-koepenick",
@@ -839,15 +943,17 @@
    "category": "palace",
    "latitude": 52.44386,
    "longitude": 13.572729,
-   "radius": 50
+   "radius": 50,
+   "district": "Treptow-Köpenick"
   },
   {
    "id": "rathaus-koepenick",
    "name": "Rathaus Köpenick",
-   "category": "landmark",
+   "category": "government",
    "latitude": 52.445417,
    "longitude": 13.575234,
-   "radius": 40
+   "radius": 40,
+   "district": "Treptow-Köpenick"
   },
   {
    "id": "mueggelturm",
@@ -855,7 +961,8 @@
    "category": "viewpoint",
    "latitude": 52.417295,
    "longitude": 13.62508,
-   "radius": 40
+   "radius": 40,
+   "district": "Treptow-Köpenick"
   },
   {
    "id": "gaerten-der-welt",
@@ -863,7 +970,8 @@
    "category": "park",
    "latitude": 52.537255,
    "longitude": 13.574923,
-   "radius": 120
+   "radius": 120,
+   "district": "Marzahn-Hellersdorf"
   },
   {
    "id": "schloss-biesdorf",
@@ -871,7 +979,8 @@
    "category": "palace",
    "latitude": 52.509842,
    "longitude": 13.557633,
-   "radius": 50
+   "radius": 50,
+   "district": "Marzahn-Hellersdorf"
   },
   {
    "id": "wolkenhain",
@@ -879,7 +988,8 @@
    "category": "viewpoint",
    "latitude": 52.534828,
    "longitude": 13.581086,
-   "radius": 40
+   "radius": 40,
+   "district": "Marzahn-Hellersdorf"
   },
   {
    "id": "tierpark",
@@ -887,7 +997,8 @@
    "category": "zoo",
    "latitude": 52.501555,
    "longitude": 13.531267,
-   "radius": 100
+   "radius": 100,
+   "district": "Lichtenberg"
   },
   {
    "id": "schloss-friedrichsfelde",
@@ -895,7 +1006,8 @@
    "category": "palace",
    "latitude": 52.504693,
    "longitude": 13.523585,
-   "radius": 50
+   "radius": 50,
+   "district": "Lichtenberg"
   },
   {
    "id": "stasimuseum",
@@ -903,7 +1015,8 @@
    "category": "museum",
    "latitude": 52.514507,
    "longitude": 13.487483,
-   "radius": 40
+   "radius": 40,
+   "district": "Lichtenberg"
   },
   {
    "id": "hohenschoenhausen",
@@ -911,7 +1024,8 @@
    "category": "memorial",
    "latitude": 52.541706,
    "longitude": 13.50136,
-   "radius": 40
+   "radius": 40,
+   "district": "Lichtenberg"
   },
   {
    "id": "mies-van-der-rohe-haus",
@@ -919,7 +1033,8 @@
    "category": "museum",
    "latitude": 52.549189,
    "longitude": 13.49053,
-   "radius": 40
+   "radius": 40,
+   "district": "Lichtenberg"
   },
   {
    "id": "schloss-tegel",
@@ -927,7 +1042,8 @@
    "category": "palace",
    "latitude": 52.595091,
    "longitude": 13.276339,
-   "radius": 50
+   "radius": 50,
+   "district": "Reinickendorf"
   },
   {
    "id": "borsigturm",
@@ -935,7 +1051,8 @@
    "category": "landmark",
    "latitude": 52.585526,
    "longitude": 13.287326,
-   "radius": 40
+   "radius": 40,
+   "district": "Reinickendorf"
   },
   {
    "id": "tegeler-hafen",
@@ -943,7 +1060,8 @@
    "category": "landmark",
    "latitude": 52.587155,
    "longitude": 13.273593,
-   "radius": 60
+   "radius": 60,
+   "district": "Reinickendorf"
   },
   {
    "id": "buddhistisches-haus",
@@ -951,7 +1069,152 @@
    "category": "landmark",
    "latitude": 52.635612,
    "longitude": 13.30292,
-   "radius": 40
+   "radius": 40,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "brunnen-voelkerfreundschaft",
+   "name": "Brunnen der Völkerfreundschaft",
+   "category": "fountain",
+   "latitude": 52.522,
+   "longitude": 13.4128,
+   "radius": 30,
+   "district": "Mitte"
+  },
+  {
+   "id": "wrangelbrunnen",
+   "name": "Wrangelbrunnen",
+   "category": "fountain",
+   "latitude": 52.4921,
+   "longitude": 13.4131,
+   "radius": 30,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "spindlerbrunnen",
+   "name": "Spindlerbrunnen",
+   "category": "fountain",
+   "latitude": 52.5119,
+   "longitude": 13.4011,
+   "radius": 30,
+   "district": "Mitte"
+  },
+  {
+   "id": "stierbrunnen",
+   "name": "Stierbrunnen",
+   "category": "fountain",
+   "latitude": 52.5331,
+   "longitude": 13.4372,
+   "radius": 60,
+   "district": "Pankow"
+  },
+  {
+   "id": "weltkugelbrunnen",
+   "name": "Weltkugelbrunnen",
+   "category": "fountain",
+   "latitude": 52.504652,
+   "longitude": 13.33649,
+   "radius": 30,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "hackescher-markt",
+   "name": "Hackescher Markt",
+   "category": "market",
+   "latitude": 52.523161,
+   "longitude": 13.402779,
+   "radius": 50,
+   "district": "Mitte"
+  },
+  {
+   "id": "markthalle-neun",
+   "name": "Markthalle Neun",
+   "category": "market",
+   "latitude": 52.502165,
+   "longitude": 13.431489,
+   "radius": 40,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "arminiusmarkthalle",
+   "name": "Arminiusmarkthalle",
+   "category": "market",
+   "latitude": 52.527834,
+   "longitude": 13.33862,
+   "radius": 40,
+   "district": "Mitte"
+  },
+  {
+   "id": "ackerhalle",
+   "name": "Ackerhalle",
+   "category": "market",
+   "latitude": 52.5321,
+   "longitude": 13.397,
+   "radius": 40,
+   "district": "Mitte"
+  },
+  {
+   "id": "winterfeldtplatz",
+   "name": "Winterfeldtplatz",
+   "category": "market",
+   "latitude": 52.495,
+   "longitude": 13.35472,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "bundesrat",
+   "name": "Bundesrat (Preußisches Herrenhaus)",
+   "category": "government",
+   "latitude": 52.5093,
+   "longitude": 13.381176,
+   "radius": 50,
+   "district": "Mitte"
+  },
+  {
+   "id": "abgeordnetenhaus",
+   "name": "Abgeordnetenhaus von Berlin",
+   "category": "government",
+   "latitude": 52.507866,
+   "longitude": 13.381503,
+   "radius": 50,
+   "district": "Mitte"
+  },
+  {
+   "id": "detlev-rohwedder-haus",
+   "name": "Detlev-Rohwedder-Haus",
+   "category": "government",
+   "latitude": 52.508675,
+   "longitude": 13.384058,
+   "radius": 60,
+   "district": "Mitte"
+  },
+  {
+   "id": "rathaus-charlottenburg",
+   "name": "Rathaus Charlottenburg",
+   "category": "government",
+   "latitude": 52.517582,
+   "longitude": 13.308799,
+   "radius": 50,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "rathaus-spandau",
+   "name": "Rathaus Spandau",
+   "category": "government",
+   "latitude": 52.535072,
+   "longitude": 13.200679,
+   "radius": 50,
+   "district": "Spandau"
+  },
+  {
+   "id": "glienicker-bruecke",
+   "name": "Glienicker Brücke",
+   "category": "bridge",
+   "latitude": 52.4137,
+   "longitude": 13.0915,
+   "radius": 60,
+   "district": "Steglitz-Zehlendorf"
   }
  ]
 }
