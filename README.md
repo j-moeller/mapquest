@@ -15,7 +15,7 @@ The app has four major components:
 |---|---|
 | **Location tracking** | Records the position about once per second in a compact track (≈ 6 bytes per fix); the positions that reveal new parts of the map drive the fog of war |
 | **Discovered area** | Turns stored positions into discovered-area polygons, merges adjacent areas into regions, keeps disconnected areas apart; it is a cache that can always be rebuilt from the positions |
-| **Capture** | 169 Berlin sights (all districts, the outer ones too) are discovered once you have been there (the radius view covers them) and captured when you photograph them there; 343 U-Bahn and S-Bahn stations are collected just by going there: animations, a list of all sights, badges on the map and gems in 3D; 103 achievements (eras, architects, districts, collections, stories, lines) |
+| **Capture** | 184 Berlin sights (all districts, the outer ones too) are discovered once you have been there (the radius view covers them) and captured when you photograph them there; 343 U-Bahn and S-Bahn stations are collected just by going there: animations, a list of all sights, badges on the map and gems in 3D; 108 achievements (eras, architects, districts, collections, stories, lines, clubs and stages) |
 | **Map display** | 2D: a label-free base map with a black fog (80 %, blurred map underneath) drawn into it, the discovered area cut out. 3D: buildings that block the view; seen buildings are revealed |
 
 ## How it works
@@ -62,7 +62,7 @@ The app has four major components:
   periods; in 2D the *Radius / Line of sight* picker chooses the layer.
 * The panel shows discovered area, share of the current city, regions and stored
   positions; tap the chevron to collapse it on small screens (iPhone 13 mini).
-* **Sights**: walk up to one of 169 Berlin sights – until the circles of the
+* **Sights**: walk up to one of 184 Berlin sights – from palaces to Berghain – until the circles of the
   radius view cover it – and it is discovered, with an animation (tap to skip):
   it appears on your map and unlocks its entry. **Photograph it there** (the
   entry's *Take a photo*, within about 150 m) to **capture** it: your photo is
@@ -76,7 +76,7 @@ The app has four major components:
   see it on the map. **Stations**: the 343 U-Bahn and S-Bahn stations are
   collected just by going there (walking past, or riding through above
   ground) – small blue "U" and green "S" signs on the map, a notice for each.
-  **Achievements** (third tab, 103): every station of a line (U1–U9, every
+  **Achievements** (third tab, 108): every station of a line (U1–U9, every
   S-Bahn line, the Ringbahn), every church,
   fountain, market or museum; everything from an era; the works of Schinkel,
   Knobelsdorff or Blankenstein; every sight of a district; themed walks such

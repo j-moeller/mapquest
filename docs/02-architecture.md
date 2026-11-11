@@ -240,7 +240,7 @@ districts): docs/07-peine-data.md.
 
 ## Capture (the capture component)
 
-A separate component on top of the discovered area: **sights** – 169 places
+A separate component on top of the discovered area: **sights** – 184 places
 all over Berlin (every district), from a curated list – are *discovered* once
 the fog of war around them is lifted (their entries unlock) and *captured* once
 you photograph them there; **stations** – the 343 U-Bahn and S-Bahn stations –
@@ -249,8 +249,8 @@ keeps its own data and photos; nothing else depends on it.
 
 * **Sights** (`MapQuestCore/Capture/Sight.swift`): ID, name, category
   (landmark, museum, palace, church, viewpoint, memorial, park, square,
-  culture, monument, zoo, bridge, stadium, fountain, market, government,
-  cemetery),
+  culture, monument, zoo, bridge, stadium (and arena), fountain, market,
+  government, cemetery, club),
   position, extent (30–150 m; larger for open areas) and district. Bundled per city as
   `<city>-sights.json` (Berlin: docs/03-berlin-data.md); `SightCatalog`
   merges them.
@@ -372,7 +372,7 @@ keeps its own data and photos; nothing else depends on it.
 ## Achievements
 
 Goals made of sights (`MapQuestCore/Capture/Achievement.swift`,
-`<city>-achievements.json`; Berlin has 103). Each has a group, title,
+`<city>-achievements.json`; Berlin has 108). Each has a group, title,
 description, SF Symbol and a **rule** that picks its sights from the catalog
 and the historical facts: categories (all churches, fountains, museums…),
 the era of the year built (`BerlinHistory`, East and West apart), an

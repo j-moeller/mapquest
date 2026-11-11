@@ -518,6 +518,7 @@ extension SightCategory {
         case .market: return "basket.fill"
         case .government: return "building.2.fill"
         case .cemetery: return "moon.stars.fill"
+        case .club: return "headphones"
         }
     }
 
@@ -535,11 +536,12 @@ extension SightCategory {
         case .monument: return "Monument"
         case .zoo: return "Zoo"
         case .bridge: return "Bridge"
-        case .stadium: return "Stadium"
+        case .stadium: return "Stadium or arena"
         case .fountain: return "Fountain"
         case .market: return "Market"
         case .government: return "Seat of government"
         case .cemetery: return "Cemetery"
+        case .club: return "Club"
         }
     }
 }

@@ -1521,6 +1521,141 @@
    "longitude": 13.4986,
    "radius": 30,
    "district": "Pankow"
+  },
+  {
+   "id": "velodrom",
+   "name": "Velodrom",
+   "category": "stadium",
+   "latitude": 52.530739,
+   "longitude": 13.451107,
+   "radius": 80,
+   "district": "Pankow"
+  },
+  {
+   "id": "max-schmeling-halle",
+   "name": "Max-Schmeling-Halle",
+   "category": "stadium",
+   "latitude": 52.544798,
+   "longitude": 13.404495,
+   "radius": 60,
+   "district": "Pankow"
+  },
+  {
+   "id": "uber-arena",
+   "name": "Uber Arena",
+   "category": "stadium",
+   "latitude": 52.506368,
+   "longitude": 13.443763,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "alte-foersterei",
+   "name": "Stadion An der Alten Försterei",
+   "category": "stadium",
+   "latitude": 52.456974,
+   "longitude": 13.568078,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "tempodrom",
+   "name": "Tempodrom",
+   "category": "culture",
+   "latitude": 52.50161,
+   "longitude": 13.381181,
+   "radius": 50,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "columbiahalle",
+   "name": "Columbiahalle",
+   "category": "culture",
+   "latitude": 52.4846,
+   "longitude": 13.3922,
+   "radius": 40,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "parkbuehne-wuhlheide",
+   "name": "Parkbühne Wuhlheide",
+   "category": "culture",
+   "latitude": 52.462341,
+   "longitude": 13.545402,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "neue-welt",
+   "name": "Huxleys Neue Welt",
+   "category": "culture",
+   "latitude": 52.486452,
+   "longitude": 13.42147,
+   "radius": 40,
+   "district": "Neukölln"
+  },
+  {
+   "id": "berghain",
+   "name": "Berghain",
+   "category": "club",
+   "latitude": 52.511167,
+   "longitude": 13.443033,
+   "radius": 40,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "tresor",
+   "name": "Tresor",
+   "category": "club",
+   "latitude": 52.510681,
+   "longitude": 13.419483,
+   "radius": 40,
+   "district": "Mitte"
+  },
+  {
+   "id": "so36",
+   "name": "SO36",
+   "category": "club",
+   "latitude": 52.500392,
+   "longitude": 13.42216,
+   "radius": 30,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "kitkatclub",
+   "name": "KitKatClub",
+   "category": "club",
+   "latitude": 52.511206,
+   "longitude": 13.416914,
+   "radius": 30,
+   "district": "Mitte"
+  },
+  {
+   "id": "kater-club",
+   "name": "Kater Club",
+   "category": "club",
+   "latitude": 52.511993,
+   "longitude": 13.426092,
+   "radius": 40,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "club-der-visionaere",
+   "name": "Club der Visionaere",
+   "category": "club",
+   "latitude": 52.496796,
+   "longitude": 13.450479,
+   "radius": 30,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "claerchens-ballhaus",
+   "name": "Clärchens Ballhaus",
+   "category": "club",
+   "latitude": 52.526473,
+   "longitude": 13.39691,
+   "radius": 30,
+   "district": "Mitte"
   }
  ]
 }

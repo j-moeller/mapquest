@@ -48,6 +48,8 @@ PREFERRED = {
     "fountain": {"attraction", "art_gallery"},
     "market": {"grocery", "marketplace", "attraction"},
     "government": {"town_hall", "office"},
+    "club": {"nightclub", "bar", "music"},
+    "stadium": {"stadium", "sports_centre", "pitch"},
 }
 
 

@@ -1527,7 +1527,7 @@
     "Karl Schmidt-Rottluff (founding gift)",
     "West Berlin"
    ],
-   "history": null,
+   "history": "1964 initiierte der Künstler Karl Schmidt-Rottluff an seinem Wohnort Berlin die Gründung des Museums und legte mit einer Schenkung an das Land Berlin den Grundstock für dessen Sammlung. Drei Jahre später, am 15. September 1967, wurde das Brücke-Museum in einem von Werner Düttmann entworfenen Neubau in Berlin-Dahlem eröffnet.\n\nNeben Karl Schmidt-Rottluff unterstützte auch sein Kollege Erich Heckel mit einer umfangreichen Schenkung von Brücke-Werken den Aufbau der Sammlung. Schmidt-Rottluff erwarb bis zu seinem Tod 1976 kontinuierlich weitere Kunstwerke für das Brücke-Museum. Die Karl-und-Emy Schmidt-Rottluff-Stiftung wurde 1976 gegründet und hat ihren Sitz im Brücke-Museum. Das Museum liegt in Berlin-Dahlem am Rande des Grunewaldes in unmittelbarer Nachbarschaft zum Kunsthaus Dahlem, dem ehemaligen Atelier des Bildhauers Arno Breker.",
    "sector": "west",
    "wikidata": "https://www.wikidata.org/wiki/Q833759"
   },
@@ -1864,7 +1864,7 @@
    "commissionedBy": [
     "IGA Berlin 2017"
    ],
-   "history": "The venue is the area surrounding the Kienberg that was originally known as Berliner Gartenschau. This was the horticultural exposition held in 1987, in that times in East Germany, in commemoration of the 750th birthday of the city of Berlin. In 1991, after German reunification the park was renamed to Erholungspark Marzahn and expanded afterwards. During the years 2000 - 2006 several gardens modeled after Asian examples were added. Since 2007 gardens modelled after European examples followed. In 2013 works began to prepare for the IGA 2017.",
+   "history": null,
    "sector": "east",
    "wikidata": "https://www.wikidata.org/wiki/Q15629568"
   },
@@ -2763,6 +2763,210 @@
    "history": null,
    "sector": "east",
    "wikidata": "https://www.wikidata.org/wiki/Q2244590"
+  },
+  "velodrom": {
+   "year": 1993,
+   "built": "1993–1997",
+   "opened": "1997",
+   "styles": [
+    "Contemporary"
+   ],
+   "architects": [
+    "Dominique Perrault"
+   ],
+   "commissionedBy": [
+    "State of Berlin (bid for the 2000 Olympics)"
+   ],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q464179"
+  },
+  "max-schmeling-halle": {
+   "year": 1994,
+   "built": "1994–1996",
+   "opened": "1996",
+   "styles": [
+    "Contemporary"
+   ],
+   "architects": [
+    "Albert Dietz",
+    "Anett-Maud Joppien",
+    "Jörg Joppien"
+   ],
+   "commissionedBy": [
+    "State of Berlin (bid for the 2000 Olympics)"
+   ],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q705353"
+  },
+  "uber-arena": {
+   "year": 2006,
+   "built": "2006–2008",
+   "opened": "2008",
+   "styles": [
+    "Contemporary"
+   ],
+   "architects": [
+    "JSK Architekten"
+   ],
+   "commissionedBy": [
+    "Anschutz Entertainment Group"
+   ],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q265463"
+  },
+  "alte-foersterei": {
+   "year": 1920,
+   "built": "1920, rebuilt 2008–2009 by Union fans",
+   "opened": "1920",
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [
+    "SC Union Oberschöneweide"
+   ],
+   "history": "In 1920, SC Union Oberschöneweide had to find a new home ground in Berlin as its former pitch had been built over by developers with residential buildings. The club moved away from the city to the north-western part of the borough of Köpenick. The inaugural match at the new stadium was played on 17 March 1920 between Oberschöneweide and Viktoria 89 Berlin in a friendly. The new stadium was officially opened in August 1920 with a match between Oberschöneweide and the then German champions 1. FC Nürnberg.\n\nIn 1966, the stadium required expansion when Union won promotion to the DDR-Oberliga, the then top flight in East Germany. The stadium was first expanded in 1970 when the Gegengerade terrace was raised, while further extensions to the terracing at both ends in the late 1970s and early 1980s increased the capacity to 22,500. The stadium started showing signs of depreciation with the club unable to properly maintain the same as attendances went into a serious decline in common with the majority of clubs during the 1980s.\n\nAfter German reunification, Union were assigned to play in the 3rd league by the German Football Association with the outdated stadium proving to be one of the factors that hampered the club's push for promotion to higher leagues.\n\nThe terracing at the ground was in a poor state thereby reducing the capacity to 18,100 spectators. In the late 1990s, Union were only allowed to continue playing at the stadium on special temporary license until DFL stopped renewing these in 2006. The stadium was no longer eligible to stage any matches in the top three tiers of German football thereby forcing the club to redevelop the stadium or make a move to a different ground.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q749172"
+  },
+  "tempodrom": {
+   "year": 2001,
+   "built": "2001 (founded 1980 in a tent near Potsdamer Platz)",
+   "opened": "2001",
+   "styles": [
+    "Contemporary"
+   ],
+   "architects": [
+    "Meinhard von Gerkan (gmp)"
+   ],
+   "commissionedBy": [
+    "Irene Moessinger (founder)"
+   ],
+   "history": "Moessinger had recently become a nurse when she came into an 800,000-mark inheritance from her father; it was this bequest that she used to start the Tempodrom in a circus tent. Her initial funds were quickly exhausted, and the following year, the Berlin Senate agreed to contribute funds to keep the operation going.\n\nThe original location attracted noise complaints, and in 1985, the Tempodrom moved to a site in the Tiergarten, where it remained until displaced by construction of the new German Chancellery. At this time a new construction of the current building was proposed, and the tents moved to a temporary site during construction. In May 1999, the venue moved to another temporary location near the Ostbahnhof.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q896180"
+  },
+  "columbiahalle": {
+   "year": 1951,
+   "built": "1951 (a sports hall for US soldiers)",
+   "opened": "1998 (concert hall)",
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [
+    "US Army"
+   ],
+   "history": "Columbiahalle is located opposite the former Berlin Tempelhof Airport, which from 1945, following the end of the Second World War, had been used by the US Army as part of the American occupation sector of West Berlin. Columbiahalle was built in 1951 as a sports hall for the soldiers stationed in the city. After the US withdrawal in 1994, the building was closed and reopened after renovation in 1998. A comprehensive renovation took place in 2014.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q14549374"
+  },
+  "parkbuehne-wuhlheide": {
+   "year": 1951,
+   "built": "1951 (on embankments of rubble)",
+   "opened": "1951",
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [
+    "GDR (World Festival of Youth and Students 1951)"
+   ],
+   "history": "Starting around 1950, parts of Volkspark Wuhlheide were remodeled into the Ernst Thälmann Pioneer Park, following Soviet models. The large open-air stage was built for the occasion of the third World Festival of Youth and Students in the summer of 1951 (opening ceremony on 27 July 1951 under Mayor Friedrich Ebert Jr.). It was erected on mounds of rubble, on which were laid terraced, oval-shaped rows of seats for approximately 20,000 visitors. In order to reach the upper ring of the wall from the outside and to reach the seats on the inside, extensive stairway systems were created. Necessary restrooms and adjacent buildings were built behind the walls in accordance with contemporary hygiene standards and knowledge. In the following years, a multitude of cultural and political events occurred at the venue.\n\nAt the beginning of the 1990s, the open-air stage was in such a decayed condition that it could hardly be used. Nevertheless, since 25 August 1990, it has been a monument under cultural heritage management in reunited Berlin.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q1595188"
+  },
+  "neue-welt": {
+   "year": 1880,
+   "built": "beer gardens from 1867, the Neue Welt from 1880",
+   "opened": null,
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [
+    "Rudolf Sternecker"
+   ],
+   "history": null,
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q1979838"
+  },
+  "berghain": {
+   "year": 2004,
+   "built": "club since 2004, in a former power station",
+   "opened": "2004",
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [],
+   "history": "Berghain's origins go back to the mid-1990s. Beginning in 1992, Reichsbahnbunker Friedrichstraße was used for hardcore techno parties. Thormann and Teufele hosted a male-only fetish club night called Snax. Snax Club launched in 1994 with men-only events called Pervy Party. One of the locations of Snax Club was Reichsbahnbunker in Mitte. In 1995, Snax Club also came to Vrieshuis Amerika in Amsterdam.\n\nAfter parties in Bunker ended in December 1996, Snax Club found a steady location of its own, which opened in 1998 and was called Lab.oratory. Thormann and Teufele were offered a depot building to rent next to the Lab.oratory. This venue occupying a former railway repair depot in Friedrichshain became Ostgut. Lab.oratory hosted regular gay events, but \"on certain nights of the month\" Ostgut and Lab.oratory were combined into one space for Snax. Unless a Snax event took place, Ostgut was open to the general public.\n\nDespite being inclusive to all genders, Ostgut remained predominantly gay. It was a unique intersection between techno music and gay sex: \"The main bar was located behind the dance floor – as well as the darkrooms, more or less to the irritation of the party people from Mitte. In Mitte’s techno clubs, gay lifestyle played only a marginal role. And vice versa: Most gay clubs didn’t care much about modern club music.\" Two years after the Ostgut launch, the same team opened another space in the same building, this was named Panorama Bar. All three spaces together had the address Mühlenstraße 26–30.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q136975"
+  },
+  "tresor": {
+   "year": 1991,
+   "built": "club since 1991, here since 2007 (a former power station)",
+   "opened": "1991",
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [],
+   "history": "Anfang 1991 entdeckte Achim Kohlberger, einer der Chefs des West-Berliner Acidhouse-Clubs Ufo, zusammen mit einem Veranstalter der Tekknozid-Partys auf der Suche nach einer geeigneten Location für einen Techno-Club den 1926 erbauten Tresorraum des ehemaligen Wertheim-Kaufhauses in unmittelbarer Nachbarschaft zum Leipziger Platz, gelegen in der Leipziger Straße 126. Der Tresor-Club eröffnete drei Monate später im März 1991 als erster Techno-Club Berlins. Seine rustikale, dekorationsfreie Einrichtung in den ehemaligen Tresorräumen im Untergeschoss des damaligen Kaufhauses an der Leipziger Straße, welche zu DDR-Zeiten jahrzehntelang leergestanden hatten, mit hunderten von aufgebrochenen Schließfächern sowie die harte, maschinelle Musik, fanden großen Anklang in Berlin und ganz Deutschland. Der Tresor erlangte in kurzer Zeit internationale Bekanntheit und wurde zum Inbegriff eines typischen Techno-Clubs.\n\nWährend der Love Parade fand die Veranstaltung „Tresor-Park“ mit dem Frankfurter DJ Sven Väth statt. Im September 1991 wurde das gleichnamige Plattenlabel Tresor Records von Dimitri Hegemann ins Leben gerufen.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q678186"
+  },
+  "so36": {
+   "year": 1978,
+   "built": "club since 1978 (in a former cinema)",
+   "opened": "1978",
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [],
+   "history": "Since the 1970s SO36 has been a major venue for \"alternative\" music and culture. Many Punk greats have performed and still perform here. Martin Kippenberger took over the management in 1979, focusing on creating a crossover between Punk and other genres and mediums such as New Wave and the visual arts. SO36 has been compared to New York's CBGB as one of the finest new-wave venues in the world. However unlike CBGB the venue still stands as of March 2023, and remains a fixture on the Berlin music scene championing new artists, while staying true to its Punk roots. In 2016, the club released SO36: 1978 bis heute (\"1978 through today\"), a retrospective illustrated book covering the 36-year history of the club, for €36.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q561850"
+  },
+  "kitkatclub": {
+   "year": 1994,
+   "built": "club since 1994",
+   "opened": "1994",
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [
+    "Simon Thaur",
+    "Kirsten Krüger (founders)"
+   ],
+   "history": "The club has moved three times since its opening in 1994. It opened in Glogauer Straße in the Kreuzberg district in the former Turbine. In 1999 it moved to Neues Schauspielhaus at Nollendorfplatz, and in 2001 to another lot in the district Tempelhof (which became part of Schöneberg in 2000) in Bessemer Straße. At the beginning of July 2007, it moved to the SageClub in the Mitte district at Brückenstraße 1.\n\nWhen the KitKat opened its doors in 1994 the musical profile of the club was mainly classical trance mixed with Goa trance, but through the years the club has opened up to a wider selection of electronic music. A KitKat record label was founded in 2005 and two CDs were released, Hedonistic Nightlife in Berlin and The Piep Show Compilation #0.\n\nThe KitKatClub Berlin celebrated its 20th anniversary on March 1, 2014. At that time a novel about the early years of KitKat was published under the same name KitKatClub, written by Vigor Calma. In 2019, a new edition of the novel appeared under the title Rausch in Berlin (German language only).\n\nAfter the closing and the loss of any income due to the COVID-19 pandemic, the KitKatClub set up a website to support the club and transmit streams live from the location. The club started offering COVID-19 tests in December 2020.\n\nOn March 2, 2024, the KitKatClub celebrated its 30th anniversary at the \"Disco Bizarre\" event.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q322135"
+  },
+  "kater-club": {
+   "year": 2014,
+   "built": "2014 (after Bar 25 and Kater Holzig)",
+   "opened": "2014",
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [],
+   "history": "Sowohl personell und vom musikalischen Konzept, als auch von den genutzten Örtlichkeiten und der Einrichtung her, lässt sich eine enge Verbindung vom Kater Blau über den Kater Holzig bis zur Bar 25 ziehen.\n\nDie Bar 25 (Eigenschreibweise Bar25, kurz Bar) war ein Techno-Club am Spreeufer in Berlin-Friedrichshain, wenige Meter entfernt vom Standort des heutigen Kater Blau. In der Zeit ihres Bestehens von 2003 bis 2010 entwickelte sich die Bar 25 zu einem der wichtigsten Clubs der Stadt und erreichte auch internationale Bekanntheit.\n\nNach dem Ende der Bar 25, die sich auf einem Grundstück der städtischen Müllentsorgungsgesellschaft BSR befand, das im Rahmen des Stadtentwicklungsmasterplans Mediaspree an Investoren verkauft werden sollte, eröffneten die Betreiber auf der anderen Spreeseite den weitläufigen Club Kater Holzig in einer alten Seifenfabrik. In den Räumlichkeiten befand sich bis 1993 bereits der Club Planet. Seitens der Vermieter wurde die Nutzung von Anfang an auf drei Jahre befristet. Ebenso wie zuvor schon die Bar 25, wurde auch der Kater Holzig international bekannt. Unter der von Resident Dirty Doering angemeldeten Marke Katermukke traten die Macher auch mit einem Label an die Öffentlichkeit. Das Label überlebte die Zeit im Kater Holzig und wird heute von Dirty Doering weitergeführt. Ursprünglich sollte der Club nach dem Ende der planmäßigen Nutzungszeit auf der nördlichen Spreeseite unter demselben Namen weiter betrieben werden. Die Betreibergesellschaft KaterHolzig GmbH geriet jedoch bald in wirtschaftliche Schwierigkeiten und meldete schließlich Insolvenz an, so dass der neue Club ab dem ersten Augustwochenende 2014 unter dem neuen Namen Kater Blau betrieben wurde.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q2658747"
+  },
+  "club-der-visionaere": {
+   "year": 2000,
+   "built": "around 2000",
+   "opened": null,
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [],
+   "history": null,
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q5136437"
+  },
+  "claerchens-ballhaus": {
+   "year": 1913,
+   "built": "c. 1895 (ballroom since 1913)",
+   "opened": "1913",
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [
+    "Fritz and Clara Bühler"
+   ],
+   "history": "Fritz Bühler (1862–1929) and his wife Clara Bühler (1886–1971) opened \"Bühler's Ballhaus\" on September 13, 1913, in the rear building of Auguststrasse 24/25. The house was built around 1895 with two halls: the dance hall on the ground floor and the mirror hall on the upper floor. After Fritz Bühler's death, Clara initially continued to run the dance hall, by now known as \"Clärchens Ballhaus\", on her own. In 1932, she married Arthur Habermann (1885-1967), who supported her in her work. The front building was destroyed in World War II, but operations resumed after the end of the war. Clärchens Ballhaus would remain a private company over the coming GDR era.\n\nIn 1965, and taking much pressure, the ruins of the former front building were removed. The area is still undeveloped today. From 1967 to 1989 the management of the ballroom went to Clärchen's stepdaughter Elfriede Wolff (daughter of Arthur Habermann) and her husband. Then, their son Stefan took over the business.\n\nAfter German reunification, Clara Habermann's biological daughter was granted the property, whose son in turn sold the building in 2003. The new owner, Hans-Joachim Sander, left the family business, which then ceased operations after 91 years. After the previous operators left the Ballhaus on New Year's Eve 2004, Christian Schulz and David Regehr took over the location, leaving it largely unchanged. Since then, the space in front of the Ballhaus has also been managed, where the front building stood before the Second World War. The hall of mirrors on the upper floor, which was only used as a storage room for years, has since been used as an event room.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q1103846"
   }
  }
 }

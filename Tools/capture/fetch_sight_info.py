@@ -282,7 +282,11 @@ def main():
         title, d = matches[sight["id"]]
         de = de_pages.get(title)
         en = en_pages.get(en_titles.get(sight["id"], ""))
-        source = en if en and clean(en.get("extract", "")) else de
+        # English, unless its introduction is a stub next to a much longer German one.
+        en_text = clean(en.get("extract", "")) if en else ""
+        de_text = clean(de.get("extract", "")) if de else ""
+        stub = len(en_text) < 200 and len(de_text) > 2 * len(en_text)
+        source = en if en_text and not stub else de
         text = clean(source.get("extract", "")) if source else ""
         if not text:
             missing.append(sight["id"])

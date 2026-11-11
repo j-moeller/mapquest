@@ -34,7 +34,7 @@ final class CaptureTests: XCTestCase {
 
     func testBundledBerlinSights() throws {
         let catalog = try Self.berlinSights()
-        XCTAssertEqual(catalog.count, 169)
+        XCTAssertEqual(catalog.count, 184)
         let berlin = try GeoJSON.playArea(named: "Berlin", from: Data(contentsOf: BraunschweigDataTests.root.appendingPathComponent("Berlin/berlin-boundary.geojson")))
         let districts = try GeoJSON.polygonFeatures(from: Data(contentsOf: BraunschweigDataTests.root.appendingPathComponent("Berlin/berlin-districts.geojson")))
             .map { PlayArea(name: $0.properties["name"] ?? "", polygons: $0.polygons) }
@@ -360,6 +360,9 @@ final class AchievementTests: XCTestCase {
         XCTAssertEqual(try members("markets"), ["hackescher-markt", "markthalle-neun", "arminiusmarkthalle", "ackerhalle", "winterfeldtplatz", "gendarmenmarkt"])
         XCTAssertEqual(try members("churches").count, 13)
         XCTAssertEqual(try members("cemeteries").count, 4)
+        XCTAssertEqual(try members("club-culture"), ["claerchens-ballhaus", "so36", "tresor", "kitkatclub", "club-der-visionaere", "berghain", "kater-club"])
+        XCTAssertTrue(try members("game-day").isSuperset(of: ["olympiastadion", "alte-foersterei", "uber-arena", "velodrom", "max-schmeling-halle"]))
+        XCTAssertTrue(try members("stages").isSuperset(of: ["tempodrom", "columbiahalle", "parkbuehne-wuhlheide"]), "concert venues are culture")
         XCTAssertEqual(try members("housing-estates"), try members("world-heritage").subtracting(members("museum-island")).subtracting(["pfaueninsel", "schloss-glienicke", "nikolskoe"]),
                        "the six estates are World Heritage")
         XCTAssertEqual(try members("architect-taut"), ["hufeisensiedlung", "siedlung-schillerpark", "gartenstadt-falkenberg", "carl-legien"])
