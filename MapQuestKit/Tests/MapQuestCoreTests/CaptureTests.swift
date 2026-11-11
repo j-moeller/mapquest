@@ -159,6 +159,8 @@ final class SightInfoTests: XCTestCase {
                 XCTAssertTrue(photo.url.host?.hasSuffix("wikimedia.org") ?? false, id)
                 XCTAssertEqual(photo.page.host, "commons.wikimedia.org", id)
                 XCTAssertFalse(photo.license.isEmpty, id)
+                let file = photo.page.lastPathComponent.lowercased()
+                XCTAssertFalse(file.hasSuffix(".svg") || file.contains("logo"), "\(id): a photo, not a logo or drawing")
             }
         }
         let gate = try XCTUnwrap(infos["brandenburger-tor"])

@@ -64,7 +64,7 @@ pip install mapbox-vector-tile
 python3 Tools/capture/locate_sights.py Tools/capture/berlin_sights.csv --cache build-sights App/MapQuest/Resources/Berlin/berlin-sights.json
 ```
 
-Their entries (`berlin-sight-info.json`, all 119, 117 with a photo) are
+Their entries (`berlin-sight-info.json`, all 119, 115 with a photo; logos and other drawings are skipped) are
 built by `Tools/capture/fetch_sight_info.py` from Wikipedia and Wikimedia
 Commons (docs/02, "Capture"); `Tools/capture/berlin_sight_articles.csv` fixes
 the eleven sights whose name is no article (e.g. Reichstag, Altes Museum,

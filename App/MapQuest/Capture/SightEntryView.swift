@@ -216,27 +216,31 @@ struct SightEntryView: View {
     }
 }
 
-/// A sight photo, loaded once and kept on disk.
+/// A sight photo, loaded once and kept on disk. It fills the space it is given
+/// and is cropped to it: the photo's own size (e.g. a wide panorama) never
+/// widens the layout – the image lies in an overlay of a flexible rectangle.
 struct SightPhotoView: View {
     let url: URL
     @State private var image: UIImage?
 
     var body: some View {
-        ZStack {
-            Color.gray.opacity(0.25)
-            if let image {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-                    .transition(.opacity)
-            } else {
-                ProgressView()
+        Rectangle()
+            .fill(Color.gray.opacity(0.25))
+            .overlay {
+                if let image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .transition(.opacity)
+                } else {
+                    ProgressView()
+                }
             }
-        }
-        .task(id: url) {
-            let loaded = await SightPhotoLoader.shared.image(for: url)
-            withAnimation(.easeIn(duration: 0.25)) { image = loaded }
-        }
+            .clipped()
+            .task(id: url) {
+                let loaded = await SightPhotoLoader.shared.image(for: url)
+                withAnimation(.easeIn(duration: 0.25)) { image = loaded }
+            }
     }
 }
 

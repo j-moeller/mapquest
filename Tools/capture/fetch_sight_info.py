@@ -11,8 +11,9 @@ For every sight of a sight list (Tools/capture/locate_sights.py output):
 2. The text is the introduction of the English article (via the language link),
    or of the German one if there is no English article: plain text, pronunciation
    notes removed, whole paragraphs up to about 1,400 characters.
-3. The photo is the article's lead image if it is on Wikimedia Commons (free
-   licence): a 960-pixel thumbnail URL, its file page, author and licence.
+3. The photo is the article's lead image if it is a photo (no SVG drawing or
+   logo) on Wikimedia Commons (free licence): a 960-pixel thumbnail URL, its
+   file page, author and licence.
 
 Texts are from Wikipedia (CC BY-SA 4.0); the output keeps title and URL of every
 article and author and licence of every photo for attribution. Polite: an
@@ -167,6 +168,14 @@ def clean(text: str) -> str:
     return "\n\n".join(result)
 
 
+def photo_name(page: dict) -> str | None:
+    """The article's lead image if it is a photo – not a logo, map or other drawing (SVG)."""
+    name = page.get("pageimage")
+    if not name or name.lower().endswith(".svg") or "logo" in name.lower():
+        return None
+    return name
+
+
 def commons_images(names: list[str]) -> dict:
     """Free Commons photos by file name (50 per request): thumbnail, file page, author, licence."""
     result = {}
@@ -262,8 +271,8 @@ def main():
     image_names = set()
     for sight_id, (title, _) in matches.items():
         for page in (de_pages.get(title), en_pages.get(en_titles.get(sight_id, ""))):
-            if page and page.get("pageimage"):
-                image_names.add(page["pageimage"])
+            if page and photo_name(page):
+                image_names.add(photo_name(page))
     images = commons_images(sorted(image_names))
 
     entries = {}
@@ -280,8 +289,8 @@ def main():
             continue
         image = None
         for page in (de, en):
-            if page and page.get("pageimage") in images:
-                image = images[page["pageimage"]]
+            if page and photo_name(page) in images:
+                image = images[photo_name(page)]
                 break
         entries[sight["id"]] = {
             "title": source["title"],
