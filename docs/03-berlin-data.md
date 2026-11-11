@@ -12,6 +12,7 @@ Berlin, where it comes from, and how to regenerate it.
 | City outline | Union of the districts (slivers closed, simplified to 2 m) | CC BY 3.0 DE | `App/MapQuest/Resources/Berlin/berlin-boundary.geojson` |
 | Sights (119, all 12 districts) | Curated list (`Tools/capture/berlin_sights.csv`); positions from OpenStreetMap points of interest via OpenFreeMap vector tiles (`Tools/capture/locate_sights.py`), 7 open areas placed by hand | ODbL 1.0 (© OpenStreetMap contributors) | `App/MapQuest/Resources/Berlin/berlin-sights.json` |
 | Sight entries (text and photo) | Wikipedia introductions (English, else German) and lead photos from Wikimedia Commons (`Tools/capture/fetch_sight_info.py`) | Texts CC BY-SA 4.0; photos per entry (author and licence in the file) | `App/MapQuest/Resources/Berlin/berlin-sight-info.json` |
+| Sight history (dates, style, architects, clients, history texts) | Wikidata and the articles' infoboxes, checked by hand (`Tools/capture/berlin_sight_history.csv`); the articles' history sections (`Tools/capture/fetch_sight_history.py`); rulers and eras in `BerlinHistory` | Facts: Wikidata CC0; history texts CC BY-SA 4.0 | `App/MapQuest/Resources/Berlin/berlin-sight-history.json` |
 | Demo explorer track (1 Hz, TrackCodec) | Generated (`Tools/berlin/make_demo_data.py`) | – | `App/MapQuest/Resources/Berlin/demo-track.mqtrack` |
 | Simulator walk | Generated, Brandenburger Tor → Alexanderplatz | – | `App/Simulation/BerlinWalk.gpx` |
 
@@ -74,6 +75,25 @@ so a re-run only fetches what is new.
 
 ```bash
 python3 Tools/capture/fetch_sight_info.py App/MapQuest/Resources/Berlin/berlin-sights.json App/MapQuest/Resources/Berlin/berlin-sight-info.json --cache build-sights/wiki --aliases Tools/capture/berlin_sights.csv --overrides Tools/capture/berlin_sight_articles.csv
+```
+
+Their historical facts (`berlin-sight-history.json`: all 119 dated, about 100
+with architects, style and client, 81 with a history section) are built by
+`Tools/capture/fetch_sight_history.py` from the same articles and their
+Wikidata items (docs/02, "Capture"), with the hand-checked table
+`Tools/capture/berlin_sight_history.csv` taking precedence: the year a
+building was put up (Wikidata often has the founding year of the institution
+in it), architects, clients, and whether the sight lay in East or West Berlin.
+Every sight needs a row there; an empty cell keeps the fetched value, "-"
+clears it. It shares the cache (and the patience with rate limits) of the
+entries.
+
+```bash
+pip install mwparserfromhell
+```
+
+```bash
+python3 Tools/capture/fetch_sight_history.py App/MapQuest/Resources/Berlin/berlin-sights.json App/MapQuest/Resources/Berlin/berlin-sight-info.json App/MapQuest/Resources/Berlin/berlin-sight-history.json --cache build-sights/wiki
 ```
 
 ### Simulating a walk

@@ -66,9 +66,12 @@ The app has four major components:
   radius view cover it – and it is captured, with an animation (tap to skip):
   it appears on your map and unlocks its entry – a photorealistic 3D view
   (Apple's 3D city model, where available) or its photo, description and
-  history (from Wikipedia and Wikimedia Commons). The trophy button in the panel lists all
-  sights, nearest first – captured ones in orange, the others in grey; tap
-  one to see it on the map. Captured sights are golden badges on the map and golden buildings
+  history (from Wikipedia and Wikimedia Commons), with its place in Berlin's
+  history: when it was built and opened, its style, its architects, who
+  commissioned it, who ruled Berlin then and in which era. The trophy button
+  in the panel lists all sights, nearest first or *Through time* (by year, in
+  Berlin's eras) – captured ones in orange, the others in grey; tap one to
+  see it on the map. Captured sights are golden badges on the map and golden buildings
   with floating gems in 3D. *Debug › Show all sights* marks the uncaptured
   ones too.
 * **Settings** switch the data source (*My discoveries*, *Sandbox (testing)*,

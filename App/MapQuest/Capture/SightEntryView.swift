@@ -6,8 +6,9 @@ import UIKit
 
 /// A sight's entry: locked until the sight is captured, then – where Apple has
 /// photorealistic 3D buildings – an interactive photorealistic 3D view of it,
-/// otherwise its photo; a description and its history (Wikipedia introduction),
-/// with the credits the licences ask for.
+/// otherwise its photo; a description (Wikipedia introduction), its historical
+/// facts (built, opened, style, architects, client, the era and ruler at the
+/// time) and the history of the place, with the credits the licences ask for.
 struct SightEntryView: View {
     let sight: Sight
     @EnvironmentObject private var captures: CaptureModel
@@ -16,6 +17,8 @@ struct SightEntryView: View {
 
     private var record: CaptureRecord? { captures.log.records[sight.id] }
     private var info: SightInfo? { captures.infos[sight.id] }
+    private var history: SightHistory? { captures.histories[sight.id] }
+    @State private var showsFullHistory = false
     /// Photorealistic 3D at the top (the photo then follows the text).
     private var shows3D: Bool { captures.hasPhotorealistic3D(sight) }
 
@@ -128,23 +131,18 @@ struct SightEntryView: View {
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(.orange)
             if let info {
-                let paragraphs = info.paragraphs
-                if let first = paragraphs.first {
-                    Text(first)
+                ForEach(Array(info.paragraphs.enumerated()), id: \.offset) { _, paragraph in
+                    Text(paragraph)
                         .font(.body)
-                }
-                if paragraphs.count > 1 {
-                    Text("History and more")
-                        .font(.headline)
-                        .padding(.top, 4)
-                    ForEach(Array(paragraphs.dropFirst().enumerated()), id: \.offset) { _, paragraph in
-                        Text(paragraph)
-                            .font(.body)
-                    }
                 }
             } else {
                 Text("No entry for this sight yet.")
                     .foregroundStyle(.secondary)
+            }
+            if let history {
+                SightHistoryFacts(history: history)
+                    .padding(.top, 4)
+                historyText(history)
             }
             if shows3D, let photo = info?.image {
                 SightPhotoView(url: photo.url)
@@ -165,7 +163,7 @@ struct SightEntryView: View {
         VStack(alignment: .leading, spacing: 14) {
             Text("This entry is locked.")
                 .font(.headline)
-            Text("Go there to unlock its story: once the circles of the radius view cover the sight, it is captured, appears on your map and its entry opens here.")
+            Text("Go there to unlock its story: once the circles of the radius view cover the sight, it is captured, appears on your map and its entry opens here – with when it was built and by whom, who ruled Berlin then, and the history of the place.")
                 .foregroundStyle(.secondary)
             if let location = tracker.lastLocation {
                 let meters = location.distance(from: CLLocation(latitude: sight.latitude, longitude: sight.longitude))
@@ -176,6 +174,31 @@ struct SightEntryView: View {
             actions
         }
         .padding(.horizontal)
+    }
+
+    /// The history of the place: the first two paragraphs, the rest on request.
+    @ViewBuilder
+    private func historyText(_ history: SightHistory) -> some View {
+        let paragraphs = history.historyParagraphs
+        if !paragraphs.isEmpty {
+            Text("History")
+                .font(.headline)
+                .padding(.top, 4)
+            let shown = showsFullHistory ? paragraphs : Array(paragraphs.prefix(2))
+            ForEach(Array(shown.enumerated()), id: \.offset) { _, paragraph in
+                Text(paragraph)
+                    .font(.body)
+            }
+            if paragraphs.count > shown.count {
+                Button {
+                    withAnimation(.easeInOut(duration: 0.2)) { showsFullHistory = true }
+                } label: {
+                    Label("Read more", systemImage: "chevron.down")
+                        .font(.subheadline.weight(.semibold))
+                }
+                .tint(.orange)
+            }
+        }
     }
 
     private var actions: some View {
@@ -203,6 +226,13 @@ struct SightEntryView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Text: Wikipedia, “\(info.title)” (\(info.language == "de" ? "German" : "English")), CC BY-SA 4.0")
                 Link("Licence: creativecommons.org/licenses/by-sa/4.0", destination: Self.textLicense)
+                if let history {
+                    Text("Facts: checked by hand against Wikidata (CC0) and Wikipedia; rulers and eras: MapQuest")
+                        .padding(.top, 4)
+                    if let item = history.wikidata {
+                        Link("Wikidata item", destination: item)
+                    }
+                }
                 if let photo = info.image {
                     Text("Photo: \(photo.artist), \(photo.license)")
                         .padding(.top, 4)
@@ -213,6 +243,78 @@ struct SightEntryView: View {
             .foregroundStyle(.secondary)
         }
         .padding(.top, 8)
+    }
+}
+
+/// A sight's historical facts in a card: built, opened, style, architects, client,
+/// who ruled and the era, and where it lay while the city was divided.
+struct SightHistoryFacts: View {
+    let history: SightHistory
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Label("In history", systemImage: "hourglass")
+                .font(.headline)
+                .foregroundStyle(Color.orange)
+            if let built = history.built {
+                fact("Built", built, symbol: "hammer.fill")
+            }
+            if let opened = history.opened {
+                fact("Opened", opened, symbol: "door.left.hand.open")
+            }
+            if !history.styles.isEmpty {
+                fact(history.styles.count == 1 ? "Style" : "Styles", history.styles.joined(separator: ", "), symbol: "building.columns.fill")
+            }
+            if !history.architects.isEmpty {
+                fact(history.architects.count == 1 ? "Architect" : "Architects and artists", history.architects.joined(separator: ", "), symbol: "pencil.and.ruler.fill")
+            }
+            if !history.commissionedBy.isEmpty {
+                fact("Commissioned by", history.commissionedBy.joined(separator: ", "), symbol: "signature")
+            }
+            if let context = history.context {
+                if let ruler = context.ruler {
+                    fact(history.year.map { "Ruling in \(String($0))" } ?? "Ruling at the time",
+                         "\(ruler.name), \(ruler.title) (\(ruler.reign))", symbol: Self.isMonarchy(context.era) ? "crown.fill" : "person.fill")
+                }
+                fact("Era", "\(context.era.name) (\(context.era.years))", detail: context.era.summary, symbol: "clock.arrow.circlepath")
+            }
+            if let sector = history.sectorDuringDivision {
+                fact("While Berlin was divided", sector.title, symbol: "square.split.2x1.fill")
+            }
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.orange.opacity(0.08), in: RoundedRectangle(cornerRadius: 12))
+        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.orange.opacity(0.3), lineWidth: 1))
+    }
+
+    static func isMonarchy(_ era: HistoricalEra) -> Bool {
+        ["margraviate", "electorate", "prussia", "empire"].contains(era.id)
+    }
+
+    private func fact(_ title: String, _ value: String, detail: String? = nil, symbol: String) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 10) {
+            Image(systemName: symbol)
+                .foregroundStyle(Color.orange)
+                .frame(width: 22)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title.uppercased())
+                    .font(.caption2.weight(.bold))
+                    .foregroundStyle(.secondary)
+                Text(value)
+                    .font(.subheadline)
+                    .fixedSize(horizontal: false, vertical: true)
+                if let detail {
+                    Text(detail)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+            Spacer(minLength: 0)
+        }
+        .accessibilityElement(children: .combine)
     }
 }
 

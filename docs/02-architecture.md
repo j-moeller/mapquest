@@ -288,6 +288,27 @@ its own data; nothing else depends on it.
   and licence kept). Texts are CC BY-SA 4.0; each entry credits its article
   and photo. Photos are loaded when an entry is first opened and kept in
   `Caches/SightPhotos`.
+* **History** (`SightHistory`, `<city>-sight-history.json`; `BerlinHistory`):
+  each entry has a card *In history* – built (and opened, where that differs:
+  e.g. a museum in an older building), architectural style, architects and
+  artists, who commissioned it, **who ruled at the time** and the era (with a
+  short summary), and for sights older than 1990 whether they lay in East or
+  West Berlin – followed by the *History* section of its article (two
+  paragraphs, *Read more* for the rest). Built by
+  `Tools/capture/fetch_sight_history.py`: Wikidata (inception, opening,
+  architect, style, commissioned by) and the article's infobox, overridden by
+  the hand-checked table `Tools/capture/berlin_sight_history.csv` (Wikidata
+  often has the founding year of an institution, not the date of its
+  building; the table also gives the East/West sector); the history section
+  as plain text (display templates expanded, references dropped), whole
+  paragraphs up to about 1,800 characters. The ruler is not stored:
+  `BerlinHistory` maps a year (read in July: in a year of succession the
+  ruler of July counts) and the sector to the era – Margraviate and
+  Electorate of Brandenburg, Kingdom of Prussia, German Empire, Weimar
+  Republic, Nazi Germany, Allied occupation, East Berlin (GDR) / West Berlin,
+  reunified Germany – and its ruler: margraves, electors, kings and emperors,
+  Reich presidents, the dictator, the Allied Kommandatura, the SED leaders in
+  the East, the federal chancellors in the West and after 1990.
 * **Photorealistic 3D or photo**: an entry shows 3D only where it is
   photorealistic – Apple's 3D city model (satellite imagery on 3D buildings
   and terrain, `MKImageryMapConfiguration(elevationStyle: .realistic)`) in
@@ -297,14 +318,17 @@ its own data; nothing else depends on it.
   with its photo. (Untextured LoD2 models were tried and dropped: not
   photorealistic.)
 * **Discovery**: a capture unlocks the entry ("New entry unlocked" in the
-  animation, with *Read entry* and *Show on map*); the sight's badge springs
+  animation, with when it was built and its era, *Read entry* and *Show on
+  map*); the sight's badge springs
   onto the 2D map with pulsing rings (when it is captured while the map is
   shown, or when it first scrolls into view); its callout's info button opens
   the entry. Unopened entries are marked NEW in the list and by a dot on the
   trophy button (`CaptureLog.readEntries`). Celebrations wait while the list
   or an entry is open.
 * **Views**: the trophy button in the status panel (number of captures)
-  opens one list of all sights, nearest first – captured ones in orange
+  opens one list of all sights, *Nearby* (nearest first) or *Through time*
+  (by the year they were built, in sections per era with its years and
+  summary; captured ones show style and ruler) – captured ones in orange
   (with their capture date), the others in grey; tapping one opens its entry
   (or the locked page: distance and how to unlock it), both with *Show on
   map*. On the 2D map captured

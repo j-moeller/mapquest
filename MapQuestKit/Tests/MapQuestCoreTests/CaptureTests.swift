@@ -187,3 +187,111 @@ final class SightInfoTests: XCTestCase {
         XCTAssertTrue(old.readEntries.isEmpty)
     }
 }
+
+final class SightHistoryTests: XCTestCase {
+    func testErasAndRulers() throws {
+        func ruler(_ year: Int, _ sector: BerlinSector? = nil) -> String? { BerlinHistory.ruler(in: year, sector: sector)?.name }
+        func era(_ year: Int, _ sector: BerlinSector? = nil) -> String? { BerlinHistory.era(in: year, sector: sector)?.id }
+
+        XCTAssertNil(BerlinHistory.context(in: 1100), "before Brandenburg")
+        XCTAssertEqual(era(1230), "margraviate")
+        XCTAssertEqual(ruler(1230), "Ascanian margraves")
+        XCTAssertEqual(ruler(1542), "Joachim II Hector")
+        XCTAssertEqual(ruler(1695), "Frederick III")
+        XCTAssertEqual(era(1701), "prussia")
+        XCTAssertEqual(ruler(1786), "Frederick II, the Great", "succession in August: July counts")
+        XCTAssertEqual(ruler(1788), "Frederick William II")
+        XCTAssertEqual(ruler(1866), "William I")
+        XCTAssertEqual(era(1884), "empire")
+        XCTAssertEqual(ruler(1888), "Wilhelm II")
+        XCTAssertEqual(era(1918), "empire", "the revolution came in November")
+        XCTAssertEqual(ruler(1919), "Friedrich Ebert")
+        XCTAssertEqual(ruler(1932), "Paul von Hindenburg")
+        XCTAssertEqual(ruler(1936), "Adolf Hitler")
+        XCTAssertEqual(era(1945), "occupation")
+        XCTAssertEqual(era(1949, .east), "occupation", "the GDR was founded in October")
+
+        XCTAssertEqual(era(1965), "divided", "no sector: the divided city")
+        XCTAssertNil(ruler(1965))
+        XCTAssertEqual(era(1965, .east), "east")
+        XCTAssertEqual(ruler(1965, .east), "Walter Ulbricht")
+        XCTAssertEqual(ruler(1965, .west), "Ludwig Erhard")
+        XCTAssertEqual(ruler(1987, .east), "Erich Honecker")
+        XCTAssertEqual(ruler(1987, .west), "Helmut Kohl")
+        XCTAssertEqual(ruler(1990, .east), "Lothar de Maizière", "reunification came in October")
+        XCTAssertEqual(era(1991, .east), "reunified")
+        XCTAssertEqual(ruler(2005), "Gerhard Schröder")
+        XCTAssertEqual(ruler(2013, .west), "Angela Merkel", "the sector does not matter after 1990")
+        XCTAssertEqual(ruler(2026), "Friedrich Merz")
+
+        // Every era but the undivided fallback has rulers, all rulers have eras, in order.
+        let ids = Set(BerlinHistory.eras.map(\.id))
+        XCTAssertEqual(ids.count, BerlinHistory.eras.count)
+        for ruler in BerlinHistory.rulers {
+            XCTAssertTrue(ids.contains(ruler.era), ruler.name)
+            let era = try XCTUnwrap(BerlinHistory.eras.first { $0.id == ruler.era })
+            XCTAssertGreaterThanOrEqual(ruler.start, era.start - 1, "\(ruler.name) rules in \(era.name)")
+        }
+        for era in BerlinHistory.eras where era.id != "divided" {
+            let rulers = BerlinHistory.rulers.filter { $0.era == era.id }
+            XCTAssertFalse(rulers.isEmpty, era.name)
+            XCTAssertEqual(rulers.map(\.start), rulers.map(\.start).sorted(), era.name)
+        }
+        XCTAssertLessThan(BerlinHistory.order(of: try XCTUnwrap(BerlinHistory.era(in: 1800))),
+                          BerlinHistory.order(of: try XCTUnwrap(BerlinHistory.era(in: 1900))))
+    }
+
+    func testBundledBerlinHistory() throws {
+        let sights = try CaptureTests.berlinSights()
+        let catalog = try SightHistoryCatalog.decode(Data(contentsOf: BraunschweigDataTests.root.appendingPathComponent("Berlin/berlin-sight-history.json")))
+        XCTAssertEqual(catalog.entries.count, sights.count, "every sight has its history")
+        for (id, history) in catalog.entries {
+            XCTAssertNotNil(sights[id], "\(id) is a sight")
+            let year = try XCTUnwrap(history.year, id)
+            XCTAssertTrue((1157...2026).contains(year), id)
+            XCTAssertNotNil(history.built, id)
+            XCTAssertNotNil(history.sector, id)
+            XCTAssertNotNil(history.context?.ruler, "\(id): a ruler in \(year)")
+            for paragraph in history.historyParagraphs {
+                for markup in ["{{", "}}", "[[", "]]", "<ref", "()", "''"] {
+                    XCTAssertFalse(paragraph.contains(markup), "\(id): no \(markup) in the history")
+                }
+            }
+            XCTAssertLessThanOrEqual(history.history?.count ?? 0, 1_900, id)
+            for name in history.styles + history.architects + history.commissionedBy {
+                XCTAssertFalse(name.trimmingCharacters(in: .whitespaces).isEmpty, id)
+            }
+        }
+        XCTAssertGreaterThanOrEqual(catalog.entries.values.filter { $0.history != nil }.count, 75)
+        XCTAssertGreaterThanOrEqual(catalog.entries.values.filter { !$0.architects.isEmpty }.count, 95)
+
+        let gate = try XCTUnwrap(catalog["brandenburger-tor"])
+        XCTAssertEqual(gate.year, 1788)
+        XCTAssertEqual(gate.built, "1788–1791")
+        XCTAssertEqual(gate.styles, ["Neoclassicism"])
+        XCTAssertTrue(gate.architects.contains("Carl Gotthard Langhans"))
+        XCTAssertEqual(gate.context?.era.name, "Kingdom of Prussia")
+        XCTAssertEqual(gate.context?.ruler?.name, "Frederick William II")
+        XCTAssertEqual(gate.sectorDuringDivision, .east)
+        XCTAssertEqual(gate.epoch, "Built 1788–1791 · Kingdom of Prussia")
+        XCTAssertEqual(catalog["bebelplatz"]?.builtPhrase, "Laid out from 1741")
+        XCTAssertEqual(catalog["marienkirche"]?.builtPhrase?.hasPrefix("Built c. 1270"), true)
+        XCTAssertEqual(catalog["fernsehturm"]?.epoch, "Built 1965–1969 · East Berlin (GDR)")
+        XCTAssertEqual(catalog["fernsehturm"]?.context?.ruler?.name, "Walter Ulbricht")
+        XCTAssertEqual(catalog["philharmonie"]?.context?.ruler?.name, "Konrad Adenauer")
+        XCTAssertEqual(catalog["hufeisensiedlung"]?.sector, .west)
+        XCTAssertEqual(catalog["checkpoint-charlie"]?.sector, .west)
+        XCTAssertNil(catalog["humboldt-forum"]?.sectorDuringDivision, "built after 1990")
+    }
+
+    func testDecodesSparseEntries() throws {
+        let json = #"{"entries":{"a":{"year":1900,"sector":"west"},"b":{}}}"#
+        let catalog = try SightHistoryCatalog.decode(Data(json.utf8))
+        XCTAssertEqual(catalog["a"]?.context?.ruler?.name, "Wilhelm II")
+        XCTAssertEqual(catalog["b"]?.styles, [])
+        XCTAssertNil(catalog["b"]?.context)
+        let merged = SightHistoryCatalog.merged([catalog, SightHistoryCatalog(entries: ["a": SightHistory(year: 2000), "c": SightHistory()])])
+        XCTAssertEqual(merged["a"]?.year, 1900, "the first catalog wins")
+        XCTAssertNotNil(merged["c"])
+    }
+}

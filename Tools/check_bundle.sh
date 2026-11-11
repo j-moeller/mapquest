@@ -8,7 +8,8 @@ echo "$APP"
 missing=0
 for f in berlin-boundary.geojson berlin-districts.geojson demo-track.mqtrack berlin-terrain.dem berlin-buildings.sqlite.deflate \
          braunschweig-boundary.geojson braunschweig-districts.geojson braunschweig-terrain.dem braunschweig-buildings.sqlite.deflate \
-         peine-boundary.geojson peine-terrain.dem peine-buildings.sqlite.deflate; do
+         peine-boundary.geojson peine-terrain.dem peine-buildings.sqlite.deflate \
+         berlin-sights.json berlin-sight-info.json berlin-sight-history.json; do
     test -e "$APP/$f" || { echo "missing $f"; missing=1; }
 done
 [ "$missing" = 0 ] && echo "all bundled data present"

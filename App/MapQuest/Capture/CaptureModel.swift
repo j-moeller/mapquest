@@ -35,6 +35,8 @@ final class CaptureModel: ObservableObject {
     let catalog: SightCatalog
     /// The sights' entries (unlocked by capturing them).
     let infos: SightInfoCatalog
+    /// The sights' historical facts (unlocked with their entries).
+    let histories: SightHistoryCatalog
     /// Sights in cities with photorealistic 3D buildings (Apple Maps): their entries show them.
     let photorealistic3D: Set<String>
     @Published private(set) var log = CaptureLog()
@@ -66,6 +68,7 @@ final class CaptureModel: ObservableObject {
     init(bundle: Bundle = .main) {
         catalog = Self.loadCatalog(bundle)
         infos = Self.loadInfos(bundle)
+        histories = Self.loadHistories(bundle)
         photorealistic3D = Set(Cities.all.filter(\.hasPhotorealistic3D).flatMap { city in
             Self.loadCatalog(bundle, cities: [city]).sights.map(\.id)
         })
@@ -77,6 +80,15 @@ final class CaptureModel: ObservableObject {
             guard let url = bundle.url(forResource: "\(city.id)-sight-info", withExtension: "json"),
                   let data = try? Data(contentsOf: url) else { return nil }
             return try? SightInfoCatalog.decode(data)
+        })
+    }
+
+    /// The historical facts of all bundled cities (`<city>-sight-history.json`).
+    static func loadHistories(_ bundle: Bundle) -> SightHistoryCatalog {
+        .merged(Cities.all.compactMap { city -> SightHistoryCatalog? in
+            guard let url = bundle.url(forResource: "\(city.id)-sight-history", withExtension: "json"),
+                  let data = try? Data(contentsOf: url) else { return nil }
+            return try? SightHistoryCatalog.decode(data)
         })
     }
 

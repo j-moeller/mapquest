@@ -1,0 +1,2008 @@
+{
+ "license": "Facts: hand-checked (Tools/capture/berlin_sight_history.csv), Wikidata (CC0) and Wikipedia infoboxes; history texts: Wikipedia (CC BY-SA 4.0), from the article of the sight's entry.",
+ "entries": {
+  "brandenburger-tor": {
+   "year": 1788,
+   "built": "1788–1791",
+   "opened": "1791",
+   "styles": [
+    "Neoclassicism"
+   ],
+   "architects": [
+    "Carl Gotthard Langhans",
+    "Johann Gottfried Schadow (Quadriga)"
+   ],
+   "commissionedBy": [
+    "Frederick William II"
+   ],
+   "history": "In the time of King Frederick William I (1688), shortly after the Thirty Years' War and a century before today's Brandenburg Gate was constructed, Berlin was a small walled city within a star fort with several named gates: Spandauer Tor, St. Georgen Tor, Stralower Tor, Cöpenicker Tor, Neues Tor, and Leipziger Tor. Relative peace, a policy of religious tolerance, and status as capital of the Kingdom of Prussia facilitated the growth of the city. With the construction of Dorotheenstadt around 1670 and its inclusion in Berlin's city fortifications, a first gate was built on the site, approximately at the level of today's Schadowstraße, consisting of a breach through the raised wall and a drawbridge over the dug moat.\n\nWith the expansion of Dorotheenstadt to the west and the construction of the Berlin Customs Wall (Akzisemauer) in 1734, the latter of which enclosed the old fortified city and many of its then suburbs, a predecessor of today's Brandenburg Gate was built by the Court Architect Philipp Gerlach as a city gate on the road to Brandenburg an der Havel. The gate system consisted of two Baroque pylons decorated with pilasters and trophies, to which the gate wings were attached. In addition to the ornamental gate, there were simple passages for pedestrians in the wall, which were decorated with ornamental vases at this point.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q82425"
+  },
+  "reichstag": {
+   "year": 1884,
+   "built": "1884–1894, rebuilt 1995–1999",
+   "opened": "1894",
+   "styles": [
+    "Neo-Renaissance"
+   ],
+   "architects": [
+    "Paul Wallot",
+    "Norman Foster (rebuilding, 1999)"
+   ],
+   "commissionedBy": [
+    "Reichstag of the German Empire"
+   ],
+   "history": "Construction of the building began well after the unification of Germany in 1871. Starting in 1871, and for the next 23 years, the parliament met in the former property of the Königliche Porzellan-Manufaktur Berlin, at Leipziger Straße 4. In 1872, an architectural contest with 103 participating architects was carried out to erect a new building, a contest won by Ludwig Bohnstedt. The plan incorporated the Königsplatz (today's Platz der Republik), which was then occupied by the palace of a Polish-Prussian aristocrat, Athanasius Raczyński. That property was unavailable at the time.\n\nIn 1882, another architectural contest was held, with 200 architects participating. This time, the winner—the Frankfurt architect Paul Wallot—would actually see his Neo-Baroque project executed. The direct model for Wallot's design was Philadelphia's Memorial Hall, the main building of the 1876 Centennial Exhibition. Wallot adorned the building's façade with crowns and eagles symbolising imperial strength. The building's four corner towers represented the four German kingdoms at unification, Prussia, Bavaria, Saxony and Württemberg, and the heraldic coat of arms of each kingdom, as well as smaller devices representing various German city-states, flanked the main entrance, celebrating the process of unification. Some of the Reichstag's decorative sculptures, reliefs, and inscriptions were by sculptor Otto Lessing.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q151897"
+  },
+  "fernsehturm": {
+   "year": 1965,
+   "built": "1965–1969",
+   "opened": "1969",
+   "styles": [
+    "Modernism"
+   ],
+   "architects": [
+    "Fritz Dieter",
+    "Günter Franke",
+    "Hermann Henselmann"
+   ],
+   "commissionedBy": [
+    "Deutsche Post of the GDR"
+   ],
+   "history": "At the European Broadcasting Conference in Stockholm in 1952, which was responsible for the coordination of frequency waves in Europe, the GDR – not recognised politically by most countries at the time – was only allocated two frequency channels. Under these circumstances, it was impossible to cover Berlin's urban area by multiple small broadcasting stations without interference and thus disturbances or gaps in the broadcasting signals. For comprehensive and continuous coverage, a powerful large broadcasting facility at the highest possible location was required. In the 1950s, this task was fulfilled in Berlin by the fragile makeshift stations of Deutscher Fernsehfunk (East German broadcasting organisation).\n\nAs early as 1952, GDR's Deutsche Post began planning a TV tower for Berlin. The plans initially involved a location in the southeast of Berlin. However, the project was interrupted after construction had started, when it transpired that the site was only 8 km away from the Berlin Schönefeld Airport (now part of Berlin Brandenburg Airport) and the tower threatened to jeopardise flight operations due to its height and location at the edge of an airport corridor. After various compromise solutions failed, the construction project was discontinued in 1956. In the following years, alternatives were sought and several sites were discussed, including in Berlin Friedrichshain, but these plans also fell victim to austerity measures triggered by the high costs of building the Berlin Wall.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q151356"
+  },
+  "berliner-dom": {
+   "year": 1894,
+   "built": "1894–1905",
+   "opened": "1905",
+   "styles": [
+    "Neo-Renaissance",
+    "Neo-Baroque"
+   ],
+   "architects": [
+    "Julius Carl Raschdorff"
+   ],
+   "commissionedBy": [
+    "Wilhelm II"
+   ],
+   "history": "Berlin Cathedral has a long history starting as a Catholic place of worship in the 15th century.\n\nThe history of today's Supreme Parish and Collegiate Church and its community dates back to 1451. In that year Prince-Elector Frederick II Irontooth of Brandenburg moved with his residence from Brandenburg upon Havel to Cölln (today's Fishers' Island, the southern part of Museums Island) into the newly erected City Palace, which also housed a Catholic chapel. In 1454 Frederick Irontooth, after having returned – via Rome – from his pilgrimage to Jerusalem, elevated the chapel to become a parish church, richly endowing it with relics and altars. Pope Nicholas V ordered Stephan Bodecker, then Prince-Bishop of Brandenburg, to consecrate the chapel to Erasmus of Formiae.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q154563"
+  },
+  "pergamonmuseum": {
+   "year": 1910,
+   "built": "1910–1930",
+   "opened": "1930",
+   "styles": [
+    "Neoclassicism"
+   ],
+   "architects": [
+    "Alfred Messel",
+    "Ludwig Hoffmann"
+   ],
+   "commissionedBy": [
+    "Royal Museums of Berlin"
+   ],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q157298"
+  },
+  "altes-museum": {
+   "year": 1825,
+   "built": "1825–1830",
+   "opened": "1830",
+   "styles": [
+    "Neoclassicism"
+   ],
+   "architects": [
+    "Karl Friedrich Schinkel"
+   ],
+   "commissionedBy": [
+    "Frederick William III"
+   ],
+   "history": "In the early nineteenth century, Germany's bourgeoisie had become increasingly self-aware and self-confident. This growing class began to embrace new ideas regarding the relationship between itself and art, and the concepts that art should be open to the public and that citizens should be able to have access to a comprehensive cultural education began to pervade society. King Friedrich Wilhelm III of Prussia was a strong proponent of this Humboldtian ideal for education and charged Karl Friedrich Schinkel with planning a public museum for the royal art collection.\n\nSchinkel's plans for the Königliches Museum, as it was then known, were also influenced by drafts of the crown prince, the future King Friedrich Wilhelm IV, who desired a building that was heavily influenced by Classical antiquity. The crown prince even sent Schinkel a pencil sketch of a large hall adorned with a classical portico.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q156722"
+  },
+  "neues-museum": {
+   "year": 1843,
+   "built": "1843–1855, rebuilt 2003–2009",
+   "opened": "1855",
+   "styles": [
+    "Neoclassicism"
+   ],
+   "architects": [
+    "Friedrich August Stüler",
+    "David Chipperfield (rebuilding, 2009)"
+   ],
+   "commissionedBy": [
+    "Frederick William IV"
+   ],
+   "history": "Construction of the Neues Museum began on 19 June 1841, under the auspices of a committee established by Frederick William IV, which included the curator of the Royal Museums, Ignaz von Olfers, as well as Friedrich August Stüler. The king, with his cabinet, had already ordered that the construction project be assigned to Stüler on 8 March 1841. The poor quality of the ground at the building site became apparent when workers discovered deposits of diatomaceous earth just below the surface. Therefore, a pile structure was necessary under the whole building, consisting of 2344 wooden foundation piles between 6.9–18.2 m long. To ram the piles in, a 5 HP steam engine was used, whose power could be increased if necessary to 10 HP. It drove the pumps that drained the building site, the elevators, and the mortar mixing machines. The newsletter of the Berlin Architecture Association reported on the building site and the new technical devices.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q157316"
+  },
+  "alte-nationalgalerie": {
+   "year": 1866,
+   "built": "1866–1876",
+   "opened": "1876",
+   "styles": [
+    "Neoclassicism"
+   ],
+   "architects": [
+    "Friedrich August Stüler",
+    "Johann Heinrich Strack"
+   ],
+   "commissionedBy": [
+    "Frederick William IV (first sketch)",
+    "William I"
+   ],
+   "history": "The first impetus to founding a national gallery came in 1815. The idea gained momentum during the 1830s, but without an actual building. In 1841 the first real plans were created. These plans never made it out of the planning stages, but finally in 1861 the National Gallery was founded, after banker Johann Heinrich Wagener donated 262 paintings by both German and foreign artists. This donation formed the basis of the current collection. The collection was first known as Wagenersche und Nationalgalerie (Wagener and National Gallery) and was housed in the buildings of the Akademie der Künste. The current building, shaped like a Roman temple with an appended apse, was designed by Friedrich August Stüler and after his death, realised in detail under Carl Busse.\n\nFriedrich August Stüler began working on a design for the building in 1863, based on a sketch by King Frederick William IV of Prussia. Two years and two failed plans later, his third proposal was finally accepted. Stüler died before planning was completed and Carl Busse handled the remaining details in 1865. In 1866, by order of the king and his cabinet, the Kommission für den Bau der Nationalgalerie (Commission for the construction of the national gallery) was created. Ground was broken in 1867 under the supervision of Heinrich Strack. In 1872 the structure was completed and interior work began. The opening took place on 22 March 1876, in the presence of the Kaiser.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q162111"
+  },
+  "bode-museum": {
+   "year": 1897,
+   "built": "1897–1904",
+   "opened": "1904",
+   "styles": [
+    "Neo-Baroque"
+   ],
+   "architects": [
+    "Ernst von Ihne"
+   ],
+   "commissionedBy": [
+    "Royal Museums of Berlin (Wilhelm von Bode)"
+   ],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q157825"
+  },
+  "humboldt-forum": {
+   "year": 2013,
+   "built": "2013–2020",
+   "opened": "2020",
+   "styles": [
+    "Baroque (rebuilt façades)",
+    "Modernism"
+   ],
+   "architects": [
+    "Franco Stella",
+    "Andreas Schlüter (palace of 1698–1713)"
+   ],
+   "commissionedBy": [
+    "German Bundestag"
+   ],
+   "history": "The Humboldt Forum incorporates the exhibitions of two museums, the Ethnological Museum of Berlin and the Museum of Asian Art. Both had their roots in the Ancient Prussian Art Chamber. The Ancient Prussian Art Chamber was originally established by Joachim II Hector, Elector of Brandenburg in the mid 16th century, but was nearly destroyed during the Thirty Years' War (1618–1648). The art chamber was rebuilt as a magnificent collection by Frederick William, Elector of Brandenburg, and was moved to the newly extended Berlin Palace by Frederick I of Prussia in the early 18th century. The Ethnological Museum opened in 1886 as a successor of the Ancient Prussian Art Chamber; the Museum of Asian Art originated as the Indian Department of the Ethnological Museum in 1904. Wilhelm von Bode, the Director-General of the Royal Museums in Berlin, established the Museum of East Asian Art as a separate collection in 1906. In 2006 the Museum of Indian Art and the Museum of East Asian Art were merged to form the Museum of Asian Art.\n\nFrom 2020 the Ethnological Museum and the Museum of Asian Art are both part of the Humboldt Forum in the Berlin Palace. By 2019, the Forum's overall costs totaled $700 million; at the time, it was considered Europe's most expensive cultural project. Its opening was initially planned for autumn 2019, then delayed to 2020 due to technical problems, including with its air conditioning system. Delivery delays and the unavailability of workers during a lockdown due to the COVID-19 pandemic in Germany pushed it back a few months further. In April 2020, two tar cookers exploded at the construction site, injuring one worker.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q20196262"
+  },
+  "rotes-rathaus": {
+   "year": 1861,
+   "built": "1861–1869",
+   "opened": "1869",
+   "styles": [
+    "Neo-Renaissance"
+   ],
+   "architects": [
+    "Hermann Friedrich Waesemann"
+   ],
+   "commissionedBy": [
+    "City of Berlin"
+   ],
+   "history": "The town hall was built between 1861 and 1869 in the style of the Northern Italy High Renaissance by Hermann Friedrich Waesemann. It was modelled on the Old Town Hall of Toruń, Poland, while the architecture of the tower is reminiscent of the cathedral tower of the Cathedral of Laon, France. It replaced several individual buildings dating from the Middle Ages and now occupies an entire city block.\n\nThe building was heavily damaged by Allied bombing in World War II and rebuilt to the original plans between 1951 and 1956. The Neues Stadthaus, which survived the bombing and had formerly been the head office of Berlin's municipal fire insurance Feuersozietät in Parochialstraße served as the temporary city hall for the post-war city government for all the sectors of Berlin until September 1948. Following that time, it housed only those of the Soviet sector. The reconstructed Red Town Hall, then located in the Soviet sector, served as the town hall of East Berlin, while the Rathaus Schöneberg was the town hall of West Berlin. \"Red Town Hall\" (Rotes Rathaus) was also used figuratively to designate the socialist government of East Berlin, the Magistrat. After German reunification, the administration of reunified Berlin officially moved into the building on 1 October 1991.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q155210"
+  },
+  "neptunbrunnen": {
+   "year": 1888,
+   "built": "1888–1891",
+   "opened": "1891",
+   "styles": [
+    "Neo-Baroque"
+   ],
+   "architects": [
+    "Reinhold Begas"
+   ],
+   "commissionedBy": [
+    "City of Berlin (a gift to Wilhelm II)"
+   ],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q650657"
+  },
+  "marienkirche": {
+   "year": 1270,
+   "built": "c. 1270–1290, rebuilt after the fire of 1380",
+   "opened": null,
+   "styles": [
+    "Brick Gothic"
+   ],
+   "architects": [
+    "Carl Gotthard Langhans (spire, 1790)"
+   ],
+   "commissionedBy": [],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q679101"
+  },
+  "weltzeituhr": {
+   "year": 1969,
+   "built": "1969",
+   "opened": "1969",
+   "styles": [
+    "Modernism"
+   ],
+   "architects": [
+    "Erich John"
+   ],
+   "commissionedBy": [
+    "East Berlin (redesign of Alexanderplatz)"
+   ],
+   "history": "The sixteen ton world clock was opened to the public on 30 September 1969, shortly before the twentieth anniversary of the German Democratic Republic, along with the Fernsehturm in East Berlin. The erection of the clock was part of a larger plan to expand and reorganize Alexanderplatz as a whole. At the end of the renovations, the public square was four times larger than it was at the end of the World War II.\n\nThe clock was designed by the designer Erich John, who at the time was an employee of the planning group for the transformation of Alexanderplatz under the direction of Walter Womacka. Before designing the clock and managing its construction, John was a lecturer at Kunsthochschule Berlin-Weißensee (then called the Hochschule für bildende und angewandte Kunst, \"College of Fine and Applied Arts\"), where he taught product design. The idea to erect a clock in Alexanderplatz was had when the wreckage of the Uraniasäule (a.k.a. Wettersäule), a pre-World War II public clock, was found during the restoration of the square in 1966.\n\nThe construction of the clock required more than 120 engineers and other experts, including the sculptor Hans-Joachim Kunsch; the Getriebefabrik Coswig company was also instrumental in its construction. In Germany at the time, there was no widely recognized design award, so John did not receive one for his work. However, he received a design award for a different design of his in 1982.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q186173"
+  },
+  "alexanderplatz": {
+   "year": 1805,
+   "built": "named 1805, rebuilt 1966–1971",
+   "opened": null,
+   "styles": [
+    "Socialist Modernism (1960s rebuilding)"
+   ],
+   "architects": [
+    "Joachim Näther (1960s rebuilding)"
+   ],
+   "commissionedBy": [],
+   "history": "A hospital stood at the location of present-day Alexanderplatz in the 13th century. Named Heiliger Georg (St. George), the hospital gave its name to the nearby Georgentor (George Gate) of the Berlin city wall. Outside the city walls, this area was largely undeveloped until around 1400, when the first settlers began building thatched cottages. As a gallows was located close by, the area earned the nickname the Teufels Lustgarten ('Devil's Pleasure Garden').\n\nThe George Gate became the most important of Berlin's city gates during the 16th century, being the main entry point for goods arriving along the roads to the north and north-east of the city, for example from Oderberg, Prenzlau and Bernau, and the big Hanseatic cities on the Baltic Sea.\n\nAfter the Thirty Years' War, the city wall was strengthened. From 1658 to 1683, a citywide fortress was constructed to plans by the Linz master builder, Johann Gregor Memhardt. The new fortress contained 13 bastions connected by ramparts and was preceded by a moat measuring up to 50 m wide. Within the new fortress, many of the historic city wall gates were closed. For example, the southeastern Stralauer Gate was closed but the Georgian Gate remained open, making the Georgian Gate an even more important entrance to the city.\n\nIn 1681, the trade of cattle and pig fattening was banned within the city. Frederick William, the Great Elector, granted cheaper plots of land, waiving the basic interest rate, in the area in front of the Georgian Gate. Settlements grew rapidly and a weekly cattle market was established on the square in front of the Gate.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q152783"
+  },
+  "nikolaikirche": {
+   "year": 1230,
+   "built": "c. 1230, hall church c. 1380–1470",
+   "opened": null,
+   "styles": [
+    "Brick Gothic"
+   ],
+   "architects": [
+    "Hermann Blankenstein (towers, 1878)"
+   ],
+   "commissionedBy": [],
+   "history": "Originally a Roman Catholic church, the Church of St. Nicholas adopted Lutheranism after the Reformation reached the Electorate of Brandenburg in 1539. In the 17th century, the prominent hymn-writer Paul Gerhardt was the minister of the church, and the composer Johann Crueger was musical director. The prominent Lutheran theologian Provost Philipp Jacob Spener was the minister from 1691 to 1705. From 1913 to 1923, the minister at the Church of St. Nicholas was Wilhelm Wessel, whose son Horst Wessel later became famous as a Nazi: the family lived in the nearby Jüdenstraße.\n\nOn Reformation Day in 1938 (October 31) the church building served its congregation for the last time. Then the building, the oldest structure in Berlin proper, was given up to the government, to be used as a concert hall and ecclesiastical museum. The number of parishioners had shrunk due to the ever intensifying gentrification of the inner city, as residential premises became superseded by offices and shops. The congregation later merged with that of the Church of Our Lady.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q679052"
+  },
+  "gendarmenmarkt": {
+   "year": 1688,
+   "built": "laid out from 1688",
+   "opened": null,
+   "styles": [
+    "Baroque"
+   ],
+   "architects": [
+    "Johann Arnold Nering (plan of the Friedrichstadt)"
+   ],
+   "commissionedBy": [
+    "Frederick III, Elector of Brandenburg"
+   ],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q170103"
+  },
+  "konzerthaus": {
+   "year": 1818,
+   "built": "1818–1821, rebuilt 1979–1984",
+   "opened": "1821",
+   "styles": [
+    "Neoclassicism"
+   ],
+   "architects": [
+    "Karl Friedrich Schinkel"
+   ],
+   "commissionedBy": [
+    "Frederick William III"
+   ],
+   "history": "The building's predecessor, the National-Theater in the Friedrichstadt suburb, was destroyed by fire in 1817. It had been designed by Carl Gotthard Langhans, and was inaugurated on 1 January 1802.\n\nThe new hall was designed by Karl Friedrich Schinkel between 1818 and 1821. The new Königliches Schauspielhaus was inaugurated on 18 June 1821 with the acclaimed premiere of Carl Maria von Weber's opera Der Freischütz. Other works that have premiered at this theater include Undine by E. T. A. Hoffmann in 1816. During the 1848 Revolution its main auditorium housed the Prussian National Assembly for several weeks in September, with the Gendarmenmarkt a major arena of political events.\n\nNotable premieres during this period included Penthesilea by Heinrich von Kleist in 1876, and The Assumption of Hannele by Gerhart Hauptmann in 1893.\n\nAfter World War I the Schauspielhaus reopened under the name of Preußisches Staatstheater Berlin in October 1919. Under the direction of noted German Expressionist producer and director Leopold Jessner, it soon became one of the leading theaters of the Weimar Republic, a tradition ambivalently continued by his successor Gustaf Gründgens after the Nazi takeover in 1933. Gründgens directed a famous staging of Goethe's Faust and the premiere of Gerhart Hauptmann's tragedy Iphigenie in Delphi in 1941.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q702548"
+  },
+  "franzoesischer-dom": {
+   "year": 1701,
+   "built": "1701–1705, tower 1780–1785",
+   "opened": "1705",
+   "styles": [
+    "Baroque",
+    "Neoclassicism (tower)"
+   ],
+   "architects": [
+    "Louis Cayart",
+    "Abraham Quesnay",
+    "Carl von Gontard (tower)"
+   ],
+   "commissionedBy": [
+    "Huguenot congregation",
+    "Frederick II (tower)"
+   ],
+   "history": "Louis Cayart and Abraham Quesnay built the first parts of the French Church between 1701 and 1705 for the Huguenot (ethnic French Calvinist) community. During this time, Huguenots constituted about 25 percent of the city population. The French Church was modelled after the destroyed Huguenot temple in Charenton-Saint-Maurice, France.\n\nIn 1785, Carl von Gontard modified the church and built an adjacent domed tower, which eventually gave the church its name. Technically speaking, the tower is not part of the church, and both buildings have different proprietors. The tower was built to embellish the Gendarmenmarkt ensemble at the instigation of Frederick the Great. The Deutscher Dom, however, on the other side of Gendarmenmarkt, consists of church building and tower as an entity.\n\nIn 1817, the French Church community, like most Prussian Calvinist Reformed and Lutheran congregations joined the common umbrella organization \"Evangelical Church in Prussia\", with each congregation maintaining its former denomination or adopting the new united denomination. The community of the \"French Church of Friedrichstadt\" maintained its Calvinist denomination.\n\nNevertheless, already before the union of the Prussian Protestants the congregation underwent a certain acculturation with Lutheran traditions: in 1753, an organ was installed, competing with the Calvinist tradition of congregational singing without accompaniment. The singing of psalms was extended by hymns in 1791. The sober interior was refurbished in a more decorative but still Calvinist aniconistic style by Otto March in 1905. Today's community is part of the Evangelical Church of Berlin-Brandenburg-Silesian Upper Lusatia.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q315694"
+  },
+  "deutscher-dom": {
+   "year": 1701,
+   "built": "1701–1708, tower 1780–1785, rebuilt 1983–1996",
+   "opened": "1708",
+   "styles": [
+    "Baroque",
+    "Neoclassicism (tower)"
+   ],
+   "architects": [
+    "Martin Grünberg",
+    "Giovanni Simonetti",
+    "Carl von Gontard (tower)"
+   ],
+   "commissionedBy": [
+    "Frederick II (tower)"
+   ],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q315644"
+  },
+  "bebelplatz": {
+   "year": 1741,
+   "built": "laid out from 1741",
+   "opened": null,
+   "styles": [
+    "Frederician Rococo"
+   ],
+   "architects": [
+    "Georg Wenzeslaus von Knobelsdorff",
+    "Micha Ullman (book-burning memorial, 1995)"
+   ],
+   "commissionedBy": [
+    "Frederick II"
+   ],
+   "history": "Parts of the fortification of Berlin built in the aftermath of the Thirty Years' War (the baroque Berlin Fortress) were later integrated into the boulevard Unter den Linden when the fortifications had become useless through the advance of artillery pieces. The site of the fortifications is visible until today, as there are no linden trees on this stretch up to the Berlin Palace on the Spree river island itself. The avenue of trees in the direction of the Brandenburg Gate begins where it once began outside the fortifications.\n\nThe square, then called Platz am Opernhaus (i.e., square at the opera house), was laid out between 1741 and 1743 under the rule of King Frederick II of Prussia. Frederick \"the Great\" had planned a much larger Forum Fridericianum, but his distant cousin, Frederick William, Margrave of Brandenburg-Schwedt, refused to sell his palace, the predecessor of today's Old Palace, for demolition. So the king felt compelled to take this house, which was in the middle of his plans, into consideration and to scale these down significantly. In return, however, he forced his cousin to give up his garden and some outbuildings, whereupon the Royal Library was built, which is directly adjacent to the back of the margravial house.\n\nThe Opernplatz (today Bebelplatz), which was a bit cramped as a result, has survived almost unchanged: State Opera, St. Hedwig's Cathedral, the Old Library Building and the Palace of Prince Henry, the king's brother, today the main building of Humboldt University, giving the square an almost complete surround of 18th-century buildings.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q699504"
+  },
+  "staatsoper": {
+   "year": 1741,
+   "built": "1741–1743",
+   "opened": "1742",
+   "styles": [
+    "Neoclassicism (Palladianism)"
+   ],
+   "architects": [
+    "Georg Wenzeslaus von Knobelsdorff",
+    "Richard Paulick (rebuilding, 1955)"
+   ],
+   "commissionedBy": [
+    "Frederick II"
+   ],
+   "history": "Originally called the Königliche Oper ('Royal Opera'), the company was renamed the Preußische Staatsoper ('Prussian State Opera') in 1919. After World War II it began operating as the national opera company for Communist East Germany, taking the name Deutsche Staatsoper ('German State Opera') in 1955.\n\nIn the West and colloquially, however, people used the name Staatsoper Unter den Linden ('State Opera Unter den Linden') after the boulevard on which the theatre sits. This usage became more common after the collapse of East Germany in 1990, but, contrary to the company's website, it was not officially adopted until 1995 and the old name still appeared on new recordings issued by the company as late as the following year.\n\nKing Frederick II of Prussia, shortly after his accession to the throne, commissioned the original building on the site. Though architecturally significant as an early example of the Palladian revival in Germany, the north and west façades are direct copies of Colen Campbell's elevations at Stourhead and Wanstead respectively. Construction work began in July 1741, with what was designed by Georg Wenzeslaus von Knobelsdorff to be the first part of a \"Forum Fredericianum\" on present-day Bebelplatz. Although not entirely completed, the Court Opera (Hofoper) was inaugurated with a performance of Carl Heinrich Graun's Cesare e Cleopatra on 7 December 1742. This event marked the beginning of the successful, 250-year co-operation between the Staatsoper and the Staatskapelle Berlin, the state orchestra, whose roots trace back to the 16th century.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q312576"
+  },
+  "hedwigs-kathedrale": {
+   "year": 1747,
+   "built": "1747–1773",
+   "opened": "1773",
+   "styles": [
+    "Neoclassicism"
+   ],
+   "architects": [
+    "Georg Wenzeslaus von Knobelsdorff",
+    "Jean Laurent Legeay",
+    "Johann Boumann"
+   ],
+   "commissionedBy": [
+    "Frederick II"
+   ],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q170123"
+  },
+  "neue-wache": {
+   "year": 1816,
+   "built": "1816–1818",
+   "opened": "1818",
+   "styles": [
+    "Neoclassicism"
+   ],
+   "architects": [
+    "Karl Friedrich Schinkel",
+    "Heinrich Tessenow (memorial, 1931)"
+   ],
+   "commissionedBy": [
+    "Frederick William III"
+   ],
+   "history": "King Frederick William III of Prussia ordered the construction of the Neue Wache as a guardhouse for the Königliches Palais (Royal Palace), his palace across the road, to replace the old Artillery Guardhouse. He commissioned Schinkel, the leading exponent of Neoclassical architecture, to design the building: this was Schinkel's first major commission in Berlin. The Neue Wache was inaugurated on 18 September 1818 by the Prussian 1st Guards Grenadiers on occasion of the official visit of Tsar Alexander I of Russia.\n\nLocated between the Zeughaus and the Humboldt University, the plain building is characterised by four massive corner risalits and a portico of Doric columns, of the original Greek form, without bases. Schinkel wrote of his design: \"The plan of this completely exposed building, free on all sides, is approximately the shape of a Roman castrum, thus the four sturdier corner towers and the inner courtyard.\" The statuary in the tympanum is intended as a memorial to Prussia's role in the Napoleonic Wars, whose final stage is known in Germany as the Wars of Liberation. It shows Nike, the goddess of victory, deciding a battle. The triglyphs and guttae of the Doric order are omitted. The Jewish architect Salomo Sachs (1772–1855) describes in his autobiography that his architectural designs for the Neue Wache, submitted in 1806 for the Academy Exhibition in Berlin, served as the basis for Schinkel's executed plans.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q152341"
+  },
+  "dhm": {
+   "year": 1695,
+   "built": "1695–1730 (Zeughaus)",
+   "opened": null,
+   "styles": [
+    "Baroque"
+   ],
+   "architects": [
+    "Johann Arnold Nering",
+    "Martin Grünberg",
+    "Andreas Schlüter",
+    "Jean de Bodt",
+    "I. M. Pei (exhibition hall, 2003)"
+   ],
+   "commissionedBy": [
+    "Frederick III, Elector of Brandenburg"
+   ],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q688335"
+  },
+  "humboldt-universitaet": {
+   "year": 1748,
+   "built": "1748–1766 (Prince Henry's Palace)",
+   "opened": "1810 (university)",
+   "styles": [
+    "Baroque"
+   ],
+   "architects": [
+    "Johann Boumann",
+    "Georg Wenzeslaus von Knobelsdorff"
+   ],
+   "commissionedBy": [
+    "Frederick II (palace)",
+    "Frederick William III (university)"
+   ],
+   "history": "The main building of Humboldt-Universität is the Prinz-Heinrich-Palais (English: Prince Henry's Palace) on Unter den Linden boulevard in the historic centre of Berlin. It was erected from 1748 to 1753 for Prince Henry of Prussia, the brother of Frederick the Great, according to plans by Johann Boumann in Baroque style. In 1809, the former Royal Prussian residence was converted into a university building. Damaged during the Allied bombing in World War II, it was rebuilt from 1949 to 1962.\n\nIn 1967, eight statues from the destroyed Potsdam City Palace were placed on the side wings of the university building. Currently, there is a discussion about returning the statues to the Potsdam City Palace, which was rebuilt as the Landtag of Brandenburg in 2013.\n\nSimilarly to the University of Bonn, the University of Berlin was established by King Friedrich Wilhelm III on 16 August 1809, during the period of the Prussian Reform Movement, on the initiative of the liberal Prussian philosopher and linguist Wilhelm von Humboldt. The university was located in a palace constructed from 1748 to 1766 for the late Prince Henry, the younger brother of Frederick the Great. After his widow and her ninety-member staff moved out, the first unofficial lectures were given in the building in the winter of 1809. Humboldt faced great resistance to his ideas as he set up the university. He submitted his resignation to the King in April 1810, and was not present when the school opened that fall.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q152087"
+  },
+  "holocaust-mahnmal": {
+   "year": 2003,
+   "built": "2003–2005",
+   "opened": "2005",
+   "styles": [
+    "Contemporary"
+   ],
+   "architects": [
+    "Peter Eisenman"
+   ],
+   "commissionedBy": [
+    "German Bundestag"
+   ],
+   "history": "The debates over the existence and form of such a memorial extend back to the late 1980s, when a small group of private West German citizens, led by television journalist Lea Rosh and historian Eberhard Jäckel, first began pressing for West Germany to honor the six million Jews murdered in the Holocaust. Rosh soon emerged as the driving force behind the memorial. In 1989, she founded a group to support its construction and to collect donations. With growing support, the Bundestag (the German federal parliament) passed a resolution in favour of the project. On 25 June 1999, the Bundestag decided to build the memorial designed by Peter Eisenman. A federal foundation (Foundation for the Memorial to the Murdered Jews of Europe (Stiftung Denkmal für die ermordeten Juden Europas) was consequently founded to run it.\n\nIn April 1994 a competition for the memorial's design was announced in Germany's major newspapers. Twelve artists were specifically invited to submit a design and given 50,000 DM (€25,000) to do so. The winning proposal was to be selected by a jury consisting of representatives from the fields of art, architecture, urban design, history, politics and administration, including Frank Schirrmacher, co-editor of the Frankfurter Allgemeine Zeitung. The deadline for the proposals was 28 October. On 11 May, an information colloquium took place in Berlin, where people interested in submitting a design could receive some more information about the nature of the memorial to be designed. Ignatz Bubis, the president of the Central Council of Jews in Germany, and Wolfgang Nagel, the construction senator of Berlin, spoke at the event.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q160700"
+  },
+  "checkpoint-charlie": {
+   "year": 1961,
+   "built": "1961",
+   "opened": "1961",
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [
+    "US Army (Western Allies)"
+   ],
+   "history": "Between 1949 and 1961, over 2½ million East Germans fled to the West. The numbers increased during the three years before the Berlin Wall was erected, with 144,000 in 1959, 199,000 in 1960 and 207,000 in the first seven months of 1961 alone. The 3.5 million East Germans who had left by 1961 totaled approximately 20% of the entire East German population.\n\nThe emigrants tended to be young and well educated, including many professionals — engineers, technicians, physicians, teachers, lawyers and skilled workers. The brain drain became damaging to the political credibility and economic viability of East Germany.\n\nBy the early 1950s, the Soviet method of restricting emigration was emulated by most of the rest of the Eastern Bloc, including East Germany. However, in occupied Germany, until 1952, the lines between East Germany and the western occupied zones remained easily crossed in most places. Subsequently, the inner German border between the two German states was closed and a barbed-wire fence erected.\n\nEven after closing of the inner German border officially in 1952, the city sector border in between East Berlin and West Berlin remained considerably more accessible than the rest of the border because it was administered by all four occupying powers, so Berlin became the main route by which East Germans left for the West.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q68689"
+  },
+  "hackesche-hoefe": {
+   "year": 1906,
+   "built": "1906–1907",
+   "opened": null,
+   "styles": [
+    "Art Nouveau"
+   ],
+   "architects": [
+    "Kurt Berndt",
+    "August Endell"
+   ],
+   "commissionedBy": [],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q736425"
+  },
+  "neue-synagoge": {
+   "year": 1859,
+   "built": "1859–1866",
+   "opened": "1866",
+   "styles": [
+    "Moorish Revival"
+   ],
+   "architects": [
+    "Eduard Knoblauch",
+    "Friedrich August Stüler"
+   ],
+   "commissionedBy": [
+    "Jewish Community of Berlin"
+   ],
+   "history": "The New Synagogue was built to serve the growing Jewish population in Berlin, in particular, immigrants from the East. It was the largest synagogue in Germany at the time, seating 3,000 people. The building housed public concerts, including a violin concert with Albert Einstein in 1930. With an organ and a choir, the religious services reflected the liberal developments in the Jewish community of the time.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q246474"
+  },
+  "naturkundemuseum": {
+   "year": 1883,
+   "built": "1883–1889",
+   "opened": "1889",
+   "styles": [
+    "Neo-Renaissance"
+   ],
+   "architects": [
+    "August Tiede"
+   ],
+   "commissionedBy": [
+    "Prussian state"
+   ],
+   "history": "When the Friedrich Wilhelm University of Berlin, now the Humboldt University of Berlin, opened in 1810, the existing scientific and medical collections were combined and made accessible to the public for the first time. Therefore the Geological-Paleontological Museum, the Mineralogical-Petrographic Museum and the Zoological Museum were founded and were open to anyone interested to visit. Around 1880, the constantly growing collections based on donations, purchases and expedition finds took up around two thirds of the space in the main building, Unter den Linden, and \"formed an oppressive burden\". The royal state government therefore decided in 1874 to build new buildings for the agricultural college and the collection of the Museum of Natural History on the site of the already closed Royal Iron Foundry on Invalidenstrasse. The architectural competition that was announced contained the requirements to enable all collection elements to be arranged as uniformly as possible. The winner of the competition was the architect August Tiede, who initially suggested storing the exhibits separately, but then had to give up.\n\nAs a result, a multi-wing building was built at Invalidenstrasse 43 between 1875 and 1880 under the senior construction management of Friedrich Kleinwächter and the construction management of the government architect Hein. The opening was celebrated on 2 December 1889.\n\nContrary to initial plans, the Natural History Museum only made part of its holdings accessible to the public as a display collection, while the main collection was reserved for interdisciplinary research work. This practice, which is common today, was considered revolutionary at the time. The first building extension was built between 1914 and 1917.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q233098"
+  },
+  "hamburger-bahnhof": {
+   "year": 1846,
+   "built": "1846–1847",
+   "opened": "1996 (museum)",
+   "styles": [
+    "Neoclassicism"
+   ],
+   "architects": [
+    "Friedrich Neuhaus",
+    "Ferdinand Wilhelm Holz",
+    "Josef Paul Kleihues (museum, 1996)"
+   ],
+   "commissionedBy": [
+    "Berlin–Hamburg Railway Company"
+   ],
+   "history": null,
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q584756"
+  },
+  "hauptbahnhof": {
+   "year": 1995,
+   "built": "1995–2006",
+   "opened": "2006",
+   "styles": [
+    "Contemporary"
+   ],
+   "architects": [
+    "Meinhard von Gerkan (gmp)"
+   ],
+   "commissionedBy": [
+    "Deutsche Bahn"
+   ],
+   "history": "Between 1868 and 1871, a 239 km railway was built between Hannover and Berlin via Lehrte by the Magdeburg Halberstädter railway company. Lehrter Bahnhof was constructed as the Berlin terminus. It was adjacent to Hamburger Bahnhof, just outside what was then Berlin's boundary at the Humbolthafen port on the river Spree. Its architects were Alfred Lent, Bertold Scholz, and Gottlieb Henri Lapierre.\n\nIn contrast to earlier railway stations, built with brick façades, and in keeping with then-current trends, Lehrter Bahnhof was designed in the French Neo-Renaissance style. Its originally planned stone façade was replaced with glazed tiles to save money. With its magnificent architecture, the station was known as a \"palace among stations\".\n\nThe train shed was 188 m long and 38 m wide. Its roof was a long barrel vault with steel supports. As was common for the period, the station was divided into an arrival side on the west, and a departure side on the east. Originally there were five tracks, four of which ended at the side and the central platform; the fifth track had no platform and served as a turnaround for the locomotives. At the turn of the century this track was removed to accommodate the widening of the central platform.\n\nAlthough the front of the building was ornate and had a grand entrance, most passengers entered and left via the east side, where horse-drawn carriages were able to stop.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q1097"
+  },
+  "kanzleramt": {
+   "year": 1997,
+   "built": "1997–2001",
+   "opened": "2001",
+   "styles": [
+    "Postmodernism"
+   ],
+   "architects": [
+    "Axel Schultes",
+    "Charlotte Frank"
+   ],
+   "commissionedBy": [
+    "Federal Government (Helmut Kohl)"
+   ],
+   "history": "When the North German Confederation was created in 1867, the constitution mentioned only the Bundeskanzler as the responsible executive officer. There was no collegial government with ministers. Federal Chancellor Otto von Bismarck in the beginning only established a Bundeskanzleramt as his office. It was the only 'ministry' of the country until in early 1870 the Prussian foreign office became the North German foreign office. At that occasion, the Bundeskanzleramt lost some tasks to the foreign office.\n\nWhen the North German Confederation became the German Empire in 1871, the Bundeskanzleramt was renamed to Reichskanzleramt. It originally had its seat in the Radziwiłł Palace (also known as Reichskanzlerpalais), originally built by Prince Antoni Radziwiłł on Wilhelmstraße 77 in Berlin. More and more imperial offices were separated from the Reichskanzleramt, e.g. the Reichsjustizamt (Office for National Justice) in 1877. What remained of the Reichskanzleramt became in 1879 the Reichsamt des Innern (the home office).\n\nIn 1878 Imperial Chancellor Bismarck created a new office for the chancellor's affairs, the Reichskanzlei. It kept its name over the years, also in the republic since 1919. In 1938–39, the building Neue Reichskanzlei (New Imperial Chancellery), designed by Albert Speer, was built; its main entrance was located at Voßstraße 6, while the building occupied the entire northern side of the street. It was damaged during World War II and later demolished by Soviet occupation forces.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q317027"
+  },
+  "hkw": {
+   "year": 1956,
+   "built": "1956–1957",
+   "opened": "1957",
+   "styles": [
+    "Modernism"
+   ],
+   "architects": [
+    "Hugh Stubbins"
+   ],
+   "commissionedBy": [
+    "United States (Benjamin Franklin Foundation)"
+   ],
+   "history": null,
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q704933"
+  },
+  "mauer-gedenkstaette": {
+   "year": 1961,
+   "built": "the Wall 1961, memorial 1998–2014",
+   "opened": "1998 (memorial)",
+   "styles": [],
+   "architects": [
+    "Kohlhoff & Kohlhoff (memorial, 1998)"
+   ],
+   "commissionedBy": [
+    "GDR (the Wall)",
+    "Federal Republic and Berlin (memorial)"
+   ],
+   "history": "The idea of a memorial was suggested by the Deutsches Historisches Museum (German Historical Museum) on behalf of the federal government of Berlin, and architects Kohlhoff & Kohlhoff were commissioned to design it. The cost of the competition and completion was 2.2 million Marks. The federal government took over the construction costs, while the state covers the maintenance costs. On 11 September 2008 the Berlin House of Representatives approved the opening of the memorial on the anniversary of the day that the Berlin Wall fell.\n\nBy 2013, an extension was to be completed. Original relics of the border were to be shown, with missing parts marked in steel on the ground. The memorial was to be divided into four areas:\n\nAt the corner of Gartenstraße and Bernauer Straße, a visitor centre was opened. The outdoor area of the memorial west of Berlin Nordbahnhof was transformed into an Erinnerungslandschaft (memorial landscape). In 2006 there were over 220,000 visitors to the documentation centre, which is part of the memorial. Part of the memorial is located on Ackerstraße.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q95517"
+  },
+  "potsdamer-platz": {
+   "year": 1831,
+   "built": "named 1831, rebuilt 1994–2000",
+   "opened": null,
+   "styles": [
+    "Contemporary (1990s rebuilding)"
+   ],
+   "architects": [
+    "Renzo Piano",
+    "Helmut Jahn",
+    "Hans Kollhoff"
+   ],
+   "commissionedBy": [
+    "Daimler-Benz",
+    "Sony (1990s rebuilding)"
+   ],
+   "history": "The history of Potsdamer Platz can be traced to 29 October 1685, when the Tolerance Edict of Potsdam was signed, whereby Frederick William, Elector of Brandenburg-Prussia from 1640 to 1688, allowed large numbers of religious refugees, including Jews from Austria and Huguenots expelled from France, to settle on his territory to repopulate it following the Thirty Years' War (1618–48). Several new districts were founded around the city's perimeter, just outside the old fortifications. The largest of these was Friedrichstadt, just south west of the historic core of Berlin, begun in 1688 and named after the new elector, Frederick William III, who became King Frederick I of Prussia. Its street layout followed the Baroque-style grid pattern much favoured at the time, and was based on two main axes: Friedrichstraße running north–south, and Leipziger Strasse running east–west. All the new suburbs were absorbed into Berlin around 1709–10. In 1721-3 a south-westwards expansion of Friedrichstadt was planned under the orders of King Frederick William I, and this was completed in 1732–4 by architect Philipp Gerlach (1679–1748). In this expansion, a new north–south axis emerged: Wilhelmstrasse.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q152252"
+  },
+  "sony-center": {
+   "year": 1996,
+   "built": "1996–2000",
+   "opened": "2000",
+   "styles": [
+    "High-tech"
+   ],
+   "architects": [
+    "Helmut Jahn"
+   ],
+   "commissionedBy": [
+    "Sony"
+   ],
+   "history": "In the early 20th century, the site was originally home to Berlin's bustling city center. During World War II, it was the location of the infamous Nazi People's Court. Most of the buildings in its vicinity were destroyed or damaged during World War II. From 1961 onwards, most of the area became part of the \"No Man's Land\" of the Berlin Wall, resulting in the destruction of the remaining buildings. After the fall of the Berlin Wall on 9 November 1989, the square became the focus of attention again, as a large (some 60 ha), attractive location in the heart of a major European capital city had suddenly become available.\n\nAs part of a redevelopment effort for the area, the space was to be developed. In 1992, Sony acquired the 30,000 m² site from the Berlin city government for 97.2 million German marks, about US$61.6 million. Shortly after, the European Commission briefly investigated whether Sony paid less than the market price. Over the following years, a total of eight buildings were designed by Helmut Jahn and Peter Walker as landscape architect, and construction was completed in 2000 at a total cost of 750 million euros.\n\nThe iconic 4,000 m² vaulted roof covering the central open area between the main buildings was engineered and built by Waagner-Biro using steel, glass and translucent fabric.\n\nIn February 2008 Sony sold the Sony Center for less than 600 million euros to a group of German and US investment funds, including investment bank Morgan Stanley, Corpus Sireo and an affiliate of The John Buck Company. The group sold the Sony Center to the National Pension Service of South Korea for 570 million euros in 2010.\n\nIn 2017, Oxford Properties and Madison International Realty acquired the complex for close to 1.1 billion euros.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q641108"
+  },
+  "philharmonie": {
+   "year": 1960,
+   "built": "1960–1963",
+   "opened": "1963",
+   "styles": [
+    "Organic Modernism"
+   ],
+   "architects": [
+    "Hans Scharoun"
+   ],
+   "commissionedBy": [
+    "West Berlin Senate"
+   ],
+   "history": "Hans Scharoun designed the building, which was constructed over the years 1960–1963. It opened on 15 October 1963 with Herbert von Karajan conducting Beethoven's 9th Symphony. It was built to replace the old Philharmonie, destroyed by British bombers on 30 January 1944, the eleventh anniversary of Hitler becoming Chancellor. The hall is a singular building, asymmetrical and tentlike, with the main concert hall in the shape of a pentagon. The height of the rows of seats increases irregularly with distance from the stage. The stage is at the centre of the hall, surrounded by seating on all sides. The so-called vineyard-style seating arrangement (with terraces rising around a central orchestral platform) was pioneered by this building, and became a model for other concert halls, including the Sydney Opera House (1973), Denver's Boettcher Concert Hall (1978), the Gewandhaus in Leipzig (1981), Walt Disney Concert Hall in Los Angeles (2003), and the Philharmonie de Paris (2014).\n\nJazz pianist Dave Brubeck and his quartet recorded three live performances at the hall; Dave Brubeck in Berlin (1964), Live at the Berlin Philharmonie (1970), and We're All Together Again for the First Time (1973). Miles Davis's 1969 live performance at the hall has also been released on DVD.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q32653910"
+  },
+  "neue-nationalgalerie": {
+   "year": 1965,
+   "built": "1965–1968",
+   "opened": "1968",
+   "styles": [
+    "Modernism (International Style)"
+   ],
+   "architects": [
+    "Ludwig Mies van der Rohe",
+    "David Chipperfield (renovation, 2021)"
+   ],
+   "commissionedBy": [
+    "West Berlin",
+    "Prussian Cultural Heritage Foundation"
+   ],
+   "history": null,
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q32659772"
+  },
+  "siegessaeule": {
+   "year": 1864,
+   "built": "1864–1873, moved 1938–1939",
+   "opened": "1873",
+   "styles": [
+    "Historicism"
+   ],
+   "architects": [
+    "Johann Heinrich Strack",
+    "Friedrich Drake (Victoria)"
+   ],
+   "commissionedBy": [
+    "William I"
+   ],
+   "history": "In 1864, King William I of Prussia commissioned a monument to the victory over Denmark in the Second Schleswig War.\n\nIts purpose subsequently broadened to commemorate the victories in the Austro-Prussian War of 1866 and the Franco-Prussian War of 1870–71, and the establishment of the German Empire. William chose to combine Heinrich Strack's design for the column with Friedrich Drake's statue of Victoria.\n\nConstruction was interrupted by the wars of 1866 and 1870, with work having resumed in 1869 between the two conflicts.\n\nWilliam, now German Emperor, inaugurated the column on Königsplatz on 2 September 1873, the third anniversary of the victory at Sedan. At the inauguration, Anton von Werner's decoration of the colonnade was represented by a temporary oil painting on canvas, preceding its execution in mosaic. A further ceremony marking the monument's completion took place on 15 April 1876.\n\nThe historian Eckart Conze interprets the monument as celebrating national unification as a military achievement, rather than as the work of the German national movement.\n\nThe setting changed with the construction of the Reichstag building beside the square between 1884 and 1894. Some National Liberals envisaged the parliament building as a peaceful counterweight to the column.\n\nThe Bismarck monument was added to the square in 1901, in front of the Reichstag.\n\nIn 1926, Königsplatz was renamed Platz der Republik. During the Weimar Republic, the column was also a meeting place for gay men.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q154987"
+  },
+  "schloss-bellevue": {
+   "year": 1785,
+   "built": "1785–1786",
+   "opened": "1786",
+   "styles": [
+    "Neoclassicism"
+   ],
+   "architects": [
+    "Michael Philipp Daniel Boumann"
+   ],
+   "commissionedBy": [
+    "Prince Augustus Ferdinand of Prussia"
+   ],
+   "history": null,
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q317091"
+  },
+  "ehrenmal-tiergarten": {
+   "year": 1945,
+   "built": "1945",
+   "opened": "1945",
+   "styles": [
+    "Socialist Classicism"
+   ],
+   "architects": [
+    "Mikhail Gorvits",
+    "Lev Kerbel (sculptor)",
+    "Vladimir Tsigal (sculptor)"
+   ],
+   "commissionedBy": [
+    "Soviet Army"
+   ],
+   "history": null,
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q32660126"
+  },
+  "zoo": {
+   "year": 1844,
+   "built": "zoo laid out 1841–1844, Elephant Gate 1899 (rebuilt 1984)",
+   "opened": "1844",
+   "styles": [],
+   "architects": [
+    "Peter Joseph Lenné (layout)"
+   ],
+   "commissionedBy": [
+    "Frederick William IV"
+   ],
+   "history": "Opened on 1 August 1844, the Zoologischer Garten Berlin was the second zoo in Germany after the short-lived \"Thiergarten\" in Hamburg-Horn. The aquarium opened in 1913. The first animals were donated by Frederick William IV, King of Prussia, from the menagerie at Pfaueninsel island and pheasantry of the Tiergarten. The nearby U-Bahn station was opened in 1882.\n\nFrom the mid-1870s onward, indigenous people were put on display as exhibits in zoos throughout the German Empire. Referred to as Völkerschauen (literally \"people shows\") 25 such expositions took place at the Berlin Zoo.\n\nIn 1878, the Berlin Zoo hosted its first Völkerschau: the \"Nubian Caravan\" organized by Carl Hagenbeck. In 1880 Hagenback organized an exhibition of \"Eskimos\", and in 1881, Hagenbeck's exhibition of the “Fuegians”—a group Kawesqar people forcibly brought to Europe from Tierra del Fuego—was put on display for approximately five weeks in the Ostrich House.\n\nContemporary reports indicate these events were so popular that crowds overwhelmed the facilities. From Sunday, November 6, 1881:\n\nThe anatomist and anthropologist Rudolf Virchow conducted his own examinations of the ten Kawesqar at the Berlin Zoo and presented his findings on November 14, 1881, during a well-attended lecture before the Berlin Society for Anthropology, Ethnology, and Prehistory in the hall of the Zoological Garden, presenting them as a \"race\" on the \"lowest rung\" and potential cannibals. During his lecture, he made the remark: \"Unfortunately, there is a severe shortage of Tierra del Fuego skulls.\" One of the last \"ethnographic shows\" held at the Berlin Zoo was the Sara-Kaba Show organized by Willy Siebold, which ran from April 22 to mid-May 1931.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q154828"
+  },
+  "maerkisches-museum": {
+   "year": 1901,
+   "built": "1901–1908",
+   "opened": "1908",
+   "styles": [
+    "Historicism (Brick Gothic and Renaissance)"
+   ],
+   "architects": [
+    "Ludwig Hoffmann"
+   ],
+   "commissionedBy": [
+    "City of Berlin"
+   ],
+   "history": "In the second half of the 19th century, Berlin grew very rapidly. The foundation stone of a new, much larger town hall, the Rotes Rathaus, was laid in 1861. The changes provoked interest amongst the bourgeoisie in the city's past and in preserving what had not already been lost. The Verein für die Geschichte Berlins (Association for the history of Berlin) was founded. It included early photographers such as Friedrich Albert Schwartz who began to document the changes to the city, assembling one of the first systematic photographic portraits of a city and its architecture. Beginning in the 1860s, they urged the foundation of a regional history museum. Ernst Friedel, a judge and antiquarian who had personally collected prehistoric and historic objects and paintings from Brandenburg for this purpose, persuaded the Magistrat, the executive council of Berlin, to form a new department of \"Collections\" and Friedel was appointed to head it together with the existing library and archive. On 9 October 1874 with the city's official acceptance of his plan, the Märkisches Provinzialmuseum (Provincial museum of the March) was founded. This was the first museum in Berlin to be completely independent of the Prussian crown. It had a budget of only 2,000 Goldmarks a year for purchases, and was therefore dependent from the start on donations from foundations and individuals. The Emperor later contributed a small fund for the purchase of photographs of the city.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q573672"
+  },
+  "futurium": {
+   "year": 2015,
+   "built": "2015–2017",
+   "opened": "2019",
+   "styles": [
+    "Contemporary"
+   ],
+   "architects": [
+    "Richter Musikowski"
+   ],
+   "commissionedBy": [
+    "Federal Ministry of Education and Research"
+   ],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q20829682"
+  },
+  "humboldthain": {
+   "year": 1941,
+   "built": "flak tower 1941–1942 (park 1869–1876)",
+   "opened": null,
+   "styles": [
+    "Nazi architecture"
+   ],
+   "architects": [
+    "Friedrich Tamms"
+   ],
+   "commissionedBy": [
+    "Wehrmacht (Hitler's order of 1940)"
+   ],
+   "history": "During 1941–1942, the Wehrmacht constructed a large anti-aircraft tower complex in the Volkspark Humboldthain, consisting of a main flak tower with gun positions and a smaller command bunker.\n\nAfter 1945 the Allies demanded demolition of such military structures. In December 1947 the smaller bunker was destroyed; in March 1948 French demolition crews twice blasted the larger tower. The two southern corner towers collapsed, while the two northern towers by the Berlin Ringbahn remained standing to avoid damage to the railway.\n\nBetween 1948 and 1951 the remains were covered with about 1.5 million cubic metres of rubble from destroyed buildings across Berlin, forming the present hill. A public competition produced the name \"Humboldthöhe\", and on 13 September 1952 the hill and redesigned park were formally opened.\n\nOn the roof of the remaining structure stands the 11 meters aluminium sculpture Mahnmal der Einheit Deutschlands (English: Memorial to the Unity of Germany), by Arnold Schatz, installed in 1967.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q1636983"
+  },
+  "monbijoupark": {
+   "year": 1959,
+   "built": "Monbijou Palace from 1703, razed 1959, then a park",
+   "opened": null,
+   "styles": [],
+   "architects": [
+    "Johann Friedrich Eosander von Göthe (palace)",
+    "Lützow 7 (park redesign, 2007)"
+   ],
+   "commissionedBy": [],
+   "history": "The park is situated on the former grounds of Monbijou Palace (Monbijouschloss) and the old English Church of St. George, both of which were heavily damaged during World War II and finally razed in 1959 by the East German authorities.\n\nFrom 2006 to 2007, the park was redesigned according to plans by garden and landscape architects Lützow 7 from Berlin.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q320525"
+  },
+  "east-side-gallery": {
+   "year": 1990,
+   "built": "painted 1990 on the Wall's inner section",
+   "opened": "1990",
+   "styles": [
+    "Street art"
+   ],
+   "architects": [
+    "118 artists from 21 countries"
+   ],
+   "commissionedBy": [],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q313746"
+  },
+  "oberbaumbruecke": {
+   "year": 1894,
+   "built": "1894–1896, middle span 1994–1995",
+   "opened": "1896",
+   "styles": [
+    "Brick Gothic Revival"
+   ],
+   "architects": [
+    "Otto Stahn",
+    "Santiago Calatrava (middle span, 1995)"
+   ],
+   "commissionedBy": [
+    "City of Berlin",
+    "Siemens & Halske (elevated railway)"
+   ],
+   "history": "The bridge is built on the former boundary of the municipal area with its rural environs, where an excise wall was built in 1732. A wooden drawbridge was built as part of the wall; it served as a gate to the city. The name Oberbaumbrücke stemmed from the heavy tree trunk, covered in metal spikes, that was used as a boom to block the river at night to prevent smuggling. (Baum means tree in German, but can also mean boom as in this case; thus the name means something like \"Upper [Upstream] Boom Bridge\"; there was another tree-trunk barrier at the western end of the contemporary city limits, close to today's Unterbaumstraße (lit. in Lower [Downstream] Boom Street.)\n\nBy 1879 the wooden bridge had been modified greatly. At 154 meters it was Berlin's longest, but was no longer adequate to the amount of traffic crossing it. Plans began to be drawn up for a new stone construction. The Siemens & Halske company, which was planning to build the Berlin U-Bahn (subway), insisted on a combined crossing for road vehicles, pedestrians, and the new rail line.\n\nThe new bridge opened in 1896 after two years of construction, in time for the Berlin Trades Exhibition. The architect and government official Otto Stahn (1859–1930) designed it in the North German Brick Gothic style of a city gate with many decorative elements, such as pointed arches, cross vaults, and coats of arms. The two towers were inspired by the Middle Gate Tower (Mitteltorturm) in the northern Brandenburg city of Prenzlau. Although purely cosmetic, they served as a reminder that the site was once Berlin's river gateway.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q695082"
+  },
+  "frankfurter-tor": {
+   "year": 1953,
+   "built": "1953–1956",
+   "opened": null,
+   "styles": [
+    "Socialist Classicism"
+   ],
+   "architects": [
+    "Hermann Henselmann"
+   ],
+   "commissionedBy": [
+    "GDR (National Reconstruction Programme)"
+   ],
+   "history": "The previously unnamed square received the name \"Frankfurter Tor\" on 8 November 1957 in the course of its reconstruction after World War II. The designation recalls both the historic city gate of the Berlin Customs Wall, providing access to the road to the city of Frankfurt (Oder), as well as two former street names, Große Frankfurter Straße and Frankfurter Allee, for the Wilhelmine east–west axis of the major intersection at this location. The original location of the gate, however, was approximately 850 m west of today's Frankfurter Tor intersection, near Weberwiese station. The densely built-up area was largely destroyed by the bombing of Berlin in World War II and the Battle of Berlin in 1945.\n\nBoth Große Frankfurter Straße and Frankfurter Allee were renamed Stalinallee in 1949 in honor of the Soviet leader. In a clandestine operation in 1961 after Stalin's personality cult had been denounced by the Soviet Union the western portion of Stalinallee, the former Große Frankfurter Straße, was given the name Karl-Marx-Allee, and the eastern portion received back its former name, Frankfurter Allee. The prominent twin towers on the western side of the square, significant examples of the Stalinist architectural style, were built between 1953 and 1956 as part of the socialist Stalinallee ensemble according to plans designed by Hermann Henselmann.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q568577"
+  },
+  "strausberger-platz": {
+   "year": 1952,
+   "built": "1952–1954, fountain 1967",
+   "opened": null,
+   "styles": [
+    "Socialist Classicism"
+   ],
+   "architects": [
+    "Hermann Henselmann"
+   ],
+   "commissionedBy": [
+    "GDR (National Reconstruction Programme)"
+   ],
+   "history": "The square was the starting point for the East German uprising of 1953, when DDR wanted to increase the 'working norm' making workers work longer for the same pay.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q16820"
+  },
+  "maerchenbrunnen": {
+   "year": 1901,
+   "built": "1901–1913",
+   "opened": "1913",
+   "styles": [
+    "Neo-Baroque"
+   ],
+   "architects": [
+    "Ludwig Hoffmann",
+    "Ignatius Taschner",
+    "Josef Rauch",
+    "Georg Wrba"
+   ],
+   "commissionedBy": [
+    "City of Berlin"
+   ],
+   "history": "In his memoirs, Ludwig Hoffmann described the lengthy development history of the project. Since 1893 construction on this site had been intended. When taking office as councilor in 1896, Hoffmann found plans by the municipal art commission for a decorative piece of architecture. He rejected these designs and instead developed the idea of a fairytale after he had seen numerous children playing at the location during a tour of the property. The first draft version was published in 1901 and presented at the Große Berliner Kunstausstellung (Great Berlin Art Exhibition). The Kaiser welcomed the plan but wished to make some changes of his own.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q871941"
+  },
+  "topographie": {
+   "year": 1987,
+   "built": "exhibition from 1987, building 2007–2010",
+   "opened": "2010",
+   "styles": [
+    "Contemporary"
+   ],
+   "architects": [
+    "Ursula Wilms",
+    "Heinz W. Hallmann (landscape)"
+   ],
+   "commissionedBy": [
+    "Federal Government and Berlin"
+   ],
+   "history": "After the demolition of the ruins in the 1950s, the area was used as a bumper car site and a dumping ground for rubble from the renovation of Kreuzberg. The plans for a memorial site on the former site of the Gestapo goes back to 1978, when Berlin architecture critic Dieter Hoffmann-Axthelm was one of the first to note, in essays and surveys, the significance of the former site of the Gestapo, SD and RSHA headquarters.\n\nThe first exhibition on the site's history was created for the 750th anniversary of Berlin in 1987. The research continued after it, leading to a documentation centre that collected some more evidence for the terror of the National Socialists in Germany. In 1992, a foundation was created for the construction and maintenance of the centre with an associated permanent exhibition. The managing director is Rabbi Andreas Nachama.\n\nA tender in 1993 to design the museum complex was won by the Pritzker Prize-winning Swiss architect Peter Zumthor. Based on the temporary exhibition building, his design was likened to the skeleton of a barracks, allowing light through the glazed gaps in the concrete beams. Although critically acclaimed, the structure proved expensive to build and when the original contractor became insolvent in the middle of construction, no other contractor willing to continue the project for the fixed fee could be found. With the city of Berlin unwilling to pay an additional three to five million Euros for a reduced design and funding from the federal government delayed until more progress was achieved, the site was left with just the concrete stairwells of the design. Having spent 13.9 million Euros already, these were demolished, despite the protests of Zumthor and other architects, in 2004.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q819081"
+  },
+  "gropius-bau": {
+   "year": 1877,
+   "built": "1877–1881",
+   "opened": "1881",
+   "styles": [
+    "Neo-Renaissance"
+   ],
+   "architects": [
+    "Martin Gropius",
+    "Heino Schmieden"
+   ],
+   "commissionedBy": [
+    "Prussian state (Museum of Decorative Arts)"
+   ],
+   "history": null,
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q569445"
+  },
+  "juedisches-museum": {
+   "year": 1993,
+   "built": "1993–1999 (Libeskind building)",
+   "opened": "2001",
+   "styles": [
+    "Deconstructivism"
+   ],
+   "architects": [
+    "Daniel Libeskind"
+   ],
+   "commissionedBy": [
+    "State of Berlin"
+   ],
+   "history": "The first Jewish Museum in Berlin was founded on 24 January 1933, under the leadership of Karl Schwartz, six days before the Nazis officially gained power. The museum was built next to the Neue Synagoge on Oranienburger Straße and, in addition to curating Jewish history, also featured collections of modern Jewish art. Schwartz intended the museum as a means to revitalise Jewish creativity, and to demonstrate that Jewish history was living history. The museum's art collection was also seen as a contribution to German art history and one of the last exhibitions to be held was a retrospective of the German impressionist, Ernst Oppler in 1937. To reflect this focus on living history, the entrance hall of the museum both contained busts of prominent German Jews, such as Moses Mendelssohn and Abraham Geiger, and also a number of works by contemporary Jewish artists such as Arnold Zadikow and Lesser Ury.\n\nOn 10 November 1938, during the 'November Pogroms', known as Kristallnacht, the museum was shut down by the Gestapo, and the museum's inventory was confiscated. In 1976 a \"Society for a Jewish Museum\" formed and, three years later, the Berlin Museum, which chronicled the city's history, established a Jewish Department, but already, discussions about constructing a new museum dedicated to Jewish history in Berlin were being held.\n\nIn 1988, the Berlin government announced an anonymous competition for the new museum's design, with a jury chaired by Josef Paul Kleihues. A year later, Daniel Libeskind's design was chosen from among 189 submissions by the committee for what was then planned as a \"Jewish Department\" for the Berlin Museum. While other entrants proposed cool, neutral spaces, Libeskind offered a radical, zigzag design, which earned the nickname \"Blitz\" (\"Lightning\").",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q157003"
+  },
+  "technikmuseum": {
+   "year": 1982,
+   "built": "founded 1982 in the former Anhalter freight yard",
+   "opened": "1983",
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [
+    "West Berlin Senate"
+   ],
+   "history": "The Museum of Traffic and Technology (Museum für Verkehr und Technik) was founded in 1982 and assumed the tradition of the Royal Museum of Traffic and Construction (Königliches Verkehrs- und Baumuseum) which was opened in the former Hamburger Bahnhof station building in 1906. The present-day museum is located on the former freight yard attached to the Anhalter Bahnhof in the Kreuzberg district of Berlin, including two historic roundhouses and several office buildings.\n\nRenamed Deutsches Technikmuseum in 1996, the exhibition area was gradually expanded. An adjacent new building complex was inaugurated in 2003, topped by a prominent US Air Force Douglas C-47B \"Raisin Bomber\", which can be seen with ease from the top of the Fernsehturm and formerly at the Tempelhof Airport.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q706530"
+  },
+  "kreuzbergdenkmal": {
+   "year": 1818,
+   "built": "1818–1821",
+   "opened": "1821",
+   "styles": [
+    "Gothic Revival"
+   ],
+   "architects": [
+    "Karl Friedrich Schinkel",
+    "Christian Daniel Rauch",
+    "Friedrich Tieck",
+    "Ludwig Wichmann"
+   ],
+   "commissionedBy": [
+    "Frederick William III"
+   ],
+   "history": "The monument by Karl Friedrich Schinkel has been called the «relatively modest outcome of grandiose plans». This is because the monument resembles the spire top of an earlier project by Schinkel, a national memorial church with the working title Nationaldom designed in summer 1814, and a second draft in January 1815. However, like many other projects the memorial church never materialised due to lacking money. The compulsory contributions to France (thaler 41.73 million [=154.5 million Francs] alone by the Treaty of Tilsit), levied during its supremacy, which Prussia could mostly only raise by way of credit from various creditors, French and of other nations, heavily weighed as debts to be amortised and serviced on the budgets of municipalities, cities, states and other corporations until the 1870s.\n\nAlready in late 1813 other projects for monuments had been launched by Ernst Moritz Arndt, Karl Sieveking, Johann Heinrich von Dannecker, Leo von Klenze, Friedrich Weinbrenner. Schinkel considered for his project to ask the magistrate (city government) of Berlin to build a memorial. So like jumping the ship also the initiative for a war memorial did not originate with the king.\n\nOn 17 March 1813, when the king had jumped on the bandwagon for the liberation wars, he established the military decoration of the Iron Cross, backdated to March 10, late Queen Louise's birthday. He commissioned Schinkel to design the Iron Cross after a royal sketch. The Iron Cross was a decoration of a new kind, available for every soldier, who had turned from subjects of different estate status into citizens by the establishment of the Prussian citizenship in 1810, therefore there were no status barriers to get the Iron Cross.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q819820"
+  },
+  "berlinische-galerie": {
+   "year": 1975,
+   "built": "founded 1975, in a converted warehouse since 2004",
+   "opened": "2004 (current building)",
+   "styles": [],
+   "architects": [
+    "Jörg Fricke (conversion)"
+   ],
+   "commissionedBy": [],
+   "history": "The Berlinische Galerie was founded in 1975 as a society devoted to exhibiting art from Berlin. Its founding director was the art historian Eberhard Roters, who initiated the museum out of a perceived lack of attention to specifically Berlin art. Jörn Merkert directed the museum from 1987 to 2010, when he was succeeded by Köhler. For the first few years it was based in an office in Charlottenburg, and its exhibitions were displayed at the Akademie der Künste and the New National Gallery among others. In 1978 the Galerie moved into a former Landwehr officers' mess (now the Museum of Photography) on Jebensstraße, near Zoo Station. In 1986 it moved again, into the Martin-Gropius-Bau. In 1994 the collection became a public-law foundation.\n\nIn 1998 the Berlinische Galerie had to leave the Martin-Gropius-Bau due to reconstruction. After six years without a permanent home, it opened in its new location, in former industrial premises in Kreuzberg, in 2004. Built in 1965, the current building was originally a glass warehouse, and took the Galerie a year to renovate. The conversion of the former warehouse into a museum was designed by the architect Jörg Fricke. The hall, built near the Berlin Wall in the 1960s, had been used by the West Berlin Senate to store window glass as part of the city's emergency reserves during the Cold War. The museum reopened again in 2015 following a €6 million refurbishment that mainly involved updating the museum's security and technical equipment.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q700222"
+  },
+  "molecule-man": {
+   "year": 1999,
+   "built": "1999",
+   "opened": "1999",
+   "styles": [
+    "Contemporary sculpture"
+   ],
+   "architects": [
+    "Jonathan Borofsky"
+   ],
+   "commissionedBy": [
+    "Allianz"
+   ],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q125620994"
+  },
+  "mauerpark": {
+   "year": 1992,
+   "built": "1992–1994",
+   "opened": "1994",
+   "styles": [],
+   "architects": [
+    "Gustav Lange"
+   ],
+   "commissionedBy": [
+    "Allianz Environmental Foundation",
+    "State of Berlin"
+   ],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q639887"
+  },
+  "kulturbrauerei": {
+   "year": 1887,
+   "built": "1887–1891, extended until 1910",
+   "opened": null,
+   "styles": [
+    "Brick Gothic Revival (Historicism)"
+   ],
+   "architects": [
+    "Franz Schwechten"
+   ],
+   "commissionedBy": [
+    "Schultheiss Brewery"
+   ],
+   "history": "In 1842, a pharmacist began using the location as a small beer bar. Over time and varying ownership, the site grew into a full-fledged brewery, with the first proper brewhouse erected in 1871, the Schultheiss brewery.\n\nIn 1887, the architect Franz Heinrich Schwechten redesigned and expanded the site using a medieval castle as inspiration.\n\nBy 1891, it was acknowledged to be the largest brewery in Berlin; following a merger with Berliner-Kindl in 1921, it became the largest lager brewery in the world.\n\nIn 1937, the company operating the brewery was declared to be a \"National Socialist model company\" and was subsequently nationalized. During World War II, prisoners of war were forced to labor in underground cellars on the site manufacturing equipment deemed necessary for the war effort.\n\nAt the end of the war, the site was occupied and entrenched by as many as 1,000 soldiers and loyalists, who defended the site even after Germany capitulated. The building itself survived the war relatively unscathed.\n\nWhile the Soviets occupied the region, the brewery was seized and operated by the state as the VEB Schultheiss-Brauerei in 1945, before ceasing operation in 1967 due to equipment degradation.\n\nAfter reunification in 1990, the site was transferred to the Treuhandanstalt for redevelopment.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q70890984"
+  },
+  "wasserturm": {
+   "year": 1877,
+   "built": "1877",
+   "opened": "1877",
+   "styles": [
+    "Historicism"
+   ],
+   "architects": [
+    "Henry Gill"
+   ],
+   "commissionedBy": [
+    "English Waterworks Company"
+   ],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q32662967"
+  },
+  "kollwitzplatz": {
+   "year": 1875,
+   "built": "laid out 1875 as Wörther Platz, renamed 1947",
+   "opened": null,
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [
+    "Actien-Bauverein (developer)"
+   ],
+   "history": "The area around the square was bought by the German-Dutch Actien-Bauverein to systematically develop it as a residential area in the Wilhelminian period until 1875. Shortly after the Franco-Prussian War, the square was given the name Wörther Platz after the Battle of Wörth, which, like the surrounding street names, was a reminder of scenes and German commanders of the Franco-Prussian War. From 1885 to 1887, the site was designed as a typical Wilhelminian ornamental square, presumably according to the designs of the then city garden director Hermann Mächtig. During the Second World War, the residential area was largely spared damage, except for three corner plots of the square and the southern Kollwitzstraße. As a result, only a few houses were renovated and modernized by the end of the 1970s. In 1949 Kollwitzplatz was redesigned according to the designs of the garden architect Reinhold Lingner.\n\nIn preparation for Berlin's 750th-anniversary celebrations in 1987, some adjacent streets were reconstructed in a historically accurate manner as part of a redevelopment plan.\n\nOn 3 October 1990, at midnight on Kollwitzplatz, critics of unity proclaimed the Autonomous Republic of Utopia, known as Micronation, for this one night only.\n\nIn the mid-1990s, three of the four empty corner lots were rebuilt. Since German reunification, the residential area around Kollwitzplatz has continuously developed into one of the most expensive residential areas in Prenzlauer Berg.\n\nIn June 2017, the Restauration 1900 closed. The restaurant, which was opened for the 750th-anniversary celebration, was the only gastronomic venue on the square during GDR times.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q872494"
+  },
+  "planetarium": {
+   "year": 1987,
+   "built": "1987",
+   "opened": "1987",
+   "styles": [
+    "Socialist Modernism"
+   ],
+   "architects": [
+    "Erhardt Gißke",
+    "Gertrud Schille"
+   ],
+   "commissionedBy": [
+    "GDR (750th anniversary of Berlin)"
+   ],
+   "history": "It was one of the last buildings built in the GDR, constructed in 1987, the 750th anniversary of Berlin. Planning for the area commenced with old gas works to be torn down by 1981. The anniversary gave an opportunity to the Communist government to create a new style of housing estate with decorative high-rise residential buildings, a cultural centre with restaurants, and a planetarium supposed to be larger than the old one in the Archenhold Observatory of Berlin.\n\nThe building was designed by architect Erhardt Gißke, and opened on schedule on 9 October 1987.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q184985"
+  },
+  "gethsemanekirche": {
+   "year": 1891,
+   "built": "1891–1893",
+   "opened": "1893",
+   "styles": [
+    "Brick Gothic Revival"
+   ],
+   "architects": [
+    "August Orth"
+   ],
+   "commissionedBy": [],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q32664282"
+  },
+  "schloss-schoenhausen": {
+   "year": 1691,
+   "built": "1691–1693 (manor of 1664), rebuilt 1763–1764",
+   "opened": null,
+   "styles": [
+    "Baroque"
+   ],
+   "architects": [
+    "Johann Arnold Nering",
+    "Johann Friedrich Eosander von Göthe",
+    "Johann Boumann"
+   ],
+   "commissionedBy": [
+    "Frederick III, Elector of Brandenburg"
+   ],
+   "history": "In 1662 Countess Sophie Theodore, a scion of the Holland-Brederode family and wife of the Brandenburg general Christian Albert of Dohna, acquired the lands Niederschönhausen and Pankow, then far north of the Berlin city gates. In 1664 she built a manor at Niederschönhausen in \"Dutch\" style. Minister Joachim Ernst von Grumbkow acquired it in 1680 and, in 1691, his widow sold it for 16,000 Thalers to the Hohenzollern elector Frederick III of Brandenburg, who had fallen in love with the property earlier.\n\nFrederick put the manor under the care of the Amt Niederschönhausen and had it remodeled into a palace from 1691 to 1693 based on plans designed by Johann Arnold Nering. In August 1700 the Prince-elector prepared and planned his coronation as King in Prussia at Schönhausen Palace. In 1704 the now King Frederick I in Prussia contracted Eosander von Göthe to again enlarge the palace and its gardens. However, after the king's death in 1713, his son and successor Frederick William I did not care much for the place. As a result, civil servants, such as Minister Friedrich Wilhelm von Grumbkow, moved in to use it as office space, part of the land was leased and both the palace and the park slowly became dilapidated in the ensuing years.\n\nUnder King Frederick II of Prussia, also known as \"Frederick the Great\", the palace was once again turned into a royal residence for his wife, Elisabeth Christine of Brunswick-Bevern, who used it as her regular summer residence from 1740 to 1790. Artist Johann Michael Graff most probably contributed the lavish stucco decorations executed during this time. As Frederick's relations with his wife were strained, he never visited Niederschönhausen and spent his summers at Sanssouci in Potsdam.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q681355"
+  },
+  "zionskirche": {
+   "year": 1866,
+   "built": "1866–1873",
+   "opened": "1873",
+   "styles": [
+    "Neo-Romanesque"
+   ],
+   "architects": [
+    "August Orth"
+   ],
+   "commissionedBy": [
+    "William I"
+   ],
+   "history": "Aus Dankbarkeit, einem Attentat in Baden-Baden entgangen zu sein, stiftete im Jahr 1861 der damalige König und spätere Kaiser Wilhelm I. 10.000 Reichstaler für den Bau einer Kirche in dem damals noch zur St.-Elisabeth-Gemeinde gehörenden, aber im Zuge des Baus des Wilhelminischen Rings schon dicht besiedelten Gebiet. Nach einigen Auseinandersetzungen zwischen dem Berliner Konsistorium und dem Magistrat von Berlin konnte 1866 mit dem Bau begonnen werden. Wegen Geldmangels ruhten die Bauarbeiten ab Ende 1868, doch eine weitere Stiftung des Königs ermöglichte 1872 die Fertigstellung der Bauarbeiten. Die Kirche ist im Stil der Neoromanik errichtet, als Backstein-Terrakotta-Bau im Stil des Berliner Historismus mit gelben Blendsteinen aus der Cement- und Tonwarenfabrik Hermsdorf. Sie hatte 1424 Sitzplätze, 562 davon auf der Empore. Die Baukosten (ohne Grundstück und Bauleitung) lagen bei 373.364 Mark (kaufkraftbereinigt in heutiger Währung: rund Millionen Euro). Zur Ausstattung gehörte auch eine Orgel von Wilhelm Sauer mit 30 Registern auf zwei Manualen und Pedal.\n\nAm 2. März 1873 wurde die Zionskirche in Gegenwart des Kaisers durch Generalsuperintendent Bruno Brückner feierlich eingeweiht. Die ersten Jahrzehnte der Kirchengemeinde waren von heftigen Konflikten zwischen dem konservativen Pfarrer Julius Kraft und dem liberal dominierten Gemeindekirchenrat („Kampf in Zion“) bestimmt.\n\nVon 1894 bis 1901 war der Theologe Justus Julius August Jacobi Hauptpfarrer an der Kirche.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q205391"
+  },
+  "gedaechtniskirche": {
+   "year": 1891,
+   "built": "1891–1895, new church 1959–1963",
+   "opened": "1895",
+   "styles": [
+    "Neo-Romanesque",
+    "Modernism (1961)"
+   ],
+   "architects": [
+    "Franz Schwechten",
+    "Egon Eiermann (new church, 1963)"
+   ],
+   "commissionedBy": [
+    "Wilhelm II"
+   ],
+   "history": null,
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q153951"
+  },
+  "schloss-charlottenburg": {
+   "year": 1695,
+   "built": "1695–1713, New Wing 1740–1746",
+   "opened": null,
+   "styles": [
+    "Baroque",
+    "Rococo"
+   ],
+   "architects": [
+    "Johann Arnold Nering",
+    "Johann Friedrich Eosander von Göthe",
+    "Georg Wenzeslaus von Knobelsdorff"
+   ],
+   "commissionedBy": [
+    "Sophia Charlotte",
+    "Frederick III, Elector of Brandenburg (King Frederick I from 1701)"
+   ],
+   "history": "The original palace was commissioned by Sophie Charlotte, the wife of Frederick III, Elector of Brandenburg in what was then the village of Lietzow. Named Lietzenburg, the palace was designed by Johann Arnold Nering in Baroque style. It consisted of one wing and was built in stories with a central cupola. The façade was decorated with Corinthian pilasters. On the top was a cornice on which were statues. At the rear in the centre of the palace were two oval halls, the upper one being a ceremonial hall and the lower giving access to the gardens. Nering died during the construction of the palace and the work was completed by Martin Grünberg and Andreas Schlüter. The inauguration of the palace was celebrated on 11 July 1699, Frederick's 42nd birthday.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q154996"
+  },
+  "funkturm": {
+   "year": 1924,
+   "built": "1924–1926",
+   "opened": "1926",
+   "styles": [],
+   "architects": [
+    "Heinrich Straumer"
+   ],
+   "commissionedBy": [
+    "Berlin trade fair"
+   ],
+   "history": null,
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q699724"
+  },
+  "kadewe": {
+   "year": 1906,
+   "built": "1906–1907",
+   "opened": "1907",
+   "styles": [
+    "Historicism"
+   ],
+   "architects": [
+    "Johann Emil Schaudt"
+   ],
+   "commissionedBy": [
+    "Adolf Jandorf"
+   ],
+   "history": "The businessman Adolf Jandorf had opened six stores for basic needs with his company A. Jandorf & Co. in Berlin by 1905. Like the competitor stores Wertheim Leipziger Strasse (1894) and the Warenhaus Tietz (1900), also on Leipziger Strasse, Jandorf wanted to cater for the high consumer desires of the Wilhelminism elite. Jandorf's seventh branch was supposed to \"satisfy the spoiled demands of the top ten thousand, the top one thousand, the very top five hundred,\" as the weekly cultural magazine Der Roland von Berlin (Zeitschrift) wrote. With a GmbH of the same name founded especially for this purpose, in which his partner company M.J. Emden Söhne (Hamburg) held a four per cent stake, Jandorf began planning the new store in 1905 under the name Kaufhaus des Westens (KaDeWe). It was planned that the term Kaufhaus (department store) should set itself apart from the usual store and wholesaling warehouse. The abbreviation KaDeWe was used from the start and, according to a commemorative publication from 1932, was based on the abbreviation of company names that had become common in the US at the time.\n\nThe department store was built to designs by the architect Emil Schaudt. It opened on 27 March 1907 with a floor space of 24,000 sq m.\n\nIn June 1927, ownership changed to Hermann Tietz OHG, which was responsible for modernizing and expanding the store. The company wanted to add two new floors, but because of the Nazi rise to power in the 1930s these plans came to a sudden halt.\n\nHermann Tietz OHG was a Jewish-owned partnership and because of the Nazis' anti-Jewish laws the company was aryanized—that is, transferred to non-Jewish owners—and its name changed to Hertie.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q686011"
+  },
+  "olympiastadion": {
+   "year": 1934,
+   "built": "1934–1936, renovated 2000–2004",
+   "opened": "1936",
+   "styles": [
+    "Nazi architecture"
+   ],
+   "architects": [
+    "Werner March",
+    "gmp (renovation, 2004)"
+   ],
+   "commissionedBy": [
+    "German Reich (for the 1936 Olympics)"
+   ],
+   "history": "During the 1912 Summer Olympics, the city of Berlin was designated by the International Olympic Committee (IOC) to host the 1916 Summer Olympics. Germany's proposed stadium for this event was to be located in Charlottenburg, in the Grunewald Forest, to the west of Berlin—thus the stadium was also known as Grunewaldstadion. A horse racing-course already existed there which belonged to the Berliner Rennverein, and even today the old ticket booths survive on the current Jesse-Owens-Allee. The government of Germany decided not to build in the nearby Grunewald forest, or to renovate buildings that already existed. Because of this desire, they hired the same architect who originally had built the \"Rennverein\", Otto March.\n\nMarch decided to build the stadium under the ground (\"Erdstadion\", in German). However, the 1916 Olympic Games were cancelled due to World War I. In the 1920s the first buildings of a school, the \"Deutsches Sportforum\" (German Sport Forum), dedicated to the teaching of professors of physical education and the study of sport science were built northeast of the stadium site. From 1926 to 1929, Otto March's sons (Werner and Walter) were assigned to build an annex for these institutions, though the finalization was delayed until 1936.\n\nIn 1931, the International Olympic Committee selected Berlin to host the 11th Summer Olympics. Originally, the German government decided merely to restore the earlier Olympiastadion of 1916, with Werner March again retained to do this.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q151374"
+  },
+  "glockenturm": {
+   "year": 1934,
+   "built": "1934–1936, rebuilt 1960–1962",
+   "opened": "1936",
+   "styles": [
+    "Nazi architecture"
+   ],
+   "architects": [
+    "Werner March"
+   ],
+   "commissionedBy": [
+    "German Reich (for the 1936 Olympics)"
+   ],
+   "history": null,
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q82424"
+  },
+  "teufelsberg": {
+   "year": 1950,
+   "built": "rubble piled 1950–1972, listening station from 1963",
+   "opened": null,
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [
+    "West Berlin (rubble)",
+    "US and British forces (listening station)"
+   ],
+   "history": "Teufelsberg is a non-natural hill, created in the 20 years following the Second World War by moving approximately 75 million m³ of debris from Berlin.\n\nAfter the Communist putsch in the city parliament of Greater Berlin (for all four sectors of Berlin) in September 1948, separate parliaments and magistrates (Magistrat von Groß-Berlin; city government) were formed for East and West Berlin. This also ended much of the cooperation between West Berlin and the state of Brandenburg, surrounding West Berlin in the North, West and South.\n\nWhile part of the rubble from destroyed quarters in East Berlin was deposited outside the city boundary, all the debris from West Berlin had to be dumped within the western boundary. Due to the shortage of fuel in West Berlin, the rubble transport stopped during the Berlin Blockade.\n\nAlthough there are many similar man-made rubble mounds in Germany and other war-torn cities of Europe, Teufelsberg is unique in that the never completed Nazi military-technical college (Wehrtechnische Fakultät) designed by Albert Speer is buried beneath. The Allies tried using explosives to demolish the school, but it was so sturdy that covering it with debris turned out to be easier. In June 1950 the West Berlin Magistrate decided to open a new rubble disposal on that site. The disposal was planned for 12 million m³.\n\nWith the end of material shortages after the blockade, an average of 600 trucks deposited 6800 m³ of material daily. On 14 November 1957, the ten millionth cubic metre arrived. The site was closed to dumping in 1972, leaving approximately 26 million m³ of debris, and to a lesser extent construction waste. The Senate of (West) Berlin opted to plant greenery on the hill as a beautification project.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q564884"
+  },
+  "grunewaldturm": {
+   "year": 1897,
+   "built": "1897–1899",
+   "opened": "1899",
+   "styles": [
+    "Brick Gothic Revival"
+   ],
+   "architects": [
+    "Franz Schwechten"
+   ],
+   "commissionedBy": [
+    "District of Teltow"
+   ],
+   "history": null,
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q833787"
+  },
+  "jagdschloss-grunewald": {
+   "year": 1542,
+   "built": "1542–1543",
+   "opened": null,
+   "styles": [
+    "Renaissance"
+   ],
+   "architects": [
+    "Caspar Theyss"
+   ],
+   "commissionedBy": [
+    "Joachim II Hector"
+   ],
+   "history": null,
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q531032"
+  },
+  "waldbuehne": {
+   "year": 1934,
+   "built": "1934–1936",
+   "opened": "1936",
+   "styles": [
+    "Nazi architecture"
+   ],
+   "architects": [
+    "Werner March"
+   ],
+   "commissionedBy": [
+    "German Reich (for the 1936 Olympics)"
+   ],
+   "history": null,
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q644028"
+  },
+  "corbusierhaus": {
+   "year": 1956,
+   "built": "1956–1958",
+   "opened": "1958",
+   "styles": [
+    "Brutalism"
+   ],
+   "architects": [
+    "Le Corbusier"
+   ],
+   "commissionedBy": [
+    "Interbau 1957 (West Berlin)"
+   ],
+   "history": "The original name of the building was Unité d'Habitation, type Berlin and is a variation of Le Corbusier's concept of a Radiant City or Housing Unit; it is now known as Corbusierhaus. It was part of the planning efforts for an international residential housing exhibition in Berlin in 1957, the (Interbau) 57 or IBA 57. Large number of the leading international architects of the modernist era were invited to design and build residential housing units in the Hansaviertel in West Berlin. Big architectural stars of the time came to Berlin and created themes modern versions of social housing. Walter Gropius, Oscar Niemeyer, Max Taut, Frei Otto, Alvar Aalto and many participated.\n\nThe post war isolation of West Berlin had made it difficult to rebuild the city and by the 1950s there was still a huge demand for housing and many parts of the city were still in ruins. At the same time the East German government, with support from the Soviet Union, had built a whole new housing section in East Berlin called the Karl-Marx-Allee. Bauhaus architects who had stayed in East Germany were leading these efforts, although the style of these buildings was Socialist realism or Neoclassicism and not modernist while the urbanism was modern.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q1132023"
+  },
+  "deutsche-oper": {
+   "year": 1957,
+   "built": "1957–1961",
+   "opened": "1961",
+   "styles": [
+    "Modernism"
+   ],
+   "architects": [
+    "Fritz Bornemann"
+   ],
+   "commissionedBy": [
+    "West Berlin Senate"
+   ],
+   "history": "The company's history goes back to the Deutsches Opernhaus built by the then independent city of Charlottenburg—the \"richest town of Prussia\"—according to plans designed by Heinrich Seeling from 1911. It opened on 7 November 1912 with a performance of Beethoven's Fidelio, conducted by Ignatz Waghalter. In 1925, after the incorporation of Charlottenburg by the 1920 Greater Berlin Act, the name of the resident building was changed to Städtische Oper (Municipal Opera).\n\nWith the Nazi seizure of power in 1933, the opera was under control of the Reich Ministry of Public Enlightenment and Propaganda. Minister Joseph Goebbels had the name changed back to Deutsches Opernhaus, competing with the Berlin State Opera in Mitte controlled by his rival, the Prussian minister-president Hermann Göring. In 1935, the building was remodeled by Paul Baumgarten and the seating reduced from 2,300 to 2,098 places. Carl Ebert, the pre-World War II general manager, chose to emigrate from Germany rather than endorse the Nazi view of music, and went on to co-found the Glyndebourne Festival Opera in England. He was replaced by Max von Schillings, who acceded to demands that he enact works of \"unalloyed German character\". Several artists, like the conductor Fritz Stiedry and the singer Alexander Kipnis, followed Ebert into emigration. The opera house was destroyed by a Royal Air Force air raid on 23 November 1943. Performances continued at the Admiralspalast in Mitte until 1945. Ebert returned to serve as general manager after the war.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q637834"
+  },
+  "zitadelle": {
+   "year": 1559,
+   "built": "1559–1594",
+   "opened": null,
+   "styles": [
+    "Renaissance"
+   ],
+   "architects": [
+    "Francesco Chiaramella de Gandino",
+    "Rochus Guerini, Count of Lynar"
+   ],
+   "commissionedBy": [
+    "Joachim II Hector",
+    "John George"
+   ],
+   "history": "In 1157, Albert the Bear built a frontier fortress at this site, and by the middle of the 15th century, the site was the Margrave of Brandenburg seat of government. By 1560, Joachim II Hector, Elector of Brandenburg engaged Christoph Römer to build an Italian style fortress, incorporating the older castle, Palas, and Julius Tower. In 1562, Römer was replaced by Francesco Chiaramella de Gandino. In 1578 Rochus Graf zu Lynar took over.\n\nIn 1580, the first troops were assigned to Spandau Citadel, although its construction was not complete until 1594. Swedish troops were the first to besiege the citadel in 1675. In 1806 the citadel's garrison surrendered to the French army under Napoleon without firing a shot during the Fall of Berlin. It was retaken by Prussian and Russian forces in 1813, but the ramparts were heavily damaged during the battle and required extensive restoration. The citadel was also used as a prison for Prussian state prisoners, including German nationalist Friedrich Ludwig Jahn.\n\nIn 1935, the Army's Gas Protection Laboratory was installed. The site employed about 300 scientist and technicians working on chemical weapons (including synthesis, animal and human testing, munitions development, and development of manufacturing processes). Much of the work developing nerve gas was done here.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q206211"
+  },
+  "nikolaikirche-spandau": {
+   "year": 1370,
+   "built": "in the 14th century (first church c. 1240)",
+   "opened": null,
+   "styles": [
+    "Brick Gothic"
+   ],
+   "architects": [],
+   "commissionedBy": [],
+   "history": "Die St.-Nikolai-Kirche ist eines der bedeutendsten Bauwerke der Spandauer Altstadt. Sie war die mittelalterliche Pfarrkirche von „Spandow“ mit dem Patrozinium des heiligen Bischofs Nikolaus von Myra, des Schutzpatrons der Seefahrer, reisenden Händler und Kinder. Nikolaus-Patrozinien finden sich im Mittelalter häufig bei Gotteshäusern in Hafenstädten und Kaufmannsvierteln.\n\nDas Kirchenpatronat über St. Nikolai, das Recht zur Besetzung von Pfarrstellen mit einem Priester, war von den askanischen Markgrafen Johann I. von Brandenburg und Otto III. dem Frommen dem 1239 von ihnen gegründeten Benediktinerinnenkloster Spandau übertragen worden. Die Bürgerschaft der Stadt Spandau hatte es 1240 abgelehnt, das Kirchenpatronat über St. Nicolai gegen Zahlung einer Entschädigung selbst zu übernehmen, so dass die Pfarrkirche bis zur Reformation in der Abhängigkeit von den Benediktinerinnen blieb. Die Pfarrer waren somit bis zu dessen Enteignung und Schließung Angestellte des Klosters. Spandau gehörte zum Bistum Brandenburg; das Benediktinerinnenkloster bildete darin mit 82 abhängigen Dörfern ein Unterzentrum (sedes, „Sitz“) im östlichen Teil des Bistums.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q2316617"
+  },
+  "pfaueninsel": {
+   "year": 1794,
+   "built": "palace 1794–1797, park from the 1820s",
+   "opened": null,
+   "styles": [
+    "Romanticism (artificial ruin)"
+   ],
+   "architects": [
+    "Johann Gottlieb Brendel",
+    "Peter Joseph Lenné (park)"
+   ],
+   "commissionedBy": [
+    "Frederick William II"
+   ],
+   "history": null,
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q1229920"
+  },
+  "wannsee-konferenz": {
+   "year": 1914,
+   "built": "1914–1915",
+   "opened": "1992 (memorial)",
+   "styles": [],
+   "architects": [
+    "Paul Baumgarten"
+   ],
+   "commissionedBy": [
+    "Ernst Marlier"
+   ],
+   "history": "Legalized discrimination against Jews in Germany began immediately after the Nazi seizure of power in January 1933. The ideology of Nazism brought together elements of antisemitism, racial hygiene, and eugenics and combined them with pan-Germanism and territorial expansionism with the goal of obtaining more Lebensraum (living space) for the Germanic people. Nazi Germany attempted to obtain this new territory by invading Poland and the Soviet Union, intending to deport or exterminate the Jews and Slavs living there, who were viewed as being inferior to the Aryan master race.\n\nDiscrimination against Jews, long-standing but extra-legal throughout much of Europe at the time, was codified in Germany immediately after the Nazi seizure of power on 30 January 1933. The Law for the Restoration of the Professional Civil Service, passed on 7 April of that year, excluded most Jews from the legal profession and the civil service. Similar legislation soon deprived other Jews of the right to practise their professions. Violence and economic pressure were used by the regime to force Jews to leave the country. Jewish businesses were denied access to markets, forbidden to advertise in newspapers, and deprived of access to government contracts. Citizens were harassed and subjected to violent attacks and boycotts of their businesses.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q152120"
+  },
+  "strandbad-wannsee": {
+   "year": 1907,
+   "built": "lido from 1907, buildings 1929–1930",
+   "opened": "1907",
+   "styles": [
+    "New Objectivity"
+   ],
+   "architects": [
+    "Martin Wagner",
+    "Richard Ermisch"
+   ],
+   "commissionedBy": [
+    "City of Berlin"
+   ],
+   "history": "Origins of the lido date back to the early 1900s. The City of Berlin, German capital since the unification of 1871, experienced immense growth, both in population and in building. Large housing projects were planned and realized, cramping the working population close together in small flats, with little light and less fresh air. Consequently, people tried to escape when their life allowed. Preferred places of escape for those who could not afford to go on vacation to the Baltic Sea were the lakes in the vicinity. Especially suitable was the Greater Wannsee, with its broad and shallow, sandy eastern shore.\n\nOwing to the moral standards of the time, public bathing, especially with women and men in plain sight of each other, was illegal. In 1907, the administration of the Brandenburg Teltow district, southwest of Berlin, then the cognisant authority over the area, gave in to public pressure and officially allowed bathing on a 200-metre stretch of beach. Conduct was strictly regulated, down to details of dress laid down by police regulation.\n\nConstruction works began in May 1907. In 1909, a lease was signed between the royal government and a local merchant Frankenthal from Nikolassee. The Freibad Wannsee, as it was named, then consisted of one beach each for men and women, both 65 metres in length, separated by the family section that offered 350 metres of beach. The sections were separated with wooden fences. Tents, erected at the foot of the steeper incline towards the forest served as changing facilities, according to sections, and booths and mobile vendors provided services. The whole area was surrounded by fences to discourage those merely wanting to watch the proceedings. With the signing of the lease, use of the facilities required paying of a fee.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q1545614"
+  },
+  "liebermann-villa": {
+   "year": 1909,
+   "built": "1909–1910",
+   "opened": "2006 (museum)",
+   "styles": [],
+   "architects": [
+    "Paul Baumgarten"
+   ],
+   "commissionedBy": [
+    "Max Liebermann"
+   ],
+   "history": "Max Liebermann (1847–1935) was co-founder and head of the Berlin Secession and head of the Prussian Academy of Arts (Preußische Akademie der Künste). He was dismissed by the Nazis in 1933 and banned because he was a Jew and a follower of what they considered to be degenerate art. He painted about 200 paintings of the garden at his villa, some of which are exhibited in his former studio on the upper floor.\n\nIn 1909, he bought a narrow piece of land with direct access to the shores of Lake Wannsee to escape from the city noise of Berlin. He lived there during the summer, from 1910 on. The villa was built by the architect Paul Otto Baumgarten. Liebermann called it his \"little castle by the lake\". It was completed in April, 1910.\n\nThe lengthy garden is divided in two by the villa itself. From the center of the villa, there is a view over the grass to Lake Wannsee. There is a garden terrace in front of the house, looking toward Wannsee. On one side of the grass, there is the famous birch path, with birch trees growing wherever they sprout. On the other side, there are three hedged gardens. In the rear of the villa, is the garden house and a vegetable plot.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q876487"
+  },
+  "botanischer-garten": {
+   "year": 1897,
+   "built": "1897–1910",
+   "opened": null,
+   "styles": [],
+   "architects": [
+    "Adolf Engler (plan)",
+    "Alfred Koerner (glasshouses)"
+   ],
+   "commissionedBy": [
+    "Prussian state"
+   ],
+   "history": "In the year 1573, during the time of Elector John George, the first noteworthy collection of plants for the enlargement of the national collection was achieved under the leadership of the chief gardener at the kitchen garden of the Berlin City Palace, Desiderius Corbianus. Even though the expression \"botanic garden\" did not exist at the time, it was, in fact, the first of its kind in Berlin. This garden later developed into the Pleasure Garden that still exists today.\n\nIn 1679 on Potsdam Street (de: Potsdamer Straße) in Schöneberg - on the site of today's Kleistpark, a hops garden was laid out. It was used for the electoral brewery and as an orchard, fruit and kitchen garden. Carl Ludwig Willdenow made sure that the garden was assigned in 1809 to the Berlin Frederick William University. Under the care of the university, the garden developed into a botanic garden with scientific character that is recognised worldwide.\n\nThe area extending south to today's Grunewaldstraße became a suburb of Berlin during the city's expansuion in 1861, known as Schöneberger Vorstadt. Following a redrawing of district boundaries in 1938, the region south of Kurfürstenstraße was reintegrated into the district of Schöneberg.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q163255"
+  },
+  "bierpinsel": {
+   "year": 1972,
+   "built": "1972–1976",
+   "opened": "1976",
+   "styles": [
+    "Pop architecture"
+   ],
+   "architects": [
+    "Ralf Schüler",
+    "Ursulina Schüler-Witte"
+   ],
+   "commissionedBy": [],
+   "history": "The Steglitz Tower Restaurant, opened on October 13, 1976, and was in construction between 1972 and 1976, by architects Ralf Schüler and his wife Ursulina Schüler-Witte. The architecture is part of the pop art movement. There had been issues with the funding of the initial construction of the building, and it ran over budget more than once.\n\nThe building was an extension of the Joachim Tiburtius Bridge. The tower was created out of concrete, plastic cladding and paint. The exterior of the building was originally red around the top section.\n\nThe building's popular name, \"Bierpinsel,\" (\"beer brush\") is a Berlinism coined during the construction period, related to the brush-like appearance of the building's vertical steel girders and its planned gastronomic purpose. A later owner took over the name officially in the company name Bierpinsel GmbH.\n\nThe building was sold in 2007 to a new owner who founded a company called Schlossturm GmbH (literally Castle Tower Ltd). That company was sold to the Immoma group in 2021.\n\nThe Immoma group had announced to start refurbishing the building in 2023, but no work was done in the following years, with the investor blaming problems with the cultural heritage status and fire protection regulations for the delay. The \"beer brush\" was still unoccupied and not in use when on 20 September 2026 elements of the buildings cladding came loose and fell down, prompting an intervention by the Berlin fire department to ensure public safety.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q520281"
+  },
+  "bruecke-museum": {
+   "year": 1966,
+   "built": "1966–1967",
+   "opened": "1967",
+   "styles": [
+    "Modernism"
+   ],
+   "architects": [
+    "Werner Düttmann"
+   ],
+   "commissionedBy": [
+    "Karl Schmidt-Rottluff (founding gift)",
+    "West Berlin"
+   ],
+   "history": null,
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q833759"
+  },
+  "alliiertenmuseum": {
+   "year": 1996,
+   "built": "founded 1996 in a former US Army cinema",
+   "opened": "1998",
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [
+    "Federal Government"
+   ],
+   "history": null,
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q316329"
+  },
+  "schloss-glienicke": {
+   "year": 1824,
+   "built": "1824–1827 (manor of 1753)",
+   "opened": null,
+   "styles": [
+    "Neoclassicism"
+   ],
+   "architects": [
+    "Karl Friedrich Schinkel",
+    "Ludwig Persius"
+   ],
+   "commissionedBy": [
+    "Prince Charles of Prussia"
+   ],
+   "history": "The palace was designed by Karl Friedrich Schinkel for Prince Carl of Prussia. The building, originally merely a cottage, was turned into a summer palace in the late Neoclassical style. Inside the palace were antique objets d'art which Prince Carl of Prussia brought back from his trips.\n\nParticularly striking are two golden lion statues in front of the south frontage, which were also designed by Schinkel. The lions are versions of the \"Medici lions\" from the Villa Medici in Rome.\n\nThe palace is administered by the Stiftung Preußische Schlösser und Gärten Berlin-Brandenburg. The palace's park is now called the Volkspark Glienicke.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q301684"
+  },
+  "nikolskoe": {
+   "year": 1834,
+   "built": "1834–1837",
+   "opened": "1837",
+   "styles": [
+    "Russian Revival"
+   ],
+   "architects": [
+    "Friedrich August Stüler",
+    "Albert Dietrich Schadow"
+   ],
+   "commissionedBy": [
+    "Frederick William III"
+   ],
+   "history": "King Friedrich Wilhelm III had the church built for the residents of Klein-Glienicke and Pfaueninsel on a bluff on the Havel near the Pfaueninsel and the Nikolskoë Blockhouse. It was designed by the architects Friedrich August Stüler and Albert Dietrich Schadow. Friedrich Wilhelm selected the Russian style to commemorate the marriage of his daughter Charlotte to the later Tsar Nicholas I of Russia. The king visited them at St. Petersburg in 1818 and for a return visit a year later had a Russian-style blockhouse built in the park at Glienicke, naming it Nikolskoë. In 1832, the king then ordered the construction of the nearby church which took place from 1834 to 1837.\n\nUntil 1961, when the Berlin Wall cut the parish into three separate parts, Ss. Peter and Paul Church was part of the Evangelical Congregation of Neubabelsberg, then comprising a parish in Potsdam-Babelsberg, Klein-Glienicke (divided between Berlin and Potsdam), Nikolskoë and Potsdam-Sacrow with the further chapel in Klein-Glienicke and the Church of the Redeemer, Sacrow.\n\nOn December 22, 1941, the official German Evangelical Church called for suited actions by all Protestant church bodies to withhold baptised non-Aryans from all spheres of Protestant church life. Many German Christian-dominated congregations followed suit. However, the Evangelical Congregation of Neubabelsberg handed in a list of signatures in protest against the exclusion of the stigmatised Protestants of Jewish descent.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q428320"
+  },
+  "tempelhofer-feld": {
+   "year": 2010,
+   "built": "parade ground from 1722, airfield 1923–2008, park since 2010",
+   "opened": "2010",
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [
+    "State of Berlin"
+   ],
+   "history": "The field located between the towns of Schöneberg and Tempelhof, then also known as Großes Feld (Great Field), was used by Schöneberg farmers as farmland until the 18th century. Under Frederick William I, it was also used as a military parade and drill ground from 1722 onwards, as well as a maneuvering area for the Prussian army. On August 2, 1881, the Hawaiian king Kalākaua was a guest at a parade on the field.\n\nOn 3 November 1897, the world's first rigid airship, an all-metal craft designed by Hungarian inventor David Schwarz, equipped with a 12-hp/9-kW Daimler engine, and shaped like a short, fat pencil, set off on its maiden flight from Tempelhofer Feld. It was destroyed on landing; pilot Ernst Jagels escaped with minor injuries.\n\nThe field's function as a parade ground was maintained until spring 1914.\n\nIn 1922, work began to turn the area into Tempelhof Airport. The initial construction was completed by 1928, with further expansion planned by Ernst Sagabiel in 1934. The new airport building was then built from 1936 to 1941.\n\nStarting in 1940, the airport building was used exclusively by the arms industry. For example, for the assembly and maintenance of the dive combat aircraft Ju 87. To conduct this work, thousands of forced laborers were brought from all over Europe, with their camps and accommodations located on the field itself.\n\nAfter the end of World War II, flight operations resumed. The airport gained particular importance during the Berlin blockade from 1948 to 1949, with supply aircraft sometimes landing as often as every 90 seconds.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q2402748"
+  },
+  "flughafen-tempelhof": {
+   "year": 1936,
+   "built": "1936–1941 (airport since 1923)",
+   "opened": null,
+   "styles": [
+    "Nazi architecture"
+   ],
+   "architects": [
+    "Ernst Sagebiel"
+   ],
+   "commissionedBy": [
+    "Reich Ministry of Aviation (Hermann Göring)"
+   ],
+   "history": "The site of the airport was originally Knights Templar land in medieval Berlin, and from this beginning came the name Tempelhof. Later, the site was used as a parade field by the Prussian army from 1720 to the start of World War I. In 1909, French aviator Armand Zipfel made the first flight demonstration in Tempelhof, followed by Orville Wright later that same year. Tempelhof was first officially designated as an airport on 8 October 1923. Deutsche Luft Hansa was founded in Tempelhof on 6 January 1926. The airport's first permanent terminal building was completed in 1929.\n\nAs part of Albert Speer's plan for the reconstruction of Berlin during the Nazi era, Prof. Ernst Sagebiel was ordered to replace the old terminal with a new terminal building in 1934. The airport halls and the adjoining buildings, intended to become the gateway to Europe and a symbol of Hitler's \"world capital\" Germania, are still known as one of the largest built entities worldwide, and have been described by British architect Sir Norman Foster as \"the mother of all airports\".\n\nWith its façades of shell limestone, the terminal building, built between 1936 and 1941, forms a 1.2 km quadrant. Arriving passengers walked through customs controls to the reception hall. Tempelhof was served by the U6 U-Bahn line along Mehringdamm and up Friedrichstraße (Platz der Luftbrücke station).\n\nZentralflughafen Tempelhof-Berlin had the advantage of a central location just minutes from the Berlin city centre and quickly became one of the world's busiest airports. Tempelhof saw its greatest pre-war days during 1938–1939, when up to 52 foreign and 40 domestic flights arrived and departed daily from the old terminal while the new one was still under construction.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q9686"
+  },
+  "luftbrueckendenkmal": {
+   "year": 1951,
+   "built": "1951",
+   "opened": "1951",
+   "styles": [
+    "Modernism"
+   ],
+   "architects": [
+    "Eduard Ludwig"
+   ],
+   "commissionedBy": [
+    "West Berlin (Ernst Reuter)"
+   ],
+   "history": null,
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q878229"
+  },
+  "rathaus-schoeneberg": {
+   "year": 1911,
+   "built": "1911–1914",
+   "opened": "1914",
+   "styles": [
+    "Reform architecture"
+   ],
+   "architects": [
+    "Peter Jürgensen",
+    "Jürgen Bachmann"
+   ],
+   "commissionedBy": [
+    "City of Schöneberg"
+   ],
+   "history": "The sandstone building was constructed between 1911 and 1914, when it replaced the old town hall of Schöneberg, at that time an independent city (Stadtkreis) not yet incorporated into Greater Berlin, which took place in 1920. The Nazi authorities had a series of war murals by Franz Eichhorst added to the interior in 1938. In World War II the building was severely damaged by Allied bombing and during the final Battle of Berlin.\n\nAfter the war the undestroyed Neues Stadthaus, former head office of Berlin's municipal fire insurance Feuersozietät, on Parochialstraße in Mitte, served as intermittent city hall, replacing the ruined Rotes Rathaus (Red City Hall, also in East Berlin), the traditional seat of the Berlin government. With the division of Berlin's city government and administration in September 1948 the Neues Stadthaus was in the Communist Ostsektor (eastern sector) and became off limits to West Berlin. As a \"temporary\" measure the barely repaired Rathaus Schöneberg on Rudolph-Wilde-Platz became the city hall for West Berlin. In 1950 the Freedom Bell (Freiheitsglocke), a gift by the United States, was installed in the rebuilt tower.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q695194"
+  },
+  "gasometer": {
+   "year": 1908,
+   "built": "1908–1910",
+   "opened": "1910",
+   "styles": [
+    "Industrial architecture"
+   ],
+   "architects": [
+    "BAMAG"
+   ],
+   "commissionedBy": [],
+   "history": "Der Gasometer Schöneberg wurde von der Berlin-Anhaltischen Maschinenbau AG (BAMAG) als Ingenieurbau zwischen 1908 und 1910 errichtet und war zu dieser Zeit mit seinem Füllvolumen einer der drei größten Gasbehälter Europas. Bei der Errichtung kam es am 19. August 1909 zu einem schweren Unglück, als ein 85 Meter hoher Montagemast durch die von vorbeifahrenden Zügen verursachten Erschütterungen einknickte, das Behältergerüst durchschlug und auf die Gleise der Ringbahn stürzte. Hierdurch und durch Genehmigungsprobleme und Proteste der Anwohner verzögerte sich die Inbetriebnahme bis 1913. Die letzte Niete, die die beteiligten Handwerker damals einschlugen, soll mündlichen Überlieferungen nach aus purem Gold sein. Ursprünglich war geplant, den Gasometer im heutigen Wagnerviertel in Friedenau zu errichten, was bei der Bevölkerung der seinerzeit neu entstandenen Landhauskolonie auf großen Widerstand stieß.\n\nAuf dem Gelände der Schöneberger Gasanstalt entstanden drei weitere (aber kleinere) Gasbehälter. Zudem gab es ein Verwaltungsgebäude auf dem Gelände und kleine Steinbauten zu Betriebsbauten und zu Lagerzwecken.\n\nDer Maler Lyonel Feininger hat das Wahrzeichen der Roten Insel im Bild festgehalten. Das Bild Gasometer in Berlin-Schöneberg entstand wahrscheinlich im Herbst 1912 und ist stark vom Futurismus beeinflusst.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q1495228"
+  },
+  "schloss-britz": {
+   "year": 1706,
+   "built": "c. 1706, rebuilt 1880–1883",
+   "opened": null,
+   "styles": [
+    "Historicism (1880s)"
+   ],
+   "architects": [],
+   "commissionedBy": [
+    "Samuel von Chwalkowski"
+   ],
+   "history": "The village Britz is first mentioned in 1373 in the book (Landbuch) of the Mark Brandenburg properties of Kaiser Karl IV (Charles IV, Holy Roman Emperor). Until the end of the 17th century the country estate was the fiefdom of the knight family von Britzke. Due to the devastating consequences of the Thirty Years' War, the family was forced to sell the estate to the Prussian crown in 1699. Later, King Friedrich I (Frederick I of Prussia) awarded his minister Samuel von Chwalkowski with the manor. Around 1706, Chwalkowski finished the new manor stone house, which would be the core of the building, even until now. In 1717, the manor was given the prestigious allodial title. In the 18th century the Britz Manor (Schloss Britz) was in the possession of Heinrich Rüdiger von Ilgen and the count Ewald Friedrich von Hertzberg, and other noble families. Ilgen owned the manor from 1719 until his death 1728 and served as minister for foreign affairs under different Prussian kings. From 1763 to 1791 Hertzberg was a leading minister of the crown cabinet and managed the foreign affairs under Friedrich II. (Frederick II of Prussia) used the estate from 1751 until his death as his country estate. He established one of the first silk farms of Prussia in Britz, and he hired the prominent painter Bernhard Rode to furnish the manor-house with a new décor of frescos and paintings honoring the life of a genteel statesman.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q2240414"
+  },
+  "britzer-garten": {
+   "year": 1985,
+   "built": "laid out for the Federal Garden Show 1985",
+   "opened": "1985",
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [
+    "West Berlin (Federal Garden Show 1985)"
+   ],
+   "history": null,
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q565659"
+  },
+  "hufeisensiedlung": {
+   "year": 1925,
+   "built": "1925–1933",
+   "opened": "1931",
+   "styles": [
+    "New Objectivity"
+   ],
+   "architects": [
+    "Bruno Taut",
+    "Martin Wagner"
+   ],
+   "commissionedBy": [
+    "GEHAG"
+   ],
+   "history": "At the beginning of the 20th century Berlin was growing dramatically. From 1850 to the end of the 1920s its population had roughly doubled every 25 years. It was not only the cultural heyday of the Golden Twenties which caused a rapid increase in population, but also the advance of industrialisation and the end of the First World War. Groß-Berlin (Greater Berlin), which had only come about in 1920 through the amalgamation of several districts in the city and its suburbs, was doing full justice to its name. At 3.8 million people, the number of inhabitants not only exceeded today's population but also made Berlin the third-largest metropolis in the world at that time after New York and London.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q644490"
+  },
+  "koernerpark": {
+   "year": 1912,
+   "built": "1912–1916",
+   "opened": "1916",
+   "styles": [
+    "Neo-Baroque"
+   ],
+   "architects": [
+    "Karl Otto Halbritter",
+    "Reinhold Kiehl",
+    "Hans Richard Küllenberg"
+   ],
+   "commissionedBy": [
+    "City of Neukölln"
+   ],
+   "history": null,
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q31226"
+  },
+  "rathaus-neukoelln": {
+   "year": 1905,
+   "built": "1905–1909",
+   "opened": "1909",
+   "styles": [
+    "Historicism"
+   ],
+   "architects": [
+    "Reinhold Kiehl"
+   ],
+   "commissionedBy": [
+    "City of Rixdorf"
+   ],
+   "history": "Das erste Rathaus der Gemeinde hatte seinen Standort bereits an gleicher Stelle, an der Erkstraße 19 und Ecke Berliner Straße 50 (heutige Karl-Marx-Straße). Darin befanden sich das „Büro der Amts- und Gemeindeverwaltung Rixdorf“, unter anderem mit einem Meldebüro, der Amts- und Gemeindekasse, dem Standesamt, einem Gendarmerie-Posten sowie das Amtsgefängnis. Wegen des gewaltigen Bevölkerungszuwachses im beginnenden 20. Jahrhundert genügte das vorhandene Haus dem gestiegenen Verwaltungsaufwand nicht mehr. Außerdem war unter dem Bürgermeister Hermann Boddin geplant worden, für Rixdorf die Stadtrechte zu beantragen, verbunden mit einer Umbenennung des Ortes. Ein repräsentativer Neubau wurde beschlossen. Dafür lieferte der Stadtbaurat und Architekt Reinhold Kiehl die Pläne. Diese fanden die Zustimmung der Gemeindeoberen und von 1905 bis 1909 entstand eine mehrflügelige Anlage. Kiehl entwarf auch die 1910/1911 errichtete Erweiterung zur Donaustraße und den Innenflügel, der unter der Leitung des neu eingesetzten Stadtbauinspektors Heinrich Best 1913/1914 vollendet wurde. Nachdem das markante Gebäude im Zweiten Weltkrieg beschädigt worden war, konnte es in den 1950er Jahren vereinfacht wiederhergestellt und bis 1956 durch einen neuen Anbau erweitert werden.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q608280"
+  },
+  "ehrenmal-treptow": {
+   "year": 1946,
+   "built": "1946–1949",
+   "opened": "1949",
+   "styles": [
+    "Socialist Classicism"
+   ],
+   "architects": [
+    "Yakov Belopolsky",
+    "Yevgeny Vuchetich (sculptor)"
+   ],
+   "commissionedBy": [
+    "Soviet Military Administration"
+   ],
+   "history": "At the conclusion of World War II, three Soviet war memorials were built in the city of Berlin to commemorate Soviet deaths in World War II, especially the 80,000 that died during the Battle of Berlin. The memorials also serve as cemeteries for those killed.\n\nA competition was announced shortly after the end of the war for the design of the park. The competition attracted 33 entries, with the eventual design a hybrid of the submissions of the architect Yakov Belopolski, sculptor Yevgeny Vuchetich, painter Alexander A. Gorpenko and engineer Sarra S. Walerius. The sculptures, reliefs, and flame bowls with a 2.5 m diameter were cast at the Kunstgießerei in 1948. The memorial itself was built in Treptower Park on land previously occupied by a sports field. The memorial was completed in 1949. For over three years, some 1,200 workers, 200 stonemasons, and 90 sculptors worked on the complex.\n\nIt was rumored that the remains of the Reich Chancellery had been used for the construction of the memorial, but this was not the case.\n\nAround the time of the fall of the Berlin Wall, unknown persons vandalized parts of the memorial with anti-Soviet graffiti. The Spartakist-Arbeiterpartei Deutschlands claimed that the vandals were right-wing extremists and arranged a demonstration on 3 January 1990, which the PDS supported; 250,000 East German citizens participated. Through the demonstrations, the newly formed party stayed true to the communist roots of its founding party, and attempted to gain political influence.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q48441"
+  },
+  "archenhold": {
+   "year": 1896,
+   "built": "telescope 1896, observatory building 1909",
+   "opened": "1896",
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [
+    "Friedrich Simon Archenhold"
+   ],
+   "history": "The Archenhold Observatory began as a temporary installation at the 1896 Great Industrial Exposition of Berlin. At the initiative of Wilhelm Foerster and Max Wilhelm Meyer, it was intended to present scientific and astronomical knowledge to the general public. Plans for a large telescope that Friedrich Simon Archenhold had been working on were invoked for this purpose. Although his plans were for a research instrument, its design was already being criticised at the time. Admittance charges at the exposition were intended to finance the construction and later relocation of the instrument. The telescope was erected in the Treptower Park and sheltered in a wooden building that also provided exhibition space and a lecture theatre. When the industrial exposition opened on 1 May 1896, the Great Refractor was still unfinished; it began operation in September 1896. The telescope has an aperture of 68 cm and a focal length of 21 m; the movable mass is 130 metric tons.\n\nDue to the late completion there was no finance to move the telescope after the exposition. At the end of 1896 the city of Berlin gave permission for the observatory to remain in Treptower Park. Archenhold, without an astronomer's salary, decided to turn the installation into a public observatory. It was operated by a society, the Verein Treptow-Sternwarte e. V. with Archenhold as president. This is now considered the oldest and largest public observatory in Germany.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q632629"
+  },
+  "schloss-koepenick": {
+   "year": 1677,
+   "built": "1677–1690",
+   "opened": null,
+   "styles": [
+    "Baroque"
+   ],
+   "architects": [
+    "Rutger van Langevelt",
+    "Johann Arnold Nering"
+   ],
+   "commissionedBy": [
+    "Electoral Prince Frederick (King Frederick I from 1701)"
+   ],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q563805"
+  },
+  "rathaus-koepenick": {
+   "year": 1901,
+   "built": "1901–1904",
+   "opened": "1904",
+   "styles": [
+    "Brick Gothic Revival"
+   ],
+   "architects": [
+    "Hans Schütte",
+    "Hugo Kinzer"
+   ],
+   "commissionedBy": [
+    "City of Köpenick"
+   ],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q1273780"
+  },
+  "mueggelturm": {
+   "year": 1959,
+   "built": "1959–1961",
+   "opened": "1961",
+   "styles": [
+    "Modernism"
+   ],
+   "architects": [],
+   "commissionedBy": [
+    "East Berlin"
+   ],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q895969"
+  },
+  "gaerten-der-welt": {
+   "year": 1987,
+   "built": "1987 (garden show), gardens of the world from 2000",
+   "opened": "1987",
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [
+    "East Berlin (750th anniversary of Berlin)"
+   ],
+   "history": "In 1991, the park was renamed to Erholungspark Marzahn. In October 2000, the Chinese garden is opened as a part of Gärten der Welt (Gardens of the World). This was followed by other gardens, including Oriental, Italian, Balinese, Korean, and Japanese. In 1995, it welcomed 132,000 visitors. By 2007 the number has increased to 650,000. The park was renamed to \"Gärten der Welt\" in 2017.\n\nThe park was chosen as the site of the Internationale Gartenausstellung 2017 (IGA 2017), an international horticultural exhibition.\n\nPura Tri Hita Karana is a functioning Hindu temple located in the Balinese Garden of the park. It is one of the few Hindu temples of Balinese architecture built outside Indonesia.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q464302"
+  },
+  "schloss-biesdorf": {
+   "year": 1868,
+   "built": "1868",
+   "opened": null,
+   "styles": [
+    "Neoclassicism (Italianate villa)"
+   ],
+   "architects": [
+    "Heino Schmieden",
+    "Martin Gropius"
+   ],
+   "commissionedBy": [],
+   "history": null,
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q882983"
+  },
+  "wolkenhain": {
+   "year": 2016,
+   "built": "2016–2017",
+   "opened": "2017",
+   "styles": [
+    "Contemporary"
+   ],
+   "architects": [],
+   "commissionedBy": [
+    "IGA Berlin 2017"
+   ],
+   "history": "The venue is the area surrounding the Kienberg that was originally known as Berliner Gartenschau. This was the horticultural exposition held in 1987, in that times in East Germany, in commemoration of the 750th birthday of the city of Berlin. In 1991, after German reunification the park was renamed to Erholungspark Marzahn and expanded afterwards. During the years 2000 - 2006 several gardens modeled after Asian examples were added. Since 2007 gardens modelled after European examples followed. In 2013 works began to prepare for the IGA 2017.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q15629568"
+  },
+  "tierpark": {
+   "year": 1954,
+   "built": "1954–1955",
+   "opened": "1955",
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [
+    "East Berlin"
+   ],
+   "history": "Founded in 1955, it was originally established as a counterpart of the famous Berlin Zoological Garden, which was located in what was then West Berlin and soon to be out of reach for residents of the former eastern sector. The initial bear enclosures featured natural rocks and artificial waterfalls, while large paddocks surrounded by old trees and canals were designed for camels and bison. In the following years and decades, other exhibits, aviaries, and larger buildings were added to accommodate a selection of carnivores, ungulates, reptiles and birds, as well as primates, including great apes. A large building for both African and Asian elephants and other pachyderms was completed just a few years before East and West Berlin were reunited.\n\nDespite serious discussions dealing with a possible closure of the park, the 1990s saw a process of replacing improvised or damaged structures as well as expanding the zoo with new areas for African ungulates and primates, as well as species from alpine regions of Asia and Europe. At the same time, Berlin Tierpark, which now was designated to complement Berlin Zoological Garden, had to give up some species such as great apes. In recent years, the zoo has become famous for its successful elephant breeding program. It is also one of the few zoos in Western Europe that houses various large herds of ungulates, including some rarely kept species such as muskoxen and takin. It has the most diverse collection of hoofed mammals in Europe. Due to economic challenges, Berlin Tierpark recently issued a new master plan which identifies a number of potential attractions and revenues, though the funding for the proposed projects is not clear.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q702771"
+  },
+  "schloss-friedrichsfelde": {
+   "year": 1695,
+   "built": "1695, rebuilt 1719 and 1785–1786",
+   "opened": null,
+   "styles": [
+    "Baroque",
+    "Neoclassicism"
+   ],
+   "architects": [
+    "Johann Arnold Nering",
+    "Martin Heinrich Böhme"
+   ],
+   "commissionedBy": [
+    "Benjamin Raule"
+   ],
+   "history": "Formerly constructed c. 1695 by architect Johann Arnold Nering as Rosenfelde Palace, the building received its current name in 1699 since Frederick I of Prussia came into possession of the palace. In 1719, architect Martin Heinrich Böhme expanded the dimensions of the building on behalf of its new owner, Margrave Albert Frederick of Brandenburg-Schwedt, a half-brother of the late king. Thus, Friedrichsfelde Palace was equipped with new baroque stairs and the size of the facade was extended. In 1762, the building became property of Prince Augustus Ferdinand of Prussia, the youngest brother of Frederick the Great. He intended to have the palace completely altered and enlarged.\n\nHowever, he discarded his plans for Friedrichsfelde Palace and instead used them for the construction of Bellevue Palace in the Tiergarten of Berlin. After moving there in 1786, he sold Friedrichsfelde Palace to the exiled Duke of Courland, Peter von Biron, who had the ballroom on the upper floor redesigned in neo-classical style. Sold several times in the course of the following decades, Friedrichsfelde Palace received its neoclassical appearance in 1800.\n\nIn summer 1816, Carl von Treskow acquired the building and hired the Prussian landscape architect Peter Joseph Lenné to transform the park of the palace into an English landscape garden, which is still home to the family's burial ground. The palace remained in possession of the Treskow family until May 1945, when the Red Army conquered the palace. The building itself overcame World War II with little damage. The restorations of Friedrichsfelde Palace started in 1967. Since 1981, the building has been used for musical concerts and as a museum.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q883381"
+  },
+  "stasimuseum": {
+   "year": 1960,
+   "built": "1960–1961 (Stasi headquarters, House 1)",
+   "opened": "1990 (museum)",
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [
+    "Ministry for State Security"
+   ],
+   "history": "The centrepiece of the exhibition is the office and working quarters of the former Minister of State Security – i.e. head of the Stasi – Erich Mielke. The museum is operated by the Antistalinistische Aktion Berlin-Normannenstraße (ASTAK), which was founded by civil rights activists in Berlin in 1990. It aims to foster the development of the museum as a \"centre for the collection, preservation, documentation, rehabilitation and exhibition of evidence and research materials relating to East Germany\".\n\nIn 2010 the German government announced its intention to take over the Stasimuseum, which led to a three-way dispute between ASTAK, local government in Lichtenberg, and the German national government over the future of the site. ASTAK subsequently announced that Building 1 of the Stasi headquarters, the museum's original location, would be reconstructed and renovated, and the museum would be temporarily moved to Building 22.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q570472"
+  },
+  "hohenschoenhausen": {
+   "year": 1945,
+   "built": "Soviet camp 1945, Stasi prison 1951–1989",
+   "opened": "1994 (memorial)",
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [
+    "Soviet NKVD",
+    "Ministry for State Security (from 1951)"
+   ],
+   "history": "The Hohenschönhausen area was largely industrial prior to World War II. The area later occupied by the main building housed a factory manufacturing supplies for the soup kitchens of the National Socialist People's Welfare organization. That red-brick building was completed in 1939.\n\nIn June 1945, at the conclusion of World War II, the Soviet NKVD took over the Hohenschönhausen area of Lichtenberg and transformed it into a detention and transit camp, called Special Camp No. 3. The camp served as both a prison and transfer point. Over 20,000 people passed through Special Camp No. 3 on their way to other Soviet camps, including Heinrich George, who was brought to the Special Camp No. 7 in Sachsenhausen in 1946 where he died shortly afterwards.\n\nLiving conditions in the camp were deplorable, with death from malnutrition, disease, or common cold. Although official statistics list 886 deaths at the camp between July 1945 and October 1946, independent estimates put the toll as high as 3,000. Bodies were disposed of in local bomb craters.\n\nThe camp was closed and prisoners relocated to other camps in October 1946. After the closing of Special Camp No. 3, the Hohenschönhausen compound served as a Soviet prison during the winter of 1946–1947. The former cafeteria was converted to the underground prison area (\"submarine\") by prison labour.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q390508"
+  },
+  "mies-van-der-rohe-haus": {
+   "year": 1932,
+   "built": "1932–1933",
+   "opened": null,
+   "styles": [
+    "Modernism (Bauhaus)"
+   ],
+   "architects": [
+    "Ludwig Mies van der Rohe"
+   ],
+   "commissionedBy": [
+    "Karl and Martha Lemke"
+   ],
+   "history": "In 1932, the manufacturer couple Martha and Karl Lemke bought a two-storey property on the street with access to the Obersee (Berlin). On the advice of an acquaintance, they contacted the renowned architect who was to carry out the construction. After several plans, mostly for a two-storey building, work began in the summer of 1932. The costs amounted to 16,000 Reichsmarks (purchasing power adjusted in today's currency: around 61,000 euros). In spring 1933 the Lemkes were able to move into their house. The L-shaped building is relatively simple and modest, but it also met the requirements of the childless couple.\n\nThe façade consists of red-coloured, charcoal-fired bricks which, together with the flat roof, make the house look peculiar. The furnishings are partly from the studio of Mies van der Rohe or were designed by his partner Lilly Reich. The Lemke couple lived in their villa for only a few years. In May 1945, after the occupation of Alt-Hohenschönhausen by the Red Army, the family was asked to leave the house as soon as possible. The surrounding area was declared a restricted area and the Villa Lemke was used as a garage and storage area.\n\nLater on, some employees of the Stasi moved in and into the surrounding villas. This authority acquired the house in 1962 and made some serious changes to the house and garden. In 1977 the magistrate of Berlin put it on the district monument list.",
+   "sector": "east",
+   "wikidata": "https://www.wikidata.org/wiki/Q876474"
+  },
+  "schloss-tegel": {
+   "year": 1820,
+   "built": "1820–1824 (manor of 1558)",
+   "opened": "1824",
+   "styles": [
+    "Neoclassicism"
+   ],
+   "architects": [
+    "Karl Friedrich Schinkel"
+   ],
+   "commissionedBy": [
+    "Wilhelm von Humboldt"
+   ],
+   "history": "Originally built as a Renaissance mansion in 1558, it was converted to a hunting lodge by Frederick William, Elector of Brandenburg. As part of the Tegel estate, it passed to the Humboldt family by marriage in 1766 and became their family seat - Alexander and Wilhelm lived there several years. After their mother Marie-Elisabeth von Humboldt's death, Wilhelm took over the estate in 1797 and had the schloss rebuilt in the classical style between 1820 and 1824 by the architect Karl Friedrich Schinkel. Wilhelm's daughter Gabriele later inherited it - she married the Prussian foreign minister Heinrich von Bülow and after her death it passed to their daughter Constanze von Heinz, whose descendants still own it.\n\nThe park was originally designed between 1777 and 1789 by Gottlob Johann Christian Kunth, the Humboldts' tutor. From 1802 it was further developed by Wilhelm to designs by Peter Joseph Lenné. The park was listed as a 'Denkmalschutz' (monument treasure) in 1983. On its western side, near Lake Tegel, is the 'Dicke Marie', an oak named after their cook by the Humboldts - it is sometimes dated at 800 years old. There are also 7.8 m deep lakes near the house itself. The park also contains Wilhelm's wife's tomb monument in the park in 1829, on a site chosen by her - it consists of a high granite column topped by a statue of the Roman goddess Spes by Bertel Thorvaldsen, favoured by Caroline and bought by Wilhelm after her death. Wilhelm and Alexander were also buried nearby, as were Caroline and Wilhelm's children and descendants up to the present day, beneath uniformly designed unornamented tombstones and rows of flat grave mounds. The column is framed from behind by a stone bench or exedra, simpler than Schinkel's usual style.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q651833"
+  },
+  "borsigturm": {
+   "year": 1922,
+   "built": "1922–1924",
+   "opened": "1924",
+   "styles": [
+    "Brick Expressionism"
+   ],
+   "architects": [
+    "Eugen Schmohl"
+   ],
+   "commissionedBy": [
+    "Borsig"
+   ],
+   "history": null,
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q546769"
+  },
+  "tegeler-hafen": {
+   "year": 1911,
+   "built": "laid out 1911, named 1966",
+   "opened": null,
+   "styles": [],
+   "architects": [],
+   "commissionedBy": [],
+   "history": "Der dörflichen Vergangenheit des Ortsteils Reinickendorf entsprechend war die Stelle am See zu Beginn des 20. Jahrhunderts nur eine Viehweide. Die meisten Grundstücke reichten bis an das Wasser des Tegeler Sees und es existierte nur ein kleiner Fußweg. Im Jahr 1911 wurde die Promenade dann auf ihre heute Länge ausgebaut und auf 80 Meter verbreitert. Nach dem Umbau des Ackerlandes zu einer Promenade entwickelte sich dieser Teil des Seeufers zu einem beliebten Naherholungsziel. Sowohl am südlichen Ufer als auch nahe der Sechserbrücke gab es Freibäder, in denen noch bis 1936 gebadet wurde. Im Jahr 1966 bekam die Greenwichpromenade ihren aktuellen Namen durch die Städtepartnerschaft mit dem Londoner Partnerbezirk.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q108328757"
+  },
+  "buddhistisches-haus": {
+   "year": 1924,
+   "built": "1924–1926",
+   "opened": null,
+   "styles": [],
+   "architects": [
+    "Max Meyer"
+   ],
+   "commissionedBy": [
+    "Paul Dahlke"
+   ],
+   "history": "The main building was designed by the architect Max Meyer for Paul Dahlke, a German physician who had undertaken a number of trips to Ceylon prior to World War I and became a Buddhist. It incorporates elements of Sri Lankan (Sinhalese) Buddhist architecture and culture and was completed in 1924. Under Dahlke's direction it became a center of Buddhism in Germany. After his death in 1928, the house was inherited by his relatives and Buddhists met in a house nearby. By 1941 Buddhist meetings and publications were prohibited by the Nazi government. After the war refugees lived in the quarters. The place deteriorated and was even considered for demolition, when Asoka Weeraratna, founder of the German Dharmaduta Society based in Sri Lanka, became aware of its existence. In December 1957 he bought the building from Dahlke’s nephew on behalf of the Trustees of the German Dharmaduta Society (GDS). As a result, the 'Haus' became the first Buddhist mission on German soil not operated by German but Sri Lankan Sinhalese Buddhist monks. It was renovated at that time as a Buddhist temple complex.\n\nMissionary Buddhist (Dharmaduta) monks, primarily from Sri Lanka, came to stay at the Haus that became the center for spreading the teachings of the Buddha in Western Europe. The temple is open to the public and was visited by about 5,000 people in 2006.",
+   "sector": "west",
+   "wikidata": "https://www.wikidata.org/wiki/Q125927"
+  }
+ }
+}

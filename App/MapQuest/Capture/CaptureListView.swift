@@ -2,13 +2,33 @@ import CoreLocation
 import MapQuestCore
 import SwiftUI
 
-/// All sights in one list – captured ones in orange, the others in grey – nearest
-/// first when the position is known; tapping one opens its entry (locked until
+/// All sights in one list – captured ones in orange, the others in grey – either
+/// nearest first (when the position is known) or through time: by the year they
+/// were built, in Berlin's eras. Tapping one opens its entry (locked until
 /// captured), which can show it on the map.
 struct CaptureListView: View {
+    enum Order: String, CaseIterable, Identifiable {
+        case nearby, timeline
+        var id: String { rawValue }
+        var title: String {
+            switch self {
+            case .nearby: return "Nearby"
+            case .timeline: return "Through time"
+            }
+        }
+    }
+
     @EnvironmentObject private var captures: CaptureModel
     @EnvironmentObject private var tracker: LocationTracker
     @Environment(\.dismiss) private var dismiss
+    /// The sights of one era in the timeline.
+    struct EraGroup: Identifiable {
+        let era: HistoricalEra?
+        var sights: [Sight]
+        var id: String { era?.id ?? "undated" }
+    }
+
+    @AppStorage("sightListOrder") private var order: Order = .nearby
 
     var body: some View {
         NavigationStack {
@@ -19,14 +39,36 @@ struct CaptureListView: View {
                             .font(.headline)
                         ProgressView(value: Double(captures.capturedCount), total: Double(max(captures.catalog.count, 1)))
                             .tint(.orange)
+                        Picker("Order", selection: $order) {
+                            ForEach(Order.allCases) { order in
+                                Text(order.title).tag(order)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        .padding(.top, 4)
                     }
                     .padding(.vertical, 4)
                 } footer: {
-                    Text("A sight is captured once you have been there: when the circles of the radius view cover it (large parks and squares: when they reach into them). Seeing it from a distance does not count.")
+                    Text(order == .nearby
+                         ? "A sight is captured once you have been there: when the circles of the radius view cover it (large parks and squares: when they reach into them). Seeing it from a distance does not count."
+                         : "Berlin's history in its sights, by the year they were built. Capture a sight to learn who built it, who ruled at the time, and its story.")
                 }
-                Section {
-                    ForEach(sights, id: \.id) { sight in
-                        row(sight, record: captures.log.records[sight.id])
+                switch order {
+                case .nearby:
+                    Section {
+                        ForEach(sights, id: \.id) { sight in
+                            row(sight, record: captures.log.records[sight.id])
+                        }
+                    }
+                case .timeline:
+                    ForEach(timeline) { group in
+                        Section {
+                            ForEach(group.sights, id: \.id) { sight in
+                                row(sight, record: captures.log.records[sight.id], year: captures.histories[sight.id]?.year)
+                            }
+                        } header: {
+                            eraHeader(group.era)
+                        }
                     }
                 }
             }
@@ -40,13 +82,23 @@ struct CaptureListView: View {
         }
     }
 
-    private func row(_ sight: Sight, record: CaptureRecord?) -> some View {
+    /// A sight; in the timeline with the year it was built in front.
+    private func row(_ sight: Sight, record: CaptureRecord?, year: Int? = nil) -> some View {
         let captured = record != nil
         let isNew = captures.hasUnreadEntry(sight)
+        let inTimeline = order == .timeline
+        let yearText = year.map { String($0) }
+        let state = captured ? (isNew ? "captured, new entry" : "captured") : "not captured"
         return NavigationLink {
             SightEntryView(sight: sight)
         } label: {
             HStack(spacing: 12) {
+                if inTimeline {
+                    Text(yearText ?? "–")
+                        .font(.subheadline.monospacedDigit().weight(.semibold))
+                        .foregroundStyle(captured ? Color.orange : Color.secondary)
+                        .frame(width: 42, alignment: .leading)
+                }
                 SightBadge(category: sight.category, captured: captured, size: 34)
                 VStack(alignment: .leading, spacing: 2) {
                     HStack(spacing: 6) {
@@ -62,7 +114,7 @@ struct CaptureListView: View {
                                 .foregroundStyle(.white)
                         }
                     }
-                    Text(detail(for: sight, record: record))
+                    Text(inTimeline ? timelineDetail(for: sight, captured: captured) : detail(for: sight, record: record))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -71,8 +123,64 @@ struct CaptureListView: View {
                     .foregroundStyle(captured ? Color.orange : Color.secondary)
             }
         }
-        .accessibilityLabel("\(sight.name), \(captured ? (isNew ? "captured, new entry" : "captured") : "not captured")")
+        .accessibilityLabel(inTimeline && yearText != nil ? "\(yearText!), \(sight.name), \(state)" : "\(sight.name), \(state)")
         .accessibilityHint(captured ? "Opens its entry" : "Shows how to unlock it")
+    }
+
+    /// The sights by the year they were built, grouped by era (East and West
+    /// Berlin apart); undated sights last.
+    private var timeline: [EraGroup] {
+        func year(_ sight: Sight) -> Int { captures.histories[sight.id]?.year ?? .max }
+        let sorted = captures.catalog.sights.sorted { a, b in
+            year(a) != year(b) ? year(a) < year(b) : a.name < b.name
+        }
+        var groups: [EraGroup] = []
+        var index: [String: Int] = [:]
+        for sight in sorted {
+            let era = captures.histories[sight.id]?.context?.era
+            let id = era?.id ?? "undated"
+            if let i = index[id] {
+                groups[i].sights.append(sight)
+            } else {
+                index[id] = groups.count
+                groups.append(EraGroup(era: era, sights: [sight]))
+            }
+        }
+        return groups.sorted { a, b in
+            (a.era.map { BerlinHistory.order(of: $0) } ?? .max) < (b.era.map { BerlinHistory.order(of: $0) } ?? .max)
+        }
+    }
+
+    private func eraHeader(_ era: HistoricalEra?) -> some View {
+        VStack(alignment: .leading, spacing: 3) {
+            HStack(alignment: .firstTextBaseline) {
+                Text(era?.name ?? "Undated")
+                    .font(.headline)
+                    .foregroundStyle(.primary)
+                Spacer()
+                if let era {
+                    Text(era.years)
+                        .font(.subheadline.monospacedDigit())
+                        .foregroundStyle(.secondary)
+                }
+            }
+            if let era {
+                Text(era.summary)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .textCase(nil)
+        .padding(.top, 6)
+        .accessibilityElement(children: .combine)
+    }
+
+    /// Captured: style and the ruler at the time; otherwise the category.
+    private func timelineDetail(for sight: Sight, captured: Bool) -> String {
+        guard captured, let history = captures.histories[sight.id] else { return sight.category.title }
+        let parts = [history.styles.first, history.context?.ruler?.name].compactMap { $0 }
+        return parts.isEmpty ? sight.category.title : parts.joined(separator: " · ")
     }
 
     /// Every sight, nearest first when the position is known, else by name.
@@ -160,6 +268,7 @@ struct CaptureHooks: ViewModifier {
                     if let celebration = captures.celebration {
                         CaptureCelebrationView(
                             celebration: celebration,
+                            epoch: celebration.sights.count == 1 ? captures.histories[celebration.sights[0].id]?.epoch : nil,
                             onFinish: { captures.finishCelebration() },
                             onRead: { sight in
                                 captures.finishCelebration()

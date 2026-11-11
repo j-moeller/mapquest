@@ -8,6 +8,8 @@ import UIKit
 /// it at once; buttons open the entry or show the sight on the map.
 struct CaptureCelebrationView: View {
     let celebration: Celebration
+    /// "Built 1788–1791 · Kingdom of Prussia" when a single sight was captured.
+    var epoch: String?
     let onFinish: () -> Void
     /// Opens the entry of a sight.
     let onRead: (Sight) -> Void
@@ -67,6 +69,13 @@ struct CaptureCelebrationView: View {
                     .multilineTextAlignment(.center)
                     .lineLimit(4)
                     .padding(.horizontal, 32)
+                if let epoch {
+                    Label(epoch, systemImage: "hourglass")
+                        .font(.subheadline.weight(.medium))
+                        .foregroundStyle(.white.opacity(0.9))
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 32)
+                }
                 Text("\(celebration.capturedCount) of \(celebration.totalCount) sights")
                     .font(.subheadline)
                     .foregroundStyle(.white.opacity(0.8))
