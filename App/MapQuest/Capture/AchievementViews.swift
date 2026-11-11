@@ -29,12 +29,41 @@ struct AchievementMedal: View {
                     .rotationEffect(.degrees(-90))
                     .padding(size * 0.05)
             }
-            Image(systemName: Self.symbol(symbol))
-                .font(.system(size: size * 0.4, weight: .bold))
-                .foregroundStyle(complete ? Color.white : Color.secondary)
+            AchievementSymbol(name: symbol, size: size * 0.4, color: complete ? Color.white : Color.secondary)
         }
         .frame(width: size, height: size)
         .accessibilityHidden(true)
+    }
+}
+
+/// An achievement's symbol. The U-Bahn and S-Bahn signs keep their colours, as
+/// on the real signs: a white "U" on a blue square, a white "S" on a green circle.
+struct AchievementSymbol: View {
+    let name: String
+    let size: CGFloat
+    /// The colour of every other symbol.
+    var color: Color = .secondary
+
+    /// The system whose sign the symbol is.
+    static func sign(_ name: String) -> TransitSystem? {
+        switch name {
+        case "u.square.fill": return .ubahn
+        case "s.circle.fill": return .sbahn
+        default: return nil
+        }
+    }
+
+    var body: some View {
+        if let system = Self.sign(name) {
+            Image(systemName: name)
+                .font(.system(size: size * 1.35, weight: .bold))
+                .symbolRenderingMode(.palette)
+                .foregroundStyle(Color.white, Color(uiColor: system.signColor))
+        } else {
+            Image(systemName: AchievementMedal.symbol(name))
+                .font(.system(size: size, weight: .bold))
+                .foregroundStyle(color)
+        }
     }
 }
 

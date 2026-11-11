@@ -140,7 +140,11 @@ struct CaptureCelebrationView: View {
                 .font(.caption.weight(.heavy))
                 .foregroundStyle(Color.captureGold)
             ForEach(celebration.achievements.prefix(3), id: \.id) { achievement in
-                Label(achievement.title, systemImage: AchievementMedal.symbol(achievement.symbol))
+                Label {
+                    Text(achievement.title)
+                } icon: {
+                    AchievementSymbol(name: achievement.symbol, size: 14, color: .black)
+                }
                     .font(.subheadline.weight(.bold))
                     .foregroundStyle(.black)
                     .padding(.horizontal, 12)

@@ -3,18 +3,20 @@ import MapQuestCore
 import SwiftUI
 import UIKit
 
-/// The signs of the two systems: a blue square with "U", a green circle with "S".
+/// The signs of the two systems, in the colours of the real ones: a white "U"
+/// on a blue square (#0065AE), a white "S" on a green circle (#008D4F).
 extension TransitSystem {
     var signColor: UIColor {
         switch self {
-        case .ubahn: return UIColor(red: 0.0, green: 0.40, blue: 0.68, alpha: 1)
-        case .sbahn: return UIColor(red: 0.0, green: 0.55, blue: 0.31, alpha: 1)
+        case .ubahn: return UIColor(red: 0x00 / 255, green: 0x65 / 255, blue: 0xAE / 255, alpha: 1)
+        case .sbahn: return UIColor(red: 0x00 / 255, green: 0x8D / 255, blue: 0x4F / 255, alpha: 1)
         }
     }
 }
 
-/// A station on the 2D map: smaller than the sights, collected ones in their
-/// system's colour, the others (debug "show all") grey.
+/// A station on the 2D map: smaller than the sights, always in its system's
+/// colour – collected ones solid with a white rim, the others (debug "show
+/// all") paler.
 final class StationAnnotation: NSObject, MKAnnotation {
     let pin: StationPin
     let coordinate: CLLocationCoordinate2D
@@ -67,8 +69,8 @@ final class StationAnnotationView: MKAnnotationView {
         letter.text = system.rawValue
         layer.cornerRadius = system == .sbahn ? Self.size / 2 : 3
         let collected = station.pin.isCollected
-        backgroundColor = collected ? system.signColor : UIColor.systemGray.withAlphaComponent(0.6)
-        alpha = collected ? 1 : 0.8
+        backgroundColor = system.signColor
+        alpha = collected ? 1 : 0.45
         // Below the sights: where they overlap, the sight wins.
         displayPriority = collected ? .defaultHigh : .defaultLow
         zPriority = .defaultUnselected
@@ -120,7 +122,7 @@ struct StationBadge: View {
             .foregroundStyle(.white)
             .frame(width: size, height: size)
             .background(
-                collected ? Color(uiColor: system.signColor) : Color.secondary.opacity(0.35),
+                Color(uiColor: system.signColor).opacity(collected ? 1 : 0.4),
                 in: RoundedRectangle(cornerRadius: system == .sbahn ? size / 2 : size * 0.18)
             )
             .accessibilityHidden(true)
