@@ -187,7 +187,13 @@ final class SightModelScene: NSObject, UIGestureRecognizerDelegate {
             light.orthographicScale = CGFloat(radius * 1.3)
             light.zFar = CGFloat(radius * 6)
         }
-        turntable.runAction(.repeatForever(.rotateBy(x: 0, y: CGFloat.pi * 2, z: 0, duration: 48)))
+        startTurning()
+    }
+
+    /// Turns the model slowly. Synchronous on purpose: in an async context Swift
+    /// would pick SceneKit's async `runAction`, which waits for the (endless) action.
+    private func startTurning() {
+        turntable.runAction(.repeatForever(.rotateBy(x: 0, y: CGFloat.pi * 2, z: 0, duration: 48)), forKey: "turning")
     }
 
     private func node(_ mesh: Mesh) -> SCNNode {
