@@ -3,7 +3,8 @@ import MapQuestCore
 import SwiftUI
 
 /// All sights in one list – captured ones in orange, the others in grey – nearest
-/// first when the position is known; tapping one shows it on the map.
+/// first when the position is known; tapping one opens its entry (locked until
+/// captured), which can show it on the map.
 struct CaptureListView: View {
     @EnvironmentObject private var captures: CaptureModel
     @EnvironmentObject private var tracker: LocationTracker
@@ -41,26 +42,37 @@ struct CaptureListView: View {
 
     private func row(_ sight: Sight, record: CaptureRecord?) -> some View {
         let captured = record != nil
-        return Button {
-            captures.show(sight)
+        let isNew = captures.hasUnreadEntry(sight)
+        return NavigationLink {
+            SightEntryView(sight: sight)
         } label: {
             HStack(spacing: 12) {
                 SightBadge(category: sight.category, captured: captured, size: 34)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(sight.name)
-                        .fontWeight(captured ? .semibold : .regular)
-                        .foregroundStyle(captured ? Color.orange : Color.secondary)
+                    HStack(spacing: 6) {
+                        Text(sight.name)
+                            .fontWeight(captured ? .semibold : .regular)
+                            .foregroundStyle(captured ? Color.orange : Color.secondary)
+                        if isNew {
+                            Text("NEW")
+                                .font(.caption2.weight(.heavy))
+                                .padding(.horizontal, 5)
+                                .padding(.vertical, 1)
+                                .background(Color.orange, in: Capsule())
+                                .foregroundStyle(.white)
+                        }
+                    }
                     Text(detail(for: sight, record: record))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
                 Spacer(minLength: 4)
-                Image(systemName: captured ? "checkmark.seal.fill" : "map")
+                Image(systemName: captured ? "book.closed.fill" : "lock.fill")
                     .foregroundStyle(captured ? Color.orange : Color.secondary)
             }
         }
-        .accessibilityLabel("\(sight.name), \(captured ? "captured" : "not captured")")
-        .accessibilityHint("Shows the sight on the map")
+        .accessibilityLabel("\(sight.name), \(captured ? (isNew ? "captured, new entry" : "captured") : "not captured")")
+        .accessibilityHint(captured ? "Opens its entry" : "Shows how to unlock it")
     }
 
     /// Every sight, nearest first when the position is known, else by name.
@@ -121,6 +133,15 @@ struct CaptureButton: View {
                     .font(.subheadline.monospacedDigit().bold())
             }
             .foregroundStyle(Color.captureGold)
+            .overlay(alignment: .topTrailing) {
+                // Unread entries.
+                if captures.unreadEntryCount > 0 {
+                    Circle()
+                        .fill(Color.red)
+                        .frame(width: 8, height: 8)
+                        .offset(x: 5, y: -3)
+                }
+            }
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Sights: \(captures.capturedCount) of \(captures.catalog.count) captured")
@@ -137,7 +158,22 @@ struct CaptureHooks: ViewModifier {
             .overlay {
                 ZStack {
                     if let celebration = captures.celebration {
-                        CaptureCelebrationView(celebration: celebration) { captures.finishCelebration() }
+                        CaptureCelebrationView(
+                            celebration: celebration,
+                            onFinish: { captures.finishCelebration() },
+                            onRead: { sight in
+                                captures.finishCelebration()
+                                captures.openEntry(sight)
+                            },
+                            onShow: { sight in
+                                captures.finishCelebration()
+                                captures.show(sight)
+                            },
+                            onList: {
+                                captures.finishCelebration()
+                                captures.showsList = true
+                            }
+                        )
                             .id(celebration.id)
                             .transition(.opacity)
                     }
@@ -146,6 +182,16 @@ struct CaptureHooks: ViewModifier {
             }
             .sheet(isPresented: $captures.showsList) {
                 CaptureListView()
+            }
+            .sheet(item: $captures.entry) { sight in
+                NavigationStack {
+                    SightEntryView(sight: sight)
+                        .toolbar {
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Done") { captures.entry = nil }
+                            }
+                        }
+                }
             }
             .onReceive(NotificationCenter.default.publisher(for: .discoveredDataDeleted)) { note in
                 if let id = note.object as? String { captures.reset(sourceID: id) }

@@ -36,6 +36,7 @@ struct ContentView: View {
                     baseMap: model.debug.baseMap,
                     sightPins: captures.pins(showingAll: model.debug.showsAllSights),
                     focus: captures.focus,
+                    onOpenSight: { captures.openEntry($0) },
                     onLongPress: model.debug.placesPositionsOnLongPress ? { coordinate in
                         Task { await model.placeTestPosition(at: coordinate) }
                     } : nil

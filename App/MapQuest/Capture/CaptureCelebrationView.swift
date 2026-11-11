@@ -3,11 +3,18 @@ import SwiftUI
 import UIKit
 
 /// The capture animation: a golden medallion with the sight's icon bursts into
-/// view over a dimmed screen, rays turn behind it, sparks fly out. It ends by
-/// itself after a few seconds; a tap anywhere ends it at once.
+/// view over a dimmed screen, rays turn behind it, sparks fly out; the sight's
+/// entry is unlocked. It ends by itself after a few seconds; a tap anywhere ends
+/// it at once; buttons open the entry or show the sight on the map.
 struct CaptureCelebrationView: View {
     let celebration: Celebration
     let onFinish: () -> Void
+    /// Opens the entry of a sight.
+    let onRead: (Sight) -> Void
+    /// Shows a sight on the map.
+    let onShow: (Sight) -> Void
+    /// Opens the list of sights (several captured at once).
+    let onList: () -> Void
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var appeared = false
@@ -63,19 +70,25 @@ struct CaptureCelebrationView: View {
                 Text("\(celebration.capturedCount) of \(celebration.totalCount) sights")
                     .font(.subheadline)
                     .foregroundStyle(.white.opacity(0.8))
-                Text("Tap to continue")
+                Label(celebration.sights.count == 1 ? "New entry unlocked" : "New entries unlocked", systemImage: "book.closed.fill")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(Color.orange.opacity(0.85), in: Capsule())
+                buttons
+                    .padding(.top, 6)
+                Text("Tap anywhere to continue")
                     .font(.caption)
                     .foregroundStyle(.white.opacity(0.6))
-                    .padding(.top, 8)
+                    .padding(.top, 4)
             }
             .opacity(appeared ? 1 : 0)
             .offset(y: appeared ? 0 : 30)
         }
         .contentShape(Rectangle())
         .onTapGesture { finish() }
-        .accessibilityElement(children: .combine)
-        .accessibilityAddTraits(.isButton)
-        .accessibilityHint("Closes the capture")
+        .accessibilityAction(.escape) { finish() }
         .task {
             UINotificationFeedbackGenerator().notificationOccurred(.success)
             if reduceMotion {
@@ -89,6 +102,40 @@ struct CaptureCelebrationView: View {
             // Gone already (tapped away, or replaced): nothing more to finish.
             guard !Task.isCancelled else { return }
             finish()
+        }
+    }
+
+    @ViewBuilder
+    private var buttons: some View {
+        if celebration.sights.count == 1 {
+            let sight = celebration.sights[0]
+            HStack(spacing: 12) {
+                Button {
+                    finished = true
+                    onRead(sight)
+                } label: {
+                    Label("Read entry", systemImage: "book")
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(.orange)
+                Button {
+                    finished = true
+                    onShow(sight)
+                } label: {
+                    Label("Show on map", systemImage: "map")
+                }
+                .buttonStyle(.bordered)
+                .tint(.white)
+            }
+        } else {
+            Button {
+                finished = true
+                onList()
+            } label: {
+                Label("See the sights", systemImage: "list.bullet")
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.orange)
         }
     }
 

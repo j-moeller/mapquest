@@ -28,9 +28,28 @@ public struct CaptureLog: Codable, Equatable, Sendable {
     public static let currentVersion = 2
     public var version = CaptureLog.currentVersion
     public var records: [String: CaptureRecord] = [:]
+    /// Sights whose unlocked entry has been opened (the others are marked new).
+    public var readEntries: Set<String> = []
 
     public init(records: [String: CaptureRecord] = [:]) {
         self.records = records
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case version, records, readEntries
+    }
+
+    /// Logs written before entries existed have no `readEntries`.
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        version = try container.decode(Int.self, forKey: .version)
+        records = try container.decode([String: CaptureRecord].self, forKey: .records)
+        readEntries = try container.decodeIfPresent(Set<String>.self, forKey: .readEntries) ?? []
+    }
+
+    /// A captured sight whose entry has not been opened yet.
+    public func hasUnreadEntry(_ sightID: String) -> Bool {
+        isCaptured(sightID) && !readEntries.contains(sightID)
     }
 
     public func isCaptured(_ sightID: String) -> Bool { records[sightID] != nil }

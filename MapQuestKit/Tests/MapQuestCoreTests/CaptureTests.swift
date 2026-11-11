@@ -141,3 +141,47 @@ final class CaptureTests: XCTestCase {
         XCTAssertFalse(nearby.isCaptured("brandenburger-tor"))
     }
 }
+
+final class SightInfoTests: XCTestCase {
+    func testBundledBerlinEntries() throws {
+        let sights = try CaptureTests.berlinSights()
+        let infos = try SightInfoCatalog.decode(Data(contentsOf: BraunschweigDataTests.root.appendingPathComponent("Berlin/berlin-sight-info.json")))
+        XCTAssertEqual(infos.entries.count, sights.count, "every sight has an entry")
+        for (id, info) in infos.entries {
+            XCTAssertNotNil(sights[id], "\(id) is a sight")
+            XCTAssertFalse(info.paragraphs.isEmpty, id)
+            XCTAssertLessThanOrEqual(info.text.count, 2_000, id)
+            XCTAssertFalse(info.text.contains("pronounced"), "\(id): pronunciation removed")
+            XCTAssertFalse(info.text.contains("()"), "\(id): no empty parentheses")
+            XCTAssertTrue(info.url.host?.hasSuffix("wikipedia.org") ?? false, id)
+            XCTAssertTrue(["en", "de"].contains(info.language), id)
+            if let photo = info.image {
+                XCTAssertTrue(photo.url.host?.hasSuffix("wikimedia.org") ?? false, id)
+                XCTAssertEqual(photo.page.host, "commons.wikimedia.org", id)
+                XCTAssertFalse(photo.license.isEmpty, id)
+            }
+        }
+        let gate = try XCTUnwrap(infos["brandenburger-tor"])
+        XCTAssertEqual(gate.title, "Brandenburg Gate")
+        XCTAssertTrue(gate.text.contains("18th-century"))
+        XCTAssertNotNil(gate.image)
+        XCTAssertGreaterThanOrEqual(infos.entries.values.filter { $0.image != nil }.count, 110, "nearly all entries have a photo")
+    }
+
+    func testReadEntriesAndOlderLogs() throws {
+        var log = CaptureLog()
+        log.records["a"] = CaptureRecord(sightID: "a", capturedAt: Date(), recordedAt: Date(), celebrated: true)
+        XCTAssertTrue(log.hasUnreadEntry("a"))
+        XCTAssertFalse(log.hasUnreadEntry("b"), "not captured: locked, not unread")
+        log.readEntries.insert("a")
+        XCTAssertFalse(log.hasUnreadEntry("a"))
+
+        // A version-2 log written before entries existed (no readEntries) still loads.
+        let json = #"{"version":2,"records":{"a":{"sightID":"a","capturedAt":"2026-11-10T10:00:00Z","recordedAt":"2026-11-10T10:00:00Z","celebrated":true}}}"#
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let old = try decoder.decode(CaptureLog.self, from: Data(json.utf8))
+        XCTAssertTrue(old.isCaptured("a"))
+        XCTAssertTrue(old.readEntries.isEmpty)
+    }
+}

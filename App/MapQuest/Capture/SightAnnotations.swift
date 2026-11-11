@@ -43,6 +43,8 @@ final class SightAnnotationView: MKAnnotationView {
         icon.tintColor = .white
         icon.frame = bounds
         addSubview(icon)
+        // The entry (locked until captured).
+        rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
         configure()
     }
 
@@ -64,13 +66,23 @@ final class SightAnnotationView: MKAnnotationView {
     }
 }
 
-/// Keeps the sight annotations of a map in step with the pins.
+/// Keeps the sight annotations of a map in step with the pins; sights captured
+/// while the map is shown are revealed with an animation.
 @MainActor
 final class SightAnnotationController {
     private var shown: [String: SightAnnotation] = [:]
     private var focusID: Int?
+    /// Captured sights known to the map (`nil` before the first update).
+    private var knownCaptured: Set<String>?
+    /// Newly captured sights whose badge has not appeared yet.
+    private var revealing: Set<String> = []
 
     func update(_ pins: [SightPin], on map: MKMapView) {
+        let captured = Set(pins.filter(\.isCaptured).map(\.id))
+        if let knownCaptured {
+            revealing.formUnion(captured.subtracting(knownCaptured))
+        }
+        knownCaptured = captured
         let wanted = Dictionary(pins.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         var remove: [SightAnnotation] = []
         var add: [SightAnnotation] = []
@@ -95,6 +107,48 @@ final class SightAnnotationController {
         map.setRegion(MKCoordinateRegion(center: coordinate, latitudinalMeters: 800, longitudinalMeters: 800), animated: true)
         if let annotation = shown[focus.sight.id] {
             map.selectAnnotation(annotation, animated: true)
+        }
+    }
+}
+
+extension SightAnnotationController {
+    /// Plays the reveal for badges of newly captured sights as MapKit adds their views
+    /// (now, or when they scroll into view): the badge springs up, rings pulse out.
+    func reveal(_ views: [MKAnnotationView]) {
+        for view in views {
+            guard let sight = view.annotation as? SightAnnotation, revealing.remove(sight.pin.id) != nil else { continue }
+            view.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
+            UIView.animate(withDuration: 0.8, delay: 0.15, usingSpringWithDamping: 0.45, initialSpringVelocity: 0.8) {
+                view.transform = .identity
+            }
+            for index in 0..<3 {
+                let ring = CAShapeLayer()
+                let size = view.bounds.size
+                ring.path = UIBezierPath(ovalIn: CGRect(origin: .zero, size: size)).cgPath
+                ring.bounds = CGRect(origin: .zero, size: size)
+                ring.position = CGPoint(x: size.width / 2, y: size.height / 2)
+                ring.fillColor = UIColor.clear.cgColor
+                ring.strokeColor = UIColor.orange.cgColor
+                ring.lineWidth = 3
+                ring.opacity = 0
+                view.layer.insertSublayer(ring, at: 0)
+                let scale = CABasicAnimation(keyPath: "transform.scale")
+                scale.fromValue = 1
+                scale.toValue = 4
+                let fade = CABasicAnimation(keyPath: "opacity")
+                fade.fromValue = 0.9
+                fade.toValue = 0
+                let group = CAAnimationGroup()
+                group.animations = [scale, fade]
+                group.duration = 1.4
+                group.beginTime = CACurrentMediaTime() + 0.3 + Double(index) * 0.45
+                group.timingFunction = CAMediaTimingFunction(name: .easeOut)
+                group.fillMode = .backwards
+                ring.add(group, forKey: "pulse")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3 + Double(index) * 0.45 + 1.5) {
+                    ring.removeFromSuperlayer()
+                }
+            }
         }
     }
 }

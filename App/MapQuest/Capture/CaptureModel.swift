@@ -33,10 +33,18 @@ struct SightPin: Equatable, Identifiable {
 @MainActor
 final class CaptureModel: ObservableObject {
     let catalog: SightCatalog
+    /// The sights' entries (unlocked by capturing them).
+    let infos: SightInfoCatalog
     @Published private(set) var log = CaptureLog()
     @Published private(set) var celebration: Celebration?
     @Published private(set) var focus: SightFocus?
-    @Published var showsList = false
+    @Published var showsList = false {
+        didSet { if !showsList { celebrateNext() } }
+    }
+    /// The sight whose entry is shown (from the map or the capture animation).
+    @Published var entry: Sight? {
+        didSet { if entry == nil { celebrateNext() } }
+    }
 
     private var store: (any CaptureStore)?
     private var sourceID: String?
@@ -55,6 +63,16 @@ final class CaptureModel: ObservableObject {
 
     init(bundle: Bundle = .main) {
         catalog = Self.loadCatalog(bundle)
+        infos = Self.loadInfos(bundle)
+    }
+
+    /// The sight entries of all bundled cities (`<city>-sight-info.json`).
+    static func loadInfos(_ bundle: Bundle) -> SightInfoCatalog {
+        .merged(Cities.all.compactMap { city -> SightInfoCatalog? in
+            guard let url = bundle.url(forResource: "\(city.id)-sight-info", withExtension: "json"),
+                  let data = try? Data(contentsOf: url) else { return nil }
+            return try? SightInfoCatalog.decode(data)
+        })
     }
 
     /// The sight lists of all bundled cities (`<city>-sights.json`).
@@ -142,7 +160,8 @@ final class CaptureModel: ObservableObject {
     /// Shows the next capture: one at a time, or all together when more than three wait
     /// (e.g. the first check of discoveries made before).
     private func celebrateNext() {
-        guard celebration == nil, celebrates else { return }
+        // Not behind the list or an entry: after they close.
+        guard celebration == nil, celebrates, entry == nil, !showsList else { return }
         let waiting = log.uncelebrated
         guard let first = waiting.first else { return }
         let shown = waiting.count > 3 ? waiting : [first]
@@ -180,11 +199,33 @@ final class CaptureModel: ObservableObject {
         }
     }
 
-    /// Shows a sight on the 2D map (closes the list).
+    /// Shows a sight on the 2D map (closes the list and any entry).
     func show(_ sight: Sight) {
         focusCounter += 1
         focus = SightFocus(id: focusCounter, sight: sight)
         showsList = false
+        entry = nil
+    }
+
+    /// Opens a sight's entry over the map.
+    func openEntry(_ sight: Sight) {
+        entry = sight
+    }
+
+    /// Captured sights whose entry has not been opened yet.
+    func hasUnreadEntry(_ sight: Sight) -> Bool {
+        log.hasUnreadEntry(sight.id)
+    }
+
+    var unreadEntryCount: Int {
+        log.records.keys.filter { !log.readEntries.contains($0) }.count
+    }
+
+    /// The entry was opened.
+    func markRead(_ sight: Sight) {
+        guard log.hasUnreadEntry(sight.id) else { return }
+        log.readEntries.insert(sight.id)
+        persist()
     }
 }
 

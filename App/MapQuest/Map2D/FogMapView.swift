@@ -24,6 +24,8 @@ struct FogMapView: UIViewRepresentable {
     var sightPins: [SightPin] = []
     /// A sight to centre the map on (once per request).
     var focus: SightFocus?
+    /// Opens a sight's entry (the badge's info button).
+    var onOpenSight: ((Sight) -> Void)?
     /// Called with the coordinate of a long press (debug: place a test position); `nil` disables it.
     var onLongPress: ((GeoCoordinate) -> Void)?
 
@@ -140,6 +142,7 @@ struct FogMapView: UIViewRepresentable {
             coordinator.heatView.setHeatPoints(heatPoints.points, version: heatPoints.version)
         }
         coordinator.updateCities(cities, on: map)
+        coordinator.onOpenSight = onOpenSight
         coordinator.sights.update(sightPins, on: map)
         coordinator.sights.focus(focus, on: map)
     }
@@ -160,6 +163,7 @@ struct FogMapView: UIViewRepresentable {
         private var labels: [MapLabelAnnotation] = []
         weak var map: MKMapView?
         var onLongPress: ((GeoCoordinate) -> Void)?
+        var onOpenSight: ((Sight) -> Void)?
         private var hasCenteredOnUser = false
         /// The map opened without a known position: zoom to the first fix.
         var followsFirstFix = false
@@ -196,6 +200,15 @@ struct FogMapView: UIViewRepresentable {
             }
             guard annotation is MapLabelAnnotation else { return nil }
             return mapView.dequeueReusableAnnotationView(withIdentifier: MapLabelView.reuseIdentifier, for: annotation)
+        }
+
+        func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
+            sights.reveal(views)
+        }
+
+        func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+            guard let sight = view.annotation as? SightAnnotation else { return }
+            onOpenSight?(sight.pin.sight)
         }
 
         func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {

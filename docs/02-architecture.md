@@ -276,10 +276,30 @@ its own data; nothing else depends on it.
   anywhere ends it at once. One capture at a time; more than three waiting
   (e.g. the first check of earlier discoveries) are celebrated together.
   View-only data sources record captures without celebrating.
+* **Entries** (`SightInfo`, `<city>-sight-info.json`): every sight has an
+  encyclopedia entry – the introduction of its Wikipedia article (English, or
+  German where there is none: description and history) and its lead photo
+  from Wikimedia Commons – locked until the sight is captured. Built by
+  `Tools/capture/fetch_sight_info.py`: the sight's name and aliases are looked
+  up as German article titles and accepted only if the article's coordinates
+  lie near the sight (else a full-text search, same check); the English
+  article via the language link; pronunciation notes removed, whole
+  paragraphs up to about 1,400 characters; only free Commons photos (author
+  and licence kept). Texts are CC BY-SA 4.0; each entry credits its article
+  and photo. Photos are loaded when an entry is first opened and kept in
+  `Caches/SightPhotos`.
+* **Discovery**: a capture unlocks the entry ("New entry unlocked" in the
+  animation, with *Read entry* and *Show on map*); the sight's badge springs
+  onto the 2D map with pulsing rings (when it is captured while the map is
+  shown, or when it first scrolls into view); its callout's info button opens
+  the entry. Unopened entries are marked NEW in the list and by a dot on the
+  trophy button (`CaptureLog.readEntries`). Celebrations wait while the list
+  or an entry is open.
 * **Views**: the trophy button in the status panel (number of captures)
   opens one list of all sights, nearest first – captured ones in orange
-  (with their capture date), the others in grey; tapping one shows it on the
-  2D map. On the 2D map captured
+  (with their capture date), the others in grey; tapping one opens its entry
+  (or the locked page: distance and how to unlock it), both with *Show on
+  map*. On the 2D map captured
   sights are golden badges with their category icon (annotations, above the
   fog; a callout gives name and date); *Debug › Show all sights* marks the
   others as grey "?". In 3D every sight in the scene floats as a turning gem
