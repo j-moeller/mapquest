@@ -277,8 +277,9 @@ its own data; nothing else depends on it.
   (e.g. the first check of earlier discoveries) are celebrated together.
   View-only data sources record captures without celebrating.
 * **Views**: the trophy button in the status panel (number of captures)
-  opens the list of available sights (nearest first) and captured ones
-  (newest first); tapping one shows it on the 2D map. On the 2D map captured
+  opens one list of all sights, nearest first – captured ones in orange
+  (with their capture date), the others in grey; tapping one shows it on the
+  2D map. On the 2D map captured
   sights are golden badges with their category icon (annotations, above the
   fog; a callout gives name and date); *Debug › Show all sights* marks the
   others as grey "?". In 3D every sight in the scene floats as a turning gem

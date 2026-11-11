@@ -2,18 +2,12 @@ import CoreLocation
 import MapQuestCore
 import SwiftUI
 
-/// Available and captured sights; tapping one shows it on the map.
+/// All sights in one list – captured ones in orange, the others in grey – nearest
+/// first when the position is known; tapping one shows it on the map.
 struct CaptureListView: View {
     @EnvironmentObject private var captures: CaptureModel
     @EnvironmentObject private var tracker: LocationTracker
     @Environment(\.dismiss) private var dismiss
-    @State private var tab = Tab.available
-
-    enum Tab: String, CaseIterable, Identifiable {
-        case available = "Available"
-        case captured = "Captured"
-        var id: String { rawValue }
-    }
 
     var body: some View {
         NavigationStack {
@@ -23,43 +17,17 @@ struct CaptureListView: View {
                         Text("\(captures.capturedCount) of \(captures.catalog.count) sights captured")
                             .font(.headline)
                         ProgressView(value: Double(captures.capturedCount), total: Double(max(captures.catalog.count, 1)))
-                            .tint(.captureGold)
+                            .tint(.orange)
                     }
                     .padding(.vertical, 4)
                 } footer: {
                     Text("A sight is captured once you have been there: when the circles of the radius view cover it (large parks and squares: when they reach into them). Seeing it from a distance does not count.")
                 }
                 Section {
-                    switch tab {
-                    case .available:
-                        if available.isEmpty {
-                            Text("All sights captured!")
-                                .foregroundStyle(.secondary)
-                        }
-                        ForEach(available) { sight in
-                            row(sight, detail: detail(for: sight), captured: false)
-                        }
-                    case .captured:
-                        if captures.captured.isEmpty {
-                            Text("No sights captured yet.")
-                                .foregroundStyle(.secondary)
-                        }
-                        ForEach(captures.captured) { item in
-                            row(item.sight, detail: "\(item.sight.category.title) · \(item.record.capturedAt.formatted(date: .abbreviated, time: .omitted))", captured: true)
-                        }
+                    ForEach(sights, id: \.id) { sight in
+                        row(sight, record: captures.log.records[sight.id])
                     }
                 }
-            }
-            .safeAreaInset(edge: .top) {
-                Picker("Sights", selection: $tab) {
-                    ForEach(Tab.allCases) { tab in
-                        Text(tab.rawValue).tag(tab)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .padding(.horizontal)
-                .padding(.vertical, 6)
-                .background(.bar)
             }
             .navigationTitle("Sights")
             .navigationBarTitleDisplayMode(.inline)
@@ -71,47 +39,56 @@ struct CaptureListView: View {
         }
     }
 
-    private func row(_ sight: Sight, detail: String, captured: Bool) -> some View {
-        Button {
+    private func row(_ sight: Sight, record: CaptureRecord?) -> some View {
+        let captured = record != nil
+        return Button {
             captures.show(sight)
         } label: {
             HStack(spacing: 12) {
                 SightBadge(category: sight.category, captured: captured, size: 34)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(sight.name)
-                        .foregroundStyle(.primary)
-                    Text(detail)
+                        .fontWeight(captured ? .semibold : .regular)
+                        .foregroundStyle(captured ? Color.orange : Color.secondary)
+                    Text(detail(for: sight, record: record))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
                 Spacer(minLength: 4)
-                Image(systemName: "map")
-                    .foregroundStyle(.secondary)
+                Image(systemName: captured ? "checkmark.seal.fill" : "map")
+                    .foregroundStyle(captured ? Color.orange : Color.secondary)
             }
         }
+        .accessibilityLabel("\(sight.name), \(captured ? "captured" : "not captured")")
         .accessibilityHint("Shows the sight on the map")
     }
 
-    /// Available sights, nearest first when the position is known.
-    private var available: [Sight] {
-        let sights = captures.available
-        guard let location = tracker.lastLocation else { return sights.sorted { $0.name < $1.name } }
-        return sights.sorted { distance(to: $0, from: location) < distance(to: $1, from: location) }
+    /// Every sight, nearest first when the position is known, else by name.
+    private var sights: [Sight] {
+        let all = captures.catalog.sights
+        guard let location = tracker.lastLocation else { return all.sorted { $0.name < $1.name } }
+        return all.sorted { distance(to: $0, from: location) < distance(to: $1, from: location) }
     }
 
     private func distance(to sight: Sight, from location: CLLocation) -> CLLocationDistance {
         location.distance(from: CLLocation(latitude: sight.latitude, longitude: sight.longitude))
     }
 
-    private func detail(for sight: Sight) -> String {
-        guard let location = tracker.lastLocation else { return sight.category.title }
-        let meters = distance(to: sight, from: location)
-        let text = meters < 1_000 ? "\(Int((meters / 10).rounded() * 10)) m" : String(format: "%.1f km", meters / 1_000)
-        return "\(sight.category.title) · \(text) away"
+    /// Category, distance, and the capture date of captured sights.
+    private func detail(for sight: Sight, record: CaptureRecord?) -> String {
+        var parts = [sight.category.title]
+        if let location = tracker.lastLocation {
+            let meters = distance(to: sight, from: location)
+            parts.append(meters < 1_000 ? "\(Int((meters / 10).rounded() * 10)) m away" : String(format: "%.1f km away", meters / 1_000))
+        }
+        if let record {
+            parts.append("captured \(record.capturedAt.formatted(date: .abbreviated, time: .omitted))")
+        }
+        return parts.joined(separator: " · ")
     }
 }
 
-/// A sight's category icon in a round badge: gold once captured.
+/// A sight's category icon in a round badge: orange once captured, grey otherwise.
 struct SightBadge: View {
     let category: SightCategory
     let captured: Bool
@@ -120,9 +97,7 @@ struct SightBadge: View {
     var body: some View {
         ZStack {
             Circle()
-                .fill(captured
-                      ? AnyShapeStyle(LinearGradient(colors: [.captureGold, .orange], startPoint: .topLeading, endPoint: .bottomTrailing))
-                      : AnyShapeStyle(Color.secondary.opacity(0.18)))
+                .fill(captured ? Color.orange : Color.secondary.opacity(0.18))
             Image(systemName: category.symbol)
                 .font(.system(size: size * 0.45, weight: .bold))
                 .foregroundStyle(captured ? Color.white : Color.secondary)

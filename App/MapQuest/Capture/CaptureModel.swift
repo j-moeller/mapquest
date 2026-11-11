@@ -21,14 +21,6 @@ struct SightFocus: Equatable {
     let sight: Sight
 }
 
-/// A captured sight with its record.
-struct CapturedSight: Identifiable {
-    let sight: Sight
-    let record: CaptureRecord
-
-    var id: String { sight.id }
-}
-
 /// A sight as drawn on the maps.
 struct SightPin: Equatable, Identifiable {
     let sight: Sight
@@ -178,17 +170,6 @@ final class CaptureModel: ObservableObject {
     // MARK: Views
 
     var capturedCount: Int { log.records.count }
-
-    /// Captured sights, newest first.
-    var captured: [CapturedSight] {
-        log.records.values
-            .compactMap { record in catalog[record.sightID].map { CapturedSight(sight: $0, record: record) } }
-            .sorted { $0.record.capturedAt > $1.record.capturedAt }
-    }
-
-    var available: [Sight] {
-        catalog.sights.filter { !log.isCaptured($0.id) }
-    }
 
     /// Pins for the maps: captured sights, and the others too when `showingAll`.
     func pins(showingAll: Bool) -> [SightPin] {
