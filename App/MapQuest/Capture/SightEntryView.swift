@@ -4,11 +4,12 @@ import MapQuestCore
 import SwiftUI
 import UIKit
 
-/// A sight's entry: locked until the sight is captured, then its photo, a
-/// description and its history (Wikipedia introduction) with the credits the
-/// licences ask for.
+/// A sight's entry: locked until the sight is captured, then its interactive 3D
+/// model (Berlin LoD2) in its surroundings, a description and its history
+/// (Wikipedia introduction), its photo, with the credits the licences ask for.
 struct SightEntryView: View {
     let sight: Sight
+    @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var captures: CaptureModel
     @EnvironmentObject private var tracker: LocationTracker
     @Environment(\.dismiss) private var dismiss
@@ -35,38 +36,57 @@ struct SightEntryView: View {
 
     // MARK: Parts
 
+    @ViewBuilder
     private var header: some View {
-        ZStack(alignment: .bottomLeading) {
-            Group {
-                if record != nil, let photo = info?.image {
-                    SightPhotoView(url: photo.url)
-                } else {
-                    LinearGradient(colors: [Color.gray.opacity(0.5), Color.gray.opacity(0.25)], startPoint: .top, endPoint: .bottom)
-                        .overlay {
-                            Image(systemName: record == nil ? "lock.fill" : sight.category.symbol)
-                                .font(.system(size: 54, weight: .bold))
-                                .foregroundStyle(.white.opacity(0.7))
-                        }
+        if record != nil {
+            VStack(alignment: .leading, spacing: 10) {
+                SightModelView(sight: sight, buildings: model.buildings, baseMap: model.debug.baseMap)
+                    .frame(height: 300)
+                    .overlay(alignment: .bottomTrailing) {
+                        Label("Drag to turn · pinch to zoom", systemImage: "rotate.3d")
+                            .font(.caption2)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(.ultraThinMaterial, in: Capsule())
+                            .padding(8)
+                            .allowsHitTesting(false)
+                    }
+                HStack(alignment: .center, spacing: 10) {
+                    SightBadge(category: sight.category, captured: true, size: 40)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(sight.category.title.uppercased())
+                            .font(.caption.weight(.bold))
+                            .foregroundStyle(Color.orange)
+                        Text(sight.name)
+                            .font(.title2.bold())
+                            .lineLimit(2)
+                    }
                 }
+                .padding(.horizontal)
             }
-            .frame(height: 230)
-            .frame(maxWidth: .infinity)
-            .clipped()
-            LinearGradient(colors: [.clear, .black.opacity(0.75)], startPoint: .center, endPoint: .bottom)
-                .frame(height: 230)
-            HStack(alignment: .bottom, spacing: 10) {
-                SightBadge(category: sight.category, captured: record != nil, size: 40)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(record == nil ? "Undiscovered \(sight.category.title.lowercased())" : sight.category.title.uppercased())
-                        .font(.caption.weight(.bold))
-                        .foregroundStyle(record == nil ? Color.white.opacity(0.8) : Color.orange)
-                    Text(record == nil ? "???" : sight.name)
-                        .font(.title2.bold())
-                        .foregroundStyle(.white)
-                        .lineLimit(2)
+        } else {
+            ZStack(alignment: .bottomLeading) {
+                LinearGradient(colors: [Color.gray.opacity(0.5), Color.gray.opacity(0.25)], startPoint: .top, endPoint: .bottom)
+                    .overlay {
+                        Image(systemName: "lock.fill")
+                            .font(.system(size: 54, weight: .bold))
+                            .foregroundStyle(.white.opacity(0.7))
+                    }
+                    .frame(height: 230)
+                    .frame(maxWidth: .infinity)
+                HStack(alignment: .bottom, spacing: 10) {
+                    SightBadge(category: sight.category, captured: false, size: 40)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Undiscovered \(sight.category.title.lowercased())")
+                            .font(.caption.weight(.bold))
+                            .foregroundStyle(Color.white.opacity(0.8))
+                        Text("???")
+                            .font(.title2.bold())
+                            .foregroundStyle(.white)
+                    }
                 }
+                .padding(14)
             }
-            .padding(14)
         }
     }
 
@@ -93,6 +113,13 @@ struct SightEntryView: View {
             } else {
                 Text("No entry for this sight yet.")
                     .foregroundStyle(.secondary)
+            }
+            if let photo = info?.image {
+                SightPhotoView(url: photo.url)
+                    .frame(height: 210)
+                    .frame(maxWidth: .infinity)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .padding(.top, 4)
             }
             actions
             if let info {

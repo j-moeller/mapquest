@@ -12,6 +12,7 @@ Berlin, where it comes from, and how to regenerate it.
 | City outline | Union of the districts (slivers closed, simplified to 2 m) | CC BY 3.0 DE | `App/MapQuest/Resources/Berlin/berlin-boundary.geojson` |
 | Sights (119, all 12 districts) | Curated list (`Tools/capture/berlin_sights.csv`); positions from OpenStreetMap points of interest via OpenFreeMap vector tiles (`Tools/capture/locate_sights.py`), 7 open areas placed by hand | ODbL 1.0 (© OpenStreetMap contributors) | `App/MapQuest/Resources/Berlin/berlin-sights.json` |
 | Sight entries (text and photo) | Wikipedia introductions (English, else German) and lead photos from Wikimedia Commons (`Tools/capture/fetch_sight_info.py`) | Texts CC BY-SA 4.0; photos per entry (author and licence in the file) | `App/MapQuest/Resources/Berlin/berlin-sight-info.json` |
+| Sight 3D models (83) | Berlin's LoD2 building models ([Geoportal Berlin](https://gdi.berlin.de/data/a_lod2/atom)), selected by OSM outlines (`Tools/capture/sight_models.py`) | dl-de/zero-2-0 | `App/MapQuest/Resources/Berlin/SightModels/sight-<id>.mqm` |
 | Demo explorer track (1 Hz, TrackCodec) | Generated (`Tools/berlin/make_demo_data.py`) | – | `App/MapQuest/Resources/Berlin/demo-track.mqtrack` |
 | Simulator walk | Generated, Brandenburger Tor → Alexanderplatz | – | `App/Simulation/BerlinWalk.gpx` |
 
@@ -74,6 +75,17 @@ so a re-run only fetches what is new.
 
 ```bash
 python3 Tools/capture/fetch_sight_info.py App/MapQuest/Resources/Berlin/berlin-sights.json App/MapQuest/Resources/Berlin/berlin-sight-info.json --cache build-sights/wiki --aliases Tools/capture/berlin_sights.csv --overrides Tools/capture/berlin_sight_articles.csv
+```
+
+The 3D models of the sights' buildings come from the same LoD2 tiles as the
+building heights (docs/02, "Capture"):
+
+```bash
+pip install lxml pyproj shapely mapbox-earcut mapbox-vector-tile numpy
+```
+
+```bash
+python3 Tools/capture/sight_models.py App/MapQuest/Resources/Berlin/berlin-sights.json --cache build-sights/lod2 App/MapQuest/Resources/Berlin/SightModels
 ```
 
 ### Simulating a walk
