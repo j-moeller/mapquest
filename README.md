@@ -15,7 +15,7 @@ The app has four major components:
 |---|---|
 | **Location tracking** | Records the position about once per second in a compact track (≈ 6 bytes per fix); the positions that reveal new parts of the map drive the fog of war |
 | **Discovered area** | Turns stored positions into discovered-area polygons, merges adjacent areas into regions, keeps disconnected areas apart; it is a cache that can always be rebuilt from the positions |
-| **Capture** | 119 Berlin sights (all districts) are captured once the fog around them lifts: a capture animation, a list of available and captured sights, golden badges on the map and gems in 3D |
+| **Capture** | 119 Berlin sights (all districts) are captured once you have been there (the radius view covers them): a capture animation, a list of available and captured sights, golden badges on the map and gems in 3D |
 | **Map display** | 2D: a label-free base map with a black fog (80 %, blurred map underneath) drawn into it, the discovered area cut out. 3D: buildings that block the view; seen buildings are revealed |
 
 ## How it works
@@ -62,8 +62,8 @@ The app has four major components:
   periods; in 2D the *Radius / Line of sight* picker chooses the layer.
 * The panel shows discovered area, share of the current city, regions and stored
   positions; tap the chevron to collapse it on small screens (iPhone 13 mini).
-* **Sights**: walk up to (or see) one of 119 Berlin sights and it is captured,
-  with an animation (tap to skip). The trophy button in the panel lists
+* **Sights**: walk up to one of 119 Berlin sights – until the circles of the
+  radius view cover it – and it is captured, with an animation (tap to skip). The trophy button in the panel lists
   available sights (nearest first) and captured ones; tap one to see it on
   the map. Captured sights are golden badges on the map and golden buildings
   with floating gems in 3D. *Debug › Show all sights* marks the uncaptured

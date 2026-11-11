@@ -247,16 +247,23 @@ its own data; nothing else depends on it.
 
 * **Sights** (`MapQuestCore/Capture/Sight.swift`): ID, name, category
   (landmark, museum, palace, church, viewpoint, memorial, park, square,
-  culture, monument, zoo, bridge, stadium), position and capture radius
+  culture, monument, zoo, bridge, stadium), position and extent
   (30–150 m; larger for open areas). Bundled per city as
   `<city>-sights.json` (Berlin: docs/03-berlin-data.md); `SightCatalog`
   merges them.
-* **Capture rule** (`SightCapture`): a sight is captured when discovered area
-  of any layer (radius or line of sight, all time) lies within its radius –
-  walking up to it, or seeing it from a distance. The capture date is the
-  first discovery of that area. Captures are kept once made (a rebuild with
+* **Capture rule** (`SightCapture`): a sight is captured when you have been
+  there – when the **radius layer** (the circles around your positions, all
+  time) covers its position. Large open areas count from inside: the circles
+  must reach within their extent minus 50 m (`Sight.captureTolerance`; e.g.
+  Tempelhofer Feld, 150 m → 100 m). The line of sight does not count: seeing
+  a sight from afar is not having been there. The capture date is the first
+  discovery of the covering area. Captures are kept once made (a rebuild with
   other parameters does not take them away); deleting a data source's
-  discovered area deletes its captures.
+  discovered area deletes its captures. A change of the rule bumps
+  `CaptureLog.currentVersion`: logs of an older rule are discarded once and
+  the sights checked again (version 2: radius layer only; version 1 counted
+  any layer within the extent). *Debug › Reset captured sights* does the same
+  on demand.
 * **Log** (`CaptureLog`, `FileCaptureStore`): one JSON file per data source
   in `Application Support/MapQuest/Captures`, separate from the data stores;
   per capture the dates and whether it was celebrated.

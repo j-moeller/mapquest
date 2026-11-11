@@ -120,15 +120,17 @@ struct ContentView: View {
 }
 
 extension ContentView {
-    /// Changes whenever the selected data source or its discovered area changes.
+    /// Changes whenever the selected data source or its radius layer changes.
     private var captureInput: String {
-        "\(model.profile.id)|\(model.state(.radius).version)|\(model.state(.lineOfSight).version)"
+        "\(model.profile.id)|\(model.state(.radius).version)"
     }
 
+    /// Captures count where you have been: the radius layer (circles around your
+    /// positions), not what the line of sight revealed from afar.
     private func updateCaptures() {
         captures.update(
             sourceID: model.profile.id, recordsLocations: model.profile.recordsLocations,
-            snapshots: MapLayer.allCases.map { model.state($0).snapshot }
+            snapshots: [model.state(.radius).snapshot]
         )
     }
 }

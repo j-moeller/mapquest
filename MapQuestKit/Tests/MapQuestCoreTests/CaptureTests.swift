@@ -47,17 +47,25 @@ final class CaptureTests: XCTestCase {
 
     func testCaptureRule() throws {
         let sight = Sight(id: "s", name: "S", category: .monument, latitude: 52.5163, longitude: 13.3777, radius: 40)
+        XCTAssertEqual(sight.captureTolerance, 0, "small sights must be covered")
         let early = Date(timeIntervalSince1970: 1_000), late = Date(timeIntervalSince1970: 2_000)
-        // Discovered area 30 m away (edge), within the radius.
-        let near = piece(around: east(sight.coordinate, 50), half: 20, discovered: late)
-        XCTAssertEqual(SightCapture.captureDate(of: sight, in: [snapshot([near])]), late)
-        // 70 m away (edge at 60 m): not reached.
-        let far = piece(around: east(sight.coordinate, 80), half: 20, discovered: early)
-        XCTAssertNil(SightCapture.captureDate(of: sight, in: [snapshot([far])]))
-        // On the sight, in another layer, discovered earlier: the earliest wins.
-        let on = piece(around: sight.coordinate, half: 10, discovered: early)
-        XCTAssertEqual(SightCapture.captureDate(of: sight, in: [snapshot([near]), snapshot([on])]), early)
+        // Discovered area ending 10 m before the sight: not captured (it must be covered).
+        let near = piece(around: east(sight.coordinate, 30), half: 20, discovered: early)
+        XCTAssertNil(SightCapture.captureDate(of: sight, in: [snapshot([near])]))
+        // Covering it: captured; the earliest covering piece gives the date.
+        let on = piece(around: east(sight.coordinate, 15), half: 20, discovered: late)
+        let onEarlier = piece(around: sight.coordinate, half: 10, discovered: early)
+        XCTAssertEqual(SightCapture.captureDate(of: sight, in: [snapshot([near, on])]), late)
+        XCTAssertEqual(SightCapture.captureDate(of: sight, in: [snapshot([on]), snapshot([onEarlier])]), early)
         XCTAssertNil(SightCapture.captureDate(of: sight, in: [snapshot([])]))
+
+        // A large open area (150 m): reached within 100 m of its position.
+        let field = Sight(id: "f", name: "F", category: .park, latitude: 52.4733, longitude: 13.4019, radius: 150)
+        XCTAssertEqual(field.captureTolerance, 100)
+        let inside = piece(around: east(field.coordinate, 100), half: 20, discovered: late)  // edge at 80 m
+        XCTAssertEqual(SightCapture.captureDate(of: field, in: [snapshot([inside])]), late)
+        let outside = piece(around: east(field.coordinate, 140), half: 20, discovered: late)  // edge at 120 m
+        XCTAssertNil(SightCapture.captureDate(of: field, in: [snapshot([outside])]))
     }
 
     func testLogUpdateCelebrationAndStore() throws {
@@ -94,26 +102,42 @@ final class CaptureTests: XCTestCase {
         XCTAssertEqual(try store.load(), log)
         try store.delete()
         XCTAssertEqual(try store.load(), CaptureLog())
+
+        // Logs made under the first (looser) rule are discarded once.
+        var old = log
+        old.version = 1
+        try store.save(old)
+        XCTAssertEqual(try store.load(), CaptureLog())
+        XCTAssertEqual(CaptureLog().version, CaptureLog.currentVersion)
     }
 
-    /// End to end: one position at the Brandenburger Tor captures it (and its
-    /// neighbour the Reichstag is 250 m away: not captured by the 50 m circle).
+    /// End to end with the radius layer (50 m circles): a position at the
+    /// Brandenburger Tor captures it; one 80 m east of it does not (the circle
+    /// ends 30 m before the gate); the Reichstag 250 m away is never captured.
     func testAPositionCapturesTheSightThere() async throws {
         let catalog = try Self.berlinSights()
         let gate = try XCTUnwrap(catalog["brandenburger-tor"])
-        let store = InMemoryDataStore()
-        let engine = DiscoveryEngine(model: CircleDiscoveryModel(), store: store)
-        let recorder = LocationRecorder(store: store, engines: [engine])
-        let sample = LocationSample(
-            latitude: gate.latitude, longitude: gate.longitude, altitude: 36,
-            horizontalAccuracy: 5, verticalAccuracy: 5, timestamp: Date()
-        )
-        _ = try await recorder.record(sample)
-        try await recorder.finishSampling()
-        var log = CaptureLog()
-        let added = SightCapture.update(&log, sights: catalog.sights, snapshots: [await engine.snapshot()])
-        XCTAssertTrue(added.contains { $0.sightID == "brandenburger-tor" })
-        XCTAssertFalse(log.isCaptured("reichstag"))
-        XCTAssertFalse(log.isCaptured("fernsehturm"))
+
+        func captures(at coordinate: GeoCoordinate) async throws -> CaptureLog {
+            let store = InMemoryDataStore()
+            let engine = DiscoveryEngine(model: CircleDiscoveryModel(), store: store)
+            let recorder = LocationRecorder(store: store, engines: [engine])
+            let sample = LocationSample(
+                latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: 36,
+                horizontalAccuracy: 5, verticalAccuracy: 5, timestamp: Date()
+            )
+            _ = try await recorder.record(sample)
+            try await recorder.finishSampling()
+            var log = CaptureLog()
+            SightCapture.update(&log, sights: catalog.sights, snapshots: [await engine.snapshot()])
+            return log
+        }
+
+        let there = try await captures(at: gate.coordinate)
+        XCTAssertTrue(there.isCaptured("brandenburger-tor"))
+        XCTAssertFalse(there.isCaptured("reichstag"))
+        XCTAssertFalse(there.isCaptured("fernsehturm"))
+        let nearby = try await captures(at: east(gate.coordinate, 80))
+        XCTAssertFalse(nearby.isCaptured("brandenburger-tor"))
     }
 }

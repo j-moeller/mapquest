@@ -5,6 +5,7 @@ import SwiftUI
 struct DebugSettingsView: View {
     @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var tracker: LocationTracker
+    @EnvironmentObject private var captures: CaptureModel
     @State private var draft = DebugSettings()
     @State private var loaded = false
 
@@ -83,6 +84,9 @@ struct DebugSettingsView: View {
                 .disabled(tracker.lastLocation == nil || !model.profile.recordsLocations)
                 Toggle("Show evaluation details", isOn: $draft.showsEvaluation)
                 Toggle("Show all sights on the map", isOn: $draft.showsAllSights)
+                Button("Reset captured sights", role: .destructive) {
+                    captures.resetCaptures()
+                }
             } header: {
                 Text("Testing")
             } footer: {

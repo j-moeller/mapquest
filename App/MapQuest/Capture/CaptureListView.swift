@@ -27,7 +27,7 @@ struct CaptureListView: View {
                     }
                     .padding(.vertical, 4)
                 } footer: {
-                    Text("A sight is captured once the fog of war around it is lifted: walk up to it, or see it from a distance (line of sight).")
+                    Text("A sight is captured once you have been there: when the circles of the radius view cover it (large parks and squares: when they reach into them). Seeing it from a distance does not count.")
                 }
                 Section {
                     switch tab {

@@ -51,6 +51,8 @@ final class CaptureModel: ObservableObject {
     /// Only data sources that record this device's positions celebrate captures.
     private var celebrates = false
     private var pending: [DiscoveredAreaSnapshot]?
+    /// The area last checked (to check again after a reset).
+    private var lastSnapshots: [DiscoveredAreaSnapshot] = []
     private var isEvaluating = false
     private var focusCounter = 0
 
@@ -80,6 +82,15 @@ final class CaptureModel: ObservableObject {
             switchSource(to: sourceID, recordsLocations: recordsLocations)
         }
         pending = snapshots
+        lastSnapshots = snapshots
+        evaluateIfIdle()
+    }
+
+    /// Forgets the captures of the selected data source and checks all sights again.
+    func resetCaptures() {
+        guard let sourceID else { return }
+        reset(sourceID: sourceID)
+        pending = lastSnapshots
         evaluateIfIdle()
     }
 

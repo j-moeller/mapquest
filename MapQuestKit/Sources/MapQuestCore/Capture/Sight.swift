@@ -11,15 +11,16 @@ public enum SightCategory: String, Codable, CaseIterable, Sendable {
     }
 }
 
-/// A place worth visiting. It is captured once the discovered area reaches it:
-/// any discovered area within `radius` metres of its position.
+/// A place worth visiting. It is captured once you have been there: once the
+/// area discovered around your positions (the radius view) covers its position –
+/// or, for large open areas, reaches within `captureTolerance` of it.
 public struct Sight: Codable, Hashable, Identifiable, Sendable {
     public var id: String
     public var name: String
     public var category: SightCategory
     public var latitude: Double
     public var longitude: Double
-    /// How close the discovered area must come, in metres (larger for open areas).
+    /// The extent of the sight around its position, in metres (larger for open areas).
     public var radius: Double
 
     public init(id: String, name: String, category: SightCategory, latitude: Double, longitude: Double, radius: Double = 40) {
@@ -30,6 +31,10 @@ public struct Sight: Codable, Hashable, Identifiable, Sendable {
         self.longitude = longitude
         self.radius = radius
     }
+
+    /// How close the discovered area (circles of 50 m around positions) must come to
+    /// the position: 0 – it must cover it – except for sights larger than the circles.
+    public var captureTolerance: Double { max(0, radius - 50) }
 
     public var coordinate: GeoCoordinate { GeoCoordinate(latitude: latitude, longitude: longitude) }
     public var point: WorldPoint { WebMercator.project(coordinate) }

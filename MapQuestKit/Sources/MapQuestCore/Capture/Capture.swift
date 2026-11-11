@@ -19,9 +19,13 @@ public struct CaptureRecord: Codable, Hashable, Sendable {
 }
 
 /// All captures of one data source. Captures are kept once made – rebuilding the
-/// discovered area with other parameters does not take them away.
+/// discovered area with other parameters does not take them away – unless the
+/// capture rule changes (`currentVersion`): logs made under an older rule are
+/// discarded and the captures checked again.
 public struct CaptureLog: Codable, Equatable, Sendable {
-    public static let currentVersion = 1
+    /// 1: any layer within the sight's radius. 2: the radius layer must cover the
+    /// sight (within `Sight.captureTolerance`).
+    public static let currentVersion = 2
     public var version = CaptureLog.currentVersion
     public var records: [String: CaptureRecord] = [:]
 
@@ -41,13 +45,16 @@ public struct CaptureLog: Codable, Equatable, Sendable {
     }
 }
 
-/// The capture rule: a sight is captured when discovered area lies within its radius.
+/// The capture rule: a sight is captured when you have been there – when the
+/// area discovered around your positions (the radius layer, circles around
+/// them; not the line of sight) covers the sight's position, or comes within
+/// `Sight.captureTolerance` of it for large open areas.
 public enum SightCapture {
     /// When the discovered area first reached `sight` (the earliest first-discovery
-    /// date of the pieces within its radius), or `nil` if it does not reach it.
+    /// date of the pieces covering it), or `nil` if it does not.
     public static func captureDate(of sight: Sight, in snapshots: [DiscoveredAreaSnapshot]) -> Date? {
         let point = sight.point
-        let radius = sight.radius / WebMercator.metersPerUnit(atWorldY: Double(point.y))
+        let radius = sight.captureTolerance / WebMercator.metersPerUnit(atWorldY: Double(point.y))
         let r = Int64(radius.rounded(.up)) + 1
         let rect = WorldRect(minX: point.x - r, minY: point.y - r, maxX: point.x + r, maxY: point.y + r)
         var earliest: Date?
@@ -103,12 +110,13 @@ public struct FileCaptureStore: CaptureStore {
         self.init(url: directory.appendingPathComponent("\(safe).json"))
     }
 
-    /// An empty log if there is no file yet.
+    /// An empty log if there is no file yet, or if it was made under an older capture rule.
     public func load() throws -> CaptureLog {
         guard FileManager.default.fileExists(atPath: url.path) else { return CaptureLog() }
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
-        return try decoder.decode(CaptureLog.self, from: Data(contentsOf: url))
+        let log = try decoder.decode(CaptureLog.self, from: Data(contentsOf: url))
+        return log.version < CaptureLog.currentVersion ? CaptureLog() : log
     }
 
     public func save(_ log: CaptureLog) throws {
