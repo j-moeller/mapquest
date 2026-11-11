@@ -12,11 +12,14 @@ struct City: Hashable, Identifiable {
     let name: String
     /// Typical ground elevation, used where the elevation model has no data.
     let groundElevation: Double
+    /// Apple Maps has photorealistic 3D buildings here (satellite imagery on 3D
+    /// models): sight entries show them; elsewhere they show photos.
+    var hasPhotorealistic3D = false
 }
 
 enum Cities {
     static let all = [
-        City(id: "berlin", name: "Berlin", groundElevation: 35),
+        City(id: "berlin", name: "Berlin", groundElevation: 35, hasPhotorealistic3D: true),
         City(id: "braunschweig", name: "Braunschweig", groundElevation: 75),
         City(id: "peine", name: "Peine", groundElevation: 67),
     ]

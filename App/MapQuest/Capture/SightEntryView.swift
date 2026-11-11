@@ -4,18 +4,20 @@ import MapQuestCore
 import SwiftUI
 import UIKit
 
-/// A sight's entry: locked until the sight is captured, then its interactive 3D
-/// model (Berlin LoD2) in its surroundings, a description and its history
-/// (Wikipedia introduction), its photo, with the credits the licences ask for.
+/// A sight's entry: locked until the sight is captured, then – where Apple has
+/// photorealistic 3D buildings – an interactive photorealistic 3D view of it,
+/// otherwise its photo; a description and its history (Wikipedia introduction),
+/// with the credits the licences ask for.
 struct SightEntryView: View {
     let sight: Sight
-    @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var captures: CaptureModel
     @EnvironmentObject private var tracker: LocationTracker
     @Environment(\.dismiss) private var dismiss
 
     private var record: CaptureRecord? { captures.log.records[sight.id] }
     private var info: SightInfo? { captures.infos[sight.id] }
+    /// Photorealistic 3D at the top (the photo then follows the text).
+    private var shows3D: Bool { captures.hasPhotorealistic3D(sight) }
 
     var body: some View {
         ScrollView {
@@ -38,12 +40,21 @@ struct SightEntryView: View {
 
     @ViewBuilder
     private var header: some View {
-        if record != nil {
+        if record == nil {
+            banner(locked: true) {
+                LinearGradient(colors: [Color.gray.opacity(0.5), Color.gray.opacity(0.25)], startPoint: .top, endPoint: .bottom)
+                    .overlay {
+                        Image(systemName: "lock.fill")
+                            .font(.system(size: 54, weight: .bold))
+                            .foregroundStyle(.white.opacity(0.7))
+                    }
+            }
+        } else if shows3D {
             VStack(alignment: .leading, spacing: 10) {
-                SightModelView(sight: sight, buildings: model.buildings, baseMap: model.debug.baseMap)
+                SightFlyoverView(sight: sight)
                     .frame(height: 300)
                     .overlay(alignment: .bottomTrailing) {
-                        Label("Drag to turn · pinch to zoom", systemImage: "rotate.3d")
+                        Label("Drag, pinch, turn and tilt", systemImage: "view.3d")
                             .font(.caption2)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
@@ -51,42 +62,63 @@ struct SightEntryView: View {
                             .padding(8)
                             .allowsHitTesting(false)
                     }
-                HStack(alignment: .center, spacing: 10) {
-                    SightBadge(category: sight.category, captured: true, size: 40)
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(sight.category.title.uppercased())
-                            .font(.caption.weight(.bold))
-                            .foregroundStyle(Color.orange)
-                        Text(sight.name)
-                            .font(.title2.bold())
-                            .lineLimit(2)
-                    }
-                }
-                .padding(.horizontal)
+                title
+                    .padding(.horizontal)
             }
         } else {
-            ZStack(alignment: .bottomLeading) {
-                LinearGradient(colors: [Color.gray.opacity(0.5), Color.gray.opacity(0.25)], startPoint: .top, endPoint: .bottom)
-                    .overlay {
-                        Image(systemName: "lock.fill")
-                            .font(.system(size: 54, weight: .bold))
-                            .foregroundStyle(.white.opacity(0.7))
-                    }
-                    .frame(height: 230)
-                    .frame(maxWidth: .infinity)
-                HStack(alignment: .bottom, spacing: 10) {
-                    SightBadge(category: sight.category, captured: false, size: 40)
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("Undiscovered \(sight.category.title.lowercased())")
-                            .font(.caption.weight(.bold))
-                            .foregroundStyle(Color.white.opacity(0.8))
-                        Text("???")
-                            .font(.title2.bold())
-                            .foregroundStyle(.white)
-                    }
+            banner(locked: false) {
+                if let photo = info?.image {
+                    SightPhotoView(url: photo.url)
+                } else {
+                    LinearGradient(colors: [Color.orange.opacity(0.6), Color.orange.opacity(0.3)], startPoint: .top, endPoint: .bottom)
+                        .overlay {
+                            Image(systemName: sight.category.symbol)
+                                .font(.system(size: 54, weight: .bold))
+                                .foregroundStyle(.white.opacity(0.8))
+                        }
                 }
-                .padding(14)
             }
+        }
+    }
+
+    /// Name and category under the 3D view.
+    private var title: some View {
+        HStack(alignment: .center, spacing: 10) {
+            SightBadge(category: sight.category, captured: true, size: 40)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(sight.category.title.uppercased())
+                    .font(.caption.weight(.bold))
+                    .foregroundStyle(Color.orange)
+                Text(sight.name)
+                    .font(.title2.bold())
+                    .lineLimit(2)
+            }
+        }
+    }
+
+    /// A picture with name and category on it (photo, or the locked placeholder).
+    private func banner<Background: View>(locked: Bool, @ViewBuilder background: () -> Background) -> some View {
+        ZStack(alignment: .bottomLeading) {
+            background()
+                .frame(height: 240)
+                .frame(maxWidth: .infinity)
+                .clipped()
+            LinearGradient(colors: [.clear, .black.opacity(0.75)], startPoint: .center, endPoint: .bottom)
+                .frame(height: 240)
+                .allowsHitTesting(false)
+            HStack(alignment: .bottom, spacing: 10) {
+                SightBadge(category: sight.category, captured: !locked, size: 40)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(locked ? "Undiscovered \(sight.category.title.lowercased())" : sight.category.title.uppercased())
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(locked ? Color.white.opacity(0.8) : Color.orange)
+                    Text(locked ? "???" : sight.name)
+                        .font(.title2.bold())
+                        .foregroundStyle(.white)
+                        .lineLimit(2)
+                }
+            }
+            .padding(14)
         }
     }
 
@@ -114,7 +146,7 @@ struct SightEntryView: View {
                 Text("No entry for this sight yet.")
                     .foregroundStyle(.secondary)
             }
-            if let photo = info?.image {
+            if shows3D, let photo = info?.image {
                 SightPhotoView(url: photo.url)
                     .frame(height: 210)
                     .frame(maxWidth: .infinity)

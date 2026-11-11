@@ -288,22 +288,14 @@ its own data; nothing else depends on it.
   and licence kept). Texts are CC BY-SA 4.0; each entry credits its article
   and photo. Photos are loaded when an entry is first opened and kept in
   `Caches/SightPhotos`.
-* **3D models** (`SightModel`, `sight-<id>.mqm`): the entry opens with an
-  interactive 3D view (SceneKit: drag to turn, pinch to zoom; it turns slowly
-  until touched) of the sight's building(s) from Berlin's official LoD2
-  building models (walls and real roof shapes; roofs orange, walls cream),
-  surrounded by the app's own buildings (LoD1, white; those under the model
-  left out) on the label-free map of the area, with shadows. Open places
-  (parks, squares, monuments in the open) show their surroundings with a pin.
-  Built by `Tools/capture/sight_models.py`: the building is the OSM outline
-  containing the sight (palaces, churches, stadiums: all OSM buildings within
-  its extent – wings, stands, the old tower next to the new church); every
-  LoD2 building lying mostly inside it is part of the model. Polygons are
-  triangulated in their own plane (wound outwards) and stored in the sight's
-  local frame (x east, y up, z south, decimetres) with their footprints:
-  83 models, 0.6 MB. LoD2 is generalised: domes and spheres end where the
-  model's roof does (Berliner Dom at 43 m, the Fernsehturm without its
-  sphere).
+* **Photorealistic 3D or photo**: an entry shows 3D only where it is
+  photorealistic – Apple's 3D city model (satellite imagery on 3D buildings
+  and terrain, `MKImageryMapConfiguration(elevationStyle: .realistic)`) in
+  cities flagged `City.hasPhotorealistic3D` (Berlin): an interactive view
+  looking at the sight from above at an angle (drag, pinch, turn and tilt;
+  kept within 1.5 km), its photo after the text. Elsewhere the entry opens
+  with its photo. (Untextured LoD2 models were tried and dropped: not
+  photorealistic.)
 * **Discovery**: a capture unlocks the entry ("New entry unlocked" in the
   animation, with *Read entry* and *Show on map*); the sight's badge springs
   onto the 2D map with pulsing rings (when it is captured while the map is

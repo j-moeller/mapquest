@@ -64,9 +64,9 @@ The app has four major components:
   positions; tap the chevron to collapse it on small screens (iPhone 13 mini).
 * **Sights**: walk up to one of 119 Berlin sights – until the circles of the
   radius view cover it – and it is captured, with an animation (tap to skip):
-  it appears on your map and unlocks its entry – an interactive 3D model of
-  its building (Berlin's LoD2 models) in its surroundings, description,
-  history and photo (from Wikipedia and Wikimedia Commons). The trophy button in the panel lists all
+  it appears on your map and unlocks its entry – a photorealistic 3D view
+  (Apple's 3D city model, where available) or its photo, description and
+  history (from Wikipedia and Wikimedia Commons). The trophy button in the panel lists all
   sights, nearest first – captured ones in orange, the others in grey; tap
   one to see it on the map. Captured sights are golden badges on the map and golden buildings
   with floating gems in 3D. *Debug › Show all sights* marks the uncaptured
