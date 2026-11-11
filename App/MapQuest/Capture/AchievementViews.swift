@@ -119,12 +119,15 @@ struct AchievementDetailView: View {
 
     var body: some View {
         if let entry = captures.achievements[achievementID] {
-            let progress = captures.achievements.progress(of: entry, records: captures.log.records)
+            let progress = captures.achievements.progress(of: entry, captured: captures.log.captureDates)
+            let aboutStations = entry.achievement.rule.isAboutStations
             List {
                 Section {
                     header(progress)
                 }
-                if !progress.isComplete, let next = captures.nextSight(in: progress, from: tracker.lastLocation) {
+                if aboutStations {
+                    stationSections(entry, progress: progress)
+                } else if !progress.isComplete, let next = captures.nextSight(in: progress, from: tracker.lastLocation) {
                     Section {
                         sightRow(next, distance: true)
                         Button {
@@ -137,7 +140,7 @@ struct AchievementDetailView: View {
                         Text(tracker.lastLocation == nil ? "Next up" : "Next up: the nearest")
                     }
                 }
-                if !entry.achievement.rule.isMilestone {
+                if !entry.achievement.rule.isMilestone && !aboutStations {
                     Section {
                         ForEach(entry.members, id: \.self) { id in
                             if let sight = captures.catalog[id] {
@@ -146,6 +149,8 @@ struct AchievementDetailView: View {
                         }
                     } header: {
                         Text(verbatim: "Sights · \(progress.count)/\(progress.target)")
+                    } footer: {
+                        Text("A sight counts once it is captured: discovered by going there, then photographed there.")
                     }
                 }
             }
@@ -186,9 +191,72 @@ struct AchievementDetailView: View {
         .padding(.vertical, 8)
     }
 
+    /// The nearest station still to collect, and – for a line – its stations in order.
+    @ViewBuilder
+    private func stationSections(_ entry: AchievementBook.Entry, progress: AchievementProgress) -> some View {
+        if !progress.isComplete, let next = captures.nextStation(in: progress, from: tracker.lastLocation) {
+            Section {
+                stationRow(next, distance: true)
+                Button {
+                    captures.show(next)
+                } label: {
+                    Label("Show on map", systemImage: "map")
+                }
+                .tint(.orange)
+            } header: {
+                Text(tracker.lastLocation == nil ? "Next up" : "Next up: the nearest")
+            }
+        }
+        if entry.achievement.rule.line != nil || entry.members.count <= 200 {
+            Section {
+                ForEach(entry.members, id: \.self) { id in
+                    if let station = captures.stations[id] {
+                        stationRow(station, distance: false)
+                    }
+                }
+            } header: {
+                Text(verbatim: "Stations · \(progress.count)/\(progress.target)")
+            } footer: {
+                Text("A station is collected by going there – walking past it, or riding through it above ground. No photo needed.")
+            }
+        }
+    }
+
+    private func stationRow(_ station: Station, distance: Bool) -> some View {
+        let collected = captures.log.stations[station.id] != nil
+        return HStack(spacing: 12) {
+            StationBadge(system: station.system, collected: collected, size: 24)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(station.name)
+                    .fontWeight(collected ? .semibold : .regular)
+                    .foregroundStyle(collected ? Color.primary : Color.secondary)
+                let lines = station.lines.joined(separator: " · ")
+                if distance, let location = tracker.lastLocation {
+                    let meters = location.distance(from: CLLocation(latitude: station.latitude, longitude: station.longitude))
+                    Text((meters < 1_000 ? "\(Int((meters / 10).rounded() * 10)) m away" : String(format: "%.1f km away", meters / 1_000)) + " · " + lines)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                } else {
+                    Text(station.district.map { "\(lines) · \($0)" } ?? lines)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            Spacer(minLength: 4)
+            Image(systemName: collected ? "checkmark.circle.fill" : "circle")
+                .foregroundStyle(collected ? Color.orange : Color.secondary)
+        }
+        .contentShape(Rectangle())
+        .onTapGesture { captures.show(station) }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(station.system.title) \(station.name), \(collected ? "collected" : "not collected")")
+        .accessibilityHint("Shows it on the map")
+    }
+
     /// A sight with the year it was built; tapping it opens its entry.
     private func sightRow(_ sight: Sight, distance: Bool) -> some View {
-        let captured = captures.log.records[sight.id] != nil
+        let discovered = captures.log.records[sight.id] != nil
+        let captured = captures.log.isCaptured(sight.id)
         let year = captures.histories[sight.id]?.year
         return NavigationLink {
             SightEntryView(sight: sight)
@@ -196,13 +264,13 @@ struct AchievementDetailView: View {
             HStack(spacing: 12) {
                 Text(year.map { String($0) } ?? "–")
                     .font(.subheadline.monospacedDigit().weight(.semibold))
-                    .foregroundStyle(captured ? Color.orange : Color.secondary)
+                    .foregroundStyle(discovered ? Color.orange : Color.secondary)
                     .frame(width: 42, alignment: .leading)
-                SightBadge(category: sight.category, captured: captured, size: 30)
+                SightBadge(category: sight.category, captured: captured, discovered: discovered, size: 30)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(sight.name)
                         .fontWeight(captured ? .semibold : .regular)
-                        .foregroundStyle(captured ? Color.orange : Color.primary)
+                        .foregroundStyle(discovered ? Color.orange : Color.primary)
                     if distance, let location = tracker.lastLocation {
                         let meters = location.distance(from: CLLocation(latitude: sight.latitude, longitude: sight.longitude))
                         Text(meters < 1_000 ? "\(Int((meters / 10).rounded() * 10)) m away" : String(format: "%.1f km away", meters / 1_000))
@@ -215,11 +283,11 @@ struct AchievementDetailView: View {
                     }
                 }
                 Spacer(minLength: 4)
-                Image(systemName: captured ? "checkmark.circle.fill" : "circle")
-                    .foregroundStyle(captured ? Color.orange : Color.secondary)
+                Image(systemName: captured ? "checkmark.circle.fill" : discovered ? "camera" : "circle")
+                    .foregroundStyle(discovered ? Color.orange : Color.secondary)
             }
         }
-        .accessibilityLabel("\(sight.name), \(captured ? "captured" : "not captured")")
+        .accessibilityLabel("\(sight.name), \(captured ? "captured" : discovered ? "discovered, photograph it to capture it" : "not discovered")")
     }
 }
 

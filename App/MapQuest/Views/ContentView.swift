@@ -35,6 +35,7 @@ struct ContentView: View {
                     fogStyle: model.debug.fogStyle,
                     baseMap: model.debug.baseMap,
                     sightPins: captures.pins(showingAll: model.debug.showsAllSights),
+                    stationPins: captures.stationPins(showingAll: model.debug.showsAllSights),
                     focus: captures.focus,
                     onOpenSight: { captures.openEntry($0) },
                     onLongPress: model.debug.placesPositionsOnLongPress ? { coordinate in
@@ -94,7 +95,11 @@ struct ContentView: View {
         .onChange(of: captures.focus) { _, focus in
             if focus != nil { mode = .twoD }
         }
-        .onAppear { model.isShowing3D = mode == .threeD }
+        .onAppear {
+            model.isShowing3D = mode == .threeD
+            captures.photosAnywhere = model.debug.photosAnywhere
+        }
+        .onChange(of: model.debug.photosAnywhere) { _, anywhere in captures.photosAnywhere = anywhere }
         .onChange(of: mode) { _, newMode in model.isShowing3D = newMode == .threeD }
         .onChange(of: model.selectedLayer) { _, _ in
             if model.periodKind != nil { model.refreshView() }

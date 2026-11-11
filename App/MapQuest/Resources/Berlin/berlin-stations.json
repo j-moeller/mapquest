@@ -1,0 +1,5124 @@
+{
+ "source": "OpenStreetMap route relations of the U-Bahn and S-Bahn lines (© OpenStreetMap contributors, ODbL), Tools/transit/build_stations.py; additions from Wikipedia (Tools/transit/berlin_station_additions.csv)",
+ "lines": [
+  {
+   "id": "U1",
+   "system": "U",
+   "colour": "#7DAD4C",
+   "name": "Uhlandstraße – Warschauer Straße",
+   "stations": [
+    "u:uhlandstrasse",
+    "u:kurfuerstendamm",
+    "u:wittenbergplatz",
+    "u:nollendorfplatz",
+    "u:kurfuerstenstrasse",
+    "u:gleisdreieck",
+    "u:moeckernbruecke",
+    "u:hallesches-tor",
+    "u:prinzenstrasse",
+    "u:kottbusser-tor",
+    "u:goerlitzer-bahnhof",
+    "u:schlesisches-tor",
+    "u:warschauer-strasse"
+   ]
+  },
+  {
+   "id": "U2",
+   "system": "U",
+   "colour": "#DA421E",
+   "name": "Pankow – Ruhleben",
+   "stations": [
+    "u:pankow",
+    "u:vinetastrasse",
+    "u:schoenhauser-allee",
+    "u:eberswalder-strasse",
+    "u:senefelderplatz",
+    "u:rosa-luxemburg-platz",
+    "u:alexanderplatz",
+    "u:klosterstrasse",
+    "u:maerkisches-museum",
+    "u:spittelmarkt",
+    "u:hausvogteiplatz",
+    "u:stadtmitte",
+    "u:anton-wilhelm-amo-strasse",
+    "u:potsdamer-platz",
+    "u:mendelssohn-bartholdy-park",
+    "u:gleisdreieck",
+    "u:buelowstrasse",
+    "u:nollendorfplatz",
+    "u:wittenbergplatz",
+    "u:zoologischer-garten",
+    "u:ernst-reuter-platz",
+    "u:deutsche-oper",
+    "u:bismarckstrasse",
+    "u:sophie-charlotte-platz",
+    "u:kaiserdamm",
+    "u:theodor-heuss-platz",
+    "u:neu-westend",
+    "u:olympia-stadion",
+    "u:ruhleben"
+   ]
+  },
+  {
+   "id": "U3",
+   "system": "U",
+   "colour": "#16683D",
+   "name": "Krumme Lanke – Warschauer Straße",
+   "stations": [
+    "u:krumme-lanke",
+    "u:onkel-toms-huette",
+    "u:oskar-helene-heim",
+    "u:freie-universitaet-thielplatz",
+    "u:dahlem-dorf",
+    "u:podbielskiallee",
+    "u:breitenbachplatz",
+    "u:ruedesheimer-platz",
+    "u:heidelberger-platz",
+    "u:fehrbelliner-platz",
+    "u:hohenzollernplatz",
+    "u:spichernstrasse",
+    "u:augsburger-strasse",
+    "u:wittenbergplatz",
+    "u:nollendorfplatz",
+    "u:kurfuerstenstrasse",
+    "u:gleisdreieck",
+    "u:moeckernbruecke",
+    "u:hallesches-tor",
+    "u:prinzenstrasse",
+    "u:kottbusser-tor",
+    "u:goerlitzer-bahnhof",
+    "u:schlesisches-tor",
+    "u:warschauer-strasse"
+   ]
+  },
+  {
+   "id": "U4",
+   "system": "U",
+   "colour": "#F0D722",
+   "name": "Innsbrucker Platz – Nollendorfplatz",
+   "stations": [
+    "u:innsbrucker-platz",
+    "u:rathaus-schoeneberg",
+    "u:bayerischer-platz",
+    "u:viktoria-luise-platz",
+    "u:nollendorfplatz"
+   ]
+  },
+  {
+   "id": "U5",
+   "system": "U",
+   "colour": "#7E5330",
+   "name": "Hauptbahnhof – Hönow",
+   "stations": [
+    "u:hauptbahnhof",
+    "u:bundestag",
+    "u:brandenburger-tor",
+    "u:unter-den-linden",
+    "u:museumsinsel",
+    "u:rotes-rathaus",
+    "u:alexanderplatz",
+    "u:schillingstrasse",
+    "u:strausberger-platz",
+    "u:weberwiese",
+    "u:frankfurter-tor",
+    "u:samariterstrasse",
+    "u:frankfurter-allee",
+    "u:magdalenenstrasse-campus-fuer-demokratie",
+    "u:lichtenberg",
+    "u:friedrichsfelde",
+    "u:tierpark",
+    "u:biesdorf-sued",
+    "u:elsterwerdaer-platz",
+    "u:wuhletal",
+    "u:kaulsdorf-nord",
+    "u:kienberg-gaerten-der-welt",
+    "u:cottbusser-platz",
+    "u:hellersdorf",
+    "u:louis-lewin-strasse",
+    "u:hoenow"
+   ]
+  },
+  {
+   "id": "U6",
+   "system": "U",
+   "colour": "#8C6DAB",
+   "name": "Alt-Mariendorf – Alt-Tegel",
+   "stations": [
+    "u:alt-mariendorf",
+    "u:westphalweg",
+    "u:ullsteinstrasse",
+    "u:kaiserin-augusta-strasse",
+    "u:alt-tempelhof",
+    "u:tempelhof",
+    "u:paradestrasse",
+    "u:platz-der-luftbruecke",
+    "u:mehringdamm",
+    "u:hallesches-tor",
+    "u:kochstrasse-checkpoint-charlie",
+    "u:stadtmitte",
+    "u:unter-den-linden",
+    "u:friedrichstrasse",
+    "u:oranienburger-tor",
+    "u:naturkundemuseum",
+    "u:schwartzkopffstrasse",
+    "u:reinickendorfer-strasse",
+    "u:wedding",
+    "u:leopoldplatz",
+    "u:seestrasse",
+    "u:rehberge",
+    "u:afrikanische-strasse",
+    "u:kurt-schumacher-platz",
+    "u:scharnweberstrasse",
+    "u:otisstrasse",
+    "u:holzhauser-strasse",
+    "u:borsigwerke",
+    "u:alt-tegel"
+   ]
+  },
+  {
+   "id": "U7",
+   "system": "U",
+   "colour": "#528DBA",
+   "name": "Rudow – Rathaus Spandau",
+   "stations": [
+    "u:rudow",
+    "u:zwickauer-damm",
+    "u:wutzkyallee",
+    "u:lipschitzallee",
+    "u:johannisthaler-chaussee",
+    "u:britz-sued",
+    "u:parchimer-allee",
+    "u:blaschkoallee",
+    "u:grenzallee",
+    "u:neukoelln",
+    "u:karl-marx-strasse",
+    "u:rathaus-neukoelln",
+    "u:hermannplatz",
+    "u:suedstern",
+    "u:gneisenaustrasse",
+    "u:mehringdamm",
+    "u:moeckernbruecke",
+    "u:yorckstrasse",
+    "u:kleistpark",
+    "u:eisenacher-strasse",
+    "u:bayerischer-platz",
+    "u:berliner-strasse",
+    "u:blissestrasse",
+    "u:fehrbelliner-platz",
+    "u:konstanzer-strasse",
+    "u:adenauerplatz",
+    "u:wilmersdorfer-strasse",
+    "u:bismarckstrasse",
+    "u:richard-wagner-platz",
+    "u:mierendorffplatz",
+    "u:jungfernheide",
+    "u:jakob-kaiser-platz",
+    "u:halemweg",
+    "u:siemensdamm",
+    "u:rohrdamm",
+    "u:paulsternstrasse",
+    "u:haselhorst",
+    "u:zitadelle",
+    "u:altstadt-spandau",
+    "u:rathaus-spandau"
+   ]
+  },
+  {
+   "id": "U8",
+   "system": "U",
+   "colour": "#224F86",
+   "name": "Hermannstraße – Wittenau",
+   "stations": [
+    "u:hermannstrasse",
+    "u:leinestrasse",
+    "u:boddinstrasse",
+    "u:hermannplatz",
+    "u:schoenleinstrasse",
+    "u:kottbusser-tor",
+    "u:moritzplatz",
+    "u:heinrich-heine-strasse",
+    "u:jannowitzbruecke",
+    "u:alexanderplatz",
+    "u:weinmeisterstrasse",
+    "u:rosenthaler-platz",
+    "u:bernauer-strasse",
+    "u:voltastrasse",
+    "u:gesundbrunnen",
+    "u:pankstrasse",
+    "u:osloer-strasse",
+    "u:franz-neumann-platz",
+    "u:residenzstrasse",
+    "u:paracelsus-bad",
+    "u:lindauer-allee",
+    "u:karl-bonhoeffer-nervenklinik",
+    "u:rathaus-reinickendorf",
+    "u:wittenau"
+   ]
+  },
+  {
+   "id": "U9",
+   "system": "U",
+   "colour": "#F3791D",
+   "name": "Osloer Straße – Rathaus Steglitz",
+   "stations": [
+    "u:osloer-strasse",
+    "u:nauener-platz",
+    "u:leopoldplatz",
+    "u:amrumer-strasse",
+    "u:westhafen",
+    "u:birkenstrasse",
+    "u:turmstrasse",
+    "u:hansaplatz",
+    "u:zoologischer-garten",
+    "u:kurfuerstendamm",
+    "u:spichernstrasse",
+    "u:guentzelstrasse",
+    "u:berliner-strasse",
+    "u:bundesplatz",
+    "u:friedrich-wilhelm-platz",
+    "u:walther-schreiber-platz",
+    "u:schlossstrasse",
+    "u:rathaus-steglitz"
+   ]
+  },
+  {
+   "id": "S1",
+   "system": "S",
+   "colour": "#D474AE",
+   "name": "Oranienburg – Wannsee",
+   "stations": [
+    "s:oranienburg",
+    "s:lehnitz",
+    "s:borgsdorf",
+    "s:birkenwerder",
+    "s:hohen-neuendorf",
+    "s:frohnau",
+    "s:hermsdorf",
+    "s:waidmannslust",
+    "s:wittenau",
+    "s:wilhelmsruh",
+    "s:schoenholz",
+    "s:wollankstrasse",
+    "s:bornholmer-strasse",
+    "s:gesundbrunnen",
+    "s:humboldthain",
+    "s:nordbahnhof",
+    "s:oranienburger-strasse",
+    "s:friedrichstrasse",
+    "s:brandenburger-tor",
+    "s:potsdamer-platz",
+    "s:anhalter-bahnhof",
+    "s:yorckstrasse-grossgoerschenstrasse",
+    "s:julius-leber-bruecke",
+    "s:schoeneberg",
+    "s:friedenau",
+    "s:feuerbachstrasse",
+    "s:rathaus-steglitz",
+    "s:botanischer-garten",
+    "s:lichterfelde-west",
+    "s:sundgauer-strasse",
+    "s:zehlendorf",
+    "s:mexikoplatz",
+    "s:schlachtensee",
+    "s:nikolassee",
+    "s:wannsee"
+   ]
+  },
+  {
+   "id": "S15",
+   "system": "S",
+   "colour": "#D474AE",
+   "name": "Hauptbahnhof – Gesundbrunnen",
+   "stations": [
+    "s:hauptbahnhof",
+    "s:wedding",
+    "s:gesundbrunnen"
+   ]
+  },
+  {
+   "id": "S2",
+   "system": "S",
+   "colour": "#018A47",
+   "name": "Bernau – Blankenfelde",
+   "stations": [
+    "s:bernau",
+    "s:bernau-friedenstal",
+    "s:zepernick",
+    "s:roentgental",
+    "s:buch",
+    "s:karow",
+    "s:blankenburg",
+    "s:pankow-heinersdorf",
+    "s:pankow",
+    "s:bornholmer-strasse",
+    "s:gesundbrunnen",
+    "s:humboldthain",
+    "s:nordbahnhof",
+    "s:oranienburger-strasse",
+    "s:friedrichstrasse",
+    "s:brandenburger-tor",
+    "s:potsdamer-platz",
+    "s:anhalter-bahnhof",
+    "s:yorckstrasse",
+    "s:suedkreuz",
+    "s:priesterweg",
+    "s:attilastrasse",
+    "s:marienfelde",
+    "s:buckower-chaussee",
+    "s:schichauweg",
+    "s:lichtenrade",
+    "s:mahlow",
+    "s:blankenfelde"
+   ]
+  },
+  {
+   "id": "S25",
+   "system": "S",
+   "colour": "#018A47",
+   "name": "Hennigsdorf – Teltow Stadt",
+   "stations": [
+    "s:hennigsdorf",
+    "s:heiligensee",
+    "s:schulzendorf",
+    "s:tegel",
+    "s:eichborndamm",
+    "s:karl-bonhoeffer-nervenklinik",
+    "s:alt-reinickendorf",
+    "s:schoenholz",
+    "s:wollankstrasse",
+    "s:bornholmer-strasse",
+    "s:gesundbrunnen",
+    "s:humboldthain",
+    "s:nordbahnhof",
+    "s:oranienburger-strasse",
+    "s:friedrichstrasse",
+    "s:brandenburger-tor",
+    "s:potsdamer-platz",
+    "s:anhalter-bahnhof",
+    "s:yorckstrasse",
+    "s:suedkreuz",
+    "s:priesterweg",
+    "s:suedende",
+    "s:lankwitz",
+    "s:lichterfelde-ost",
+    "s:osdorfer-strasse",
+    "s:lichterfelde-sued",
+    "s:teltow-stadt"
+   ]
+  },
+  {
+   "id": "S26",
+   "system": "S",
+   "colour": "#018A47",
+   "name": "Teltow Stadt – Blankenburg",
+   "stations": [
+    "s:teltow-stadt",
+    "s:lichterfelde-sued",
+    "s:osdorfer-strasse",
+    "s:lichterfelde-ost",
+    "s:lankwitz",
+    "s:suedende",
+    "s:priesterweg",
+    "s:suedkreuz",
+    "s:yorckstrasse",
+    "s:anhalter-bahnhof",
+    "s:potsdamer-platz",
+    "s:brandenburger-tor",
+    "s:friedrichstrasse",
+    "s:oranienburger-strasse",
+    "s:nordbahnhof",
+    "s:humboldthain",
+    "s:gesundbrunnen",
+    "s:bornholmer-strasse",
+    "s:pankow",
+    "s:pankow-heinersdorf",
+    "s:blankenburg"
+   ]
+  },
+  {
+   "id": "S3",
+   "system": "S",
+   "colour": "#055A99",
+   "name": "Erkner – Spandau",
+   "stations": [
+    "s:erkner",
+    "s:wilhelmshagen",
+    "s:rahnsdorf",
+    "s:friedrichshagen",
+    "s:hirschgarten",
+    "s:koepenick",
+    "s:wuhlheide",
+    "s:karlshorst",
+    "s:betriebsbahnhof-rummelsburg",
+    "s:rummelsburg",
+    "s:ostkreuz",
+    "s:warschauer-strasse",
+    "s:ostbahnhof",
+    "s:jannowitzbruecke",
+    "s:alexanderplatz",
+    "s:hackescher-markt",
+    "s:friedrichstrasse",
+    "s:hauptbahnhof",
+    "s:bellevue",
+    "s:tiergarten",
+    "s:zoologischer-garten",
+    "s:savignyplatz",
+    "s:charlottenburg",
+    "s:westkreuz",
+    "s:messe-sued-eichkamp",
+    "s:heerstrasse",
+    "s:olympiastadion",
+    "s:pichelsberg",
+    "s:stresow",
+    "s:spandau"
+   ]
+  },
+  {
+   "id": "S41",
+   "system": "S",
+   "colour": "#9F4C37",
+   "name": "Ringbahn",
+   "stations": [
+    "s:gesundbrunnen",
+    "s:schoenhauser-allee",
+    "s:prenzlauer-allee",
+    "s:greifswalder-strasse",
+    "s:landsberger-allee",
+    "s:storkower-strasse",
+    "s:frankfurter-allee",
+    "s:ostkreuz",
+    "s:treptower-park",
+    "s:sonnenallee",
+    "s:neukoelln",
+    "s:hermannstrasse",
+    "s:tempelhof",
+    "s:suedkreuz",
+    "s:schoeneberg",
+    "s:innsbrucker-platz",
+    "s:bundesplatz",
+    "s:heidelberger-platz",
+    "s:hohenzollerndamm",
+    "s:halensee",
+    "s:westkreuz",
+    "s:messe-nord-zob",
+    "s:westend",
+    "s:jungfernheide",
+    "s:beusselstrasse",
+    "s:westhafen",
+    "s:wedding"
+   ]
+  },
+  {
+   "id": "S42",
+   "system": "S",
+   "colour": "#C36939",
+   "name": "Ringbahn",
+   "stations": [
+    "s:gesundbrunnen",
+    "s:wedding",
+    "s:westhafen",
+    "s:beusselstrasse",
+    "s:jungfernheide",
+    "s:westend",
+    "s:messe-nord-zob",
+    "s:westkreuz",
+    "s:halensee",
+    "s:hohenzollerndamm",
+    "s:heidelberger-platz",
+    "s:bundesplatz",
+    "s:innsbrucker-platz",
+    "s:schoeneberg",
+    "s:suedkreuz",
+    "s:tempelhof",
+    "s:hermannstrasse",
+    "s:neukoelln",
+    "s:sonnenallee",
+    "s:treptower-park",
+    "s:ostkreuz",
+    "s:frankfurter-allee",
+    "s:storkower-strasse",
+    "s:landsberger-allee",
+    "s:greifswalder-strasse",
+    "s:prenzlauer-allee",
+    "s:schoenhauser-allee"
+   ]
+  },
+  {
+   "id": "S46",
+   "system": "S",
+   "colour": "#BA8A4D",
+   "name": "Königs Wusterhausen – Westend",
+   "stations": [
+    "s:koenigs-wusterhausen",
+    "s:wildau",
+    "s:zeuthen",
+    "s:eichwalde",
+    "s:gruenau",
+    "s:adlershof",
+    "s:johannisthal",
+    "s:schoeneweide",
+    "s:baumschulenweg",
+    "s:koellnische-heide",
+    "s:neukoelln",
+    "s:hermannstrasse",
+    "s:tempelhof",
+    "s:suedkreuz",
+    "s:schoeneberg",
+    "s:innsbrucker-platz",
+    "s:bundesplatz",
+    "s:heidelberger-platz",
+    "s:hohenzollerndamm",
+    "s:halensee",
+    "s:westkreuz",
+    "s:messe-nord-zob",
+    "s:westend"
+   ]
+  },
+  {
+   "id": "S47",
+   "system": "S",
+   "colour": "#BA8A4D",
+   "name": "Südkreuz – Spindlersfeld",
+   "stations": [
+    "s:suedkreuz",
+    "s:tempelhof",
+    "s:hermannstrasse",
+    "s:neukoelln",
+    "s:koellnische-heide",
+    "s:baumschulenweg",
+    "s:schoeneweide",
+    "s:oberspree",
+    "s:spindlersfeld"
+   ]
+  },
+  {
+   "id": "S5",
+   "system": "S",
+   "colour": "#F25721",
+   "name": "Strausberg Nord – Westkreuz",
+   "stations": [
+    "s:strausberg-nord",
+    "s:strausberg-stadt",
+    "s:hegermuehle",
+    "s:strausberg",
+    "s:petershagen-nord",
+    "s:fredersdorf",
+    "s:neuenhagen",
+    "s:hoppegarten",
+    "s:birkenstein",
+    "s:mahlsdorf",
+    "s:kaulsdorf",
+    "s:wuhletal",
+    "s:biesdorf",
+    "s:friedrichsfelde-ost",
+    "s:lichtenberg",
+    "s:noeldnerplatz",
+    "s:ostkreuz",
+    "s:warschauer-strasse",
+    "s:ostbahnhof",
+    "s:jannowitzbruecke",
+    "s:alexanderplatz",
+    "s:hackescher-markt",
+    "s:friedrichstrasse",
+    "s:hauptbahnhof",
+    "s:bellevue",
+    "s:tiergarten",
+    "s:zoologischer-garten",
+    "s:savignyplatz",
+    "s:charlottenburg",
+    "s:westkreuz"
+   ]
+  },
+  {
+   "id": "S7",
+   "system": "S",
+   "colour": "#8070B7",
+   "name": "Ahrensfelde – Potsdam Hauptbahnhof",
+   "stations": [
+    "s:ahrensfelde",
+    "s:mehrower-allee",
+    "s:raoul-wallenberg-strasse",
+    "s:marzahn",
+    "s:poelchaustrasse",
+    "s:springpfuhl",
+    "s:friedrichsfelde-ost",
+    "s:lichtenberg",
+    "s:noeldnerplatz",
+    "s:ostkreuz",
+    "s:warschauer-strasse",
+    "s:ostbahnhof",
+    "s:jannowitzbruecke",
+    "s:alexanderplatz",
+    "s:hackescher-markt",
+    "s:friedrichstrasse",
+    "s:hauptbahnhof",
+    "s:bellevue",
+    "s:tiergarten",
+    "s:zoologischer-garten",
+    "s:savignyplatz",
+    "s:charlottenburg",
+    "s:westkreuz",
+    "s:grunewald",
+    "s:nikolassee",
+    "s:wannsee",
+    "s:griebnitzsee",
+    "s:babelsberg",
+    "s:potsdam-hauptbahnhof"
+   ]
+  },
+  {
+   "id": "S75",
+   "system": "S",
+   "colour": "#8070B7",
+   "name": "Ostbahnhof – Wartenberg",
+   "stations": [
+    "s:ostbahnhof",
+    "s:warschauer-strasse",
+    "s:ostkreuz",
+    "s:noeldnerplatz",
+    "s:lichtenberg",
+    "s:friedrichsfelde-ost",
+    "s:springpfuhl",
+    "s:gehrenseestrasse",
+    "s:hohenschoenhausen",
+    "s:wartenberg"
+   ]
+  },
+  {
+   "id": "S8",
+   "system": "S",
+   "colour": "#52B447",
+   "name": "Birkenwerder – Wildau",
+   "stations": [
+    "s:birkenwerder",
+    "s:hohen-neuendorf",
+    "s:bergfelde",
+    "s:schoenfliess",
+    "s:muehlenbeck-moenchmuehle",
+    "s:blankenburg",
+    "s:pankow-heinersdorf",
+    "s:pankow",
+    "s:bornholmer-strasse",
+    "s:schoenhauser-allee",
+    "s:prenzlauer-allee",
+    "s:greifswalder-strasse",
+    "s:landsberger-allee",
+    "s:storkower-strasse",
+    "s:frankfurter-allee",
+    "s:ostkreuz",
+    "s:treptower-park",
+    "s:plaenterwald",
+    "s:baumschulenweg",
+    "s:schoeneweide",
+    "s:johannisthal",
+    "s:adlershof",
+    "s:gruenau",
+    "s:eichwalde",
+    "s:zeuthen",
+    "s:wildau"
+   ]
+  },
+  {
+   "id": "S85",
+   "system": "S",
+   "colour": "#52B447",
+   "name": "Frohnau – Flughafen BER",
+   "stations": [
+    "s:frohnau",
+    "s:hermsdorf",
+    "s:waidmannslust",
+    "s:wittenau",
+    "s:wilhelmsruh",
+    "s:schoenholz",
+    "s:wollankstrasse",
+    "s:bornholmer-strasse",
+    "s:pankow",
+    "s:schoenhauser-allee",
+    "s:prenzlauer-allee",
+    "s:greifswalder-strasse",
+    "s:landsberger-allee",
+    "s:storkower-strasse",
+    "s:frankfurter-allee",
+    "s:ostkreuz",
+    "s:treptower-park",
+    "s:plaenterwald",
+    "s:baumschulenweg",
+    "s:schoeneweide",
+    "s:johannisthal",
+    "s:adlershof",
+    "s:altglienicke",
+    "s:gruenbergallee",
+    "s:schoenefeld",
+    "s:wassmannsdorf",
+    "s:flughafen-ber"
+   ]
+  },
+  {
+   "id": "S9",
+   "system": "S",
+   "colour": "#9A3052",
+   "name": "Flughafen BER – Spandau",
+   "stations": [
+    "s:flughafen-ber",
+    "s:wassmannsdorf",
+    "s:schoenefeld",
+    "s:gruenbergallee",
+    "s:altglienicke",
+    "s:adlershof",
+    "s:johannisthal",
+    "s:schoeneweide",
+    "s:baumschulenweg",
+    "s:plaenterwald",
+    "s:treptower-park",
+    "s:warschauer-strasse",
+    "s:ostbahnhof",
+    "s:jannowitzbruecke",
+    "s:alexanderplatz",
+    "s:hackescher-markt",
+    "s:friedrichstrasse",
+    "s:hauptbahnhof",
+    "s:bellevue",
+    "s:tiergarten",
+    "s:zoologischer-garten",
+    "s:savignyplatz",
+    "s:charlottenburg",
+    "s:westkreuz",
+    "s:messe-sued-eichkamp",
+    "s:heerstrasse",
+    "s:olympiastadion",
+    "s:pichelsberg",
+    "s:stresow",
+    "s:spandau"
+   ]
+  }
+ ],
+ "stations": [
+  {
+   "id": "u:adenauerplatz",
+   "name": "Adenauerplatz",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.500102,
+   "longitude": 13.307287,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:afrikanische-strasse",
+   "name": "Afrikanische Straße",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.560258,
+   "longitude": 13.334575,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:alexanderplatz",
+   "name": "Alexanderplatz",
+   "system": "U",
+   "lines": [
+    "U2",
+    "U5",
+    "U8"
+   ],
+   "latitude": 52.521517,
+   "longitude": 13.413261,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:alt-mariendorf",
+   "name": "Alt-Mariendorf",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.439653,
+   "longitude": 13.387517,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "u:alt-tegel",
+   "name": "Alt-Tegel",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.5894,
+   "longitude": 13.2836,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "u:alt-tempelhof",
+   "name": "Alt-Tempelhof",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.465497,
+   "longitude": 13.385651,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "u:altstadt-spandau",
+   "name": "Altstadt Spandau",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.53904,
+   "longitude": 13.205565,
+   "radius": 80,
+   "district": "Spandau"
+  },
+  {
+   "id": "u:amrumer-strasse",
+   "name": "Amrumer Straße",
+   "system": "U",
+   "lines": [
+    "U9"
+   ],
+   "latitude": 52.542329,
+   "longitude": 13.350137,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:anton-wilhelm-amo-strasse",
+   "name": "Anton-Wilhelm-Amo-Straße",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.511766,
+   "longitude": 13.385182,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:augsburger-strasse",
+   "name": "Augsburger Straße",
+   "system": "U",
+   "lines": [
+    "U3"
+   ],
+   "latitude": 52.500346,
+   "longitude": 13.336355,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:bayerischer-platz",
+   "name": "Bayerischer Platz",
+   "system": "U",
+   "lines": [
+    "U4",
+    "U7"
+   ],
+   "latitude": 52.488941,
+   "longitude": 13.340905,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "u:berliner-strasse",
+   "name": "Berliner Straße",
+   "system": "U",
+   "lines": [
+    "U7",
+    "U9"
+   ],
+   "latitude": 52.487388,
+   "longitude": 13.331024,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:bernauer-strasse",
+   "name": "Bernauer Straße",
+   "system": "U",
+   "lines": [
+    "U8"
+   ],
+   "latitude": 52.537456,
+   "longitude": 13.396622,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:biesdorf-sued",
+   "name": "Biesdorf-Süd",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.499591,
+   "longitude": 13.546439,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "u:birkenstrasse",
+   "name": "Birkenstraße",
+   "system": "U",
+   "lines": [
+    "U9"
+   ],
+   "latitude": 52.532276,
+   "longitude": 13.341323,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:bismarckstrasse",
+   "name": "Bismarckstraße",
+   "system": "U",
+   "lines": [
+    "U2",
+    "U7"
+   ],
+   "latitude": 52.511578,
+   "longitude": 13.305171,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:blaschkoallee",
+   "name": "Blaschkoallee",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.45208,
+   "longitude": 13.4492,
+   "radius": 80,
+   "district": "Neukölln"
+  },
+  {
+   "id": "u:blissestrasse",
+   "name": "Blissestraße",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.486399,
+   "longitude": 13.321681,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:boddinstrasse",
+   "name": "Boddinstraße",
+   "system": "U",
+   "lines": [
+    "U8"
+   ],
+   "latitude": 52.479908,
+   "longitude": 13.425361,
+   "radius": 80,
+   "district": "Neukölln"
+  },
+  {
+   "id": "u:borsigwerke",
+   "name": "Borsigwerke",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.5819,
+   "longitude": 13.2907,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "u:brandenburger-tor",
+   "name": "Brandenburger Tor",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.516603,
+   "longitude": 13.381169,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:breitenbachplatz",
+   "name": "Breitenbachplatz",
+   "system": "U",
+   "lines": [
+    "U3"
+   ],
+   "latitude": 52.466997,
+   "longitude": 13.308818,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "u:britz-sued",
+   "name": "Britz-Süd",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.437863,
+   "longitude": 13.448156,
+   "radius": 80,
+   "district": "Neukölln"
+  },
+  {
+   "id": "u:buelowstrasse",
+   "name": "Bülowstraße",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.49761,
+   "longitude": 13.363085,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "u:bundesplatz",
+   "name": "Bundesplatz",
+   "system": "U",
+   "lines": [
+    "U9"
+   ],
+   "latitude": 52.477961,
+   "longitude": 13.328501,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:bundestag",
+   "name": "Bundestag",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.52017,
+   "longitude": 13.372948,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:cottbusser-platz",
+   "name": "Cottbusser Platz",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.533868,
+   "longitude": 13.596517,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "u:dahlem-dorf",
+   "name": "Dahlem-Dorf",
+   "system": "U",
+   "lines": [
+    "U3"
+   ],
+   "latitude": 52.457268,
+   "longitude": 13.289584,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "u:deutsche-oper",
+   "name": "Deutsche Oper",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.511875,
+   "longitude": 13.310896,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:eberswalder-strasse",
+   "name": "Eberswalder Straße",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.541525,
+   "longitude": 13.41217,
+   "radius": 80,
+   "district": "Pankow"
+  },
+  {
+   "id": "u:eisenacher-strasse",
+   "name": "Eisenacher Straße",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.489573,
+   "longitude": 13.35033,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "u:elsterwerdaer-platz",
+   "name": "Elsterwerdaer Platz",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.505141,
+   "longitude": 13.560651,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "u:ernst-reuter-platz",
+   "name": "Ernst-Reuter-Platz",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.511655,
+   "longitude": 13.32228,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:fehrbelliner-platz",
+   "name": "Fehrbelliner Platz",
+   "system": "U",
+   "lines": [
+    "U3",
+    "U7"
+   ],
+   "latitude": 52.49048,
+   "longitude": 13.314693,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:frankfurter-allee",
+   "name": "Frankfurter Allee",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.513672,
+   "longitude": 13.475321,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "u:frankfurter-tor",
+   "name": "Frankfurter Tor",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.515798,
+   "longitude": 13.454015,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "u:franz-neumann-platz",
+   "name": "Franz-Neumann-Platz",
+   "system": "U",
+   "lines": [
+    "U8"
+   ],
+   "latitude": 52.564539,
+   "longitude": 13.363924,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "u:freie-universitaet-thielplatz",
+   "name": "Freie Universität (Thielplatz)",
+   "system": "U",
+   "lines": [
+    "U3"
+   ],
+   "latitude": 52.451015,
+   "longitude": 13.281674,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "u:friedrich-wilhelm-platz",
+   "name": "Friedrich-Wilhelm-Platz",
+   "system": "U",
+   "lines": [
+    "U9"
+   ],
+   "latitude": 52.471774,
+   "longitude": 13.328721,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "u:friedrichsfelde",
+   "name": "Friedrichsfelde",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.506211,
+   "longitude": 13.512777,
+   "radius": 80,
+   "district": "Lichtenberg"
+  },
+  {
+   "id": "u:friedrichstrasse",
+   "name": "Friedrichstraße",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.520198,
+   "longitude": 13.388277,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:gesundbrunnen",
+   "name": "Gesundbrunnen",
+   "system": "U",
+   "lines": [
+    "U8"
+   ],
+   "latitude": 52.548749,
+   "longitude": 13.388344,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:gleisdreieck",
+   "name": "Gleisdreieck",
+   "system": "U",
+   "lines": [
+    "U1",
+    "U2",
+    "U3"
+   ],
+   "latitude": 52.499485,
+   "longitude": 13.374094,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "u:gneisenaustrasse",
+   "name": "Gneisenaustraße",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.491328,
+   "longitude": 13.395637,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "u:goerlitzer-bahnhof",
+   "name": "Görlitzer Bahnhof",
+   "system": "U",
+   "lines": [
+    "U1",
+    "U3"
+   ],
+   "latitude": 52.499265,
+   "longitude": 13.428013,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "u:grenzallee",
+   "name": "Grenzallee",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.462847,
+   "longitude": 13.444813,
+   "radius": 80,
+   "district": "Neukölln"
+  },
+  {
+   "id": "u:guentzelstrasse",
+   "name": "Güntzelstraße",
+   "system": "U",
+   "lines": [
+    "U9"
+   ],
+   "latitude": 52.492087,
+   "longitude": 13.331004,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:halemweg",
+   "name": "Halemweg",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.536628,
+   "longitude": 13.286176,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:hallesches-tor",
+   "name": "Hallesches Tor",
+   "system": "U",
+   "lines": [
+    "U1",
+    "U3",
+    "U6"
+   ],
+   "latitude": 52.498192,
+   "longitude": 13.390927,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "u:hansaplatz",
+   "name": "Hansaplatz",
+   "system": "U",
+   "lines": [
+    "U9"
+   ],
+   "latitude": 52.517916,
+   "longitude": 13.342067,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:haselhorst",
+   "name": "Haselhorst",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.538687,
+   "longitude": 13.232918,
+   "radius": 80,
+   "district": "Spandau"
+  },
+  {
+   "id": "u:hauptbahnhof",
+   "name": "Hauptbahnhof",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.525201,
+   "longitude": 13.370185,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:hausvogteiplatz",
+   "name": "Hausvogteiplatz",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.513349,
+   "longitude": 13.39557,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:heidelberger-platz",
+   "name": "Heidelberger Platz",
+   "system": "U",
+   "lines": [
+    "U3"
+   ],
+   "latitude": 52.48005,
+   "longitude": 13.313052,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:heinrich-heine-strasse",
+   "name": "Heinrich-Heine-Straße",
+   "system": "U",
+   "lines": [
+    "U8"
+   ],
+   "latitude": 52.510454,
+   "longitude": 13.416042,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:hellersdorf",
+   "name": "Hellersdorf",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.536705,
+   "longitude": 13.60676,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "u:hermannplatz",
+   "name": "Hermannplatz",
+   "system": "U",
+   "lines": [
+    "U7",
+    "U8"
+   ],
+   "latitude": 52.486245,
+   "longitude": 13.424374,
+   "radius": 80,
+   "district": "Neukölln"
+  },
+  {
+   "id": "u:hermannstrasse",
+   "name": "Hermannstraße",
+   "system": "U",
+   "lines": [
+    "U8"
+   ],
+   "latitude": 52.467441,
+   "longitude": 13.431338,
+   "radius": 80,
+   "district": "Neukölln"
+  },
+  {
+   "id": "u:hoenow",
+   "name": "Hönow",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.538409,
+   "longitude": 13.633216,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "u:hohenzollernplatz",
+   "name": "Hohenzollernplatz",
+   "system": "U",
+   "lines": [
+    "U3"
+   ],
+   "latitude": 52.494113,
+   "longitude": 13.324831,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:holzhauser-strasse",
+   "name": "Holzhauser Straße",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.5758,
+   "longitude": 13.2961,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "u:innsbrucker-platz",
+   "name": "Innsbrucker Platz",
+   "system": "U",
+   "lines": [
+    "U4"
+   ],
+   "latitude": 52.479016,
+   "longitude": 13.343746,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "u:jakob-kaiser-platz",
+   "name": "Jakob-Kaiser-Platz",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.536261,
+   "longitude": 13.293458,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:jannowitzbruecke",
+   "name": "Jannowitzbrücke",
+   "system": "U",
+   "lines": [
+    "U8"
+   ],
+   "latitude": 52.515777,
+   "longitude": 13.418177,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:johannisthaler-chaussee",
+   "name": "Johannisthaler Chaussee",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.429291,
+   "longitude": 13.453399,
+   "radius": 80,
+   "district": "Neukölln"
+  },
+  {
+   "id": "u:jungfernheide",
+   "name": "Jungfernheide",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.530702,
+   "longitude": 13.300668,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:kaiserdamm",
+   "name": "Kaiserdamm",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.510069,
+   "longitude": 13.282949,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:kaiserin-augusta-strasse",
+   "name": "Kaiserin-Augusta-Straße",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.459816,
+   "longitude": 13.38459,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "u:karl-bonhoeffer-nervenklinik",
+   "name": "Karl-Bonhoeffer-Nervenklinik",
+   "system": "U",
+   "lines": [
+    "U8"
+   ],
+   "latitude": 52.579074,
+   "longitude": 13.333309,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "u:karl-marx-strasse",
+   "name": "Karl-Marx-Straße",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.476409,
+   "longitude": 13.439278,
+   "radius": 80,
+   "district": "Neukölln"
+  },
+  {
+   "id": "u:kaulsdorf-nord",
+   "name": "Kaulsdorf-Nord",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.521112,
+   "longitude": 13.58893,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "u:kienberg-gaerten-der-welt",
+   "name": "Kienberg (Gärten der Welt)",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.528549,
+   "longitude": 13.590579,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "u:kleistpark",
+   "name": "Kleistpark",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.490368,
+   "longitude": 13.360319,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "u:klosterstrasse",
+   "name": "Klosterstraße",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.517205,
+   "longitude": 13.412422,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:kochstrasse-checkpoint-charlie",
+   "name": "Kochstraße/Checkpoint Charlie",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.50594,
+   "longitude": 13.390626,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "u:konstanzer-strasse",
+   "name": "Konstanzer Straße",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.494503,
+   "longitude": 13.309131,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:kottbusser-tor",
+   "name": "Kottbusser Tor",
+   "system": "U",
+   "lines": [
+    "U1",
+    "U3",
+    "U8"
+   ],
+   "latitude": 52.49897,
+   "longitude": 13.418278,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "u:krumme-lanke",
+   "name": "Krumme Lanke",
+   "system": "U",
+   "lines": [
+    "U3"
+   ],
+   "latitude": 52.443084,
+   "longitude": 13.241,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "u:kurfuerstendamm",
+   "name": "Kurfürstendamm",
+   "system": "U",
+   "lines": [
+    "U1",
+    "U9"
+   ],
+   "latitude": 52.503827,
+   "longitude": 13.331534,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:kurfuerstenstrasse",
+   "name": "Kurfürstenstraße",
+   "system": "U",
+   "lines": [
+    "U1",
+    "U3"
+   ],
+   "latitude": 52.500113,
+   "longitude": 13.361456,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:kurt-schumacher-platz",
+   "name": "Kurt-Schumacher-Platz",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.563225,
+   "longitude": 13.32715,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "u:leinestrasse",
+   "name": "Leinestraße",
+   "system": "U",
+   "lines": [
+    "U8"
+   ],
+   "latitude": 52.473418,
+   "longitude": 13.42813,
+   "radius": 80,
+   "district": "Neukölln"
+  },
+  {
+   "id": "u:leopoldplatz",
+   "name": "Leopoldplatz",
+   "system": "U",
+   "lines": [
+    "U6",
+    "U9"
+   ],
+   "latitude": 52.546397,
+   "longitude": 13.359139,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:lichtenberg",
+   "name": "Lichtenberg",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.511152,
+   "longitude": 13.498399,
+   "radius": 80,
+   "district": "Lichtenberg"
+  },
+  {
+   "id": "u:lindauer-allee",
+   "name": "Lindauer Allee",
+   "system": "U",
+   "lines": [
+    "U8"
+   ],
+   "latitude": 52.575421,
+   "longitude": 13.338426,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "u:lipschitzallee",
+   "name": "Lipschitzallee",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.424773,
+   "longitude": 13.462316,
+   "radius": 80,
+   "district": "Neukölln"
+  },
+  {
+   "id": "u:louis-lewin-strasse",
+   "name": "Louis-Lewin-Straße",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.538994,
+   "longitude": 13.618534,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "u:maerkisches-museum",
+   "name": "Märkisches Museum",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.512347,
+   "longitude": 13.410175,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:magdalenenstrasse-campus-fuer-demokratie",
+   "name": "Magdalenenstraße (Campus für Demokratie)",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.512475,
+   "longitude": 13.486969,
+   "radius": 80,
+   "district": "Lichtenberg"
+  },
+  {
+   "id": "u:mehringdamm",
+   "name": "Mehringdamm",
+   "system": "U",
+   "lines": [
+    "U6",
+    "U7"
+   ],
+   "latitude": 52.494395,
+   "longitude": 13.38883,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "u:mendelssohn-bartholdy-park",
+   "name": "Mendelssohn-Bartholdy-Park",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.503724,
+   "longitude": 13.374861,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:mierendorffplatz",
+   "name": "Mierendorffplatz",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.526345,
+   "longitude": 13.304781,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:moeckernbruecke",
+   "name": "Möckernbrücke",
+   "system": "U",
+   "lines": [
+    "U1",
+    "U3",
+    "U7"
+   ],
+   "latitude": 52.498977,
+   "longitude": 13.382988,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "u:moritzplatz",
+   "name": "Moritzplatz",
+   "system": "U",
+   "lines": [
+    "U8"
+   ],
+   "latitude": 52.503637,
+   "longitude": 13.410696,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "u:museumsinsel",
+   "name": "Museumsinsel",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.517278,
+   "longitude": 13.398759,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:naturkundemuseum",
+   "name": "Naturkundemuseum",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.530911,
+   "longitude": 13.382628,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:nauener-platz",
+   "name": "Nauener Platz",
+   "system": "U",
+   "lines": [
+    "U9"
+   ],
+   "latitude": 52.551427,
+   "longitude": 13.367149,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:neu-westend",
+   "name": "Neu-Westend",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.516224,
+   "longitude": 13.259287,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:neukoelln",
+   "name": "Neukölln",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.468657,
+   "longitude": 13.441814,
+   "radius": 80,
+   "district": "Neukölln"
+  },
+  {
+   "id": "u:nollendorfplatz",
+   "name": "Nollendorfplatz",
+   "system": "U",
+   "lines": [
+    "U1",
+    "U2",
+    "U3",
+    "U4"
+   ],
+   "latitude": 52.499861,
+   "longitude": 13.354842,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "u:olympia-stadion",
+   "name": "Olympia-Stadion",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.516881,
+   "longitude": 13.250616,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:onkel-toms-huette",
+   "name": "Onkel Toms Hütte",
+   "system": "U",
+   "lines": [
+    "U3"
+   ],
+   "latitude": 52.449887,
+   "longitude": 13.253118,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "u:oranienburger-tor",
+   "name": "Oranienburger Tor",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.525608,
+   "longitude": 13.387347,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:oskar-helene-heim",
+   "name": "Oskar-Helene-Heim",
+   "system": "U",
+   "lines": [
+    "U3"
+   ],
+   "latitude": 52.450367,
+   "longitude": 13.268884,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "u:osloer-strasse",
+   "name": "Osloer Straße",
+   "system": "U",
+   "lines": [
+    "U8",
+    "U9"
+   ],
+   "latitude": 52.557174,
+   "longitude": 13.373233,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:otisstrasse",
+   "name": "Otisstraße",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.5711,
+   "longitude": 13.3028,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "u:pankow",
+   "name": "Pankow",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.566778,
+   "longitude": 13.411728,
+   "radius": 80,
+   "district": "Pankow"
+  },
+  {
+   "id": "u:pankstrasse",
+   "name": "Pankstraße",
+   "system": "U",
+   "lines": [
+    "U8"
+   ],
+   "latitude": 52.552226,
+   "longitude": 13.381545,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:paracelsus-bad",
+   "name": "Paracelsus-Bad",
+   "system": "U",
+   "lines": [
+    "U8"
+   ],
+   "latitude": 52.574109,
+   "longitude": 13.349319,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "u:paradestrasse",
+   "name": "Paradestraße",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.478117,
+   "longitude": 13.386273,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "u:parchimer-allee",
+   "name": "Parchimer Allee",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.444831,
+   "longitude": 13.449583,
+   "radius": 80,
+   "district": "Neukölln"
+  },
+  {
+   "id": "u:paulsternstrasse",
+   "name": "Paulsternstraße",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.537987,
+   "longitude": 13.247728,
+   "radius": 80,
+   "district": "Spandau"
+  },
+  {
+   "id": "u:platz-der-luftbruecke",
+   "name": "Platz der Luftbrücke",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.486026,
+   "longitude": 13.385894,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "u:podbielskiallee",
+   "name": "Podbielskiallee",
+   "system": "U",
+   "lines": [
+    "U3"
+   ],
+   "latitude": 52.464041,
+   "longitude": 13.295575,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "u:potsdamer-platz",
+   "name": "Potsdamer Platz",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.509143,
+   "longitude": 13.378174,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:prinzenstrasse",
+   "name": "Prinzenstraße",
+   "system": "U",
+   "lines": [
+    "U1",
+    "U3"
+   ],
+   "latitude": 52.49839,
+   "longitude": 13.40556,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "u:rathaus-neukoelln",
+   "name": "Rathaus Neukölln",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.481751,
+   "longitude": 13.43404,
+   "radius": 80,
+   "district": "Neukölln"
+  },
+  {
+   "id": "u:rathaus-reinickendorf",
+   "name": "Rathaus Reinickendorf",
+   "system": "U",
+   "lines": [
+    "U8"
+   ],
+   "latitude": 52.588358,
+   "longitude": 13.325778,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "u:rathaus-schoeneberg",
+   "name": "Rathaus Schöneberg",
+   "system": "U",
+   "lines": [
+    "U4"
+   ],
+   "latitude": 52.483177,
+   "longitude": 13.341972,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "u:rathaus-spandau",
+   "name": "Rathaus Spandau",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.535405,
+   "longitude": 13.199866,
+   "radius": 80,
+   "district": "Spandau"
+  },
+  {
+   "id": "u:rathaus-steglitz",
+   "name": "Rathaus Steglitz",
+   "system": "U",
+   "lines": [
+    "U9"
+   ],
+   "latitude": 52.456795,
+   "longitude": 13.320914,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "u:rehberge",
+   "name": "Rehberge",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.556661,
+   "longitude": 13.340942,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:reinickendorfer-strasse",
+   "name": "Reinickendorfer Straße",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.539944,
+   "longitude": 13.37039,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:residenzstrasse",
+   "name": "Residenzstraße",
+   "system": "U",
+   "lines": [
+    "U8"
+   ],
+   "latitude": 52.571182,
+   "longitude": 13.360485,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "u:richard-wagner-platz",
+   "name": "Richard-Wagner-Platz",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.51691,
+   "longitude": 13.306575,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:rohrdamm",
+   "name": "Rohrdamm",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.536971,
+   "longitude": 13.262617,
+   "radius": 80,
+   "district": "Spandau"
+  },
+  {
+   "id": "u:rosa-luxemburg-platz",
+   "name": "Rosa-Luxemburg-Platz",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.527661,
+   "longitude": 13.410472,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:rosenthaler-platz",
+   "name": "Rosenthaler Platz",
+   "system": "U",
+   "lines": [
+    "U8"
+   ],
+   "latitude": 52.53029,
+   "longitude": 13.400794,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:rotes-rathaus",
+   "name": "Rotes Rathaus",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.518781,
+   "longitude": 13.407909,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:rudow",
+   "name": "Rudow",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.416604,
+   "longitude": 13.494587,
+   "radius": 80,
+   "district": "Neukölln"
+  },
+  {
+   "id": "u:ruedesheimer-platz",
+   "name": "Rüdesheimer Platz",
+   "system": "U",
+   "lines": [
+    "U3"
+   ],
+   "latitude": 52.473394,
+   "longitude": 13.314429,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:ruhleben",
+   "name": "Ruhleben",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.525587,
+   "longitude": 13.241223,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:samariterstrasse",
+   "name": "Samariterstraße",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.514728,
+   "longitude": 13.464628,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "u:scharnweberstrasse",
+   "name": "Scharnweberstraße",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.5669,
+   "longitude": 13.3128,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "u:schillingstrasse",
+   "name": "Schillingstraße",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.520879,
+   "longitude": 13.420814,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:schlesisches-tor",
+   "name": "Schlesisches Tor",
+   "system": "U",
+   "lines": [
+    "U1",
+    "U3"
+   ],
+   "latitude": 52.500869,
+   "longitude": 13.441567,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "u:schlossstrasse",
+   "name": "Schloßstraße",
+   "system": "U",
+   "lines": [
+    "U9"
+   ],
+   "latitude": 52.461395,
+   "longitude": 13.325119,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "u:schoenhauser-allee",
+   "name": "Schönhauser Allee",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.549492,
+   "longitude": 13.413718,
+   "radius": 80,
+   "district": "Pankow"
+  },
+  {
+   "id": "u:schoenleinstrasse",
+   "name": "Schönleinstraße",
+   "system": "U",
+   "lines": [
+    "U8"
+   ],
+   "latitude": 52.493251,
+   "longitude": 13.421923,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "u:schwartzkopffstrasse",
+   "name": "Schwartzkopffstraße",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.535216,
+   "longitude": 13.377246,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:seestrasse",
+   "name": "Seestraße",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.549639,
+   "longitude": 13.353306,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:senefelderplatz",
+   "name": "Senefelderplatz",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.532438,
+   "longitude": 13.412696,
+   "radius": 80,
+   "district": "Pankow"
+  },
+  {
+   "id": "u:siemensdamm",
+   "name": "Siemensdamm",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.536758,
+   "longitude": 13.272764,
+   "radius": 80,
+   "district": "Spandau"
+  },
+  {
+   "id": "u:sophie-charlotte-platz",
+   "name": "Sophie-Charlotte-Platz",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.510871,
+   "longitude": 13.29582,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:spichernstrasse",
+   "name": "Spichernstraße",
+   "system": "U",
+   "lines": [
+    "U3",
+    "U9"
+   ],
+   "latitude": 52.497135,
+   "longitude": 13.331386,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:spittelmarkt",
+   "name": "Spittelmarkt",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.511302,
+   "longitude": 13.403852,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:stadtmitte",
+   "name": "Stadtmitte",
+   "system": "U",
+   "lines": [
+    "U2",
+    "U6"
+   ],
+   "latitude": 52.511196,
+   "longitude": 13.390303,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:strausberger-platz",
+   "name": "Strausberger Platz",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.518106,
+   "longitude": 13.431513,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "u:suedstern",
+   "name": "Südstern",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.489272,
+   "longitude": 13.407654,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "u:tempelhof",
+   "name": "Tempelhof",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.469909,
+   "longitude": 13.385592,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "u:theodor-heuss-platz",
+   "name": "Theodor-Heuss-Platz",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.509896,
+   "longitude": 13.272659,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:tierpark",
+   "name": "Tierpark",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.497688,
+   "longitude": 13.522989,
+   "radius": 80,
+   "district": "Lichtenberg"
+  },
+  {
+   "id": "u:turmstrasse",
+   "name": "Turmstraße",
+   "system": "U",
+   "lines": [
+    "U9"
+   ],
+   "latitude": 52.52609,
+   "longitude": 13.341275,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:uhlandstrasse",
+   "name": "Uhlandstraße",
+   "system": "U",
+   "lines": [
+    "U1"
+   ],
+   "latitude": 52.502807,
+   "longitude": 13.326704,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:ullsteinstrasse",
+   "name": "Ullsteinstraße",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.45389,
+   "longitude": 13.384438,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "u:unter-den-linden",
+   "name": "Unter den Linden",
+   "system": "U",
+   "lines": [
+    "U5",
+    "U6"
+   ],
+   "latitude": 52.516811,
+   "longitude": 13.389054,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:viktoria-luise-platz",
+   "name": "Viktoria-Luise-Platz",
+   "system": "U",
+   "lines": [
+    "U4"
+   ],
+   "latitude": 52.496187,
+   "longitude": 13.343218,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "u:vinetastrasse",
+   "name": "Vinetastraße",
+   "system": "U",
+   "lines": [
+    "U2"
+   ],
+   "latitude": 52.559407,
+   "longitude": 13.413245,
+   "radius": 80,
+   "district": "Pankow"
+  },
+  {
+   "id": "u:voltastrasse",
+   "name": "Voltastraße",
+   "system": "U",
+   "lines": [
+    "U8"
+   ],
+   "latitude": 52.542084,
+   "longitude": 13.393044,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:walther-schreiber-platz",
+   "name": "Walther-Schreiber-Platz",
+   "system": "U",
+   "lines": [
+    "U9"
+   ],
+   "latitude": 52.466083,
+   "longitude": 13.32826,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "u:warschauer-strasse",
+   "name": "Warschauer Straße",
+   "system": "U",
+   "lines": [
+    "U1",
+    "U3"
+   ],
+   "latitude": 52.505151,
+   "longitude": 13.449114,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "u:weberwiese",
+   "name": "Weberwiese",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.516746,
+   "longitude": 13.444658,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "u:wedding",
+   "name": "Wedding",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.543068,
+   "longitude": 13.36502,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:weinmeisterstrasse",
+   "name": "Weinmeisterstraße",
+   "system": "U",
+   "lines": [
+    "U8"
+   ],
+   "latitude": 52.525465,
+   "longitude": 13.405038,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:westhafen",
+   "name": "Westhafen",
+   "system": "U",
+   "lines": [
+    "U9"
+   ],
+   "latitude": 52.536845,
+   "longitude": 13.342606,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "u:westphalweg",
+   "name": "Westphalweg",
+   "system": "U",
+   "lines": [
+    "U6"
+   ],
+   "latitude": 52.446271,
+   "longitude": 13.385686,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "u:wilmersdorfer-strasse",
+   "name": "Wilmersdorfer Straße",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.506714,
+   "longitude": 13.306637,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:wittenau",
+   "name": "Wittenau",
+   "system": "U",
+   "lines": [
+    "U8"
+   ],
+   "latitude": 52.595659,
+   "longitude": 13.334867,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "u:wittenbergplatz",
+   "name": "Wittenbergplatz",
+   "system": "U",
+   "lines": [
+    "U1",
+    "U2",
+    "U3"
+   ],
+   "latitude": 52.501796,
+   "longitude": 13.343001,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "u:wuhletal",
+   "name": "Wuhletal",
+   "system": "U",
+   "lines": [
+    "U5"
+   ],
+   "latitude": 52.512615,
+   "longitude": 13.575079,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "u:wutzkyallee",
+   "name": "Wutzkyallee",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.42333,
+   "longitude": 13.474483,
+   "radius": 80,
+   "district": "Neukölln"
+  },
+  {
+   "id": "u:yorckstrasse",
+   "name": "Yorckstraße",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.492991,
+   "longitude": 13.370842,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "u:zitadelle",
+   "name": "Zitadelle",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.537651,
+   "longitude": 13.217534,
+   "radius": 80,
+   "district": "Spandau"
+  },
+  {
+   "id": "u:zoologischer-garten",
+   "name": "Zoologischer Garten",
+   "system": "U",
+   "lines": [
+    "U2",
+    "U9"
+   ],
+   "latitude": 52.506513,
+   "longitude": 13.333111,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "u:zwickauer-damm",
+   "name": "Zwickauer Damm",
+   "system": "U",
+   "lines": [
+    "U7"
+   ],
+   "latitude": 52.423396,
+   "longitude": 13.483785,
+   "radius": 80,
+   "district": "Neukölln"
+  },
+  {
+   "id": "s:adlershof",
+   "name": "Adlershof",
+   "system": "S",
+   "lines": [
+    "S46",
+    "S8",
+    "S85",
+    "S9"
+   ],
+   "latitude": 52.43491,
+   "longitude": 13.541278,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "s:ahrensfelde",
+   "name": "Ahrensfelde",
+   "system": "S",
+   "lines": [
+    "S7"
+   ],
+   "latitude": 52.571289,
+   "longitude": 13.565605,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "s:alexanderplatz",
+   "name": "Alexanderplatz",
+   "system": "S",
+   "lines": [
+    "S3",
+    "S5",
+    "S7",
+    "S9"
+   ],
+   "latitude": 52.521499,
+   "longitude": 13.41138,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "s:alt-reinickendorf",
+   "name": "Alt-Reinickendorf",
+   "system": "S",
+   "lines": [
+    "S25"
+   ],
+   "latitude": 52.577811,
+   "longitude": 13.350774,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "s:altglienicke",
+   "name": "Altglienicke",
+   "system": "S",
+   "lines": [
+    "S85",
+    "S9"
+   ],
+   "latitude": 52.407118,
+   "longitude": 13.558495,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "s:anhalter-bahnhof",
+   "name": "Anhalter Bahnhof",
+   "system": "S",
+   "lines": [
+    "S1",
+    "S2",
+    "S25",
+    "S26"
+   ],
+   "latitude": 52.503409,
+   "longitude": 13.38145,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "s:attilastrasse",
+   "name": "Attilastraße",
+   "system": "S",
+   "lines": [
+    "S2"
+   ],
+   "latitude": 52.448001,
+   "longitude": 13.360772,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "s:babelsberg",
+   "name": "Babelsberg",
+   "system": "S",
+   "lines": [
+    "S7"
+   ],
+   "latitude": 52.391384,
+   "longitude": 13.092737,
+   "radius": 80
+  },
+  {
+   "id": "s:baumschulenweg",
+   "name": "Baumschulenweg",
+   "system": "S",
+   "lines": [
+    "S46",
+    "S47",
+    "S8",
+    "S85",
+    "S9"
+   ],
+   "latitude": 52.467635,
+   "longitude": 13.489569,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "s:bellevue",
+   "name": "Bellevue",
+   "system": "S",
+   "lines": [
+    "S3",
+    "S5",
+    "S7",
+    "S9"
+   ],
+   "latitude": 52.519994,
+   "longitude": 13.347896,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "s:bergfelde",
+   "name": "Bergfelde",
+   "system": "S",
+   "lines": [
+    "S8"
+   ],
+   "latitude": 52.67013,
+   "longitude": 13.32036,
+   "radius": 80
+  },
+  {
+   "id": "s:bernau",
+   "name": "Bernau",
+   "system": "S",
+   "lines": [
+    "S2"
+   ],
+   "latitude": 52.675549,
+   "longitude": 13.591688,
+   "radius": 80
+  },
+  {
+   "id": "s:bernau-friedenstal",
+   "name": "Bernau-Friedenstal",
+   "system": "S",
+   "lines": [
+    "S2"
+   ],
+   "latitude": 52.668439,
+   "longitude": 13.564927,
+   "radius": 80
+  },
+  {
+   "id": "s:betriebsbahnhof-rummelsburg",
+   "name": "Betriebsbahnhof Rummelsburg",
+   "system": "S",
+   "lines": [
+    "S3"
+   ],
+   "latitude": 52.49389,
+   "longitude": 13.497636,
+   "radius": 80,
+   "district": "Lichtenberg"
+  },
+  {
+   "id": "s:beusselstrasse",
+   "name": "Beusselstraße",
+   "system": "S",
+   "lines": [
+    "S41",
+    "S42"
+   ],
+   "latitude": 52.534343,
+   "longitude": 13.329059,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "s:biesdorf",
+   "name": "Biesdorf",
+   "system": "S",
+   "lines": [
+    "S5"
+   ],
+   "latitude": 52.513083,
+   "longitude": 13.556067,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "s:birkenstein",
+   "name": "Birkenstein",
+   "system": "S",
+   "lines": [
+    "S5"
+   ],
+   "latitude": 52.515643,
+   "longitude": 13.647345,
+   "radius": 80
+  },
+  {
+   "id": "s:birkenwerder",
+   "name": "Birkenwerder",
+   "system": "S",
+   "lines": [
+    "S1",
+    "S8"
+   ],
+   "latitude": 52.688423,
+   "longitude": 13.288732,
+   "radius": 80
+  },
+  {
+   "id": "s:blankenburg",
+   "name": "Blankenburg",
+   "system": "S",
+   "lines": [
+    "S2",
+    "S26",
+    "S8"
+   ],
+   "latitude": 52.591346,
+   "longitude": 13.443349,
+   "radius": 80,
+   "district": "Pankow"
+  },
+  {
+   "id": "s:blankenfelde",
+   "name": "Blankenfelde",
+   "system": "S",
+   "lines": [
+    "S2"
+   ],
+   "latitude": 52.336784,
+   "longitude": 13.415933,
+   "radius": 80
+  },
+  {
+   "id": "s:borgsdorf",
+   "name": "Borgsdorf",
+   "system": "S",
+   "lines": [
+    "S1"
+   ],
+   "latitude": 52.715727,
+   "longitude": 13.276302,
+   "radius": 80
+  },
+  {
+   "id": "s:bornholmer-strasse",
+   "name": "Bornholmer Straße",
+   "system": "S",
+   "lines": [
+    "S1",
+    "S2",
+    "S25",
+    "S26",
+    "S8",
+    "S85"
+   ],
+   "latitude": 52.554757,
+   "longitude": 13.397846,
+   "radius": 80,
+   "district": "Pankow"
+  },
+  {
+   "id": "s:botanischer-garten",
+   "name": "Botanischer Garten",
+   "system": "S",
+   "lines": [
+    "S1"
+   ],
+   "latitude": 52.448022,
+   "longitude": 13.307319,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "s:brandenburger-tor",
+   "name": "Brandenburger Tor",
+   "system": "S",
+   "lines": [
+    "S1",
+    "S2",
+    "S25",
+    "S26"
+   ],
+   "latitude": 52.516441,
+   "longitude": 13.381842,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "s:buch",
+   "name": "Buch",
+   "system": "S",
+   "lines": [
+    "S2"
+   ],
+   "latitude": 52.635872,
+   "longitude": 13.491699,
+   "radius": 80,
+   "district": "Pankow"
+  },
+  {
+   "id": "s:buckower-chaussee",
+   "name": "Buckower Chaussee",
+   "system": "S",
+   "lines": [
+    "S2"
+   ],
+   "latitude": 52.410331,
+   "longitude": 13.382879,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "s:bundesplatz",
+   "name": "Bundesplatz",
+   "system": "S",
+   "lines": [
+    "S41",
+    "S42",
+    "S46"
+   ],
+   "latitude": 52.477647,
+   "longitude": 13.329209,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "s:charlottenburg",
+   "name": "Charlottenburg",
+   "system": "S",
+   "lines": [
+    "S3",
+    "S5",
+    "S7",
+    "S9"
+   ],
+   "latitude": 52.505051,
+   "longitude": 13.304502,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "s:eichborndamm",
+   "name": "Eichborndamm",
+   "system": "S",
+   "lines": [
+    "S25"
+   ],
+   "latitude": 52.577668,
+   "longitude": 13.316511,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "s:eichwalde",
+   "name": "Eichwalde",
+   "system": "S",
+   "lines": [
+    "S46",
+    "S8"
+   ],
+   "latitude": 52.371331,
+   "longitude": 13.615326,
+   "radius": 80
+  },
+  {
+   "id": "s:erkner",
+   "name": "Erkner",
+   "system": "S",
+   "lines": [
+    "S3"
+   ],
+   "latitude": 52.429449,
+   "longitude": 13.750948,
+   "radius": 80
+  },
+  {
+   "id": "s:feuerbachstrasse",
+   "name": "Feuerbachstraße",
+   "system": "S",
+   "lines": [
+    "S1"
+   ],
+   "latitude": 52.463827,
+   "longitude": 13.332884,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "s:flughafen-ber",
+   "name": "Flughafen BER",
+   "system": "S",
+   "lines": [
+    "S85",
+    "S9"
+   ],
+   "latitude": 52.364613,
+   "longitude": 13.509653,
+   "radius": 80
+  },
+  {
+   "id": "s:frankfurter-allee",
+   "name": "Frankfurter Allee",
+   "system": "S",
+   "lines": [
+    "S41",
+    "S42",
+    "S8",
+    "S85"
+   ],
+   "latitude": 52.515119,
+   "longitude": 13.474471,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "s:fredersdorf",
+   "name": "Fredersdorf",
+   "system": "S",
+   "lines": [
+    "S5"
+   ],
+   "latitude": 52.526243,
+   "longitude": 13.760431,
+   "radius": 80
+  },
+  {
+   "id": "s:friedenau",
+   "name": "Friedenau",
+   "system": "S",
+   "lines": [
+    "S1"
+   ],
+   "latitude": 52.470744,
+   "longitude": 13.341519,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "s:friedrichsfelde-ost",
+   "name": "Friedrichsfelde Ost",
+   "system": "S",
+   "lines": [
+    "S5",
+    "S7",
+    "S75"
+   ],
+   "latitude": 52.51412,
+   "longitude": 13.519889,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "s:friedrichshagen",
+   "name": "Friedrichshagen",
+   "system": "S",
+   "lines": [
+    "S3"
+   ],
+   "latitude": 52.457365,
+   "longitude": 13.623738,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "s:friedrichstrasse",
+   "name": "Friedrichstraße",
+   "system": "S",
+   "lines": [
+    "S1",
+    "S2",
+    "S25",
+    "S26",
+    "S3",
+    "S5",
+    "S7",
+    "S9"
+   ],
+   "latitude": 52.520416,
+   "longitude": 13.386697,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "s:frohnau",
+   "name": "Frohnau",
+   "system": "S",
+   "lines": [
+    "S1",
+    "S85"
+   ],
+   "latitude": 52.632322,
+   "longitude": 13.290332,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "s:gehrenseestrasse",
+   "name": "Gehrenseestraße",
+   "system": "S",
+   "lines": [
+    "S75"
+   ],
+   "latitude": 52.556464,
+   "longitude": 13.524743,
+   "radius": 80,
+   "district": "Lichtenberg"
+  },
+  {
+   "id": "s:gesundbrunnen",
+   "name": "Gesundbrunnen",
+   "system": "S",
+   "lines": [
+    "S1",
+    "S15",
+    "S2",
+    "S25",
+    "S26",
+    "S41",
+    "S42"
+   ],
+   "latitude": 52.549172,
+   "longitude": 13.389814,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "s:greifswalder-strasse",
+   "name": "Greifswalder Straße",
+   "system": "S",
+   "lines": [
+    "S41",
+    "S42",
+    "S8",
+    "S85"
+   ],
+   "latitude": 52.540135,
+   "longitude": 13.439231,
+   "radius": 80,
+   "district": "Pankow"
+  },
+  {
+   "id": "s:griebnitzsee",
+   "name": "Griebnitzsee",
+   "system": "S",
+   "lines": [
+    "S7"
+   ],
+   "latitude": 52.394439,
+   "longitude": 13.127191,
+   "radius": 80
+  },
+  {
+   "id": "s:gruenau",
+   "name": "Grünau",
+   "system": "S",
+   "lines": [
+    "S46",
+    "S8"
+   ],
+   "latitude": 52.412556,
+   "longitude": 13.574179,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "s:gruenbergallee",
+   "name": "Grünbergallee",
+   "system": "S",
+   "lines": [
+    "S85",
+    "S9"
+   ],
+   "latitude": 52.399296,
+   "longitude": 13.541834,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "s:grunewald",
+   "name": "Grunewald",
+   "system": "S",
+   "lines": [
+    "S7"
+   ],
+   "latitude": 52.488449,
+   "longitude": 13.261407,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "s:hackescher-markt",
+   "name": "Hackescher Markt",
+   "system": "S",
+   "lines": [
+    "S3",
+    "S5",
+    "S7",
+    "S9"
+   ],
+   "latitude": 52.522648,
+   "longitude": 13.402209,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "s:halensee",
+   "name": "Halensee",
+   "system": "S",
+   "lines": [
+    "S41",
+    "S42",
+    "S46"
+   ],
+   "latitude": 52.495984,
+   "longitude": 13.290596,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "s:hauptbahnhof",
+   "name": "Hauptbahnhof",
+   "system": "S",
+   "lines": [
+    "S15",
+    "S3",
+    "S5",
+    "S7",
+    "S9"
+   ],
+   "latitude": 52.525527,
+   "longitude": 13.369614,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "s:heerstrasse",
+   "name": "Heerstraße",
+   "system": "S",
+   "lines": [
+    "S3",
+    "S9"
+   ],
+   "latitude": 52.507735,
+   "longitude": 13.26018,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "s:hegermuehle",
+   "name": "Hegermühle",
+   "system": "S",
+   "lines": [
+    "S5"
+   ],
+   "latitude": 52.548546,
+   "longitude": 13.866545,
+   "radius": 80
+  },
+  {
+   "id": "s:heidelberger-platz",
+   "name": "Heidelberger Platz",
+   "system": "S",
+   "lines": [
+    "S41",
+    "S42",
+    "S46"
+   ],
+   "latitude": 52.480265,
+   "longitude": 13.311489,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "s:heiligensee",
+   "name": "Heiligensee",
+   "system": "S",
+   "lines": [
+    "S25"
+   ],
+   "latitude": 52.624634,
+   "longitude": 13.229241,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "s:hennigsdorf",
+   "name": "Hennigsdorf",
+   "system": "S",
+   "lines": [
+    "S25"
+   ],
+   "latitude": 52.637494,
+   "longitude": 13.206046,
+   "radius": 80
+  },
+  {
+   "id": "s:hermannstrasse",
+   "name": "Hermannstraße",
+   "system": "S",
+   "lines": [
+    "S41",
+    "S42",
+    "S46",
+    "S47"
+   ],
+   "latitude": 52.467589,
+   "longitude": 13.430903,
+   "radius": 80,
+   "district": "Neukölln"
+  },
+  {
+   "id": "s:hermsdorf",
+   "name": "Hermsdorf",
+   "system": "S",
+   "lines": [
+    "S1",
+    "S85"
+   ],
+   "latitude": 52.617342,
+   "longitude": 13.307649,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "s:hirschgarten",
+   "name": "Hirschgarten",
+   "system": "S",
+   "lines": [
+    "S3"
+   ],
+   "latitude": 52.4579,
+   "longitude": 13.603479,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "s:hohen-neuendorf",
+   "name": "Hohen Neuendorf",
+   "system": "S",
+   "lines": [
+    "S1",
+    "S8"
+   ],
+   "latitude": 52.668653,
+   "longitude": 13.287049,
+   "radius": 80
+  },
+  {
+   "id": "s:hohenschoenhausen",
+   "name": "Hohenschönhausen",
+   "system": "S",
+   "lines": [
+    "S75"
+   ],
+   "latitude": 52.566268,
+   "longitude": 13.512523,
+   "radius": 80,
+   "district": "Lichtenberg"
+  },
+  {
+   "id": "s:hohenzollerndamm",
+   "name": "Hohenzollerndamm",
+   "system": "S",
+   "lines": [
+    "S41",
+    "S42",
+    "S46"
+   ],
+   "latitude": 52.48867,
+   "longitude": 13.300182,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "s:hoppegarten",
+   "name": "Hoppegarten",
+   "system": "S",
+   "lines": [
+    "S5"
+   ],
+   "latitude": 52.518194,
+   "longitude": 13.673906,
+   "radius": 80
+  },
+  {
+   "id": "s:humboldthain",
+   "name": "Humboldthain",
+   "system": "S",
+   "lines": [
+    "S1",
+    "S2",
+    "S25",
+    "S26"
+   ],
+   "latitude": 52.545025,
+   "longitude": 13.379546,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "s:innsbrucker-platz",
+   "name": "Innsbrucker Platz",
+   "system": "S",
+   "lines": [
+    "S41",
+    "S42",
+    "S46"
+   ],
+   "latitude": 52.478106,
+   "longitude": 13.341592,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "s:jannowitzbruecke",
+   "name": "Jannowitzbrücke",
+   "system": "S",
+   "lines": [
+    "S3",
+    "S5",
+    "S7",
+    "S9"
+   ],
+   "latitude": 52.514237,
+   "longitude": 13.419462,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "s:johannisthal",
+   "name": "Johannisthal",
+   "system": "S",
+   "lines": [
+    "S46",
+    "S8",
+    "S85",
+    "S9"
+   ],
+   "latitude": 52.446812,
+   "longitude": 13.523863,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "s:julius-leber-bruecke",
+   "name": "Julius-Leber-Brücke",
+   "system": "S",
+   "lines": [
+    "S1"
+   ],
+   "latitude": 52.486437,
+   "longitude": 13.361085,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "s:jungfernheide",
+   "name": "Jungfernheide",
+   "system": "S",
+   "lines": [
+    "S41",
+    "S42"
+   ],
+   "latitude": 52.530469,
+   "longitude": 13.299775,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "s:karl-bonhoeffer-nervenklinik",
+   "name": "Karl-Bonhoeffer-Nervenklinik",
+   "system": "S",
+   "lines": [
+    "S25"
+   ],
+   "latitude": 52.578044,
+   "longitude": 13.32916,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "s:karlshorst",
+   "name": "Karlshorst",
+   "system": "S",
+   "lines": [
+    "S3"
+   ],
+   "latitude": 52.480519,
+   "longitude": 13.527188,
+   "radius": 80,
+   "district": "Lichtenberg"
+  },
+  {
+   "id": "s:karow",
+   "name": "Karow",
+   "system": "S",
+   "lines": [
+    "S2"
+   ],
+   "latitude": 52.615222,
+   "longitude": 13.469473,
+   "radius": 80,
+   "district": "Pankow"
+  },
+  {
+   "id": "s:kaulsdorf",
+   "name": "Kaulsdorf",
+   "system": "S",
+   "lines": [
+    "S5"
+   ],
+   "latitude": 52.512115,
+   "longitude": 13.590183,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "s:koellnische-heide",
+   "name": "Köllnische Heide",
+   "system": "S",
+   "lines": [
+    "S46",
+    "S47"
+   ],
+   "latitude": 52.469715,
+   "longitude": 13.468546,
+   "radius": 80,
+   "district": "Neukölln"
+  },
+  {
+   "id": "s:koenigs-wusterhausen",
+   "name": "Königs Wusterhausen",
+   "system": "S",
+   "lines": [
+    "S46"
+   ],
+   "latitude": 52.296445,
+   "longitude": 13.631438,
+   "radius": 80
+  },
+  {
+   "id": "s:koepenick",
+   "name": "Köpenick",
+   "system": "S",
+   "lines": [
+    "S3"
+   ],
+   "latitude": 52.458608,
+   "longitude": 13.581313,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "s:landsberger-allee",
+   "name": "Landsberger Allee",
+   "system": "S",
+   "lines": [
+    "S41",
+    "S42",
+    "S8",
+    "S85"
+   ],
+   "latitude": 52.529449,
+   "longitude": 13.454813,
+   "radius": 80,
+   "district": "Pankow"
+  },
+  {
+   "id": "s:lankwitz",
+   "name": "Lankwitz",
+   "system": "S",
+   "lines": [
+    "S25",
+    "S26"
+   ],
+   "latitude": 52.438831,
+   "longitude": 13.342176,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "s:lehnitz",
+   "name": "Lehnitz",
+   "system": "S",
+   "lines": [
+    "S1"
+   ],
+   "latitude": 52.740991,
+   "longitude": 13.263552,
+   "radius": 80
+  },
+  {
+   "id": "s:lichtenberg",
+   "name": "Lichtenberg",
+   "system": "S",
+   "lines": [
+    "S5",
+    "S7",
+    "S75"
+   ],
+   "latitude": 52.510281,
+   "longitude": 13.497926,
+   "radius": 80,
+   "district": "Lichtenberg"
+  },
+  {
+   "id": "s:lichtenrade",
+   "name": "Lichtenrade",
+   "system": "S",
+   "lines": [
+    "S2"
+   ],
+   "latitude": 52.38683,
+   "longitude": 13.396409,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "s:lichterfelde-ost",
+   "name": "Lichterfelde Ost",
+   "system": "S",
+   "lines": [
+    "S25",
+    "S26"
+   ],
+   "latitude": 52.430162,
+   "longitude": 13.328518,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "s:lichterfelde-sued",
+   "name": "Lichterfelde Süd",
+   "system": "S",
+   "lines": [
+    "S25",
+    "S26"
+   ],
+   "latitude": 52.410153,
+   "longitude": 13.308639,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "s:lichterfelde-west",
+   "name": "Lichterfelde West",
+   "system": "S",
+   "lines": [
+    "S1"
+   ],
+   "latitude": 52.44322,
+   "longitude": 13.29334,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "s:mahlow",
+   "name": "Mahlow",
+   "system": "S",
+   "lines": [
+    "S2"
+   ],
+   "latitude": 52.360942,
+   "longitude": 13.407738,
+   "radius": 80
+  },
+  {
+   "id": "s:mahlsdorf",
+   "name": "Mahlsdorf",
+   "system": "S",
+   "lines": [
+    "S5"
+   ],
+   "latitude": 52.512002,
+   "longitude": 13.609423,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "s:marienfelde",
+   "name": "Marienfelde",
+   "system": "S",
+   "lines": [
+    "S2"
+   ],
+   "latitude": 52.424316,
+   "longitude": 13.37461,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "s:marzahn",
+   "name": "Marzahn",
+   "system": "S",
+   "lines": [
+    "S7"
+   ],
+   "latitude": 52.543729,
+   "longitude": 13.541412,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "s:mehrower-allee",
+   "name": "Mehrower Allee",
+   "system": "S",
+   "lines": [
+    "S7"
+   ],
+   "latitude": 52.557609,
+   "longitude": 13.553512,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "s:messe-nord-zob",
+   "name": "Messe Nord/ZOB",
+   "system": "S",
+   "lines": [
+    "S41",
+    "S42",
+    "S46"
+   ],
+   "latitude": 52.507743,
+   "longitude": 13.283498,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "s:messe-sued-eichkamp",
+   "name": "Messe Süd (Eichkamp)",
+   "system": "S",
+   "lines": [
+    "S3",
+    "S9"
+   ],
+   "latitude": 52.498585,
+   "longitude": 13.270562,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "s:mexikoplatz",
+   "name": "Mexikoplatz",
+   "system": "S",
+   "lines": [
+    "S1"
+   ],
+   "latitude": 52.436698,
+   "longitude": 13.233354,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "s:muehlenbeck-moenchmuehle",
+   "name": "Mühlenbeck-Mönchmühle",
+   "system": "S",
+   "lines": [
+    "S8"
+   ],
+   "latitude": 52.654839,
+   "longitude": 13.386051,
+   "radius": 80
+  },
+  {
+   "id": "s:neuenhagen",
+   "name": "Neuenhagen",
+   "system": "S",
+   "lines": [
+    "S5"
+   ],
+   "latitude": 52.520768,
+   "longitude": 13.700552,
+   "radius": 80
+  },
+  {
+   "id": "s:neukoelln",
+   "name": "Neukölln",
+   "system": "S",
+   "lines": [
+    "S41",
+    "S42",
+    "S46",
+    "S47"
+   ],
+   "latitude": 52.469463,
+   "longitude": 13.44334,
+   "radius": 80,
+   "district": "Neukölln"
+  },
+  {
+   "id": "s:nikolassee",
+   "name": "Nikolassee",
+   "system": "S",
+   "lines": [
+    "S1",
+    "S7"
+   ],
+   "latitude": 52.43215,
+   "longitude": 13.19385,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "s:noeldnerplatz",
+   "name": "Nöldnerplatz",
+   "system": "S",
+   "lines": [
+    "S5",
+    "S7",
+    "S75"
+   ],
+   "latitude": 52.503872,
+   "longitude": 13.485366,
+   "radius": 80,
+   "district": "Lichtenberg"
+  },
+  {
+   "id": "s:nordbahnhof",
+   "name": "Nordbahnhof",
+   "system": "S",
+   "lines": [
+    "S1",
+    "S2",
+    "S25",
+    "S26"
+   ],
+   "latitude": 52.53265,
+   "longitude": 13.387218,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "s:oberspree",
+   "name": "Oberspree",
+   "system": "S",
+   "lines": [
+    "S47"
+   ],
+   "latitude": 52.452419,
+   "longitude": 13.537756,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "s:olympiastadion",
+   "name": "Olympiastadion",
+   "system": "S",
+   "lines": [
+    "S3",
+    "S9"
+   ],
+   "latitude": 52.511281,
+   "longitude": 13.242976,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "s:oranienburg",
+   "name": "Oranienburg",
+   "system": "S",
+   "lines": [
+    "S1"
+   ],
+   "latitude": 52.753801,
+   "longitude": 13.249171,
+   "radius": 80
+  },
+  {
+   "id": "s:oranienburger-strasse",
+   "name": "Oranienburger Straße",
+   "system": "S",
+   "lines": [
+    "S1",
+    "S2",
+    "S25",
+    "S26"
+   ],
+   "latitude": 52.525407,
+   "longitude": 13.393094,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "s:osdorfer-strasse",
+   "name": "Osdorfer Straße",
+   "system": "S",
+   "lines": [
+    "S25",
+    "S26"
+   ],
+   "latitude": 52.418956,
+   "longitude": 13.314313,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "s:ostbahnhof",
+   "name": "Ostbahnhof",
+   "system": "S",
+   "lines": [
+    "S3",
+    "S5",
+    "S7",
+    "S75",
+    "S9"
+   ],
+   "latitude": 52.510718,
+   "longitude": 13.435203,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "s:ostkreuz",
+   "name": "Ostkreuz",
+   "system": "S",
+   "lines": [
+    "S3",
+    "S41",
+    "S42",
+    "S5",
+    "S7",
+    "S75",
+    "S8",
+    "S85"
+   ],
+   "latitude": 52.503225,
+   "longitude": 13.469121,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "s:pankow",
+   "name": "Pankow",
+   "system": "S",
+   "lines": [
+    "S2",
+    "S26",
+    "S8",
+    "S85"
+   ],
+   "latitude": 52.56589,
+   "longitude": 13.409657,
+   "radius": 80,
+   "district": "Pankow"
+  },
+  {
+   "id": "s:pankow-heinersdorf",
+   "name": "Pankow-Heinersdorf",
+   "system": "S",
+   "lines": [
+    "S2",
+    "S26",
+    "S8"
+   ],
+   "latitude": 52.577964,
+   "longitude": 13.429412,
+   "radius": 80,
+   "district": "Pankow"
+  },
+  {
+   "id": "s:petershagen-nord",
+   "name": "Petershagen Nord",
+   "system": "S",
+   "lines": [
+    "S5"
+   ],
+   "latitude": 52.528865,
+   "longitude": 13.789224,
+   "radius": 80
+  },
+  {
+   "id": "s:pichelsberg",
+   "name": "Pichelsberg",
+   "system": "S",
+   "lines": [
+    "S3",
+    "S9"
+   ],
+   "latitude": 52.510135,
+   "longitude": 13.227644,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "s:plaenterwald",
+   "name": "Plänterwald",
+   "system": "S",
+   "lines": [
+    "S8",
+    "S85",
+    "S9"
+   ],
+   "latitude": 52.478481,
+   "longitude": 13.473359,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "s:poelchaustrasse",
+   "name": "Poelchaustraße",
+   "system": "S",
+   "lines": [
+    "S7"
+   ],
+   "latitude": 52.535703,
+   "longitude": 13.535502,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "s:potsdam-hauptbahnhof",
+   "name": "Potsdam Hauptbahnhof",
+   "system": "S",
+   "lines": [
+    "S7"
+   ],
+   "latitude": 52.391802,
+   "longitude": 13.067072,
+   "radius": 80
+  },
+  {
+   "id": "s:potsdamer-platz",
+   "name": "Potsdamer Platz",
+   "system": "S",
+   "lines": [
+    "S1",
+    "S2",
+    "S25",
+    "S26"
+   ],
+   "latitude": 52.509554,
+   "longitude": 13.37665,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "s:prenzlauer-allee",
+   "name": "Prenzlauer Allee",
+   "system": "S",
+   "lines": [
+    "S41",
+    "S42",
+    "S8",
+    "S85"
+   ],
+   "latitude": 52.544923,
+   "longitude": 13.425656,
+   "radius": 80,
+   "district": "Pankow"
+  },
+  {
+   "id": "s:priesterweg",
+   "name": "Priesterweg",
+   "system": "S",
+   "lines": [
+    "S2",
+    "S25",
+    "S26"
+   ],
+   "latitude": 52.459915,
+   "longitude": 13.356254,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "s:rahnsdorf",
+   "name": "Rahnsdorf",
+   "system": "S",
+   "lines": [
+    "S3"
+   ],
+   "latitude": 52.451628,
+   "longitude": 13.69001,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "s:raoul-wallenberg-strasse",
+   "name": "Raoul-Wallenberg-Straße",
+   "system": "S",
+   "lines": [
+    "S7"
+   ],
+   "latitude": 52.550684,
+   "longitude": 13.547537,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "s:rathaus-steglitz",
+   "name": "Rathaus Steglitz",
+   "system": "S",
+   "lines": [
+    "S1"
+   ],
+   "latitude": 52.455344,
+   "longitude": 13.322296,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "s:roentgental",
+   "name": "Röntgental",
+   "system": "S",
+   "lines": [
+    "S2"
+   ],
+   "latitude": 52.648624,
+   "longitude": 13.513319,
+   "radius": 80
+  },
+  {
+   "id": "s:rummelsburg",
+   "name": "Rummelsburg",
+   "system": "S",
+   "lines": [
+    "S3"
+   ],
+   "latitude": 52.501242,
+   "longitude": 13.478491,
+   "radius": 80,
+   "district": "Lichtenberg"
+  },
+  {
+   "id": "s:savignyplatz",
+   "name": "Savignyplatz",
+   "system": "S",
+   "lines": [
+    "S3",
+    "S5",
+    "S7",
+    "S9"
+   ],
+   "latitude": 52.505167,
+   "longitude": 13.318983,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "s:schichauweg",
+   "name": "Schichauweg",
+   "system": "S",
+   "lines": [
+    "S2"
+   ],
+   "latitude": 52.398898,
+   "longitude": 13.389185,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "s:schlachtensee",
+   "name": "Schlachtensee",
+   "system": "S",
+   "lines": [
+    "S1"
+   ],
+   "latitude": 52.4401,
+   "longitude": 13.215447,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "s:schoeneberg",
+   "name": "Schöneberg",
+   "system": "S",
+   "lines": [
+    "S1",
+    "S41",
+    "S42",
+    "S46"
+   ],
+   "latitude": 52.47929,
+   "longitude": 13.351737,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "s:schoenefeld",
+   "name": "Schönefeld",
+   "system": "S",
+   "lines": [
+    "S85",
+    "S9"
+   ],
+   "latitude": 52.390921,
+   "longitude": 13.513064,
+   "radius": 80
+  },
+  {
+   "id": "s:schoeneweide",
+   "name": "Schöneweide",
+   "system": "S",
+   "lines": [
+    "S46",
+    "S47",
+    "S8",
+    "S85",
+    "S9"
+   ],
+   "latitude": 52.455005,
+   "longitude": 13.50961,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "s:schoenfliess",
+   "name": "Schönfließ",
+   "system": "S",
+   "lines": [
+    "S8"
+   ],
+   "latitude": 52.664671,
+   "longitude": 13.34015,
+   "radius": 80
+  },
+  {
+   "id": "s:schoenhauser-allee",
+   "name": "Schönhauser Allee",
+   "system": "S",
+   "lines": [
+    "S41",
+    "S42",
+    "S8",
+    "S85"
+   ],
+   "latitude": 52.549241,
+   "longitude": 13.415215,
+   "radius": 80,
+   "district": "Pankow"
+  },
+  {
+   "id": "s:schoenholz",
+   "name": "Schönholz",
+   "system": "S",
+   "lines": [
+    "S1",
+    "S25",
+    "S85"
+   ],
+   "latitude": 52.571285,
+   "longitude": 13.381352,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "s:schulzendorf",
+   "name": "Schulzendorf",
+   "system": "S",
+   "lines": [
+    "S25"
+   ],
+   "latitude": 52.612956,
+   "longitude": 13.24609,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "s:sonnenallee",
+   "name": "Sonnenallee",
+   "system": "S",
+   "lines": [
+    "S41",
+    "S42"
+   ],
+   "latitude": 52.472949,
+   "longitude": 13.455617,
+   "radius": 80,
+   "district": "Neukölln"
+  },
+  {
+   "id": "s:spandau",
+   "name": "Spandau",
+   "system": "S",
+   "lines": [
+    "S3",
+    "S9"
+   ],
+   "latitude": 52.53477,
+   "longitude": 13.197421,
+   "radius": 80,
+   "district": "Spandau"
+  },
+  {
+   "id": "s:spindlersfeld",
+   "name": "Spindlersfeld",
+   "system": "S",
+   "lines": [
+    "S47"
+   ],
+   "latitude": 52.446915,
+   "longitude": 13.561471,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "s:springpfuhl",
+   "name": "Springpfuhl",
+   "system": "S",
+   "lines": [
+    "S7",
+    "S75"
+   ],
+   "latitude": 52.527073,
+   "longitude": 13.536548,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "s:storkower-strasse",
+   "name": "Storkower Straße",
+   "system": "S",
+   "lines": [
+    "S41",
+    "S42",
+    "S8",
+    "S85"
+   ],
+   "latitude": 52.523763,
+   "longitude": 13.464928,
+   "radius": 80,
+   "district": "Pankow"
+  },
+  {
+   "id": "s:strausberg",
+   "name": "Strausberg",
+   "system": "S",
+   "lines": [
+    "S5"
+   ],
+   "latitude": 52.532199,
+   "longitude": 13.832994,
+   "radius": 80
+  },
+  {
+   "id": "s:strausberg-nord",
+   "name": "Strausberg Nord",
+   "system": "S",
+   "lines": [
+    "S5"
+   ],
+   "latitude": 52.590317,
+   "longitude": 13.908434,
+   "radius": 80
+  },
+  {
+   "id": "s:strausberg-stadt",
+   "name": "Strausberg Stadt",
+   "system": "S",
+   "lines": [
+    "S5"
+   ],
+   "latitude": 52.576637,
+   "longitude": 13.887955,
+   "radius": 80
+  },
+  {
+   "id": "s:stresow",
+   "name": "Stresow",
+   "system": "S",
+   "lines": [
+    "S3",
+    "S9"
+   ],
+   "latitude": 52.531968,
+   "longitude": 13.209138,
+   "radius": 80,
+   "district": "Spandau"
+  },
+  {
+   "id": "s:suedende",
+   "name": "Südende",
+   "system": "S",
+   "lines": [
+    "S25",
+    "S26"
+   ],
+   "latitude": 52.448275,
+   "longitude": 13.353765,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "s:suedkreuz",
+   "name": "Südkreuz",
+   "system": "S",
+   "lines": [
+    "S2",
+    "S25",
+    "S26",
+    "S41",
+    "S42",
+    "S46",
+    "S47"
+   ],
+   "latitude": 52.475898,
+   "longitude": 13.365215,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "s:sundgauer-strasse",
+   "name": "Sundgauer Straße",
+   "system": "S",
+   "lines": [
+    "S1"
+   ],
+   "latitude": 52.436395,
+   "longitude": 13.27405,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "s:tegel",
+   "name": "Tegel",
+   "system": "S",
+   "lines": [
+    "S25"
+   ],
+   "latitude": 52.588114,
+   "longitude": 13.289761,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "s:teltow-stadt",
+   "name": "Teltow Stadt",
+   "system": "S",
+   "lines": [
+    "S25",
+    "S26"
+   ],
+   "latitude": 52.396957,
+   "longitude": 13.276856,
+   "radius": 80
+  },
+  {
+   "id": "s:tempelhof",
+   "name": "Tempelhof",
+   "system": "S",
+   "lines": [
+    "S41",
+    "S42",
+    "S46",
+    "S47"
+   ],
+   "latitude": 52.471029,
+   "longitude": 13.384147,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "s:tiergarten",
+   "name": "Tiergarten",
+   "system": "S",
+   "lines": [
+    "S3",
+    "S5",
+    "S7",
+    "S9"
+   ],
+   "latitude": 52.514127,
+   "longitude": 13.336327,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "s:treptower-park",
+   "name": "Treptower Park",
+   "system": "S",
+   "lines": [
+    "S41",
+    "S42",
+    "S8",
+    "S85",
+    "S9"
+   ],
+   "latitude": 52.493831,
+   "longitude": 13.461757,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "s:waidmannslust",
+   "name": "Waidmannslust",
+   "system": "S",
+   "lines": [
+    "S1",
+    "S85"
+   ],
+   "latitude": 52.606275,
+   "longitude": 13.321175,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "s:wannsee",
+   "name": "Wannsee",
+   "system": "S",
+   "lines": [
+    "S1",
+    "S7"
+   ],
+   "latitude": 52.421108,
+   "longitude": 13.179254,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "s:warschauer-strasse",
+   "name": "Warschauer Straße",
+   "system": "S",
+   "lines": [
+    "S3",
+    "S5",
+    "S7",
+    "S75",
+    "S9"
+   ],
+   "latitude": 52.506258,
+   "longitude": 13.450777,
+   "radius": 80,
+   "district": "Friedrichshain-Kreuzberg"
+  },
+  {
+   "id": "s:wartenberg",
+   "name": "Wartenberg",
+   "system": "S",
+   "lines": [
+    "S75"
+   ],
+   "latitude": 52.573002,
+   "longitude": 13.503803,
+   "radius": 80,
+   "district": "Lichtenberg"
+  },
+  {
+   "id": "s:wassmannsdorf",
+   "name": "Waßmannsdorf",
+   "system": "S",
+   "lines": [
+    "S85",
+    "S9"
+   ],
+   "latitude": 52.368282,
+   "longitude": 13.463435,
+   "radius": 80
+  },
+  {
+   "id": "s:wedding",
+   "name": "Wedding",
+   "system": "S",
+   "lines": [
+    "S15",
+    "S41",
+    "S42"
+   ],
+   "latitude": 52.543004,
+   "longitude": 13.367491,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "s:westend",
+   "name": "Westend",
+   "system": "S",
+   "lines": [
+    "S41",
+    "S42",
+    "S46"
+   ],
+   "latitude": 52.518389,
+   "longitude": 13.284306,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "s:westhafen",
+   "name": "Westhafen",
+   "system": "S",
+   "lines": [
+    "S41",
+    "S42"
+   ],
+   "latitude": 52.536245,
+   "longitude": 13.344125,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "s:westkreuz",
+   "name": "Westkreuz",
+   "system": "S",
+   "lines": [
+    "S3",
+    "S41",
+    "S42",
+    "S46",
+    "S5",
+    "S7",
+    "S9"
+   ],
+   "latitude": 52.500849,
+   "longitude": 13.283963,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  },
+  {
+   "id": "s:wildau",
+   "name": "Wildau",
+   "system": "S",
+   "lines": [
+    "S46",
+    "S8"
+   ],
+   "latitude": 52.3189,
+   "longitude": 13.63357,
+   "radius": 80
+  },
+  {
+   "id": "s:wilhelmshagen",
+   "name": "Wilhelmshagen",
+   "system": "S",
+   "lines": [
+    "S3"
+   ],
+   "latitude": 52.438512,
+   "longitude": 13.722335,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "s:wilhelmsruh",
+   "name": "Wilhelmsruh",
+   "system": "S",
+   "lines": [
+    "S1",
+    "S85"
+   ],
+   "latitude": 52.581704,
+   "longitude": 13.36221,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "s:wittenau",
+   "name": "Wittenau",
+   "system": "S",
+   "lines": [
+    "S1",
+    "S85"
+   ],
+   "latitude": 52.597039,
+   "longitude": 13.334268,
+   "radius": 80,
+   "district": "Reinickendorf"
+  },
+  {
+   "id": "s:wollankstrasse",
+   "name": "Wollankstraße",
+   "system": "S",
+   "lines": [
+    "S1",
+    "S25",
+    "S85"
+   ],
+   "latitude": 52.564837,
+   "longitude": 13.392764,
+   "radius": 80,
+   "district": "Pankow"
+  },
+  {
+   "id": "s:wuhletal",
+   "name": "Wuhletal",
+   "system": "S",
+   "lines": [
+    "S5"
+   ],
+   "latitude": 52.512617,
+   "longitude": 13.575103,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf"
+  },
+  {
+   "id": "s:wuhlheide",
+   "name": "Wuhlheide",
+   "system": "S",
+   "lines": [
+    "S3"
+   ],
+   "latitude": 52.468608,
+   "longitude": 13.554233,
+   "radius": 80,
+   "district": "Treptow-Köpenick"
+  },
+  {
+   "id": "s:yorckstrasse",
+   "name": "Yorckstraße",
+   "system": "S",
+   "lines": [
+    "S2",
+    "S25",
+    "S26"
+   ],
+   "latitude": 52.491586,
+   "longitude": 13.372101,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "s:yorckstrasse-grossgoerschenstrasse",
+   "name": "Yorckstraße (Großgörschenstraße)",
+   "system": "S",
+   "lines": [
+    "S1"
+   ],
+   "latitude": 52.49224,
+   "longitude": 13.367803,
+   "radius": 80,
+   "district": "Tempelhof-Schöneberg"
+  },
+  {
+   "id": "s:zehlendorf",
+   "name": "Zehlendorf",
+   "system": "S",
+   "lines": [
+    "S1"
+   ],
+   "latitude": 52.431002,
+   "longitude": 13.258325,
+   "radius": 80,
+   "district": "Steglitz-Zehlendorf"
+  },
+  {
+   "id": "s:zepernick",
+   "name": "Zepernick",
+   "system": "S",
+   "lines": [
+    "S2"
+   ],
+   "latitude": 52.659741,
+   "longitude": 13.533971,
+   "radius": 80
+  },
+  {
+   "id": "s:zeuthen",
+   "name": "Zeuthen",
+   "system": "S",
+   "lines": [
+    "S46",
+    "S8"
+   ],
+   "latitude": 52.348573,
+   "longitude": 13.627546,
+   "radius": 80
+  },
+  {
+   "id": "s:zoologischer-garten",
+   "name": "Zoologischer Garten",
+   "system": "S",
+   "lines": [
+    "S3",
+    "S5",
+    "S7",
+    "S9"
+   ],
+   "latitude": 52.506907,
+   "longitude": 13.331671,
+   "radius": 80,
+   "district": "Charlottenburg-Wilmersdorf"
+  }
+ ]
+}

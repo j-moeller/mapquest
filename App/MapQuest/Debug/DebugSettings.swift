@@ -48,8 +48,10 @@ struct DebugSettings: Codable, Equatable {
     var placesPositionsOnLongPress: Bool = false
     var testEyeHeight: Double = 1.7
     var showsEvaluation: Bool = false
-    /// Marks all sights on the map (captured or not), to test captures.
+    /// Marks all sights and stations on the map (found or not), to test captures.
     var showsAllSights: Bool = false
+    /// Photograph discovered sights from anywhere (and pick a photo where there is no camera).
+    var photosAnywhere: Bool = false
 
     static let defaults = DebugSettings()
     private static let key = "DebugSettings"
@@ -57,7 +59,7 @@ struct DebugSettings: Codable, Equatable {
     enum CodingKeys: String, CodingKey {
         case version, fogOpacity, fogBlur, fogSoftness, baseMap, radius, rayCount, baseDistance, distancePerMeterOfHeight, maximumDistance
         case elevatedThreshold, usesTerrain, downloadsBuildings, downloadsBuildingsEverywhere, minimumNewAreaPercent, minimumMovement
-        case placesPositionsOnLongPress, testEyeHeight, showsEvaluation, showsAllSights
+        case placesPositionsOnLongPress, testEyeHeight, showsEvaluation, showsAllSights, photosAnywhere
     }
 
     init() {}
@@ -88,6 +90,7 @@ struct DebugSettings: Codable, Equatable {
         testEyeHeight = value(.testEyeHeight, d.testEyeHeight)
         showsEvaluation = value(.showsEvaluation, d.showsEvaluation)
         showsAllSights = value(.showsAllSights, d.showsAllSights)
+        photosAnywhere = value(.photosAnywhere, d.photosAnywhere)
         // Version 2: the fog became 90 % opaque (was 58 %).
         let stored = value(.version, 1)
         if stored < 2 { fogOpacity = d.fogOpacity }

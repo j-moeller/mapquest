@@ -83,8 +83,9 @@ struct DebugSettingsView: View {
                 }
                 .disabled(tracker.lastLocation == nil || !model.profile.recordsLocations)
                 Toggle("Show evaluation details", isOn: $draft.showsEvaluation)
-                Toggle("Show all sights on the map", isOn: $draft.showsAllSights)
-                Button("Reset captured sights", role: .destructive) {
+                Toggle("Show all sights and stations on the map", isOn: $draft.showsAllSights)
+                Toggle("Photograph sights from anywhere", isOn: $draft.photosAnywhere)
+                Button("Reset discovered and captured sights", role: .destructive) {
                     captures.resetCaptures()
                 }
             } header: {
@@ -126,6 +127,7 @@ struct DebugSettingsView: View {
             immediate.testEyeHeight = newValue.testEyeHeight
             immediate.showsEvaluation = newValue.showsEvaluation
             immediate.showsAllSights = newValue.showsAllSights
+            immediate.photosAnywhere = newValue.photosAnywhere
             if immediate != model.debug {
                 Task { await model.applyDebugSettings(immediate) }
             }

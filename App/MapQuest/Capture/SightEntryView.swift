@@ -19,8 +19,22 @@ struct SightEntryView: View {
     private var info: SightInfo? { captures.infos[sight.id] }
     private var history: SightHistory? { captures.histories[sight.id] }
     @State private var showsFullHistory = false
+    @State private var showsCamera = false
+    /// The source the camera sheet was opened with (kept while it is open).
+    @State private var pickerSource: UIImagePickerController.SourceType = .camera
+    /// The capture animation, over the entry, after a first photo.
+    @State private var celebration: Celebration?
+    @State private var saveError: String?
+    /// Your photo of the sight (loaded once per photo).
+    @State private var photo: UIImage?
     /// Photorealistic 3D at the top (the photo then follows the text).
     private var shows3D: Bool { captures.hasPhotorealistic3D(sight) }
+    private var capture: PhotoCapture? { captures.log.photos[sight.id] }
+    /// The camera (or the photo library for testing), if it can be used here and now.
+    private var cameraSource: UIImagePickerController.SourceType? {
+        guard captures.canPhotograph(sight, from: tracker.lastLocation) else { return nil }
+        return CameraPicker.source(allowingLibrary: captures.photosAnywhere)
+    }
 
     var body: some View {
         ScrollView {
@@ -36,7 +50,134 @@ struct SightEntryView: View {
         }
         .navigationTitle(record == nil ? "Undiscovered" : sight.name)
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear { captures.markRead(sight) }
+        .onAppear {
+            captures.markRead(sight)
+            // From the discovery animation's "Take a photo".
+            if captures.cameraRequest == sight.id {
+                captures.cameraRequest = nil
+                openCamera()
+            }
+        }
+        .fullScreenCover(isPresented: $showsCamera) {
+            CameraPicker(source: pickerSource) { image in save(image) }
+                .ignoresSafeArea()
+        }
+        .overlay {
+            if let celebration {
+                CaptureCelebrationView(
+                    celebration: celebration,
+                    epoch: history?.epoch,
+                    photo: photo,
+                    onFinish: { self.celebration = nil }
+                )
+                .transition(.opacity)
+            }
+        }
+        .animation(.easeInOut(duration: 0.25), value: celebration)
+        .task(id: capture?.takenAt) { photo = captures.photo(for: sight) }
+        .alert("The photo could not be saved", isPresented: Binding(get: { saveError != nil }, set: { if !$0 { saveError = nil } })) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(saveError ?? "")
+        }
+    }
+
+    /// Opens the camera if the sight can be photographed from here.
+    private func openCamera() {
+        guard let source = cameraSource else { return }
+        pickerSource = source
+        showsCamera = true
+    }
+
+    /// Saves the photo: the sight is captured (the animation plays for a first capture).
+    private func save(_ image: UIImage) {
+        do {
+            if let shown = try captures.saveCapture(image, of: sight, at: tracker.lastLocation) {
+                celebration = shown
+            }
+        } catch {
+            saveError = error.localizedDescription
+        }
+    }
+
+    /// The photo capture: your photo once captured, else how to capture it.
+    @ViewBuilder
+    private var captureCard: some View {
+        if let capture {
+            VStack(alignment: .leading, spacing: 10) {
+                Label("Captured \(capture.capturedAt.formatted(date: .long, time: .omitted))", systemImage: "camera.fill")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(Color.orange)
+                // In an overlay: the photo's own size never widens the layout.
+                Rectangle()
+                    .fill(Color.gray.opacity(0.2))
+                    .frame(height: 230)
+                    .overlay {
+                        if let photo {
+                            Image(uiImage: photo)
+                                .resizable()
+                                .scaledToFill()
+                        } else {
+                            ProgressView()
+                        }
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .accessibilityLabel("Your photo of \(sight.name)")
+                HStack {
+                    if let photo {
+                        ShareLink(item: Image(uiImage: photo), preview: SharePreview(sight.name, image: Image(uiImage: photo))) {
+                            Label("Share or save", systemImage: "square.and.arrow.up")
+                        }
+                    }
+                    Spacer()
+                    if cameraSource != nil {
+                        Button {
+                            openCamera()
+                        } label: {
+                            Label("New photo", systemImage: "camera")
+                        }
+                    }
+                }
+                .font(.subheadline)
+                .tint(.orange)
+            }
+        } else {
+            VStack(alignment: .leading, spacing: 8) {
+                Label("Capture it", systemImage: "camera.fill")
+                    .font(.headline)
+                    .foregroundStyle(Color.orange)
+                Text(captureHint)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                Button {
+                    openCamera()
+                } label: {
+                    Label("Take a photo", systemImage: "camera.fill")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(.orange)
+                .disabled(cameraSource == nil)
+            }
+            .padding(14)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color.orange.opacity(0.08), in: RoundedRectangle(cornerRadius: 12))
+        }
+    }
+
+    private var captureHint: String {
+        if cameraSource != nil {
+            return "Photograph \(sight.name) and keep the photo: it captures the sight and counts towards its achievements."
+        }
+        if captures.canPhotograph(sight, from: tracker.lastLocation) {
+            return "This device has no camera."
+        }
+        if let meters = captures.distance(to: sight, from: tracker.lastLocation) {
+            let away = meters < 1_000 ? "\(Int((meters / 10).rounded() * 10)) m" : String(format: "%.1f km", meters / 1_000)
+            return "Go back there to photograph it (\(away) away): within about \(Int(sight.radius + CaptureModel.photoReach)) m of it the camera opens."
+        }
+        return "Go there to photograph it: the camera opens once you are near it."
     }
 
     // MARK: Parts
@@ -87,7 +228,7 @@ struct SightEntryView: View {
     /// Name and category under the 3D view.
     private var title: some View {
         HStack(alignment: .center, spacing: 10) {
-            SightBadge(category: sight.category, captured: true, size: 40)
+            SightBadge(category: sight.category, captured: capture != nil, discovered: true, size: 40)
             VStack(alignment: .leading, spacing: 2) {
                 Text(sight.category.title.uppercased())
                     .font(.caption.weight(.bold))
@@ -110,7 +251,7 @@ struct SightEntryView: View {
                 .frame(height: 240)
                 .allowsHitTesting(false)
             HStack(alignment: .bottom, spacing: 10) {
-                SightBadge(category: sight.category, captured: !locked, size: 40)
+                SightBadge(category: sight.category, captured: capture != nil, discovered: !locked, size: 40)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(locked ? "Undiscovered \(sight.category.title.lowercased())" : sight.category.title.uppercased())
                         .font(.caption.weight(.bold))
@@ -130,6 +271,7 @@ struct SightEntryView: View {
             Label("Discovered \(record.capturedAt.formatted(date: .long, time: .omitted))", systemImage: "checkmark.seal.fill")
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(.orange)
+            captureCard
             if let info {
                 ForEach(Array(info.paragraphs.enumerated()), id: \.offset) { _, paragraph in
                     Text(paragraph)
@@ -165,7 +307,7 @@ struct SightEntryView: View {
         VStack(alignment: .leading, spacing: 14) {
             Text("This entry is locked.")
                 .font(.headline)
-            Text("Go there to unlock its story: once the circles of the radius view cover the sight, it is captured, appears on your map and its entry opens here – with when it was built and by whom, who ruled Berlin then, and the history of the place.")
+            Text("Go there to discover it: once the circles of the radius view cover the sight, it appears on your map and its entry opens here – with when it was built and by whom, who ruled Berlin then, and the history of the place. Then photograph it there to capture it.")
                 .foregroundStyle(.secondary)
             if let location = tracker.lastLocation {
                 let meters = location.distance(from: CLLocation(latitude: sight.latitude, longitude: sight.longitude))

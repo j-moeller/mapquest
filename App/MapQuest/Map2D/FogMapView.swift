@@ -22,6 +22,8 @@ struct FogMapView: UIViewRepresentable {
     var baseMap = BaseMapStyle.streets
     /// Sights to mark (capture component): captured ones, or all in debug mode.
     var sightPins: [SightPin] = []
+    /// Collected U-Bahn and S-Bahn stations (all with debug "show all").
+    var stationPins: [StationPin] = []
     /// A sight to centre the map on (once per request).
     var focus: SightFocus?
     /// Opens a sight's entry (the badge's info button).
@@ -88,6 +90,7 @@ struct FogMapView: UIViewRepresentable {
         context.coordinator.followsFirstFix = start.followsUser
         map.register(MapLabelView.self, forAnnotationViewWithReuseIdentifier: MapLabelView.reuseIdentifier)
         map.register(SightAnnotationView.self, forAnnotationViewWithReuseIdentifier: SightAnnotationView.reuseIdentifier)
+        map.register(StationAnnotationView.self, forAnnotationViewWithReuseIdentifier: StationAnnotationView.reuseIdentifier)
 
         // Apple's map is replaced by a dark ground; the base map and the fog lie on it.
         map.addOverlay(GroundTileOverlay(color: UIColor(white: 0.1, alpha: 1)), level: .aboveLabels)
@@ -144,13 +147,16 @@ struct FogMapView: UIViewRepresentable {
         coordinator.updateCities(cities, on: map)
         coordinator.onOpenSight = onOpenSight
         coordinator.sights.update(sightPins, on: map)
+        coordinator.stations.update(stationPins, on: map)
         coordinator.sights.focus(focus, on: map)
+        coordinator.stations.select(focus, on: map)
     }
 
     @MainActor
     final class Coordinator: NSObject, MKMapViewDelegate {
         let fogOverlay = FogMapOverlay()
         let sights = SightAnnotationController()
+        let stations = StationAnnotationController()
         let heatView = HeatmapLayerView(frame: .zero)
         /// What the fog renderer shows (kept here as well: MapKit creates the renderer lazily).
         private var content: FogMapRenderer.Content
@@ -197,6 +203,9 @@ struct FogMapView: UIViewRepresentable {
         func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
             if annotation is SightAnnotation {
                 return mapView.dequeueReusableAnnotationView(withIdentifier: SightAnnotationView.reuseIdentifier, for: annotation)
+            }
+            if annotation is StationAnnotation {
+                return mapView.dequeueReusableAnnotationView(withIdentifier: StationAnnotationView.reuseIdentifier, for: annotation)
             }
             guard annotation is MapLabelAnnotation else { return nil }
             return mapView.dequeueReusableAnnotationView(withIdentifier: MapLabelView.reuseIdentifier, for: annotation)

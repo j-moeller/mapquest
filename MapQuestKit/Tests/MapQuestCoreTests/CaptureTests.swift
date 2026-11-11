@@ -1,11 +1,8 @@
 import XCTest
 @testable import MapQuestCore
 
-final class CaptureTests: XCTestCase {
-    static func berlinSights() throws -> SightCatalog {
-        try SightCatalog.decode(Data(contentsOf: BraunschweigDataTests.root.appendingPathComponent("Berlin/berlin-sights.json")))
-    }
-
+/// Discovered-area helpers for the capture tests.
+extension XCTestCase {
     /// A square piece of discovered area, `half` metres from its centre to each side.
     func piece(around coordinate: GeoCoordinate, half: Double, discovered: Date) -> DiscoveredPiece {
         let center = WebMercator.project(coordinate)
@@ -27,6 +24,12 @@ final class CaptureTests: XCTestCase {
     /// Moves a coordinate east by `meters`.
     func east(_ c: GeoCoordinate, _ meters: Double) -> GeoCoordinate {
         GeoCoordinate(latitude: c.latitude, longitude: c.longitude + meters / (111_320 * cos(c.latitude * .pi / 180)))
+    }
+}
+
+final class CaptureTests: XCTestCase {
+    static func berlinSights() throws -> SightCatalog {
+        try SightCatalog.decode(Data(contentsOf: BraunschweigDataTests.root.appendingPathComponent("Berlin/berlin-sights.json")))
     }
 
     func testBundledBerlinSights() throws {
@@ -95,11 +98,11 @@ final class CaptureTests: XCTestCase {
         var other = CaptureLog()
         SightCapture.update(&other, sights: sights, snapshots: [area], celebrate: false)
         XCTAssertTrue(other.uncelebrated.isEmpty)
-        XCTAssertTrue(other.isCaptured("a"))
+        XCTAssertTrue(other.isDiscovered("a"))
 
         // Captures stay when the area shrinks (another rebuild).
         SightCapture.update(&log, sights: sights, snapshots: [snapshot([])])
-        XCTAssertTrue(log.isCaptured("a"))
+        XCTAssertTrue(log.isDiscovered("a"))
 
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent("captures-\(UUID().uuidString)")
         defer { try? FileManager.default.removeItem(at: directory) }
@@ -142,11 +145,11 @@ final class CaptureTests: XCTestCase {
         }
 
         let there = try await captures(at: gate.coordinate)
-        XCTAssertTrue(there.isCaptured("brandenburger-tor"))
-        XCTAssertFalse(there.isCaptured("reichstag"))
-        XCTAssertFalse(there.isCaptured("fernsehturm"))
+        XCTAssertTrue(there.isDiscovered("brandenburger-tor"))
+        XCTAssertFalse(there.isDiscovered("reichstag"))
+        XCTAssertFalse(there.isDiscovered("fernsehturm"))
         let nearby = try await captures(at: east(gate.coordinate, 80))
-        XCTAssertFalse(nearby.isCaptured("brandenburger-tor"))
+        XCTAssertFalse(nearby.isDiscovered("brandenburger-tor"))
     }
 }
 
@@ -191,7 +194,10 @@ final class SightInfoTests: XCTestCase {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         let old = try decoder.decode(CaptureLog.self, from: Data(json.utf8))
-        XCTAssertTrue(old.isCaptured("a"))
+        XCTAssertTrue(old.isDiscovered("a"))
+        XCTAssertFalse(old.isCaptured("a"), "discovered, not photographed")
+        XCTAssertEqual(old.photos, [:])
+        XCTAssertEqual(old.stations, [:])
         XCTAssertTrue(old.readEntries.isEmpty)
     }
 }
@@ -314,7 +320,8 @@ final class AchievementTests: XCTestCase {
         let catalog = try CaptureTests.berlinSights()
         let histories = try SightHistoryCatalog.decode(Data(contentsOf: root.appendingPathComponent("berlin-sight-history.json")))
         let achievements = try Achievement.decodeList(Data(contentsOf: root.appendingPathComponent("berlin-achievements.json")))
-        return (AchievementBook(achievements: achievements, catalog: catalog, histories: histories), achievements, catalog)
+        let stations = try StationTests.berlinStations()
+        return (AchievementBook(achievements: achievements, catalog: catalog, histories: histories, stations: stations), achievements, catalog)
     }
 
     func testBundledBerlinAchievements() throws {
@@ -323,7 +330,12 @@ final class AchievementTests: XCTestCase {
         XCTAssertEqual(book.skipped, [], "every achievement picks at least two sights")
         XCTAssertEqual(book.entries.count, achievements.count)
         XCTAssertGreaterThanOrEqual(achievements.count, 60)
-        for entry in book.entries {
+        let stations = try StationTests.berlinStations()
+        for entry in book.entries where entry.achievement.rule.isAboutStations {
+            for id in entry.members { XCTAssertNotNil(stations[id], "\(entry.achievement.id): \(id) is a station") }
+            XCTAssertEqual(entry.achievement.group, .lines, entry.achievement.id)
+        }
+        for entry in book.entries where !entry.achievement.rule.isAboutStations {
             let achievement = entry.achievement
             XCTAssertFalse(achievement.title.isEmpty, achievement.id)
             XCTAssertGreaterThan(achievement.description.count, 30, achievement.id)
@@ -365,6 +377,18 @@ final class AchievementTests: XCTestCase {
             XCTAssertGreaterThanOrEqual(try members("district-\(district)").count, minimum, district)
         }
         XCTAssertTrue(try members("style-brick").isSuperset(of: ["marienkirche", "oberbaumbruecke"]), "Brick Gothic and its revival")
+        // Lines: every line has its achievement (the Ring's S41 and S42 one together), in line order.
+        for line in stations.lines where line.id != "S42" {
+            let entry = try XCTUnwrap(book.entries.first { $0.achievement.rule.line == line.id }, line.id)
+            XCTAssertEqual(entry.members, line.stations, line.id)
+        }
+        XCTAssertEqual(book["line-u6"]?.members.count, 29)
+        XCTAssertEqual(book["line-u6"]?.members.last, "u:alt-tegel")
+        XCTAssertEqual(book["line-ring"]?.members.count, 27)
+        XCTAssertEqual(book["stations-ubahn"]?.target, 175)
+        XCTAssertEqual(book["stations-sbahn"]?.target, stations.stations.filter { $0.system == .sbahn }.count)
+        XCTAssertEqual(book["stations-25"]?.target, 25)
+        XCTAssertEqual(book["stations-25"]?.members.count, stations.count)
         let all = try XCTUnwrap(book["all-sights"])
         XCTAssertEqual(all.target, catalog.count)
         XCTAssertEqual(book["captures-10"]?.target, 10)
@@ -402,7 +426,11 @@ final class AchievementTests: XCTestCase {
 
         var log = CaptureLog()
         let t1 = Date(timeIntervalSince1970: 1_000), t2 = Date(timeIntervalSince1970: 2_000), t3 = Date(timeIntervalSince1970: 3_000)
-        log.records["a"] = CaptureRecord(sightID: "a", capturedAt: t2, recordedAt: t2, celebrated: true)
+        // Discovering does not count; photographing does.
+        log.records["a"] = CaptureRecord(sightID: "a", capturedAt: t1, recordedAt: t1, celebrated: true)
+        log.records["b"] = CaptureRecord(sightID: "b", capturedAt: t1, recordedAt: t1, celebrated: true)
+        XCTAssertTrue(book.progress(log).allSatisfy { $0.count == 0 }, "discovered only")
+        log.photos["a"] = PhotoCapture(sightID: "a", capturedAt: t2, takenAt: t3, fileName: "a.jpg")
         var progress = Dictionary(uniqueKeysWithValues: book.progress(log).map { ($0.id, $0) })
         XCTAssertEqual(progress["churches"]?.count, 1)
         XCTAssertEqual(progress["churches"]?.remaining, 1)
@@ -410,7 +438,7 @@ final class AchievementTests: XCTestCase {
         XCTAssertFalse(progress["churches"]?.isComplete ?? true)
         XCTAssertNil(progress["churches"]?.completedAt)
 
-        log.records["b"] = CaptureRecord(sightID: "b", capturedAt: t1, recordedAt: t3, celebrated: false)
+        log.photos["b"] = PhotoCapture(sightID: "b", capturedAt: t1, takenAt: t1, fileName: "b.jpg")
         progress = Dictionary(uniqueKeysWithValues: book.progress(log).map { ($0.id, $0) })
         XCTAssertTrue(progress["churches"]?.isComplete ?? false)
         XCTAssertEqual(progress["churches"]?.completedAt, t2, "the later of the two captures completed it")
@@ -429,5 +457,74 @@ final class AchievementTests: XCTestCase {
         XCTAssertEqual(AchievementRule.name("Gerkan, Marg and Partners"), "Gerkan, Marg and Partners")
         XCTAssertEqual(AchievementRule.name("Meinhard von Gerkan (gmp)"), "Meinhard von Gerkan")
         XCTAssertEqual(AchievementRule.name("Frederick III, Elector of Brandenburg (King Frederick I from 1701)"), "Frederick III, Elector of Brandenburg")
+    }
+}
+
+final class StationTests: XCTestCase {
+    static func berlinStations() throws -> StationCatalog {
+        try StationCatalog.decode(Data(contentsOf: BraunschweigDataTests.root.appendingPathComponent("Berlin/berlin-stations.json")))
+    }
+
+    func testBundledBerlinStations() throws {
+        let catalog = try Self.berlinStations()
+        XCTAssertEqual(catalog.stations.filter { $0.system == .ubahn }.count, 175, "Berlin has 175 U-Bahn stations")
+        XCTAssertGreaterThanOrEqual(catalog.stations.filter { $0.system == .sbahn }.count, 160)
+        XCTAssertEqual(Set(catalog.lines.filter { $0.system == .ubahn }.map(\.id)), Set((1...9).map { "U\($0)" }))
+        XCTAssertTrue(Set(catalog.lines.map(\.id)).isSuperset(of: ["S1", "S2", "S3", "S41", "S42", "S5", "S7", "S75", "S8", "S85", "S9"]))
+        let sights = try CaptureTests.berlinSights()
+        for station in catalog.stations {
+            XCTAssertTrue(station.id.hasPrefix(station.system == .ubahn ? "u:" : "s:"), station.id)
+            XCTAssertNil(sights[station.id], "\(station.id) is not also a sight")
+            XCTAssertFalse(station.lines.isEmpty, station.id)
+            for line in station.lines {
+                XCTAssertTrue(catalog.line(line)?.stations.contains(station.id) ?? false, "\(line) stops at \(station.name)")
+            }
+            XCTAssertEqual(station.latitude, 52.5, accuracy: 0.6, station.id)
+            XCTAssertEqual(station.longitude, 13.4, accuracy: 0.9, station.id)
+        }
+        for line in catalog.lines {
+            XCTAssertEqual(Set(line.stations).count, line.stations.count, "\(line.id): each station once")
+            for id in line.stations { XCTAssertEqual(catalog[id]?.system, line.system, "\(line.id): \(id)") }
+            XCTAssertNotEqual(line.rgb.red + line.rgb.green + line.rgb.blue, 1.5, "\(line.id) has a colour")
+        }
+        XCTAssertEqual(catalog.line("U6")?.stations.count, 29)
+        XCTAssertEqual(catalog.line("U4")?.stations.count, 5)
+        XCTAssertEqual(catalog["u:alexanderplatz"]?.lines, ["U2", "U5", "U8"])
+        XCTAssertEqual(catalog["s:alexanderplatz"]?.district, "Mitte")
+        XCTAssertNil(catalog["s:potsdam-hauptbahnhof"]?.district, "outside Berlin")
+        XCTAssertNotNil(catalog["s:yorckstrasse"])
+        XCTAssertNotNil(catalog["s:yorckstrasse-grossgoerschenstrasse"], "two different stations")
+    }
+
+    func testStationsAreCollectedByGoingThere() {
+        let station = Station(id: "u:test", name: "Test", system: .ubahn, lines: ["U1"], latitude: 52.5163, longitude: 13.3777, radius: 80)
+        let early = Date(timeIntervalSince1970: 1_000)
+        var log = CaptureLog()
+        // Discovered area ending 50 m away: the tolerance is 30 m.
+        let near = piece(around: east(station.coordinate, 70), half: 20, discovered: early)
+        XCTAssertTrue(StationCapture.update(&log, stations: [station], snapshots: [snapshot([near])]).isEmpty)
+        let close = piece(around: east(station.coordinate, 45), half: 20, discovered: early)
+        let added = StationCapture.update(&log, stations: [station], snapshots: [snapshot([close])])
+        XCTAssertEqual(added.map { $0.sightID }, ["u:test"])
+        XCTAssertEqual(log.stations["u:test"]?.capturedAt, early)
+        XCTAssertTrue(log.records.isEmpty, "stations are not sights")
+        XCTAssertEqual(log.captureDates["u:test"], early, "stations count for achievements without a photo")
+        XCTAssertTrue(StationCapture.update(&log, stations: [station], snapshots: [snapshot([close])]).isEmpty, "once")
+    }
+
+    func testPhotosRoundTrip() throws {
+        var log = CaptureLog()
+        let date = Date(timeIntervalSince1970: 1_700_000_000)
+        log.records["s"] = CaptureRecord(sightID: "s", capturedAt: date, recordedAt: date, celebrated: true)
+        log.photos["s"] = PhotoCapture(sightID: "s", capturedAt: date, takenAt: date, latitude: 52.5, longitude: 13.4, fileName: "s.jpg")
+        log.stations["u:x"] = CaptureRecord(sightID: "u:x", capturedAt: date, recordedAt: date, celebrated: true)
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("captures-\(UUID().uuidString).json")
+        let store = FileCaptureStore(url: url)
+        try store.save(log)
+        let loaded = try store.load()
+        XCTAssertEqual(loaded, log)
+        XCTAssertTrue(loaded.isCaptured("s"))
+        XCTAssertEqual(Set(loaded.captureDates.keys), ["s", "u:x"])
+        try store.delete()
     }
 }

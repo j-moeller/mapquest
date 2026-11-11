@@ -2,21 +2,28 @@ import MapQuestCore
 import SwiftUI
 import UIKit
 
-/// The capture animation: a golden medallion with the sight's icon bursts into
-/// view over a dimmed screen, rays turn behind it, sparks fly out; the sight's
-/// entry is unlocked. It ends by itself after a few seconds; a tap anywhere ends
-/// it at once; buttons open the entry or show the sight on the map.
+/// The capture animation: a golden medallion bursts into view over a dimmed
+/// screen, rays turn behind it, sparks fly out. Three kinds: a sight discovered
+/// (its entry unlocked – take a photo to capture it), a sight captured (the
+/// photo in the medallion, with the achievements it completes), and lines of
+/// stations completed. It ends by itself after a few seconds; a tap anywhere
+/// ends it at once; buttons photograph the sight, open its entry, show it on the
+/// map or open the list.
 struct CaptureCelebrationView: View {
     let celebration: Celebration
-    /// "Built 1788–1791 · Kingdom of Prussia" when a single sight was captured.
+    /// "Built 1788–1791 · Kingdom of Prussia" when a single sight was discovered or captured.
     var epoch: String?
+    /// The capture's photo (in the medallion).
+    var photo: UIImage?
+    /// Takes a photo of a discovered sight (to capture it).
+    var onPhotograph: ((Sight) -> Void)?
     let onFinish: () -> Void
     /// Opens the entry of a sight.
-    let onRead: (Sight) -> Void
+    var onRead: (Sight) -> Void = { _ in }
     /// Shows a sight on the map.
-    let onShow: (Sight) -> Void
-    /// Opens the list of sights (several captured at once).
-    let onList: () -> Void
+    var onShow: (Sight) -> Void = { _ in }
+    /// Opens the list of sights or achievements.
+    var onList: () -> Void = {}
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var appeared = false
@@ -60,9 +67,10 @@ struct CaptureCelebrationView: View {
                 medallion
                     .scaleEffect(appeared ? 1 : 0.1)
                     .rotationEffect(.degrees(appeared ? 0 : -40))
-                Text(celebration.sights.count == 1 ? "Captured!" : "\(celebration.sights.count) sights captured!")
+                Text(title)
                     .font(.largeTitle.bold())
                     .foregroundStyle(.white)
+                    .multilineTextAlignment(.center)
                 Text(names)
                     .font(.title3.weight(.semibold))
                     .foregroundStyle(Color.captureGold)
@@ -76,16 +84,20 @@ struct CaptureCelebrationView: View {
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 32)
                 }
-                Text("\(celebration.capturedCount) of \(celebration.totalCount) sights")
+                Text(countLine)
                     .font(.subheadline)
                     .foregroundStyle(.white.opacity(0.8))
-                Label(celebration.sights.count == 1 ? "New entry unlocked" : "New entries unlocked", systemImage: "book.closed.fill")
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(Color.orange.opacity(0.85), in: Capsule())
-                if !celebration.achievements.isEmpty {
+                if let badge {
+                    Label(badge.text, systemImage: badge.symbol)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.white)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(Color.orange.opacity(0.85), in: Capsule())
+                        .padding(.horizontal, 24)
+                }
+                if !celebration.achievements.isEmpty && celebration.kind != .lines {
                     achievementBanner
                         .scaleEffect(appeared ? 1 : 0.6)
                 }
@@ -144,34 +156,90 @@ struct CaptureCelebrationView: View {
         .accessibilityElement(children: .combine)
     }
 
+    private var title: String {
+        switch celebration.kind {
+        case .discovered:
+            return celebration.sights.count == 1 ? "Discovered!" : "\(celebration.sights.count) sights discovered!"
+        case .photographed:
+            return "Captured!"
+        case .lines:
+            return celebration.achievements.contains { $0.rule.line != nil } ? "Line complete!" : "Achievement unlocked!"
+        }
+    }
+
+    private var countLine: String {
+        switch celebration.kind {
+        case .discovered: return "\(celebration.capturedCount) of \(celebration.totalCount) sights discovered"
+        case .photographed: return "\(celebration.capturedCount) of \(celebration.totalCount) sights captured"
+        case .lines: return "\(celebration.capturedCount) of \(celebration.totalCount) stations collected"
+        }
+    }
+
+    private var badge: (text: String, symbol: String)? {
+        switch celebration.kind {
+        case .discovered:
+            return (celebration.sights.count == 1 ? "Entry unlocked · photograph it to capture it" : "Entries unlocked · photograph them to capture them",
+                    "camera.fill")
+        case .photographed:
+            return ("Photo saved in its entry", "photo.fill")
+        case .lines:
+            return nil
+        }
+    }
+
     @ViewBuilder
     private var buttons: some View {
-        if celebration.sights.count == 1 {
+        switch celebration.kind {
+        case .discovered where celebration.sights.count == 1:
             let sight = celebration.sights[0]
-            HStack(spacing: 12) {
-                Button {
-                    finished = true
-                    onRead(sight)
-                } label: {
-                    Label("Read entry", systemImage: "book")
+            VStack(spacing: 10) {
+                if let onPhotograph {
+                    Button {
+                        finished = true
+                        onPhotograph(sight)
+                    } label: {
+                        Label("Take a photo", systemImage: "camera.fill")
+                            .frame(minWidth: 180)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.orange)
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(.orange)
-                Button {
-                    finished = true
-                    onShow(sight)
-                } label: {
-                    Label("Show on map", systemImage: "map")
+                HStack(spacing: 12) {
+                    Button {
+                        finished = true
+                        onRead(sight)
+                    } label: {
+                        Label("Read entry", systemImage: "book")
+                    }
+                    .buttonStyle(.bordered)
+                    .tint(.white)
+                    Button {
+                        finished = true
+                        onShow(sight)
+                    } label: {
+                        Label("Show on map", systemImage: "map")
+                    }
+                    .buttonStyle(.bordered)
+                    .tint(.white)
                 }
-                .buttonStyle(.bordered)
-                .tint(.white)
             }
-        } else {
+        case .discovered:
             Button {
                 finished = true
                 onList()
             } label: {
                 Label("See the sights", systemImage: "list.bullet")
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.orange)
+        case .photographed:
+            EmptyView()
+        case .lines:
+            Button {
+                finished = true
+                onList()
+            } label: {
+                Label("See the achievements", systemImage: "rosette")
             }
             .buttonStyle(.borderedProminent)
             .tint(.orange)
@@ -188,15 +256,31 @@ struct CaptureCelebrationView: View {
             Circle()
                 .strokeBorder(Color.white.opacity(0.85), lineWidth: 4)
                 .frame(width: 112, height: 112)
-            Image(systemName: celebration.sights.count == 1 ? celebration.sights[0].category.symbol : "trophy.fill")
-                .font(.system(size: 54, weight: .bold))
-                .foregroundStyle(.white)
-                .shadow(color: .black.opacity(0.25), radius: 2, y: 1)
+            if let photo {
+                Image(uiImage: photo)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 104, height: 104)
+                    .clipShape(Circle())
+            } else {
+                Image(systemName: medallionSymbol)
+                    .font(.system(size: 54, weight: .bold))
+                    .foregroundStyle(.white)
+                    .shadow(color: .black.opacity(0.25), radius: 2, y: 1)
+            }
+        }
+    }
+
+    private var medallionSymbol: String {
+        switch celebration.kind {
+        case .lines: return "tram.fill"
+        case .photographed: return "camera.fill"
+        case .discovered: return celebration.sights.count == 1 ? celebration.sights[0].category.symbol : "sparkles"
         }
     }
 
     private var names: String {
-        let names = celebration.sights.map(\.name)
+        let names = celebration.kind == .lines ? celebration.achievements.map(\.title) : celebration.sights.map(\.name)
         guard names.count > 4 else { return names.joined(separator: " · ") }
         return names.prefix(4).joined(separator: " · ") + " and \(names.count - 4) more"
     }

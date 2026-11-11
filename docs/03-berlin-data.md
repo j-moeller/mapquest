@@ -11,7 +11,8 @@ Berlin, where it comes from, and how to regenerate it.
 | District boundaries (12 Bezirke) | Amt für Statistik Berlin-Brandenburg, merged from localities by [m-hoerz/berlin-shapes](https://github.com/m-hoerz/berlin-shapes) | CC BY 3.0 DE | `App/MapQuest/Resources/Berlin/berlin-districts.geojson` |
 | City outline | Union of the districts (slivers closed, simplified to 2 m) | CC BY 3.0 DE | `App/MapQuest/Resources/Berlin/berlin-boundary.geojson` |
 | Sights (169, all 12 districts) | Curated list (`Tools/capture/berlin_sights.csv`); positions from OpenStreetMap points of interest via OpenFreeMap vector tiles (`Tools/capture/locate_sights.py`), about 45 placed by hand or from Wikidata; district from the district polygons | ODbL 1.0 (© OpenStreetMap contributors); Wikidata CC0 | `App/MapQuest/Resources/Berlin/berlin-sights.json` |
-| Achievements (74) | Hand-written rules over the sights and their historical facts | – | `App/MapQuest/Resources/Berlin/berlin-achievements.json` |
+| U-Bahn and S-Bahn stations (343) and lines (25) | OpenStreetMap route relations of the lines (`Tools/transit/build_stations.py`); the U6 north from Wikipedia | ODbL 1.0 (© OpenStreetMap contributors) | `App/MapQuest/Resources/Berlin/berlin-stations.json` |
+| Achievements (103) | Hand-written rules over the sights and their historical facts | – | `App/MapQuest/Resources/Berlin/berlin-achievements.json` |
 | Sight entries (text and photo) | Wikipedia introductions (English, else German) and lead photos from Wikimedia Commons (`Tools/capture/fetch_sight_info.py`) | Texts CC BY-SA 4.0; photos per entry (author and licence in the file) | `App/MapQuest/Resources/Berlin/berlin-sight-info.json` |
 | Sight history (dates, style, architects, clients, history texts) | Wikidata and the articles' infoboxes, checked by hand (`Tools/capture/berlin_sight_history.csv`); the articles' history sections (`Tools/capture/fetch_sight_history.py`); rulers and eras in `BerlinHistory` | Facts: Wikidata CC0; history texts CC BY-SA 4.0 | `App/MapQuest/Resources/Berlin/berlin-sight-history.json` |
 | Demo explorer track (1 Hz, TrackCodec) | Generated (`Tools/berlin/make_demo_data.py`) | – | `App/MapQuest/Resources/Berlin/demo-track.mqtrack` |
@@ -110,6 +111,24 @@ pip install mwparserfromhell
 
 ```bash
 python3 Tools/capture/fetch_sight_history.py App/MapQuest/Resources/Berlin/berlin-sights.json App/MapQuest/Resources/Berlin/berlin-sight-info.json App/MapQuest/Resources/Berlin/berlin-sight-history.json --cache build-sights/wiki
+```
+
+### U-Bahn and S-Bahn stations
+
+`berlin-stations.json` holds the 343 stations (175 U-Bahn, 168 S-Bahn, 307 of
+them in Berlin; the S-Bahn reaches Potsdam, Oranienburg, Bernau, Strausberg,
+Königs Wusterhausen and the airport) and the 25 lines with their stations in
+order. `Tools/transit/build_stations.py` builds it from the OpenStreetMap route
+relations of the lines (route=subway, route=light_rail; ODbL), fetched once
+from an Overpass server into `build-stations/routes.json`: the stops of each
+line in the order of its longest route, a station per name and system (U or S),
+its position the mean of its stops, unnamed stops named after the nearest
+named one (the S15's new Hauptbahnhof platforms). The U6 north of
+Kurt-Schumacher-Platz, mapped as out of service, is added from
+`Tools/transit/berlin_station_additions.csv` (Wikipedia coordinates).
+
+```bash
+python3 Tools/transit/build_stations.py --routes build-stations/routes.json --additions Tools/transit/berlin_station_additions.csv --districts App/MapQuest/Resources/Berlin/berlin-districts.geojson App/MapQuest/Resources/Berlin/berlin-stations.json
 ```
 
 ### Simulating a walk

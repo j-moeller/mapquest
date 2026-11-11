@@ -241,9 +241,11 @@ districts): docs/07-peine-data.md.
 ## Capture (the capture component)
 
 A separate component on top of the discovered area: **sights** – 169 places
-all over Berlin (every district), from a curated list – are *captured* once the
-fog of war around them is lifted. It only reads the discovered area and keeps
-its own data; nothing else depends on it.
+all over Berlin (every district), from a curated list – are *discovered* once
+the fog of war around them is lifted (their entries unlock) and *captured* once
+you photograph them there; **stations** – the 343 U-Bahn and S-Bahn stations –
+are *collected* just by going there. It only reads the discovered area and
+keeps its own data and photos; nothing else depends on it.
 
 * **Sights** (`MapQuestCore/Capture/Sight.swift`): ID, name, category
   (landmark, museum, palace, church, viewpoint, memorial, park, square,
@@ -252,8 +254,8 @@ its own data; nothing else depends on it.
   position, extent (30–150 m; larger for open areas) and district. Bundled per city as
   `<city>-sights.json` (Berlin: docs/03-berlin-data.md); `SightCatalog`
   merges them.
-* **Capture rule** (`SightCapture`): a sight is captured when you have been
-  there – when the **radius layer** (the circles around your positions, all
+* **Visiting rule** (`PlaceCapture`, `SightCapture`, `StationCapture`): a sight is
+  discovered (a station collected) when you have been there – when the **radius layer** (the circles around your positions, all
   time) covers its position. Large open areas count from inside: the circles
   must reach within their extent minus 50 m (`Sight.captureTolerance`; e.g.
   Tempelhofer Feld, 150 m → 100 m). The line of sight does not count: seeing
@@ -265,9 +267,35 @@ its own data; nothing else depends on it.
   the sights checked again (version 2: radius layer only; version 1 counted
   any layer within the extent). *Debug › Reset captured sights* does the same
   on demand.
+* **Photo capture** (`PhotoCapture`): a discovered sight is captured by
+  photographing it there – the entry's *Take a photo* (or *Take a photo* in the
+  discovery animation) opens the system camera only within the sight's extent
+  plus 150 m of a recent position (`CaptureModel.canPhotograph`); the camera's
+  own *Use Photo* saves it (downscaled to 2048 px, JPEG) into
+  `Captures/Photos/<data source>/<sight>.jpg`. The first photo is the capture
+  (its date counts); a new photo replaces the picture and keeps that date. The
+  entry then shows your photo (share or save it to Photos), the animation plays
+  "Captured!" with the photo in the medallion and the achievements it completes.
+  Only recording data sources capture; *Debug › Photograph sights from
+  anywhere* lifts the distance check (and uses the photo library where there is
+  no camera, e.g. the simulator). Discovering no longer counts for achievements;
+  capturing does.
+* **Stations** (`Station`, `TransitLine`, `StationCatalog`, `<city>-stations.json`;
+  Berlin: docs/03-berlin-data.md): the U-Bahn and S-Bahn stations of a place are
+  two stations (U and S Alexanderplatz), each with its lines; a line lists its
+  stations in order. Extent 80 m (the circles must reach within 30 m). They are
+  collected without a photo – walking past counts, so does riding through above
+  ground (underground the GPS rarely works). A small notice over the map
+  announces them ("Alexanderplatz collected · U2 · U5 · U8", or how many); a
+  line completed plays the animation ("Line complete!"). On the 2D map
+  collected stations are small signs below the sights – a blue square with
+  "U", a green circle with "S" (their callout: lines and date); *Debug › Show
+  all* shows the others in grey.
 * **Log** (`CaptureLog`, `FileCaptureStore`): one JSON file per data source
-  in `Application Support/MapQuest/Captures`, separate from the data stores;
-  per capture the dates and whether it was celebrated.
+  in `Application Support/MapQuest/Captures`, separate from the data stores:
+  visits of sights (`records`, with whether their discovery was celebrated),
+  photo captures (`photos`) and collected stations (`stations`). Older logs
+  without photos or stations load as they are.
 * **App** (`App/MapQuest/Capture`): `CaptureModel` re-checks the
   uncaptured sights (off the main thread) whenever the selected data source's
   discovered area changes. New captures of a recording data source are
@@ -318,10 +346,10 @@ its own data; nothing else depends on it.
   kept within 1.5 km), its photo after the text. Elsewhere the entry opens
   with its photo. (Untextured LoD2 models were tried and dropped: not
   photorealistic.)
-* **Discovery**: a capture unlocks the entry ("New entry unlocked" in the
-  animation, with when it was built and its era, *Read entry* and *Show on
-  map*); the sight's badge springs
-  onto the 2D map with pulsing rings (when it is captured while the map is
+* **Discovery**: going there unlocks the entry ("Discovered!" in the
+  animation, with when it was built and its era, *Take a photo* when you can,
+  *Read entry* and *Show on map*); the sight's badge springs
+  onto the 2D map with pulsing rings (when it is discovered while the map is
   shown, or when it first scrolls into view); its callout's info button opens
   the entry. Unopened entries are marked NEW in the list and by a dot on the
   trophy button (`CaptureLog.readEntries`). Celebrations wait while the list
@@ -329,20 +357,22 @@ its own data; nothing else depends on it.
 * **Views**: the trophy button in the status panel (number of captures)
   opens one list of all sights, *Nearby* (nearest first) or *Through time*
   (by the year they were built, in sections per era with its years and
-  summary; captured ones show style and ruler) – captured ones in orange
-  (with their capture date), the others in grey; tapping one opens its entry
-  (or the locked page: distance and how to unlock it), both with *Show on
-  map*. On the 2D map captured
-  sights are golden badges with their category icon (annotations, above the
-  fog; a callout gives name and date); *Debug › Show all sights* marks the
-  others as grey "?". In 3D every sight in the scene floats as a turning gem
-  on a beam – gold with its name once captured, grey "?" otherwise – and the
+  summary; discovered ones show style and ruler) – discovered ones in orange
+  (an orange ring and a camera: photograph it; filled and a seal once
+  captured), the others in grey; tapping one opens its entry (or the locked
+  page: distance and how to unlock it), both with *Show on map*. The header
+  counts captured and discovered sights and collected stations. On the 2D map
+  discovered sights are orange badges with their category icon and a camera
+  mark, captured ones golden (annotations, above the fog; a callout gives name
+  and state); *Debug › Show all sights* marks the others as grey "?". In 3D
+  every sight in the scene floats as a turning gem on a beam – gold with its
+  name once captured, orange once discovered, grey "?" otherwise – and the
   building of a captured sight is drawn in gold.
 
 ## Achievements
 
 Goals made of sights (`MapQuestCore/Capture/Achievement.swift`,
-`<city>-achievements.json`; Berlin has 74). Each has a group, title,
+`<city>-achievements.json`; Berlin has 103). Each has a group, title,
 description, SF Symbol and a **rule** that picks its sights from the catalog
 and the historical facts: categories (all churches, fountains, museums…),
 the era of the year built (`BerlinHistory`, East and West apart), an
@@ -350,7 +380,8 @@ architect or client (compared without a note in parentheses, so “Hermann
 Blankenstein (towers, 1878)” counts for Blankenstein), architectural styles,
 a district, or an explicit list for themed stories (Museum Island, the Wall,
 Spy City, Old Fritz…); `include`/`exclude` adjust a selection, `count`/`all`
-are milestones (1, 10, 25, 50, 100, all captures). Rules, not lists: a sight
+are milestones (1, 10, 25, 50, 100, all captures). Sight achievements count
+captured (photographed) sights. Rules, not lists: a sight
 added to the catalog joins its era, district, category and architect without
 editing the achievements. `AchievementBook` resolves them once (members
 oldest first; rules picking fewer than two sights are left out) and derives
@@ -359,6 +390,12 @@ completion (the date of the capture that reached the target), and which
 achievements a capture **unlocks** (complete with it and every capture
 celebrated before, not without it), shown in the capture animation.
 
+* **Lines**: station rules (`places: stations`, `line`, `system`) pick
+  stations: one achievement per line (U1–U9, every S-Bahn line; S41/S42 as the
+  Ringbahn) with its stations in line order, every U-Bahn or S-Bahn station,
+  and station milestones (1, 25, 100). Collected stations count at once – no
+  photo. The achievement's page lists the line's stations in order, the
+  nearest missing one first.
 * **Groups**: Milestones, Collections (categories and curated sets: seats of
   power, town halls, border bridges, both zoos, cemeteries), Stories (themed
   walks: World Heritage and its six housing estates, 8 May 1945, the airfields,

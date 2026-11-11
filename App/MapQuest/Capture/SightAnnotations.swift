@@ -2,8 +2,9 @@ import MapKit
 import MapQuestCore
 import UIKit
 
-/// A sight on the 2D map. Captured: a golden badge with its icon (above the fog,
-/// like all annotations); not captured (debug "show all sights"): a grey "?".
+/// A sight on the 2D map (above the fog, like all annotations). Captured
+/// (photographed): a golden badge with its icon; discovered: an orange badge with a
+/// camera mark (photograph it to capture it); not discovered (debug "show all"): a grey "?".
 final class SightAnnotation: NSObject, MKAnnotation {
     let pin: SightPin
     let coordinate: CLLocationCoordinate2D
@@ -16,8 +17,10 @@ final class SightAnnotation: NSObject, MKAnnotation {
         title = pin.sight.name
         if let date = pin.capturedAt {
             subtitle = "Captured \(date.formatted(date: .abbreviated, time: .omitted))"
+        } else if pin.isDiscovered {
+            subtitle = "Discovered – photograph it to capture it"
         } else {
-            subtitle = "Not captured yet"
+            subtitle = "Not discovered yet"
         }
     }
 }
@@ -25,6 +28,8 @@ final class SightAnnotation: NSObject, MKAnnotation {
 final class SightAnnotationView: MKAnnotationView {
     static let reuseIdentifier = "Sight"
     private let icon = UIImageView()
+    /// The camera mark of discovered, not yet captured sights.
+    private let cameraMark = UIImageView()
     private static let size: CGFloat = 30
 
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
@@ -43,6 +48,10 @@ final class SightAnnotationView: MKAnnotationView {
         icon.tintColor = .white
         icon.frame = bounds
         addSubview(icon)
+        cameraMark.image = UIImage(systemName: "camera.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 12, weight: .bold))
+        cameraMark.preferredSymbolConfiguration = .init(paletteColors: [.white, .systemOrange])
+        cameraMark.frame = CGRect(x: Self.size - 11, y: -3, width: 14, height: 14)
+        addSubview(cameraMark)
         // The entry (locked until captured).
         rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
         configure()
@@ -57,32 +66,33 @@ final class SightAnnotationView: MKAnnotationView {
 
     private func configure() {
         guard let sight = annotation as? SightAnnotation else { return }
-        let captured = sight.pin.isCaptured
-        backgroundColor = captured ? .captureGold : UIColor.systemGray.withAlphaComponent(0.75)
+        let captured = sight.pin.isCaptured, discovered = sight.pin.isDiscovered
+        backgroundColor = captured ? .captureGold : discovered ? .systemOrange : UIColor.systemGray.withAlphaComponent(0.75)
         let symbol = UIImage.SymbolConfiguration(pointSize: 14, weight: .bold)
-        icon.image = UIImage(systemName: captured ? sight.pin.sight.category.symbol : "questionmark", withConfiguration: symbol)
-        displayPriority = captured ? .required : .defaultLow
-        zPriority = captured ? .max : .defaultUnselected
+        icon.image = UIImage(systemName: discovered ? sight.pin.sight.category.symbol : "questionmark", withConfiguration: symbol)
+        cameraMark.isHidden = !discovered || captured
+        displayPriority = discovered ? .required : .defaultLow
+        zPriority = discovered ? .max : .defaultUnselected
     }
 }
 
-/// Keeps the sight annotations of a map in step with the pins; sights captured
+/// Keeps the sight annotations of a map in step with the pins; sights discovered
 /// while the map is shown are revealed with an animation.
 @MainActor
 final class SightAnnotationController {
     private var shown: [String: SightAnnotation] = [:]
     private var focusID: Int?
-    /// Captured sights known to the map (`nil` before the first update).
-    private var knownCaptured: Set<String>?
-    /// Newly captured sights whose badge has not appeared yet.
+    /// Discovered sights known to the map (`nil` before the first update).
+    private var knownDiscovered: Set<String>?
+    /// Newly discovered sights whose badge has not appeared yet.
     private var revealing: Set<String> = []
 
     func update(_ pins: [SightPin], on map: MKMapView) {
-        let captured = Set(pins.filter(\.isCaptured).map(\.id))
-        if let knownCaptured {
-            revealing.formUnion(captured.subtracting(knownCaptured))
+        let discovered = Set(pins.filter(\.isDiscovered).map(\.id))
+        if let knownDiscovered {
+            revealing.formUnion(discovered.subtracting(knownDiscovered))
         }
-        knownCaptured = captured
+        knownDiscovered = discovered
         let wanted = Dictionary(pins.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         var remove: [SightAnnotation] = []
         var add: [SightAnnotation] = []
@@ -99,13 +109,13 @@ final class SightAnnotationController {
         if !add.isEmpty { map.addAnnotations(add) }
     }
 
-    /// Centres the map on a sight once per request and opens its callout.
+    /// Centres the map on a sight or station once per request and opens a sight's callout.
     func focus(_ focus: SightFocus?, on map: MKMapView) {
         guard let focus, focus.id != focusID else { return }
         focusID = focus.id
-        let coordinate = CLLocationCoordinate2D(latitude: focus.sight.latitude, longitude: focus.sight.longitude)
+        let coordinate = CLLocationCoordinate2D(latitude: focus.latitude, longitude: focus.longitude)
         map.setRegion(MKCoordinateRegion(center: coordinate, latitudinalMeters: 800, longitudinalMeters: 800), animated: true)
-        if let annotation = shown[focus.sight.id] {
+        if let annotation = shown[focus.placeID] {
             map.selectAnnotation(annotation, animated: true)
         }
     }

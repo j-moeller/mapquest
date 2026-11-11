@@ -3,8 +3,9 @@ import SceneKit
 import UIKit
 
 /// Sights in the 3D scene: a floating, turning gem on a thin beam above each
-/// sight (gold with its name once captured, a grey "?" otherwise); the building
-/// of a captured sight is drawn in gold by the scene.
+/// sight (gold with its name once captured, orange with its name once
+/// discovered, a grey "?" otherwise); the building of a captured sight is drawn
+/// in gold by the scene.
 enum SightMarkers3D {
     static let captureStyle = LoD1MeshBuilder.Style(
         discovered: RGBA(1.0, 0.78, 0.26), undiscovered: RGBA(1.0, 0.78, 0.26), roofBrightness: 1.1
@@ -28,6 +29,9 @@ enum SightMarkers3D {
             material.diffuse.contents = UIColor.captureGold
             material.emission.contents = UIColor(red: 0.45, green: 0.32, blue: 0.05, alpha: 1)
             material.specular.contents = UIColor.white
+        } else if pin.isDiscovered {
+            material.diffuse.contents = UIColor.systemOrange
+            material.emission.contents = UIColor(red: 0.35, green: 0.15, blue: 0.0, alpha: 1)
         } else {
             material.diffuse.contents = UIColor(white: 0.78, alpha: 1)
             material.transparency = 0.7
@@ -50,14 +54,15 @@ enum SightMarkers3D {
         // A thin beam down to the ground.
         let beam = SCNCylinder(radius: 0.6, height: CGFloat(max(height - 10, 1)))
         let beamMaterial = SCNMaterial()
-        beamMaterial.diffuse.contents = pin.isCaptured ? UIColor.captureGold.withAlphaComponent(0.45) : UIColor(white: 0.8, alpha: 0.3)
+        beamMaterial.diffuse.contents = pin.isCaptured ? UIColor.captureGold.withAlphaComponent(0.45)
+            : pin.isDiscovered ? UIColor.systemOrange.withAlphaComponent(0.4) : UIColor(white: 0.8, alpha: 0.3)
         beamMaterial.lightingModel = .constant
         beam.materials = [beamMaterial]
         let beamNode = SCNNode(geometry: beam)
         beamNode.position = SCNVector3(0, -(max(height - 10, 1)) / 2 - 10, 0)
         container.addChildNode(beamNode)
 
-        let text = pin.isCaptured ? pin.sight.name : "?"
+        let text = pin.isDiscovered ? pin.sight.name : "?"
         if let image = label(text) {
             let plane = SCNPlane(width: image.size.width / 4, height: image.size.height / 4)
             let labelMaterial = SCNMaterial()
