@@ -5,6 +5,11 @@ public enum SightCategory: String, Codable, CaseIterable, Sendable {
     case landmark, museum, palace, church, viewpoint, memorial, park, square, culture, monument, zoo, bridge, stadium
     case fountain, market, government, cemetery, club
 
+    /// Places of remembrance – memorials and memorial sites, cemeteries – are not
+    /// part of the game: they are not captured, count for no achievement, and
+    /// their entries are open to all.
+    public var isRemembrance: Bool { self == .memorial || self == .cemetery }
+
     /// Unknown categories (newer data) count as landmarks.
     public init(from decoder: Decoder) throws {
         let raw = try decoder.singleValueContainer().decode(String.self)
@@ -36,6 +41,9 @@ public struct Sight: Codable, Hashable, Identifiable, Sendable {
         self.radius = radius
         self.district = district
     }
+
+    /// A place of remembrance (a memorial, a memorial site, a cemetery): not part of the game.
+    public var isPlaceOfRemembrance: Bool { category.isRemembrance }
 
     /// How close the discovered area (circles of 50 m around positions) must come to
     /// the position: 0 – it must cover it – except for sights larger than the circles.

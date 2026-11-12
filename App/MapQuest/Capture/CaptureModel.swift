@@ -27,6 +27,12 @@ struct Celebration: Identifiable, Equatable {
     var achievements: [Achievement] = []
 }
 
+/// A quiet note that a place of remembrance was visited – no celebration.
+struct RemembranceNotice: Identifiable, Equatable {
+    let id = UUID()
+    let sights: [Sight]
+}
+
 /// Stations just collected (a small notice over the map).
 struct StationToast: Identifiable, Equatable {
     let id = UUID()
@@ -72,6 +78,8 @@ final class CaptureModel: ObservableObject {
     let histories: SightHistoryCatalog
     /// The U-Bahn and S-Bahn stations and lines.
     let stations: StationCatalog
+    /// The sights of the game: all but the places of remembrance, which are not captured.
+    let gameSightCount: Int
     /// The achievements of the bundled cities, resolved against their sights and stations.
     let achievements: AchievementBook
     /// Sights in cities with photorealistic 3D buildings (Apple Maps): their entries show them.
@@ -81,6 +89,8 @@ final class CaptureModel: ObservableObject {
     @Published private(set) var focus: SightFocus?
     /// Stations just collected.
     @Published private(set) var stationToast: StationToast?
+    /// A place of remembrance just visited.
+    @Published private(set) var remembranceNotice: RemembranceNotice?
     /// Debug: photograph sights from anywhere (and from the photo library without a camera).
     @Published var photosAnywhere = false
     /// A sight whose entry should open the camera (from the discovery animation).
@@ -116,6 +126,7 @@ final class CaptureModel: ObservableObject {
         let histories = Self.loadHistories(bundle)
         let stations = Self.loadStations(bundle)
         self.catalog = catalog
+        gameSightCount = catalog.sights.filter { !$0.isPlaceOfRemembrance }.count
         infos = Self.loadInfos(bundle)
         self.histories = histories
         self.stations = stations
@@ -201,6 +212,7 @@ final class CaptureModel: ObservableObject {
         try? store?.delete()
         log = CaptureLog()
         celebration = nil
+        remembranceNotice = nil
         lineCelebrations = []
         stationToast = nil
     }
@@ -212,6 +224,7 @@ final class CaptureModel: ObservableObject {
         self.store = store
         log = (try? store.load()) ?? CaptureLog()
         celebration = nil
+        remembranceNotice = nil
         pending = nil
         celebrateNext()
     }
@@ -276,7 +289,13 @@ final class CaptureModel: ObservableObject {
     /// (e.g. the first check of discoveries made before).
     private func celebrateNext() {
         // Not behind the list or an entry: after they close.
-        guard celebration == nil, celebrates, entry == nil, !showsList else { return }
+        guard celebration == nil, remembranceNotice == nil, celebrates, entry == nil, !showsList else { return }
+        // Places of remembrance are not celebrated: a quiet note, all of them at once.
+        let remembered = log.uncelebrated.filter { catalog[$0.sightID]?.isPlaceOfRemembrance ?? false }
+        if !remembered.isEmpty {
+            remembranceNotice = RemembranceNotice(sights: remembered.compactMap { catalog[$0.sightID] })
+            return
+        }
         if !lineCelebrations.isEmpty {
             celebration = Celebration(kind: .lines, sights: [], capturedCount: log.stations.count, totalCount: stations.count,
                                       achievements: lineCelebrations)
@@ -293,7 +312,19 @@ final class CaptureModel: ObservableObject {
             return
         }
         // Discovering unlocks the entries; achievements count captures (photos).
-        celebration = Celebration(kind: .discovered, sights: sights, capturedCount: log.records.count, totalCount: catalog.count)
+        celebration = Celebration(kind: .discovered, sights: sights, capturedCount: discoveredCount, totalCount: gameSightCount)
+    }
+
+    /// The note on a place of remembrance was read or closed.
+    func finishRemembranceNotice() {
+        guard let remembranceNotice else { return }
+        log.markCelebrated(remembranceNotice.sights.map(\.id))
+        persist()
+        self.remembranceNotice = nil
+        Task { [weak self] in
+            try? await Task.sleep(nanoseconds: 350_000_000)
+            self?.celebrateNext()
+        }
     }
 
     /// The animation ended or was tapped away.
@@ -314,8 +345,10 @@ final class CaptureModel: ObservableObject {
 
     /// Photographed sights.
     var capturedCount: Int { log.photos.count }
-    /// Visited sights (entries unlocked).
-    var discoveredCount: Int { log.records.count }
+    /// Visited sights of the game (entries unlocked); places of remembrance do not count.
+    var discoveredCount: Int {
+        log.records.keys.filter { !(catalog[$0]?.isPlaceOfRemembrance ?? false) }.count
+    }
     var collectedStationCount: Int { log.stations.count }
 
     /// Progress of every achievement.
@@ -351,10 +384,11 @@ final class CaptureModel: ObservableObject {
     }
 
     /// Pins for the maps: discovered sights, and the others too when `showingAll`.
+    /// Places of remembrance are always shown (quietly): they are not hidden as a prize.
     func pins(showingAll: Bool) -> [SightPin] {
         catalog.sights.compactMap { sight in
             let record = log.records[sight.id]
-            guard record != nil || showingAll else { return nil }
+            guard record != nil || showingAll || sight.isPlaceOfRemembrance else { return nil }
             return SightPin(sight: sight, discoveredAt: record?.capturedAt, capturedAt: log.photos[sight.id]?.capturedAt)
         }
     }
@@ -422,7 +456,8 @@ final class CaptureModel: ObservableObject {
     /// plus `photoReach` (anywhere with the debug option). Only data sources that
     /// record this device's positions capture.
     func canPhotograph(_ sight: Sight, from location: CLLocation?) -> Bool {
-        guard celebrates, log.isDiscovered(sight.id) else { return false }
+        // Places of remembrance are not captured.
+        guard celebrates, !sight.isPlaceOfRemembrance, log.isDiscovered(sight.id) else { return false }
         if photosAnywhere { return true }
         guard let meters = distance(to: sight, from: location) else { return false }
         return meters <= sight.radius + Self.photoReach
@@ -449,7 +484,7 @@ final class CaptureModel: ObservableObject {
         persist()
         guard first else { return nil }
         let unlocked = achievements.unlocked(by: [sight.id], captured: Set(log.captureDates.keys))
-        return Celebration(kind: .photographed, sights: [sight], capturedCount: log.photos.count, totalCount: catalog.count,
+        return Celebration(kind: .photographed, sights: [sight], capturedCount: log.photos.count, totalCount: gameSightCount,
                            achievements: unlocked)
     }
 
@@ -475,13 +510,14 @@ final class CaptureModel: ObservableObject {
         photorealistic3D.contains(sight.id)
     }
 
-    /// Discovered sights whose entry has not been opened yet.
+    /// Discovered sights whose entry has not been opened yet (not places of
+    /// remembrance: their entries are open to all, nothing is "new" about them).
     func hasUnreadEntry(_ sight: Sight) -> Bool {
-        log.hasUnreadEntry(sight.id)
+        !sight.isPlaceOfRemembrance && log.hasUnreadEntry(sight.id)
     }
 
     var unreadEntryCount: Int {
-        log.records.keys.filter { !log.readEntries.contains($0) }.count
+        log.records.keys.filter { !log.readEntries.contains($0) && !(catalog[$0]?.isPlaceOfRemembrance ?? false) }.count
     }
 
     /// The entry was opened.
@@ -506,7 +542,7 @@ extension SightCategory {
         case .palace: return "crown.fill"
         case .church: return "bell.fill"
         case .viewpoint: return "binoculars.fill"
-        case .memorial: return "flame.fill"
+        case .memorial: return "rectangle.portrait.fill"
         case .park: return "tree.fill"
         case .square: return "square.grid.2x2.fill"
         case .culture: return "theatermasks.fill"
@@ -517,7 +553,7 @@ extension SightCategory {
         case .fountain: return "drop.fill"
         case .market: return "basket.fill"
         case .government: return "building.2.fill"
-        case .cemetery: return "moon.stars.fill"
+        case .cemetery: return "rectangle.portrait.fill"
         case .club: return "headphones"
         }
     }
@@ -529,7 +565,7 @@ extension SightCategory {
         case .palace: return "Palace"
         case .church: return "Church"
         case .viewpoint: return "Viewpoint"
-        case .memorial: return "Memorial"
+        case .memorial: return "Place of remembrance"
         case .park: return "Park"
         case .square: return "Square"
         case .culture: return "Culture"
@@ -546,11 +582,13 @@ extension SightCategory {
     }
 }
 
-/// The capture colour.
+/// The capture colour; and the quiet stone grey of places of remembrance.
 extension Color {
     static let captureGold = Color(red: 1.0, green: 0.76, blue: 0.18)
+    static let remembrance = Color(red: 0.42, green: 0.45, blue: 0.49)
 }
 
 extension UIColor {
     static let captureGold = UIColor(red: 1.0, green: 0.76, blue: 0.18, alpha: 1)
+    static let remembrance = UIColor(red: 0.42, green: 0.45, blue: 0.49, alpha: 1)
 }

@@ -5,7 +5,7 @@ import UIKit
 /// Sights in the 3D scene: a floating, turning gem on a thin beam above each
 /// sight (gold with its name once captured, orange with its name once
 /// discovered, a grey "?" otherwise); the building of a captured sight is drawn
-/// in gold by the scene.
+/// in gold by the scene. Places of remembrance: a still line and their name.
 enum SightMarkers3D {
     static let captureStyle = LoD1MeshBuilder.Style(
         discovered: RGBA(1.0, 0.78, 0.26), undiscovered: RGBA(1.0, 0.78, 0.26), roofBrightness: 1.1
@@ -21,6 +21,9 @@ enum SightMarkers3D {
 
     /// The marker of a pin, floating at `height` metres above the ground.
     static func node(for pin: SightPin, x: Float, z: Float, height: Float) -> SCNNode {
+        if pin.sight.isPlaceOfRemembrance {
+            return remembranceNode(for: pin, x: x, z: z, height: height)
+        }
         let container = SCNNode()
         container.position = SCNVector3(x, height, z)
 
@@ -72,6 +75,34 @@ enum SightMarkers3D {
             plane.materials = [labelMaterial]
             let labelNode = SCNNode(geometry: plane)
             labelNode.position = SCNVector3(0, 17, 0)
+            labelNode.constraints = [SCNBillboardConstraint()]
+            container.addChildNode(labelNode)
+        }
+        return container
+    }
+
+    /// A place of remembrance: not part of the game – no gem, no motion; a thin,
+    /// still line in stone grey and its name.
+    static func remembranceNode(for pin: SightPin, x: Float, z: Float, height: Float) -> SCNNode {
+        let container = SCNNode()
+        container.position = SCNVector3(x, height, z)
+        let line = SCNCylinder(radius: 0.4, height: CGFloat(max(height - 6, 1)))
+        let material = SCNMaterial()
+        material.diffuse.contents = UIColor.remembrance.withAlphaComponent(0.6)
+        material.lightingModel = .constant
+        line.materials = [material]
+        let lineNode = SCNNode(geometry: line)
+        lineNode.position = SCNVector3(0, -(max(height - 6, 1)) / 2 - 6, 0)
+        container.addChildNode(lineNode)
+        if let image = label(pin.sight.name) {
+            let plane = SCNPlane(width: image.size.width / 5, height: image.size.height / 5)
+            let labelMaterial = SCNMaterial()
+            labelMaterial.diffuse.contents = image
+            labelMaterial.lightingModel = .constant
+            labelMaterial.isDoubleSided = true
+            plane.materials = [labelMaterial]
+            let labelNode = SCNNode(geometry: plane)
+            labelNode.position = SCNVector3(0, 4, 0)
             labelNode.constraints = [SCNBillboardConstraint()]
             container.addChildNode(labelNode)
         }

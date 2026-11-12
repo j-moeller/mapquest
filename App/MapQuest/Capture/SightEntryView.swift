@@ -30,6 +30,9 @@ struct SightEntryView: View {
     /// Photorealistic 3D at the top (the photo then follows the text).
     private var shows3D: Bool { captures.hasPhotorealistic3D(sight) }
     private var capture: PhotoCapture? { captures.log.photos[sight.id] }
+    /// Places of remembrance are not part of the game: always open, quiet colours, nothing to capture.
+    private var isRemembrance: Bool { sight.isPlaceOfRemembrance }
+    private var accent: Color { isRemembrance ? .remembrance : .orange }
     /// The camera (or the photo library for testing), if it can be used here and now.
     private var cameraSource: UIImagePickerController.SourceType? {
         guard captures.canPhotograph(sight, from: tracker.lastLocation) else { return nil }
@@ -40,7 +43,9 @@ struct SightEntryView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 header
-                if let record {
+                if isRemembrance {
+                    remembrance
+                } else if let record {
                     unlocked(record)
                 } else {
                     locked
@@ -48,7 +53,7 @@ struct SightEntryView: View {
             }
             .padding(.bottom, 24)
         }
-        .navigationTitle(record == nil ? "Undiscovered" : sight.name)
+        .navigationTitle(record == nil && !isRemembrance ? "Undiscovered" : sight.name)
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             captures.markRead(sight)
@@ -184,7 +189,7 @@ struct SightEntryView: View {
 
     @ViewBuilder
     private var header: some View {
-        if record == nil {
+        if record == nil && !isRemembrance {
             banner(locked: true) {
                 LinearGradient(colors: [Color.gray.opacity(0.5), Color.gray.opacity(0.25)], startPoint: .top, endPoint: .bottom)
                     .overlay {
@@ -214,7 +219,7 @@ struct SightEntryView: View {
                 if let photo = info?.image {
                     SightPhotoView(url: photo.url)
                 } else {
-                    LinearGradient(colors: [Color.orange.opacity(0.6), Color.orange.opacity(0.3)], startPoint: .top, endPoint: .bottom)
+                    LinearGradient(colors: [accent.opacity(0.6), accent.opacity(0.3)], startPoint: .top, endPoint: .bottom)
                         .overlay {
                             Image(systemName: sight.category.symbol)
                                 .font(.system(size: 54, weight: .bold))
@@ -232,7 +237,7 @@ struct SightEntryView: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(sight.category.title.uppercased())
                     .font(.caption.weight(.bold))
-                    .foregroundStyle(Color.orange)
+                    .foregroundStyle(isRemembrance ? Color.secondary : Color.orange)
                 Text(sight.name)
                     .font(.title2.bold())
                     .lineLimit(2)
@@ -255,7 +260,7 @@ struct SightEntryView: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(locked ? "Undiscovered \(sight.category.title.lowercased())" : sight.category.title.uppercased())
                         .font(.caption.weight(.bold))
-                        .foregroundStyle(locked ? Color.white.opacity(0.8) : Color.orange)
+                        .foregroundStyle(locked || isRemembrance ? Color.white.opacity(0.85) : Color.orange)
                     Text(locked ? "???" : sight.name)
                         .font(.title2.bold())
                         .foregroundStyle(.white)
@@ -288,6 +293,39 @@ struct SightEntryView: View {
             }
             SightAchievements(sight: sight)
                 .padding(.top, 4)
+            if shows3D, let photo = info?.image {
+                SightPhotoView(url: photo.url)
+                    .frame(height: 210)
+                    .frame(maxWidth: .infinity)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .padding(.top, 4)
+            }
+            actions
+            if let info {
+                credits(info)
+            }
+        }
+        .padding(.horizontal)
+    }
+
+    /// A place of remembrance: why it is not part of the game, its entry and history.
+    private var remembrance: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            RemembranceHeader(visitedAt: record?.capturedAt)
+            if let info {
+                ForEach(Array(info.paragraphs.enumerated()), id: \.offset) { _, paragraph in
+                    Text(paragraph)
+                        .font(.body)
+                }
+            } else {
+                Text("No entry for this place yet.")
+                    .foregroundStyle(.secondary)
+            }
+            if let history {
+                SightHistoryFacts(history: history, tint: .remembrance)
+                    .padding(.top, 4)
+                historyText(history)
+            }
             if shows3D, let photo = info?.image {
                 SightPhotoView(url: photo.url)
                     .frame(height: 210)
@@ -341,7 +379,7 @@ struct SightEntryView: View {
                     Label("Read more", systemImage: "chevron.down")
                         .font(.subheadline.weight(.semibold))
                 }
-                .tint(.orange)
+                .tint(accent)
             }
         }
     }
@@ -355,7 +393,7 @@ struct SightEntryView: View {
                 .frame(maxWidth: .infinity)
         }
         .buttonStyle(.borderedProminent)
-        .tint(.orange)
+        .tint(accent)
         .padding(.top, 4)
     }
 
@@ -395,12 +433,14 @@ struct SightEntryView: View {
 /// who ruled and the era, and where it lay while the city was divided.
 struct SightHistoryFacts: View {
     let history: SightHistory
+    /// Orange; stone grey for places of remembrance.
+    var tint: Color = .orange
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Label("In history", systemImage: "hourglass")
                 .font(.headline)
-                .foregroundStyle(Color.orange)
+                .foregroundStyle(tint)
             if let built = history.built {
                 fact("Built", built, symbol: "hammer.fill")
             }
@@ -429,8 +469,8 @@ struct SightHistoryFacts: View {
         }
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.orange.opacity(0.08), in: RoundedRectangle(cornerRadius: 12))
-        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.orange.opacity(0.3), lineWidth: 1))
+        .background(tint.opacity(0.08), in: RoundedRectangle(cornerRadius: 12))
+        .overlay(RoundedRectangle(cornerRadius: 12).stroke(tint.opacity(0.3), lineWidth: 1))
     }
 
     static func isMonarchy(_ era: HistoricalEra) -> Bool {
@@ -440,7 +480,7 @@ struct SightHistoryFacts: View {
     private func fact(_ title: String, _ value: String, detail: String? = nil, symbol: String) -> some View {
         HStack(alignment: .firstTextBaseline, spacing: 10) {
             Image(systemName: symbol)
-                .foregroundStyle(Color.orange)
+                .foregroundStyle(tint)
                 .frame(width: 22)
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 2) {

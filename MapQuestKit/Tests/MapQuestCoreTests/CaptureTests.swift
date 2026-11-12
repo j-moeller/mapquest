@@ -347,19 +347,34 @@ final class AchievementTests: XCTestCase {
         }
         func members(_ id: String) throws -> Set<String> { Set(try XCTUnwrap(book[id], id).members) }
 
-        // The sights every era, district or milestone covers: each sight is in exactly one era and one district.
-        for group in [AchievementGroup.eras, .districts] {
+        // Places of remembrance are in no achievement.
+        let remembrance = Set(catalog.sights.filter(\.isPlaceOfRemembrance).map(\.id))
+        XCTAssertEqual(remembrance.count, 18)
+        XCTAssertTrue(remembrance.isSuperset(of: ["holocaust-mahnmal", "neue-wache", "topographie", "wannsee-konferenz",
+                                                   "zwangslager-marzahn", "juedischer-friedhof-weissensee", "ehrenmal-treptow"]))
+        for entry in book.entries {
+            XCTAssertTrue(remembrance.isDisjoint(with: entry.members), "\(entry.achievement.id) asks for no place of remembrance")
+        }
+        for id in ["memorials", "cemeteries", "jewish-berlin", "end-of-war", "era-nazi", "era-occupation"] {
+            XCTAssertNil(book[id], "\(id): no medals for remembrance, nor for the dictatorship")
+        }
+        // Every other sight is in exactly one district; in one era, unless built under the
+        // dictatorship or the occupation (no achievements for those eras).
+        let game = catalog.sights.filter { !$0.isPlaceOfRemembrance }
+        let histories = try SightHistoryCatalog.decode(Data(contentsOf: BraunschweigDataTests.root.appendingPathComponent("Berlin/berlin-sight-history.json")))
+        let inEras = game.filter { !["nazi", "occupation"].contains(histories[$0.id]?.context?.era.id ?? "") }
+        for (group, expected) in [(AchievementGroup.eras, inEras.count), (.districts, game.count)] {
             let entries = book.entries.filter { $0.achievement.group == group }
-            XCTAssertEqual(entries.reduce(0) { $0 + $1.members.count }, catalog.count, "\(group): each sight once")
-            XCTAssertEqual(Set(entries.flatMap(\.members)).count, catalog.count, "\(group): all sights")
+            XCTAssertEqual(entries.reduce(0) { $0 + $1.members.count }, expected, "\(group): each sight once")
+            XCTAssertEqual(Set(entries.flatMap(\.members)).count, expected, "\(group): all sights")
         }
         XCTAssertEqual(book.entries.filter { $0.achievement.group == .districts }.count, 12)
 
-        XCTAssertEqual(try members("architect-schinkel"), ["altes-museum", "konzerthaus", "neue-wache", "kreuzbergdenkmal", "schloss-glienicke", "schloss-tegel", "alte-nazarethkirche"])
+        XCTAssertEqual(try members("architect-schinkel"), ["altes-museum", "konzerthaus", "kreuzbergdenkmal", "schloss-glienicke", "schloss-tegel", "alte-nazarethkirche"],
+                       "not the Neue Wache: a place of remembrance")
         XCTAssertEqual(try members("fountains").count, 7)
         XCTAssertEqual(try members("markets"), ["hackescher-markt", "markthalle-neun", "arminiusmarkthalle", "ackerhalle", "winterfeldtplatz", "gendarmenmarkt"])
         XCTAssertEqual(try members("churches").count, 13)
-        XCTAssertEqual(try members("cemeteries").count, 4)
         XCTAssertEqual(try members("club-culture"), ["claerchens-ballhaus", "so36", "tresor", "kitkatclub", "club-der-visionaere", "berghain", "kater-club"])
         XCTAssertTrue(try members("game-day").isSuperset(of: ["olympiastadion", "alte-foersterei", "uber-arena", "velodrom", "max-schmeling-halle"]))
         XCTAssertTrue(try members("stages").isSuperset(of: ["tempodrom", "columbiahalle", "parkbuehne-wuhlheide"]), "concert venues are culture")
@@ -376,7 +391,7 @@ final class AchievementTests: XCTestCase {
         XCTAssertTrue(try members("era-east").contains("fernsehturm"))
         XCTAssertTrue(try members("era-west").contains("philharmonie"))
         XCTAssertEqual(try members("district-spandau"), ["kolk", "zitadelle", "nikolaikirche-spandau", "rathaus-spandau", "fort-hahneberg", "flugplatz-gatow"])
-        for (district, minimum) in [("reinickendorf", 8), ("lichtenberg", 9), ("treptow-koepenick", 11), ("marzahn-hellersdorf", 6), ("pankow", 15)] {
+        for (district, minimum) in [("reinickendorf", 7), ("lichtenberg", 5), ("treptow-koepenick", 11), ("marzahn-hellersdorf", 5), ("pankow", 15)] {
             XCTAssertGreaterThanOrEqual(try members("district-\(district)").count, minimum, district)
         }
         XCTAssertTrue(try members("style-brick").isSuperset(of: ["marienkirche", "oberbaumbruecke"]), "Brick Gothic and its revival")
@@ -393,7 +408,7 @@ final class AchievementTests: XCTestCase {
         XCTAssertEqual(book["stations-25"]?.target, 25)
         XCTAssertEqual(book["stations-25"]?.members.count, stations.count)
         let all = try XCTUnwrap(book["all-sights"])
-        XCTAssertEqual(all.target, catalog.count)
+        XCTAssertEqual(all.target, game.count, "every sight but the places of remembrance")
         XCTAssertEqual(book["captures-10"]?.target, 10)
         XCTAssertEqual(book["era-margraviate"]?.members.first, "dicke-marie", "oldest first")
     }
@@ -403,6 +418,7 @@ final class AchievementTests: XCTestCase {
             Sight(id: "a", name: "A", category: .church, latitude: 52.52, longitude: 13.40, district: "X"),
             Sight(id: "b", name: "B", category: .church, latitude: 52.53, longitude: 13.41, district: "Y"),
             Sight(id: "c", name: "C", category: .fountain, latitude: 52.54, longitude: 13.42, district: "X"),
+            Sight(id: "m", name: "M", category: .memorial, latitude: 52.55, longitude: 13.43, district: "X"),
         ]
         let catalog = SightCatalog(sights: sights)
         let histories = SightHistoryCatalog(entries: [
@@ -425,7 +441,8 @@ final class AchievementTests: XCTestCase {
         XCTAssertEqual(book.entries.map(\.achievement.id), ["churches", "x", "langhans", "two", "many", "all"], "the first of a duplicate ID wins")
         XCTAssertEqual(book["churches"]?.members, ["b", "a"], "oldest first")
         XCTAssertEqual(book["langhans"]?.members, ["b", "a"])
-        XCTAssertEqual(book["many"]?.target, 3, "at most all sights")
+        XCTAssertEqual(book["many"]?.target, 3, "at most all sights – not the memorial")
+        XCTAssertEqual(book["x"]?.members, ["a", "c"], "the memorial in district X is left out")
 
         var log = CaptureLog()
         let t1 = Date(timeIntervalSince1970: 1_000), t2 = Date(timeIntervalSince1970: 2_000), t3 = Date(timeIntervalSince1970: 3_000)

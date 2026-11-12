@@ -481,7 +481,7 @@
   {
    "id": "topographie",
    "name": "Topographie des Terrors",
-   "category": "museum",
+   "category": "memorial",
    "latitude": 52.506214,
    "longitude": 13.384153,
    "radius": 40,
@@ -1012,7 +1012,7 @@
   {
    "id": "stasimuseum",
    "name": "Stasimuseum",
-   "category": "museum",
+   "category": "memorial",
    "latitude": 52.514507,
    "longitude": 13.487483,
    "radius": 40,
@@ -1345,7 +1345,7 @@
   {
    "id": "museum-karlshorst",
    "name": "Museum Berlin-Karlshorst",
-   "category": "museum",
+   "category": "memorial",
    "latitude": 52.486145,
    "longitude": 13.539845,
    "radius": 50,

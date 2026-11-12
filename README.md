@@ -15,7 +15,7 @@ The app has four major components:
 |---|---|
 | **Location tracking** | Records the position about once per second in a compact track (≈ 6 bytes per fix); the positions that reveal new parts of the map drive the fog of war |
 | **Discovered area** | Turns stored positions into discovered-area polygons, merges adjacent areas into regions, keeps disconnected areas apart; it is a cache that can always be rebuilt from the positions |
-| **Capture** | 184 Berlin sights (all districts, the outer ones too) are discovered once you have been there (the radius view covers them) and captured when you photograph them there; 343 U-Bahn and S-Bahn stations are collected just by going there: animations, a list of all sights, badges on the map and gems in 3D; 108 achievements (eras, architects, districts, collections, stories, lines, clubs and stages) |
+| **Capture** | 184 Berlin sights (all districts, the outer ones too) are discovered once you have been there (the radius view covers them) and captured when you photograph them there; 343 U-Bahn and S-Bahn stations are collected just by going there: animations, a list of all sights, badges on the map and gems in 3D; 102 achievements (eras, architects, districts, collections, stories, lines, clubs and stages). Places of remembrance (memorials, memorial sites, cemeteries) are not part of the game: never captured or celebrated, in no achievement, their entries open to all |
 | **Map display** | 2D: a label-free base map with a black fog (80 %, blurred map underneath) drawn into it, the discovered area cut out. 3D: buildings that block the view; seen buildings are revealed |
 
 ## How it works
@@ -66,7 +66,10 @@ The app has four major components:
   radius view cover it – and it is discovered, with an animation (tap to skip):
   it appears on your map and unlocks its entry. **Photograph it there** (the
   entry's *Take a photo*, within about 150 m) to **capture** it: your photo is
-  kept in its entry and the capture counts for achievements. The entry has a photorealistic 3D view
+  kept in its entry and the capture counts for achievements. **Places of
+  remembrance** – memorials, memorial sites and cemeteries – are not part of
+  the game: nothing to capture, no achievements, no celebration (a visit
+  brings a quiet note), and their entries are open to everyone. The entry has a photorealistic 3D view
   (Apple's 3D city model, where available) or its photo, description and
   history (from Wikipedia and Wikimedia Commons), with its place in Berlin's
   history: when it was built and opened, its style, its architects, who
@@ -76,7 +79,7 @@ The app has four major components:
   see it on the map. **Stations**: the 343 U-Bahn and S-Bahn stations are
   collected just by going there (walking past, or riding through above
   ground) – small blue "U" and green "S" signs on the map, a notice for each.
-  **Achievements** (third tab, 108): every station of a line (U1–U9, every
+  **Achievements** (third tab, 102): every station of a line (U1–U9, every
   S-Bahn line, the Ringbahn), every church,
   fountain, market or museum; everything from an era; the works of Schinkel,
   Knobelsdorff or Blankenstein; every sight of a district; themed walks such

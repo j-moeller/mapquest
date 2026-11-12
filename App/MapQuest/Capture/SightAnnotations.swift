@@ -5,6 +5,8 @@ import UIKit
 /// A sight on the 2D map (above the fog, like all annotations). Captured
 /// (photographed): a golden badge with its icon; discovered: an orange badge with a
 /// camera mark (photograph it to capture it); not discovered (debug "show all"): a grey "?".
+/// Places of remembrance are not part of the game: always shown, smaller, in stone
+/// grey, without game states or animation.
 final class SightAnnotation: NSObject, MKAnnotation {
     let pin: SightPin
     let coordinate: CLLocationCoordinate2D
@@ -15,7 +17,10 @@ final class SightAnnotation: NSObject, MKAnnotation {
         self.pin = pin
         coordinate = CLLocationCoordinate2D(latitude: pin.sight.latitude, longitude: pin.sight.longitude)
         title = pin.sight.name
-        if let date = pin.capturedAt {
+        if pin.sight.isPlaceOfRemembrance {
+            subtitle = pin.discoveredAt.map { "Place of remembrance – you were here on \($0.formatted(date: .abbreviated, time: .omitted))" }
+                ?? "Place of remembrance"
+        } else if let date = pin.capturedAt {
             subtitle = "Captured \(date.formatted(date: .abbreviated, time: .omitted))"
         } else if pin.isDiscovered {
             subtitle = "Discovered – photograph it to capture it"
@@ -66,6 +71,22 @@ final class SightAnnotationView: MKAnnotationView {
 
     private func configure() {
         guard let sight = annotation as? SightAnnotation else { return }
+        if sight.pin.sight.isPlaceOfRemembrance {
+            let size: CGFloat = 24
+            bounds = CGRect(x: 0, y: 0, width: size, height: size)
+            layer.cornerRadius = size / 2
+            icon.frame = bounds
+            backgroundColor = .remembrance
+            icon.image = UIImage(systemName: sight.pin.sight.category.symbol,
+                                 withConfiguration: UIImage.SymbolConfiguration(pointSize: 10, weight: .regular))
+            cameraMark.isHidden = true
+            displayPriority = .defaultHigh
+            zPriority = .defaultUnselected
+            return
+        }
+        bounds = CGRect(x: 0, y: 0, width: Self.size, height: Self.size)
+        layer.cornerRadius = Self.size / 2
+        icon.frame = bounds
         let captured = sight.pin.isCaptured, discovered = sight.pin.isDiscovered
         backgroundColor = captured ? .captureGold : discovered ? .systemOrange : UIColor.systemGray.withAlphaComponent(0.75)
         let symbol = UIImage.SymbolConfiguration(pointSize: 14, weight: .bold)
@@ -88,7 +109,8 @@ final class SightAnnotationController {
     private var revealing: Set<String> = []
 
     func update(_ pins: [SightPin], on map: MKMapView) {
-        let discovered = Set(pins.filter(\.isDiscovered).map(\.id))
+        // Places of remembrance are not revealed with an animation.
+        let discovered = Set(pins.filter { $0.isDiscovered && !$0.sight.isPlaceOfRemembrance }.map(\.id))
         if let knownDiscovered {
             revealing.formUnion(discovered.subtracting(knownDiscovered))
         }

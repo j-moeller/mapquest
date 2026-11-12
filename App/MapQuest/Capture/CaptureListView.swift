@@ -36,7 +36,7 @@ struct CaptureListView: View {
             List {
                 Section {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("\(captures.capturedCount) of \(captures.catalog.count) sights captured")
+                        Text("\(captures.capturedCount) of \(captures.gameSightCount) sights captured")
                             .font(.headline)
                         Text("\(captures.discoveredCount) discovered · \(captures.collectedStationCount) of \(captures.stations.count) stations collected")
                             .font(.subheadline)
@@ -47,7 +47,7 @@ struct CaptureListView: View {
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                         }
-                        ProgressView(value: Double(captures.capturedCount), total: Double(max(captures.catalog.count, 1)))
+                        ProgressView(value: Double(captures.capturedCount), total: Double(max(captures.gameSightCount, 1)))
                             .tint(.orange)
                         Picker("Order", selection: $order) {
                             ForEach(Order.allCases) { order in
@@ -64,9 +64,19 @@ struct CaptureListView: View {
                 switch order {
                 case .nearby:
                     Section {
-                        ForEach(sights, id: \.id) { sight in
+                        ForEach(sights.filter { !$0.isPlaceOfRemembrance }, id: \.id) { sight in
                             row(sight, record: captures.log.records[sight.id])
                         }
+                    }
+                    // Not part of the game: apart from it, nearest first.
+                    Section {
+                        ForEach(sights.filter(\.isPlaceOfRemembrance), id: \.id) { sight in
+                            row(sight, record: captures.log.records[sight.id])
+                        }
+                    } header: {
+                        Text("Places of remembrance")
+                    } footer: {
+                        Text("Memorials, memorial sites and cemeteries are not part of the game: nothing to capture, no achievements. Their entries are open to everyone.")
                     }
                 case .achievements:
                     AchievementSections()
@@ -95,7 +105,7 @@ struct CaptureListView: View {
     private var footer: String {
         switch order {
         case .nearby:
-            return "A sight is discovered once you have been there – when the circles of the radius view cover it (large parks and squares: when they reach into them) – and its entry opens. Photograph it there to capture it. Stations are collected just by going there."
+            return "A sight is discovered once you have been there – when the circles of the radius view cover it (large parks and squares: when they reach into them) – and its entry opens. Photograph it there to capture it. Stations are collected just by going there. Places of remembrance are listed apart, outside the game."
         case .timeline:
             return "Berlin's history in its sights, by the year they were built. Capture a sight to learn who built it, who ruled at the time, and its story."
         case .achievements:
@@ -105,6 +115,48 @@ struct CaptureListView: View {
 
     /// A sight; in the timeline with the year it was built in front.
     private func row(_ sight: Sight, record: CaptureRecord?, year: Int? = nil) -> some View {
+        if sight.isPlaceOfRemembrance {
+            return AnyView(remembranceRow(sight, record: record, year: year))
+        }
+        return AnyView(gameRow(sight, record: record, year: year))
+    }
+
+    /// A place of remembrance: quiet, no game states; its entry is always open.
+    private func remembranceRow(_ sight: Sight, record: CaptureRecord?, year: Int?) -> some View {
+        let inTimeline = order == .timeline
+        var parts = [sight.category.title]
+        if let location = tracker.lastLocation {
+            let meters = distance(to: sight, from: location)
+            parts.append(meters < 1_000 ? "\(Int((meters / 10).rounded() * 10)) m away" : String(format: "%.1f km away", meters / 1_000))
+        }
+        if let record {
+            parts.append("you were here on \(record.capturedAt.formatted(date: .abbreviated, time: .omitted))")
+        }
+        return NavigationLink {
+            SightEntryView(sight: sight)
+        } label: {
+            HStack(spacing: 12) {
+                if inTimeline {
+                    Text(year.map { String($0) } ?? "–")
+                        .font(.subheadline.monospacedDigit())
+                        .foregroundStyle(.secondary)
+                        .frame(width: 42, alignment: .leading)
+                }
+                SightBadge(category: sight.category, captured: false, size: 34)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(sight.name)
+                        .foregroundStyle(.primary)
+                    Text(parts.joined(separator: " · "))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+        .accessibilityLabel("\(sight.name), place of remembrance\(record != nil ? ", visited" : "")")
+        .accessibilityHint("Opens its entry")
+    }
+
+    private func gameRow(_ sight: Sight, record: CaptureRecord?, year: Int?) -> some View {
         let discovered = record != nil
         let captured = captures.log.isCaptured(sight.id)
         let isNew = captures.hasUnreadEntry(sight)
@@ -233,7 +285,8 @@ struct CaptureListView: View {
 }
 
 /// A sight's category icon in a round badge: filled orange once captured
-/// (photographed), an orange ring once discovered, grey otherwise.
+/// (photographed), an orange ring once discovered, grey otherwise; places of
+/// remembrance always in stone grey.
 struct SightBadge: View {
     let category: SightCategory
     let captured: Bool
@@ -241,6 +294,23 @@ struct SightBadge: View {
     var size: CGFloat = 34
 
     var body: some View {
+        if category.isRemembrance {
+            // Places of remembrance: one quiet look, no game states.
+            ZStack {
+                Circle()
+                    .fill(Color.remembrance)
+                Image(systemName: category.symbol)
+                    .font(.system(size: size * 0.38, weight: .regular))
+                    .foregroundStyle(Color.white.opacity(0.9))
+            }
+            .frame(width: size, height: size)
+            .accessibilityHidden(true)
+        } else {
+            gameBadge
+        }
+    }
+
+    private var gameBadge: some View {
         ZStack {
             Circle()
                 .fill(captured ? Color.orange : discovered ? Color.orange.opacity(0.15) : Color.secondary.opacity(0.18))
@@ -282,13 +352,13 @@ struct CaptureButton: View {
             }
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Sights: \(captures.capturedCount) of \(captures.catalog.count) captured")
+        .accessibilityLabel("Sights: \(captures.capturedCount) of \(captures.gameSightCount) captured")
     }
 }
 
 /// The capture component on the main screen: the capture animation over
-/// everything, notices of collected stations, the sight list sheet, and
-/// forgetting captures of deleted data.
+/// everything, the quiet note on places of remembrance, notices of collected
+/// stations, the sight list sheet, and forgetting captures of deleted data.
 struct CaptureHooks: ViewModifier {
     @ObservedObject var captures: CaptureModel
     @EnvironmentObject private var tracker: LocationTracker
@@ -328,6 +398,23 @@ struct CaptureHooks: ViewModifier {
                     }
                 }
                 .animation(.easeInOut(duration: 0.25), value: captures.celebration)
+            }
+            .overlay {
+                ZStack {
+                    if let notice = captures.remembranceNotice {
+                        RemembranceNoticeView(
+                            notice: notice,
+                            intro: { captures.infos[$0.id]?.paragraphs.first },
+                            onRead: { sight in
+                                captures.finishRemembranceNotice()
+                                captures.openEntry(sight)
+                            },
+                            onClose: { captures.finishRemembranceNotice() }
+                        )
+                        .transition(.opacity)
+                    }
+                }
+                .animation(.easeInOut(duration: 0.3), value: captures.remembranceNotice)
             }
             .overlay(alignment: .top) {
                 ZStack {

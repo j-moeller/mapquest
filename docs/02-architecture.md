@@ -267,6 +267,21 @@ keeps its own data and photos; nothing else depends on it.
   the sights checked again (version 2: radius layer only; version 1 counted
   any layer within the extent). *Debug › Reset captured sights* does the same
   on demand.
+* **Places of remembrance** (`Sight.isPlaceOfRemembrance`: the categories
+  memorial and cemetery – memorials, memorial sites such as the Topographie des
+  Terrors, the Stasimuseum or the Museum Karlshorst, and cemeteries; 18 in
+  Berlin) are not part of the game. They are not captured (no photo, no
+  "Take a photo"), are in no achievement and no count, and are never
+  celebrated: a visit brings a quiet note at the bottom ("Place of
+  remembrance", its name, a sentence from its entry, *Read about this place*,
+  *Close*; no animation, sound or vibration). Their entries are open to
+  everyone, visited or not, in stone grey, with a note that the place is not
+  part of the game and – once you were there – when. On the 2D map they are
+  always shown, as small stone-grey markers without reveal animation; in 3D as
+  a still line with their name (no gem). The sight list shows them apart in
+  *Nearby* ("Places of remembrance") and in their year *Through time*, without
+  game states or "NEW". Their symbol is a plain stone (not a flame, not a
+  crescent).
 * **Photo capture** (`PhotoCapture`): a discovered sight is captured by
   photographing it there – the entry's *Take a photo* (or *Take a photo* in the
   discovery animation) opens the system camera only within the sight's extent
@@ -372,7 +387,7 @@ keeps its own data and photos; nothing else depends on it.
 ## Achievements
 
 Goals made of sights (`MapQuestCore/Capture/Achievement.swift`,
-`<city>-achievements.json`; Berlin has 108). Each has a group, title,
+`<city>-achievements.json`; Berlin has 102). Each has a group, title,
 description, SF Symbol and a **rule** that picks its sights from the catalog
 and the historical facts: categories (all churches, fountains, museums…),
 the era of the year built (`BerlinHistory`, East and West apart), an
@@ -397,13 +412,15 @@ celebrated before, not without it), shown in the capture animation.
   photo. The achievement's page lists the line's stations in order, the
   nearest missing one first.
 * **Groups**: Milestones, Collections (categories and curated sets: seats of
-  power, town halls, border bridges, both zoos, cemeteries), Stories (themed
-  walks: World Heritage and its six housing estates, 8 May 1945, the airfields,
-  Wedding…),
-  Through time (one per era), Styles, Master builders (architects with at
-  least three works; Friedrich Schulze's two parliaments as a story), and
-  Districts (all twelve). Every sight belongs to exactly one era and one
-  district achievement (tested; the oak from the Slavic era counts towards
+  power, town halls, border bridges, both zoos, clubs, live music), Stories
+  (themed walks: World Heritage and its six housing estates, the airfields,
+  Wedding…), Lines, Through time (one per era – none for the Nazi dictatorship
+  and the occupation), Styles, Master builders (architects with at least three
+  works; Friedrich Schulze's two parliaments as a story), and Districts (all
+  twelve). Places of remembrance are in none (`AchievementBook` leaves them out
+  of every rule, explicit lists and milestones included). Every other sight
+  belongs to exactly one district achievement and – unless built 1933–1949 – one
+  era achievement (tested; the oak from the Slavic era counts towards
   *Medieval Roots*).
 * **Views**: the sight list's third tab, *Achievements* – "Almost there"
   (the three started ones with the fewest sights to go), then the groups with

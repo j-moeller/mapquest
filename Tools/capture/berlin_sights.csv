@@ -52,7 +52,7 @@ oberbaumbruecke;Oberbaumbrücke;bridge;52.5018;13.4456;40;Oberbaumbrücke
 frankfurter-tor;Frankfurter Tor;landmark;52.5158;13.4543;50;Frankfurter Tor
 strausberger-platz;Strausberger Platz;square;52.5182;13.4283;60;Strausberger Platz
 maerchenbrunnen;Märchenbrunnen;fountain;52.5272;13.4290;40;Märchenbrunnen
-topographie;Topographie des Terrors;museum;52.5066;13.3837;40;Topographie des Terrors
+topographie;Topographie des Terrors;memorial;52.5066;13.3837;40;Topographie des Terrors
 gropius-bau;Gropius Bau;museum;52.5066;13.3818;40;Gropius Bau|Martin-Gropius-Bau
 juedisches-museum;Jüdisches Museum Berlin;museum;52.5020;13.3946;40;Jüdisches Museum Berlin|Jüdisches Museum
 technikmuseum;Deutsches Technikmuseum;museum;52.4986;13.3775;60;Deutsches Technikmuseum
@@ -111,7 +111,7 @@ schloss-biesdorf;Schloss Biesdorf;palace;52.5050;13.5600;50;Schloss Biesdorf
 wolkenhain;Wolkenhain;viewpoint;52.5340;13.5900;40;Wolkenhain|Aussichtsplattform Wolkenhain
 tierpark;Tierpark Berlin;zoo;52.5000;13.5300;100;Tierpark Berlin|Tierpark Berlin-Friedrichsfelde
 schloss-friedrichsfelde;Schloss Friedrichsfelde;palace;52.5070;13.5270;50;Schloss Friedrichsfelde
-stasimuseum;Stasimuseum;museum;52.5146;13.4880;40;Stasimuseum|Stasi-Museum
+stasimuseum;Stasimuseum;memorial;52.5146;13.4880;40;Stasimuseum|Stasi-Museum
 hohenschoenhausen;Gedenkstätte Berlin-Hohenschönhausen;memorial;52.5420;13.5000;40;Gedenkstätte Berlin-Hohenschönhausen
 mies-van-der-rohe-haus;Mies van der Rohe Haus;museum;52.5470;13.4960;40;Mies van der Rohe Haus|Mies-van-der-Rohe-Haus
 schloss-tegel;Schloss Tegel;palace;52.5960;13.2690;50;Schloss Tegel|Humboldtschloss
@@ -148,7 +148,7 @@ kolk;Kolk (Altstadt Spandau);square;52.539458;13.207625;50;@manual
 fort-hahneberg;Fort Hahneberg;landmark;52.521811;13.138306;100;@manual
 flugplatz-gatow;Militärhistorisches Museum Flugplatz Gatow;museum;52.471937;13.138734;100;@manual
 siemensstadt;Großsiedlung Siemensstadt;landmark;52.5388;13.2815;100;Großsiedlung Siemensstadt|Ringsiedlung
-museum-karlshorst;Museum Berlin-Karlshorst;museum;52.486111;13.539722;50;Museum Berlin-Karlshorst|Deutsch-Russisches Museum
+museum-karlshorst;Museum Berlin-Karlshorst;memorial;52.486111;13.539722;50;Museum Berlin-Karlshorst|Deutsch-Russisches Museum
 gedenkstaette-sozialisten;Gedenkstätte der Sozialisten;cemetery;52.514921;13.511227;50;@manual
 rathaus-lichtenberg;Rathaus Lichtenberg;government;52.5158;13.4797;50;Rathaus Lichtenberg
 orankesee;Orankesee;park;52.548889;13.4825;100;@manual

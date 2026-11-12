@@ -147,7 +147,8 @@ public struct AchievementProgress: Hashable, Identifiable, Sendable {
     public var fraction: Double { target == 0 ? 1 : Double(count) / Double(target) }
 }
 
-/// The achievements of the bundled cities, resolved against their sights and stations.
+/// The achievements of the bundled cities, resolved against their sights and
+/// stations. Places of remembrance are left out of every achievement.
 public struct AchievementBook: Sendable {
     /// An achievement with the sights it asks for.
     public struct Entry: Sendable {
@@ -162,8 +163,10 @@ public struct AchievementBook: Sendable {
 
     public init(achievements: [Achievement], catalog: SightCatalog, histories: SightHistoryCatalog,
                 stations: StationCatalog = StationCatalog()) {
+        // Places of remembrance are not part of the game: no achievement asks for them,
+        // whatever its rule (`Sight.isPlaceOfRemembrance`).
         // Oldest first, then by name: the order the sights of an achievement are listed in.
-        let ordered = catalog.sights.sorted { a, b in
+        let ordered = catalog.sights.filter { !$0.isPlaceOfRemembrance }.sorted { a, b in
             let ya = histories[a.id]?.year ?? .max, yb = histories[b.id]?.year ?? .max
             return ya != yb ? ya < yb : a.name < b.name
         }
