@@ -14,9 +14,9 @@ struct CaptureListView: View {
         var id: String { rawValue }
         var title: String {
             switch self {
-            case .sights: return "Sights"
-            case .achievements: return "Achievements"
-            case .remembrance: return "Remembrance"
+            case .sights: return tr("Sights")
+            case .achievements: return tr("Achievements")
+            case .remembrance: return tr("Remembrance")
             }
         }
     }
@@ -26,8 +26,8 @@ struct CaptureListView: View {
         var id: String { rawValue }
         var title: String {
             switch self {
-            case .nearby: return "Nearby"
-            case .timeline: return "Through time"
+            case .nearby: return tr("Nearby")
+            case .timeline: return tr("Through time")
             }
         }
     }
@@ -57,7 +57,7 @@ struct CaptureListView: View {
         NavigationStack {
             List {
                 Section {
-                    Picker("Show", selection: $tab) {
+                    Picker(tr("Show"), selection: $tab) {
                         ForEach(Tab.allCases) { tab in
                             Text(tab.title).tag(tab)
                         }
@@ -79,7 +79,7 @@ struct CaptureListView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { dismiss() }
+                    Button(tr("Done")) { dismiss() }
                 }
             }
         }
@@ -89,14 +89,15 @@ struct CaptureListView: View {
     private var sightSections: some View {
         Section {
             VStack(alignment: .leading, spacing: 8) {
-                Text("\(captures.capturedCount) of \(captures.gameSightCount) sights captured")
+                Text(tr("{0} of {1} sights captured", captures.capturedCount, captures.gameSightCount))
                     .font(.headline)
-                Text("\(captures.discoveredCount) discovered · \(captures.collectedStationCount) of \(captures.stations.count) stations collected")
+                Text(tr("{0} discovered · {1} of {2} stations collected", captures.discoveredCount,
+                        captures.collectedStationCount, captures.stations.count))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                 ProgressView(value: Double(captures.capturedCount), total: Double(max(captures.gameSightCount, 1)))
                     .tint(.orange)
-                Picker("Order", selection: $order) {
+                Picker(tr("Order"), selection: $order) {
                     ForEach(Order.allCases) { order in
                         Text(order.title).tag(order)
                     }
@@ -107,8 +108,8 @@ struct CaptureListView: View {
             .padding(.vertical, 4)
         } footer: {
             Text(order == .nearby
-                 ? "A sight is discovered once you have been there – when the circles of the radius view cover it (large parks and squares: when they reach into them) – and its entry opens. Photograph it there to capture it. Stations are collected just by going there. Places of remembrance are not part of the game: they are under Remembrance."
-                 : "Berlin's history in its sights, by the year they were built. Discover a sight to learn who built it, who ruled at the time, and its story.")
+                 ? tr("A sight is discovered once you have been there – when the circles of the radius view cover it (large parks and squares: when they reach into them) – and its entry opens. Photograph it there to capture it. Stations are collected just by going there. Places of remembrance are not part of the game: they are under Remembrance.")
+                 : tr("Berlin's history in its sights, by the year they were built. Discover a sight to learn who built it, who ruled at the time, and its story."))
         }
         switch order {
         case .nearby:
@@ -136,11 +137,11 @@ struct CaptureListView: View {
         let completed = progress.filter(\.isComplete).count
         Section {
             VStack(alignment: .leading, spacing: 8) {
-                Text("\(completed) of \(progress.count) achievements completed")
+                Text(tr("{0} of {1} achievements completed", completed, progress.count))
                     .font(.headline)
                 ProgressView(value: Double(completed), total: Double(max(progress.count, 1)))
                     .tint(.orange)
-                Picker("Show", selection: $filter) {
+                Picker(tr("Show"), selection: $filter) {
                     ForEach(AchievementFilter.allCases) { filter in
                         Text(filter.title).tag(filter)
                     }
@@ -150,7 +151,7 @@ struct CaptureListView: View {
             }
             .padding(.vertical, 4)
         } footer: {
-            Text("Complete collections, eras, districts and the works of Berlin's great architects by capturing (photographing) their sights, and the U-Bahn and S-Bahn lines by collecting their stations. Each sight's entry shows what it counts towards.")
+            Text(tr("Complete collections, eras, districts and the works of Berlin's great architects by capturing (photographing) their sights, and the U-Bahn and S-Bahn lines by collecting their stations. Each sight's entry shows what it counts towards."))
         }
         AchievementSections(filter: filter)
     }
@@ -162,7 +163,9 @@ struct CaptureListView: View {
         let isNew = captures.hasUnreadEntry(sight)
         let inTimeline = order == .timeline
         let yearText = year.map { String($0) }
-        let state = captured ? "captured" : discovered ? (isNew ? "discovered, new entry, photograph it to capture it" : "discovered, photograph it to capture it") : "not discovered"
+        let state = captured ? tr("captured")
+            : discovered ? (isNew ? tr("discovered, new entry, photograph it to capture it") : tr("discovered, photograph it to capture it"))
+            : tr("not discovered")
         return NavigationLink {
             SightEntryView(sight: sight)
         } label: {
@@ -180,7 +183,7 @@ struct CaptureListView: View {
                             .fontWeight(captured ? .semibold : .regular)
                             .foregroundStyle(discovered ? Color.orange : Color.secondary)
                         if isNew {
-                            Text("NEW")
+                            Text(tr("NEW"))
                                 .font(.caption2.weight(.heavy))
                                 .padding(.horizontal, 5)
                                 .padding(.vertical, 1)
@@ -198,7 +201,7 @@ struct CaptureListView: View {
             }
         }
         .accessibilityLabel(inTimeline && yearText != nil ? "\(yearText!), \(sight.name), \(state)" : "\(sight.name), \(state)")
-        .accessibilityHint(discovered ? "Opens its entry" : "Shows how to unlock it")
+        .accessibilityHint(discovered ? tr("Opens its entry") : tr("Shows how to unlock it"))
     }
 
     /// The sights by the year they were built, grouped by era (East and West
@@ -229,7 +232,7 @@ struct CaptureListView: View {
     private func eraHeader(_ era: HistoricalEra?) -> some View {
         VStack(alignment: .leading, spacing: 3) {
             HStack(alignment: .firstTextBaseline) {
-                Text(era?.name ?? "Undated")
+                Text(era?.name ?? tr("Undated"))
                     .font(.headline)
                     .foregroundStyle(.primary)
                 Spacer()
@@ -273,13 +276,12 @@ struct CaptureListView: View {
     private func detail(for sight: Sight, record: CaptureRecord?) -> String {
         var parts = [sight.category.title]
         if let location = tracker.lastLocation {
-            let meters = distance(to: sight, from: location)
-            parts.append(meters < 1_000 ? "\(Int((meters / 10).rounded() * 10)) m away" : String(format: "%.1f km away", meters / 1_000))
+            parts.append(tr("{0} away", Formatters.away(distance(to: sight, from: location))))
         }
         if let photo = captures.log.photos[sight.id] {
-            parts.append("captured \(photo.capturedAt.formatted(date: .abbreviated, time: .omitted))")
+            parts.append(tr("captured {0}", Formatters.date(photo.capturedAt)))
         } else if record != nil {
-            parts.append("photograph it to capture it")
+            parts.append(tr("photograph it to capture it"))
         }
         return parts.joined(separator: " · ")
     }
@@ -406,7 +408,7 @@ struct CaptureHooks: ViewModifier {
                     SightEntryView(sight: sight)
                         .toolbar {
                             ToolbarItem(placement: .confirmationAction) {
-                                Button("Done") { captures.entry = nil }
+                                Button(tr("Done")) { captures.entry = nil }
                             }
                         }
                 }

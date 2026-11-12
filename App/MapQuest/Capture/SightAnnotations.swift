@@ -12,26 +12,35 @@ final class SightAnnotation: NSObject, MKAnnotation {
     let coordinate: CLLocationCoordinate2D
     let title: String?
     let subtitle: String?
+    /// The longest subtitle that still fits the callout on a small phone.
+    private static let calloutWidth = 44
 
     init(_ pin: SightPin) {
         self.pin = pin
         coordinate = CLLocationCoordinate2D(latitude: pin.sight.latitude, longitude: pin.sight.longitude)
         title = pin.sight.name
+        let state: String
         if pin.sight.isPlaceOfRemembrance {
-            subtitle = pin.discoveredAt.map { "Place of remembrance – you were here on \($0.formatted(date: .abbreviated, time: .omitted))" }
-                ?? "Place of remembrance"
+            state = pin.discoveredAt.map { tr("Place of remembrance – you were here on {0}", Formatters.date($0)) }
+                ?? tr("Place of remembrance")
         } else if let date = pin.capturedAt {
-            subtitle = "Captured \(date.formatted(date: .abbreviated, time: .omitted))"
+            state = tr("Captured {0}", Formatters.date(date))
         } else if pin.isDiscovered {
-            subtitle = "Discovered – photograph it to capture it"
+            state = tr("Discovered – photograph it to capture it")
         } else {
-            subtitle = "Not discovered yet"
+            state = tr("Not discovered yet")
+        }
+        // In English the German original first ("Brandenburger Tor · Captured 12 Nov 2026"), if it fits.
+        if let otherName = pin.sight.otherName, otherName.count + state.count + 3 <= Self.calloutWidth {
+            subtitle = otherName + " · " + state
+        } else {
+            subtitle = state
         }
     }
 }
 
 final class SightAnnotationView: MKAnnotationView {
-    static let reuseIdentifier = "Sight"
+    static let reuseIdentifier = "Sight" // not localized
     private let icon = UIImageView()
     /// The camera mark of discovered, not yet captured sights.
     private let cameraMark = UIImageView()

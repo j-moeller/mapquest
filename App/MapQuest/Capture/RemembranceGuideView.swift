@@ -12,9 +12,9 @@ struct RemembranceSections: View {
         let guide = captures.remembrance
         Section {
             VStack(alignment: .leading, spacing: 8) {
-                Text("Berlin remembers")
+                Text(tr("Berlin remembers"))
                     .font(.title3.weight(.semibold))
-                Text("Memorials, memorial sites and cemeteries keep the memory of the people who were persecuted, murdered and killed in war, and of those who resisted. They are not part of the game: there is nothing to capture or collect, and every entry is open. Read about them here, or visit them on a walk – in your own time, and with respect.")
+                Text(tr("Memorials, memorial sites and cemeteries keep the memory of the people who were persecuted, murdered and killed in war, and of those who resisted. They are not part of the game: there is nothing to capture or collect, and every entry is open. Read about them here, or visit them on a walk – in your own time, and with respect."))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -45,7 +45,7 @@ struct RemembranceSections: View {
                     RemembrancePlaceRow(sight: sight, remembers: captures.infos[sight.id]?.paragraphs.first)
                 }
             } header: {
-                RemembranceChapterHeader(title: "Other places of remembrance", years: nil)
+                RemembranceChapterHeader(title: tr("Other places of remembrance"), years: nil)
             }
         }
 
@@ -64,9 +64,9 @@ struct RemembranceSections: View {
                     }
                 }
             } header: {
-                RemembranceChapterHeader(title: "Walks", years: nil)
+                RemembranceChapterHeader(title: tr("Walks"), years: nil)
             } footer: {
-                Text("Places of remembrance close to each other, in an order that tells their history.")
+                Text(tr("Places of remembrance close to each other, in an order that tells their history."))
             }
         }
     }
@@ -83,7 +83,7 @@ struct RemembranceSections: View {
     private func tourSummary(_ tour: RemembranceGuide.Tour) -> String {
         let stops = tour.stops.compactMap { captures.catalog[$0] }
         let length = RemembranceGuide.length(of: stops.map(\.coordinate))
-        return "\(stops.count) places · about \(Formatters.distance(length))"
+        return trn("{0} place · about {1}", "{0} places · about {1}", stops.count, Formatters.distance(length))
     }
 }
 
@@ -152,7 +152,7 @@ struct RemembrancePlaceRow: View {
             }
             .padding(.vertical, 2)
         }
-        .accessibilityHint("Opens its entry")
+        .accessibilityHint(tr("Opens its entry"))
     }
 
     /// "1.2 km away · you were here on 3 Nov 2026".
@@ -160,10 +160,10 @@ struct RemembrancePlaceRow: View {
         var parts: [String] = []
         if let location = tracker.lastLocation {
             let meters = location.distance(from: CLLocation(latitude: sight.latitude, longitude: sight.longitude))
-            parts.append("\(Formatters.distance(meters)) away")
+            parts.append(tr("{0} away", Formatters.away(meters)))
         }
         if let record = captures.log.records[sight.id] {
-            parts.append("you were here on \(record.capturedAt.formatted(date: .abbreviated, time: .omitted))")
+            parts.append(tr("you were here on {0}", Formatters.date(record.capturedAt)))
         }
         return parts.isEmpty ? nil : parts.joined(separator: " · ")
     }
@@ -183,23 +183,23 @@ struct RemembranceTourView: View {
                 Text(tour.text)
                     .font(.subheadline)
                     .fixedSize(horizontal: false, vertical: true)
-                LabeledContent("Between the places", value: "about \(Formatters.distance(length))")
+                LabeledContent(tr("Between the places"), value: tr("about {0}", Formatters.distance(length)))
             } footer: {
-                Text("As the crow flies; the way on foot is longer. Take your time at each place.")
+                Text(tr("As the crow flies; the way on foot is longer. Take your time at each place."))
             }
             Section {
                 ForEach(Array(stops.enumerated()), id: \.element.id) { index, sight in
                     RemembrancePlaceRow(sight: sight, remembers: captures.remembrance.remembers(sight.id), number: index + 1)
                 }
             } header: {
-                Text("The places")
+                Text(tr("The places"))
             }
             if let first = stops.first {
                 Section {
                     Button {
                         captures.show(first)
                     } label: {
-                        Label("Show the first place on the map", systemImage: "map")
+                        Label(tr("Show the first place on the map"), systemImage: "map")
                     }
                     .tint(.primary)
                 }

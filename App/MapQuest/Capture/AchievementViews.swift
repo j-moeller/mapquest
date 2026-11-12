@@ -76,10 +76,10 @@ enum AchievementFilter: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .all: return "All"
-        case .completed: return "Completed"
-        case .started: return "Started"
-        case .notStarted: return "Not started"
+        case .all: return tr("All")
+        case .completed: return tr("Completed")
+        case .started: return tr("Started")
+        case .notStarted: return tr("Not started")
         }
     }
 
@@ -95,10 +95,10 @@ enum AchievementFilter: String, CaseIterable, Identifiable {
     /// When nothing matches.
     var emptyText: String {
         switch self {
-        case .all: return "No achievements here."
-        case .completed: return "No achievement completed yet. Capture sights by photographing them, and collect stations by going there."
-        case .started: return "No achievement under way. Capture a sight or collect a station to start one."
-        case .notStarted: return "You have started every achievement."
+        case .all: return tr("No achievements here.")
+        case .completed: return tr("No achievement completed yet. Capture sights by photographing them, and collect stations by going there.")
+        case .started: return tr("No achievement under way. Capture a sight or collect a station to start one.")
+        case .notStarted: return tr("You have started every achievement.")
         }
     }
 }
@@ -122,7 +122,7 @@ struct AchievementSections: View {
                     AchievementRow(progress: progress)
                 }
             } header: {
-                Text("Almost there")
+                Text(tr("Almost there"))
             }
         }
         if shown.isEmpty {
@@ -182,7 +182,8 @@ struct AchievementRow: View {
             .padding(.vertical, compact ? 0 : 2)
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(progress.achievement.title), \(progress.isComplete ? "complete" : "\(progress.count) of \(progress.target)")")
+        .accessibilityLabel(progress.achievement.title + ", "
+                            + (progress.isComplete ? tr("complete") : tr("{0} of {1}", progress.count, progress.target)))
     }
 }
 
@@ -208,11 +209,11 @@ struct AchievementDetailView: View {
                         Button {
                             captures.show(next)
                         } label: {
-                            Label("Show on map", systemImage: "map")
+                            Label(tr("Show on map"), systemImage: "map")
                         }
                         .tint(.orange)
                     } header: {
-                        Text(tracker.lastLocation == nil ? "Next up" : "Next up: the nearest")
+                        Text(tracker.lastLocation == nil ? tr("Next up") : tr("Next up: the nearest"))
                     }
                 }
                 if !entry.achievement.rule.isMilestone && !aboutStations {
@@ -223,16 +224,16 @@ struct AchievementDetailView: View {
                             }
                         }
                     } header: {
-                        Text(verbatim: "Sights · \(progress.count)/\(progress.target)")
+                        Text(tr("Sights") + " · \(progress.count)/\(progress.target)")
                     } footer: {
-                        Text("A sight counts once it is captured: discovered by going there, then photographed there.")
+                        Text(tr("A sight counts once it is captured: discovered by going there, then photographed there."))
                     }
                 }
             }
             .navigationTitle(entry.achievement.title)
             .navigationBarTitleDisplayMode(.inline)
         } else {
-            Text("This achievement does not exist (any more).")
+            Text(tr("This achievement does not exist (any more)."))
                 .foregroundStyle(.secondary)
         }
     }
@@ -253,11 +254,11 @@ struct AchievementDetailView: View {
             ProgressView(value: progress.fraction)
                 .tint(progress.isComplete ? Color.captureGold : Color.orange)
             if let completedAt = progress.completedAt {
-                Label("Completed \(completedAt.formatted(date: .long, time: .omitted))", systemImage: "checkmark.seal.fill")
+                Label(tr("Completed {0}", Formatters.date(completedAt, .long)), systemImage: "checkmark.seal.fill")
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.orange)
             } else {
-                Text(verbatim: "\(progress.count) of \(progress.target) – \(progress.remaining) to go")
+                Text(tr("{0} of {1} – {2} to go", progress.count, progress.target, progress.remaining))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -275,11 +276,11 @@ struct AchievementDetailView: View {
                 Button {
                     captures.show(next)
                 } label: {
-                    Label("Show on map", systemImage: "map")
+                    Label(tr("Show on map"), systemImage: "map")
                 }
                 .tint(.orange)
             } header: {
-                Text(tracker.lastLocation == nil ? "Next up" : "Next up: the nearest")
+                Text(tracker.lastLocation == nil ? tr("Next up") : tr("Next up: the nearest"))
             }
         }
         if entry.achievement.rule.line != nil || entry.members.count <= 200 {
@@ -290,9 +291,9 @@ struct AchievementDetailView: View {
                     }
                 }
             } header: {
-                Text(verbatim: "Stations · \(progress.count)/\(progress.target)")
+                Text(tr("Stations") + " · \(progress.count)/\(progress.target)")
             } footer: {
-                Text("A station is collected by going there – walking past it, or riding through it above ground. No photo needed.")
+                Text(tr("A station is collected by going there – walking past it, or riding through it above ground. No photo needed."))
             }
         }
     }
@@ -308,7 +309,7 @@ struct AchievementDetailView: View {
                 let lines = station.lines.joined(separator: " · ")
                 if distance, let location = tracker.lastLocation {
                     let meters = location.distance(from: CLLocation(latitude: station.latitude, longitude: station.longitude))
-                    Text((meters < 1_000 ? "\(Int((meters / 10).rounded() * 10)) m away" : String(format: "%.1f km away", meters / 1_000)) + " · " + lines)
+                    Text(tr("{0} away", Formatters.away(meters)) + " · " + lines)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 } else {
@@ -324,8 +325,8 @@ struct AchievementDetailView: View {
         .contentShape(Rectangle())
         .onTapGesture { captures.show(station) }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(station.system.title) \(station.name), \(collected ? "collected" : "not collected")")
-        .accessibilityHint("Shows it on the map")
+        .accessibilityLabel("\(station.system.title) \(station.name), " + (collected ? tr("collected") : tr("not collected")))
+        .accessibilityHint(tr("Shows it on the map"))
     }
 
     /// A sight with the year it was built; tapping it opens its entry.
@@ -348,7 +349,7 @@ struct AchievementDetailView: View {
                         .foregroundStyle(discovered ? Color.orange : Color.primary)
                     if distance, let location = tracker.lastLocation {
                         let meters = location.distance(from: CLLocation(latitude: sight.latitude, longitude: sight.longitude))
-                        Text(meters < 1_000 ? "\(Int((meters / 10).rounded() * 10)) m away" : String(format: "%.1f km away", meters / 1_000))
+                        Text(tr("{0} away", Formatters.away(meters)))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     } else if let district = sight.district {
@@ -362,7 +363,8 @@ struct AchievementDetailView: View {
                     .foregroundStyle(discovered ? Color.orange : Color.secondary)
             }
         }
-        .accessibilityLabel("\(sight.name), \(captured ? "captured" : discovered ? "discovered, photograph it to capture it" : "not discovered")")
+        .accessibilityLabel(sight.name + ", "
+                            + (captured ? tr("captured") : discovered ? tr("discovered, photograph it to capture it") : tr("not discovered")))
     }
 }
 
@@ -375,7 +377,7 @@ struct SightAchievements: View {
         let items = captures.achievementProgress(containing: sight)
         if !items.isEmpty {
             VStack(alignment: .leading, spacing: 10) {
-                Label("Counts towards", systemImage: "rosette")
+                Label(tr("Counts towards"), systemImage: "rosette")
                     .font(.headline)
                     .foregroundStyle(Color.orange)
                 ForEach(items) { progress in

@@ -15,12 +15,17 @@ struct RemembranceNoticeView: View {
         VStack {
             Spacer()
             VStack(alignment: .leading, spacing: 10) {
-                Text("PLACE OF REMEMBRANCE")
+                Text(tr("PLACE OF REMEMBRANCE"))
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(.secondary)
                 if notice.sights.count == 1, let sight = notice.sights.first {
                     Text(sight.name)
                         .font(.title3.weight(.semibold))
+                    if let otherName = sight.otherName {
+                        Text(otherName)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
                     if let intro = intro(sight) {
                         Text(intro)
                             .font(.subheadline)
@@ -28,23 +33,23 @@ struct RemembranceNoticeView: View {
                             .lineLimit(4)
                     }
                 } else {
-                    Text("You have been at \(notice.sights.count) places of remembrance")
+                    Text(tr("You have been at {0} places of remembrance", notice.sights.count))
                         .font(.title3.weight(.semibold))
                     Text(notice.sights.map(\.name).joined(separator: " · "))
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .lineLimit(5)
                 }
-                Text("Places of remembrance are not part of the game: there is nothing to capture and nothing to collect.")
+                Text(tr("Places of remembrance are not part of the game: there is nothing to capture and nothing to collect."))
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
                 HStack {
                     if notice.sights.count == 1, let sight = notice.sights.first {
-                        Button("Read about this place") { onRead(sight) }
+                        Button(tr("Read about this place")) { onRead(sight) }
                     }
                     Spacer()
-                    Button("Close") { onClose() }
+                    Button(tr("Close")) { onClose() }
                 }
                 .buttonStyle(.bordered)
                 .tint(.primary)
@@ -74,12 +79,12 @@ struct RemembranceHeader: View {
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(.secondary)
             }
-            Text("A place of remembrance. It is not part of the game – there is nothing to capture and no achievement – and its entry is open to everyone. Please visit it with respect.")
+            Text(tr("A place of remembrance. It is not part of the game – there is nothing to capture and no achievement – and its entry is open to everyone. Please visit it with respect."))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
             if let visitedAt {
-                Label("You were here on \(visitedAt.formatted(date: .long, time: .omitted))", systemImage: "figure.walk")
+                Label(tr("You were here on {0}", Formatters.date(visitedAt, .long)), systemImage: "figure.walk")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }

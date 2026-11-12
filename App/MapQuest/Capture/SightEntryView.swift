@@ -53,7 +53,7 @@ struct SightEntryView: View {
             }
             .padding(.bottom, 24)
         }
-        .navigationTitle(record == nil && !isRemembrance ? "Undiscovered" : sight.name)
+        .navigationTitle(record == nil && !isRemembrance ? tr("Undiscovered") : sight.name)
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             captures.markRead(sight)
@@ -80,8 +80,8 @@ struct SightEntryView: View {
         }
         .animation(.easeInOut(duration: 0.25), value: celebration)
         .task(id: capture?.takenAt) { photo = captures.photo(for: sight) }
-        .alert("The photo could not be saved", isPresented: Binding(get: { saveError != nil }, set: { if !$0 { saveError = nil } })) {
-            Button("OK", role: .cancel) {}
+        .alert(tr("The photo could not be saved"), isPresented: Binding(get: { saveError != nil }, set: { if !$0 { saveError = nil } })) {
+            Button(tr("OK"), role: .cancel) {}
         } message: {
             Text(saveError ?? "")
         }
@@ -110,7 +110,7 @@ struct SightEntryView: View {
     private var captureCard: some View {
         if let capture {
             VStack(alignment: .leading, spacing: 10) {
-                Label("Captured \(capture.capturedAt.formatted(date: .long, time: .omitted))", systemImage: "camera.fill")
+                Label(tr("Captured {0}", Formatters.date(capture.capturedAt, .long)), systemImage: "camera.fill")
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(Color.orange)
                 // In an overlay: the photo's own size never widens the layout.
@@ -127,11 +127,11 @@ struct SightEntryView: View {
                         }
                     }
                     .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .accessibilityLabel("Your photo of \(sight.name)")
+                    .accessibilityLabel(tr("Your photo of {0}", sight.name))
                 HStack {
                     if let photo {
                         ShareLink(item: Image(uiImage: photo), preview: SharePreview(sight.name, image: Image(uiImage: photo))) {
-                            Label("Share or save", systemImage: "square.and.arrow.up")
+                            Label(tr("Share or save"), systemImage: "square.and.arrow.up")
                         }
                     }
                     Spacer()
@@ -139,7 +139,7 @@ struct SightEntryView: View {
                         Button {
                             openCamera()
                         } label: {
-                            Label("New photo", systemImage: "camera")
+                            Label(tr("New photo"), systemImage: "camera")
                         }
                     }
                 }
@@ -148,7 +148,7 @@ struct SightEntryView: View {
             }
         } else {
             VStack(alignment: .leading, spacing: 8) {
-                Label("Capture it", systemImage: "camera.fill")
+                Label(tr("Capture it"), systemImage: "camera.fill")
                     .font(.headline)
                     .foregroundStyle(Color.orange)
                 Text(captureHint)
@@ -158,7 +158,7 @@ struct SightEntryView: View {
                 Button {
                     openCamera()
                 } label: {
-                    Label("Take a photo", systemImage: "camera.fill")
+                    Label(tr("Take a photo"), systemImage: "camera.fill")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
@@ -173,16 +173,16 @@ struct SightEntryView: View {
 
     private var captureHint: String {
         if cameraSource != nil {
-            return "Photograph \(sight.name) and keep the photo: it captures the sight and counts towards its achievements."
+            return tr("Photograph {0} and keep the photo: it captures the sight and counts towards its achievements.", sight.name)
         }
         if captures.canPhotograph(sight, from: tracker.lastLocation) {
-            return "This device has no camera."
+            return tr("This device has no camera.")
         }
         if let meters = captures.distance(to: sight, from: tracker.lastLocation) {
-            let away = meters < 1_000 ? "\(Int((meters / 10).rounded() * 10)) m" : String(format: "%.1f km", meters / 1_000)
-            return "Go back there to photograph it (\(away) away): within about \(Int(sight.radius + CaptureModel.photoReach)) m of it the camera opens."
+            return tr("Go back there to photograph it ({0} away): within about {1} of it the camera opens.",
+                      Formatters.away(meters), Formatters.distance(sight.radius + CaptureModel.photoReach))
         }
-        return "Go there to photograph it: the camera opens once you are near it."
+        return tr("Go there to photograph it: the camera opens once you are near it.")
     }
 
     // MARK: Parts
@@ -203,7 +203,7 @@ struct SightEntryView: View {
                 SightFlyoverView(sight: sight)
                     .frame(height: 300)
                     .overlay(alignment: .bottomTrailing) {
-                        Label("Drag, pinch, turn and tilt", systemImage: "view.3d")
+                        Label(tr("Drag, pinch, turn and tilt"), systemImage: "view.3d")
                             .font(.caption2)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
@@ -241,6 +241,12 @@ struct SightEntryView: View {
                 Text(sight.name)
                     .font(.title2.bold())
                     .lineLimit(2)
+                if let otherName = sight.otherName {
+                    Text(otherName)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                }
             }
         }
     }
@@ -258,13 +264,19 @@ struct SightEntryView: View {
             HStack(alignment: .bottom, spacing: 10) {
                 SightBadge(category: sight.category, captured: capture != nil, discovered: !locked, size: 40)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(locked ? "Undiscovered \(sight.category.title.lowercased())" : sight.category.title.uppercased())
+                    Text(locked ? tr("Undiscovered {0}", sight.category.titleInPhrase) : sight.category.title.uppercased())
                         .font(.caption.weight(.bold))
                         .foregroundStyle(locked || isRemembrance ? Color.white.opacity(0.85) : Color.orange)
                     Text(locked ? "???" : sight.name)
                         .font(.title2.bold())
                         .foregroundStyle(.white)
                         .lineLimit(2)
+                    if !locked, let otherName = sight.otherName {
+                        Text(otherName)
+                            .font(.subheadline)
+                            .foregroundStyle(.white.opacity(0.85))
+                            .lineLimit(1)
+                    }
                 }
             }
             .padding(14)
@@ -273,7 +285,7 @@ struct SightEntryView: View {
 
     private func unlocked(_ record: CaptureRecord) -> some View {
         VStack(alignment: .leading, spacing: 14) {
-            Label("Discovered \(record.capturedAt.formatted(date: .long, time: .omitted))", systemImage: "checkmark.seal.fill")
+            Label(tr("Discovered {0}", Formatters.date(record.capturedAt, .long)), systemImage: "checkmark.seal.fill")
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(.orange)
             captureCard
@@ -283,7 +295,7 @@ struct SightEntryView: View {
                         .font(.body)
                 }
             } else {
-                Text("No entry for this sight yet.")
+                Text(tr("No entry for this sight yet."))
                     .foregroundStyle(.secondary)
             }
             if let history {
@@ -318,7 +330,7 @@ struct SightEntryView: View {
                         .font(.body)
                 }
             } else {
-                Text("No entry for this place yet.")
+                Text(tr("No entry for this place yet."))
                     .foregroundStyle(.secondary)
             }
             if let history {
@@ -343,14 +355,13 @@ struct SightEntryView: View {
 
     private var locked: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text("This entry is locked.")
+            Text(tr("This entry is locked."))
                 .font(.headline)
-            Text("Go there to discover it: once the circles of the radius view cover the sight, it appears on your map and its entry opens here – with when it was built and by whom, who ruled Berlin then, and the history of the place. Then photograph it there to capture it.")
+            Text(tr("Go there to discover it: once the circles of the radius view cover the sight, it appears on your map and its entry opens here – with when it was built and by whom, who ruled Berlin then, and the history of the place. Then photograph it there to capture it."))
                 .foregroundStyle(.secondary)
             if let location = tracker.lastLocation {
                 let meters = location.distance(from: CLLocation(latitude: sight.latitude, longitude: sight.longitude))
-                Label(meters < 1_000 ? "\(Int((meters / 10).rounded() * 10)) m away" : String(format: "%.1f km away", meters / 1_000),
-                      systemImage: "location.fill")
+                Label(tr("{0} away", Formatters.away(meters)), systemImage: "location.fill")
                     .font(.subheadline)
             }
             SightAchievements(sight: sight)
@@ -364,7 +375,7 @@ struct SightEntryView: View {
     private func historyText(_ history: SightHistory) -> some View {
         let paragraphs = history.historyParagraphs
         if !paragraphs.isEmpty {
-            Text("History")
+            Text(tr("History"))
                 .font(.headline)
                 .padding(.top, 4)
             let shown = showsFullHistory ? paragraphs : Array(paragraphs.prefix(2))
@@ -376,7 +387,7 @@ struct SightEntryView: View {
                 Button {
                     withAnimation(.easeInOut(duration: 0.2)) { showsFullHistory = true }
                 } label: {
-                    Label("Read more", systemImage: "chevron.down")
+                    Label(tr("Read more"), systemImage: "chevron.down")
                         .font(.subheadline.weight(.semibold))
                 }
                 .tint(accent)
@@ -389,7 +400,7 @@ struct SightEntryView: View {
             dismiss()
             captures.show(sight)
         } label: {
-            Label("Show on map", systemImage: "map")
+            Label(tr("Show on map"), systemImage: "map")
                 .frame(maxWidth: .infinity)
         }
         .buttonStyle(.borderedProminent)
@@ -402,24 +413,25 @@ struct SightEntryView: View {
     private func credits(_ info: SightInfo) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Link(destination: info.url) {
-                Label("Read the full article on Wikipedia", systemImage: "book")
+                Label(tr("Read the full article on Wikipedia"), systemImage: "book")
             }
             .font(.subheadline)
             Divider()
             VStack(alignment: .leading, spacing: 4) {
-                Text("Text: Wikipedia, “\(info.title)” (\(info.language == "de" ? "German" : "English")), CC BY-SA 4.0")
-                Link("Licence: creativecommons.org/licenses/by-sa/4.0", destination: Self.textLicense)
+                Text(tr("Text: Wikipedia, “{0}” ({1}), CC BY-SA 4.0", info.title,
+                        info.language == "de" ? tr("German") : tr("English")))
+                Link(tr("Licence: {0}", "creativecommons.org/licenses/by-sa/4.0"), destination: Self.textLicense)
                 if let history {
-                    Text("Facts: checked by hand against Wikidata (CC0) and Wikipedia; rulers and eras: MapQuest")
+                    Text(tr("Facts: checked by hand against Wikidata (CC0) and Wikipedia; rulers and eras: MapQuest"))
                         .padding(.top, 4)
                     if let item = history.wikidata {
-                        Link("Wikidata item", destination: item)
+                        Link(tr("Wikidata item"), destination: item)
                     }
                 }
                 if let photo = info.image {
-                    Text("Photo: \(photo.artist), \(photo.license)")
+                    Text(tr("Photo: {0}, {1}", photo.artist, photo.license))
                         .padding(.top, 4)
-                    Link("Photo on Wikimedia Commons", destination: photo.page)
+                    Link(tr("Photo on Wikimedia Commons"), destination: photo.page)
                 }
             }
             .font(.caption2)
@@ -438,33 +450,37 @@ struct SightHistoryFacts: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Label("In history", systemImage: "hourglass")
+            Label(tr("In history"), systemImage: "hourglass")
                 .font(.headline)
                 .foregroundStyle(tint)
             if let built = history.built {
-                fact("Built", built, symbol: "hammer.fill")
+                fact(tr("Built"), built, symbol: "hammer.fill")
             }
             if let opened = history.opened {
-                fact("Opened", opened, symbol: "door.left.hand.open")
+                fact(tr("Opened"), opened, symbol: "door.left.hand.open")
             }
             if !history.styles.isEmpty {
-                fact(history.styles.count == 1 ? "Style" : "Styles", history.styles.joined(separator: ", "), symbol: "building.columns.fill")
+                fact(history.styles.count == 1 ? tr("Style") : tr("Styles"), history.styles.joined(separator: ", "),
+                     symbol: "building.columns.fill")
             }
             if !history.architects.isEmpty {
-                fact(history.architects.count == 1 ? "Architect" : "Architects and artists", history.architects.joined(separator: ", "), symbol: "pencil.and.ruler.fill")
+                fact(history.architects.count == 1 ? tr("Architect") : tr("Architects and artists"),
+                     history.architects.joined(separator: ", "), symbol: "pencil.and.ruler.fill")
             }
             if !history.commissionedBy.isEmpty {
-                fact("Commissioned by", history.commissionedBy.joined(separator: ", "), symbol: "signature")
+                fact(tr("Commissioned by"), history.commissionedBy.joined(separator: ", "), symbol: "signature")
             }
             if let context = history.context {
                 if let ruler = context.ruler {
-                    fact(history.year.map { "Ruling in \(String($0))" } ?? "Ruling at the time",
-                         "\(ruler.name), \(ruler.title) (\(ruler.reign))", symbol: Self.isMonarchy(context.era) ? "crown.fill" : "person.fill")
+                    // "Frederick William II (Friedrich Wilhelm II.)" in English.
+                    let name = ruler.otherName.map { "\(ruler.name) (\($0))" } ?? ruler.name
+                    fact(history.year.map { tr("Ruling in {0}", $0) } ?? tr("Ruling at the time"),
+                         "\(name), \(ruler.title) (\(ruler.reign))", symbol: Self.isMonarchy(context.era) ? "crown.fill" : "person.fill")
                 }
-                fact("Era", "\(context.era.name) (\(context.era.years))", detail: context.era.summary, symbol: "clock.arrow.circlepath")
+                fact(tr("Era"), "\(context.era.name) (\(context.era.years))", detail: context.era.summary, symbol: "clock.arrow.circlepath")
             }
             if let sector = history.sectorDuringDivision {
-                fact("While Berlin was divided", sector.title, symbol: "square.split.2x1.fill")
+                fact(tr("While Berlin was divided"), sector.title, symbol: "square.split.2x1.fill")
             }
         }
         .padding(14)
@@ -540,7 +556,7 @@ final class SightPhotoLoader: @unchecked Sendable {
     private let session: URLSession = {
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1"
         let configuration = URLSessionConfiguration.default
-        configuration.httpAdditionalHeaders = ["User-Agent": "MapQuest/\(version) (iOS)"]
+        configuration.httpAdditionalHeaders = ["User-Agent": "MapQuest/\(version) (iOS)"] // not localized
         return URLSession(configuration: configuration)
     }()
 

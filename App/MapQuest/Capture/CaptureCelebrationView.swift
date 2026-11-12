@@ -71,12 +71,21 @@ struct CaptureCelebrationView: View {
                     .font(.largeTitle.bold())
                     .foregroundStyle(.white)
                     .multilineTextAlignment(.center)
-                Text(names)
-                    .font(.title3.weight(.semibold))
-                    .foregroundStyle(Color.captureGold)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(4)
-                    .padding(.horizontal, 32)
+                VStack(spacing: 2) {
+                    Text(names)
+                        .font(.title3.weight(.semibold))
+                        .foregroundStyle(Color.captureGold)
+                        .lineLimit(4)
+                    // In English, the German original under the name.
+                    if celebration.kind != .lines, celebration.sights.count == 1, let otherName = celebration.sights[0].otherName {
+                        Text(otherName)
+                            .font(.subheadline)
+                            .foregroundStyle(.white.opacity(0.75))
+                            .lineLimit(2)
+                    }
+                }
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 32)
                 if let epoch {
                     Label(epoch, systemImage: "hourglass")
                         .font(.subheadline.weight(.medium))
@@ -103,7 +112,7 @@ struct CaptureCelebrationView: View {
                 }
                 buttons
                     .padding(.top, 6)
-                Text("Tap anywhere to continue")
+                Text(tr("Tap anywhere to continue"))
                     .font(.caption)
                     .foregroundStyle(.white.opacity(0.6))
                     .padding(.top, 4)
@@ -136,7 +145,7 @@ struct CaptureCelebrationView: View {
     /// The achievements these captures completed (three at most, then how many more).
     private var achievementBanner: some View {
         VStack(spacing: 6) {
-            Text(celebration.achievements.count == 1 ? "ACHIEVEMENT UNLOCKED" : "ACHIEVEMENTS UNLOCKED")
+            Text(trn("ACHIEVEMENT UNLOCKED", "ACHIEVEMENTS UNLOCKED", celebration.achievements.count))
                 .font(.caption.weight(.heavy))
                 .foregroundStyle(Color.captureGold)
             ForEach(celebration.achievements.prefix(3), id: \.id) { achievement in
@@ -152,7 +161,7 @@ struct CaptureCelebrationView: View {
                     .background(Color.captureGold, in: Capsule())
             }
             if celebration.achievements.count > 3 {
-                Text("and \(celebration.achievements.count - 3) more")
+                Text(tr("and {0} more", celebration.achievements.count - 3))
                     .font(.caption)
                     .foregroundStyle(.white.opacity(0.8))
             }
@@ -163,29 +172,30 @@ struct CaptureCelebrationView: View {
     private var title: String {
         switch celebration.kind {
         case .discovered:
-            return celebration.sights.count == 1 ? "Discovered!" : "\(celebration.sights.count) sights discovered!"
+            return celebration.sights.count == 1 ? tr("Discovered!") : tr("{0} sights discovered!", celebration.sights.count)
         case .photographed:
-            return "Captured!"
+            return tr("Captured!")
         case .lines:
-            return celebration.achievements.contains { $0.rule.line != nil } ? "Line complete!" : "Achievement unlocked!"
+            return celebration.achievements.contains { $0.rule.line != nil } ? tr("Line complete!") : tr("Achievement unlocked!")
         }
     }
 
     private var countLine: String {
         switch celebration.kind {
-        case .discovered: return "\(celebration.capturedCount) of \(celebration.totalCount) sights discovered"
-        case .photographed: return "\(celebration.capturedCount) of \(celebration.totalCount) sights captured"
-        case .lines: return "\(celebration.capturedCount) of \(celebration.totalCount) stations collected"
+        case .discovered: return tr("{0} of {1} sights discovered", celebration.capturedCount, celebration.totalCount)
+        case .photographed: return tr("{0} of {1} sights captured", celebration.capturedCount, celebration.totalCount)
+        case .lines: return tr("{0} of {1} stations collected", celebration.capturedCount, celebration.totalCount)
         }
     }
 
     private var badge: (text: String, symbol: String)? {
         switch celebration.kind {
         case .discovered:
-            return (celebration.sights.count == 1 ? "Entry unlocked · photograph it to capture it" : "Entries unlocked · photograph them to capture them",
+            return (celebration.sights.count == 1 ? tr("Entry unlocked · photograph it to capture it")
+                        : tr("Entries unlocked · photograph them to capture them"),
                     "camera.fill")
         case .photographed:
-            return ("Photo saved in its entry", "photo.fill")
+            return (tr("Photo saved in its entry"), "photo.fill")
         case .lines:
             return nil
         }
@@ -202,29 +212,20 @@ struct CaptureCelebrationView: View {
                         finished = true
                         onPhotograph(sight)
                     } label: {
-                        Label("Take a photo", systemImage: "camera.fill")
+                        Label(tr("Take a photo"), systemImage: "camera.fill")
                             .frame(minWidth: 180)
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(.orange)
                 }
-                HStack(spacing: 12) {
-                    Button {
-                        finished = true
-                        onRead(sight)
-                    } label: {
-                        Label("Read entry", systemImage: "book")
+                // Side by side; one above the other where they do not fit (longer German labels).
+                ViewThatFits(in: .horizontal) {
+                    HStack(spacing: 12) {
+                        readAndShowButtons(sight)
                     }
-                    .buttonStyle(.bordered)
-                    .tint(.white)
-                    Button {
-                        finished = true
-                        onShow(sight)
-                    } label: {
-                        Label("Show on map", systemImage: "map")
+                    VStack(spacing: 10) {
+                        readAndShowButtons(sight)
                     }
-                    .buttonStyle(.bordered)
-                    .tint(.white)
                 }
             }
         case .discovered:
@@ -232,7 +233,7 @@ struct CaptureCelebrationView: View {
                 finished = true
                 onList()
             } label: {
-                Label("See the sights", systemImage: "list.bullet")
+                Label(tr("See the sights"), systemImage: "list.bullet")
             }
             .buttonStyle(.borderedProminent)
             .tint(.orange)
@@ -243,11 +244,32 @@ struct CaptureCelebrationView: View {
                 finished = true
                 onList()
             } label: {
-                Label("See the achievements", systemImage: "rosette")
+                Label(tr("See the achievements"), systemImage: "rosette")
             }
             .buttonStyle(.borderedProminent)
             .tint(.orange)
         }
+    }
+
+    /// "Read entry" and "Show on map" for a single discovered sight.
+    @ViewBuilder
+    private func readAndShowButtons(_ sight: Sight) -> some View {
+        Button {
+            finished = true
+            onRead(sight)
+        } label: {
+            Label(tr("Read entry"), systemImage: "book")
+        }
+        .buttonStyle(.bordered)
+        .tint(.white)
+        Button {
+            finished = true
+            onShow(sight)
+        } label: {
+            Label(tr("Show on map"), systemImage: "map")
+        }
+        .buttonStyle(.bordered)
+        .tint(.white)
     }
 
     private var medallion: some View {
@@ -286,7 +308,7 @@ struct CaptureCelebrationView: View {
     private var names: String {
         let names = celebration.kind == .lines ? celebration.achievements.map(\.title) : celebration.sights.map(\.name)
         guard names.count > 4 else { return names.joined(separator: " · ") }
-        return names.prefix(4).joined(separator: " · ") + " and \(names.count - 4) more"
+        return names.prefix(4).joined(separator: " · ") + " " + tr("and {0} more", names.count - 4)
     }
 
     private func finish() {

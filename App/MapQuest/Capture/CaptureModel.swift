@@ -72,10 +72,14 @@ struct StationPin: Equatable, Identifiable {
 @MainActor
 final class CaptureModel: ObservableObject {
     let catalog: SightCatalog
-    /// The sights' entries (unlocked by capturing them).
-    let infos: SightInfoCatalog
-    /// The sights' historical facts (unlocked with their entries).
-    let histories: SightHistoryCatalog
+    /// The sights' entries (unlocked by discovering them), in the app's language.
+    var infos: SightInfoCatalog { infoCatalogs[Localization.language] ?? infoCatalogs[.en] ?? SightInfoCatalog() }
+    /// The sights' historical facts (unlocked with their entries), in the app's language.
+    var histories: SightHistoryCatalog { historyCatalogs[Localization.language] ?? historyCatalogs[.en] ?? SightHistoryCatalog() }
+    /// The entries in each language (German falls back to English sight by sight).
+    private let infoCatalogs: [Language: SightInfoCatalog]
+    /// The facts in each language; achievements are decided on the English ones.
+    private let historyCatalogs: [Language: SightHistoryCatalog]
     /// The U-Bahn and S-Bahn stations and lines.
     let stations: StationCatalog
     /// The sights of the game: all but the places of remembrance, which are not captured.
@@ -84,8 +88,9 @@ final class CaptureModel: ObservableObject {
     let achievements: AchievementBook
     /// Sights in cities with photorealistic 3D buildings (Apple Maps): their entries show them.
     let photorealistic3D: Set<String>
-    /// The places of remembrance as a short history and as walks, outside the game.
-    let remembrance: RemembranceGuide
+    /// The places of remembrance as a short history and as walks, outside the game, in the app's language.
+    var remembrance: RemembranceGuide { remembranceGuides[Localization.language] ?? remembranceGuides[.en] ?? RemembranceGuide() }
+    private let remembranceGuides: [Language: RemembranceGuide]
     @Published private(set) var log = CaptureLog()
     @Published private(set) var celebration: Celebration?
     @Published private(set) var focus: SightFocus?
@@ -125,45 +130,49 @@ final class CaptureModel: ObservableObject {
     init(bundle: Bundle = .main) {
         // Locals: `self` cannot be read before all its properties are set.
         let catalog = Self.loadCatalog(bundle)
-        let histories = Self.loadHistories(bundle)
+        let histories = Self.loadHistories(bundle, language: .en)
         let stations = Self.loadStations(bundle)
         self.catalog = catalog
         gameSightCount = catalog.sights.filter { !$0.isPlaceOfRemembrance }.count
-        infos = Self.loadInfos(bundle)
-        self.histories = histories
+        let infos = Self.loadInfos(bundle, language: .en)
+        infoCatalogs = [.en: infos, .de: .merged([Self.loadInfos(bundle, language: .de), infos])]
+        historyCatalogs = [.en: histories, .de: .merged([Self.loadHistories(bundle, language: .de), histories])]
         self.stations = stations
         achievements = AchievementBook(achievements: Self.loadAchievements(bundle), catalog: catalog, histories: histories,
                                        stations: stations)
         photorealistic3D = Set(Cities.all.filter(\.hasPhotorealistic3D).flatMap { city in
             Self.loadCatalog(bundle, cities: [city]).sights.map(\.id)
         })
-        remembrance = Self.loadRemembrance(bundle)
+        let english = Self.loadRemembrance(bundle, language: .en)
+        let german = Self.loadRemembrance(bundle, language: .de)
+        remembranceGuides = [.en: english, .de: german.chapters.isEmpty ? english : german]
     }
 
-    /// The remembrance guides of all bundled cities (`<city>-remembrance.json`).
-    static func loadRemembrance(_ bundle: Bundle) -> RemembranceGuide {
+    /// A city's data file in a language: `<city>-<name>.json` in English, `<city>-<name>-de.json` in German.
+    static func data(_ bundle: Bundle, city: City, _ name: String, language: Language) -> Data? {
+        let suffix = language == .en ? "" : "-\(language.rawValue)"
+        guard let url = bundle.url(forResource: "\(city.id)-\(name)\(suffix)", withExtension: "json") else { return nil }
+        return try? Data(contentsOf: url)
+    }
+
+    /// The remembrance guides of all bundled cities (`<city>-remembrance[-de].json`).
+    static func loadRemembrance(_ bundle: Bundle, language: Language) -> RemembranceGuide {
         .merged(Cities.all.compactMap { city -> RemembranceGuide? in
-            guard let url = bundle.url(forResource: "\(city.id)-remembrance", withExtension: "json"),
-                  let data = try? Data(contentsOf: url) else { return nil }
-            return try? RemembranceGuide.decode(data)
+            data(bundle, city: city, "remembrance", language: language).flatMap { try? RemembranceGuide.decode($0) }
         })
     }
 
-    /// The sight entries of all bundled cities (`<city>-sight-info.json`).
-    static func loadInfos(_ bundle: Bundle) -> SightInfoCatalog {
+    /// The sight entries of all bundled cities (`<city>-sight-info[-de].json`).
+    static func loadInfos(_ bundle: Bundle, language: Language) -> SightInfoCatalog {
         .merged(Cities.all.compactMap { city -> SightInfoCatalog? in
-            guard let url = bundle.url(forResource: "\(city.id)-sight-info", withExtension: "json"),
-                  let data = try? Data(contentsOf: url) else { return nil }
-            return try? SightInfoCatalog.decode(data)
+            data(bundle, city: city, "sight-info", language: language).flatMap { try? SightInfoCatalog.decode($0) }
         })
     }
 
-    /// The historical facts of all bundled cities (`<city>-sight-history.json`).
-    static func loadHistories(_ bundle: Bundle) -> SightHistoryCatalog {
+    /// The historical facts of all bundled cities (`<city>-sight-history[-de].json`).
+    static func loadHistories(_ bundle: Bundle, language: Language) -> SightHistoryCatalog {
         .merged(Cities.all.compactMap { city -> SightHistoryCatalog? in
-            guard let url = bundle.url(forResource: "\(city.id)-sight-history", withExtension: "json"),
-                  let data = try? Data(contentsOf: url) else { return nil }
-            return try? SightHistoryCatalog.decode(data)
+            data(bundle, city: city, "sight-history", language: language).flatMap { try? SightHistoryCatalog.decode($0) }
         })
     }
 
@@ -445,7 +454,7 @@ final class CaptureModel: ObservableObject {
     /// The folder of a data source's capture photos.
     static func photoDirectory(for sourceID: String) -> URL {
         let safe = sourceID.map { $0.isLetter || $0.isNumber || $0 == "-" || $0 == "_" ? String($0) : "_" }.joined()
-        return directory.appendingPathComponent("Photos").appendingPathComponent(safe)
+        return directory.appendingPathComponent("Photos").appendingPathComponent(safe) // not localized
     }
 
     /// The photo of a captured sight.
@@ -572,25 +581,31 @@ extension SightCategory {
 
     var title: String {
         switch self {
-        case .landmark: return "Landmark"
-        case .museum: return "Museum"
-        case .palace: return "Palace"
-        case .church: return "Church"
-        case .viewpoint: return "Viewpoint"
-        case .memorial: return "Place of remembrance"
-        case .park: return "Park"
-        case .square: return "Square"
-        case .culture: return "Culture"
-        case .monument: return "Monument"
-        case .zoo: return "Zoo"
-        case .bridge: return "Bridge"
-        case .stadium: return "Stadium or arena"
-        case .fountain: return "Fountain"
-        case .market: return "Market"
-        case .government: return "Seat of government"
-        case .cemetery: return "Cemetery"
-        case .club: return "Club"
+        case .landmark: return tr("Landmark")
+        case .museum: return tr("Museum")
+        case .palace: return tr("Palace")
+        case .church: return tr("Church")
+        case .viewpoint: return tr("Viewpoint")
+        case .memorial: return tr("Place of remembrance")
+        case .park: return tr("Park")
+        case .square: return tr("Square")
+        case .culture: return tr("Culture")
+        case .monument: return tr("Monument")
+        case .zoo: return tr("Zoo")
+        case .bridge: return tr("Bridge")
+        case .stadium: return tr("Stadium or arena")
+        case .fountain: return tr("Fountain")
+        case .market: return tr("Market")
+        case .government: return tr("Seat of government")
+        case .cemetery: return tr("Cemetery")
+        case .club: return tr("Club")
         }
+    }
+
+    /// The title inside a phrase ("Undiscovered church"): lower case in English;
+    /// German nouns keep their capital.
+    var titleInPhrase: String {
+        Localization.language == .en ? title.lowercased() : title
     }
 }
 

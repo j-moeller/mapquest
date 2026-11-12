@@ -26,18 +26,19 @@ final class StationAnnotation: NSObject, MKAnnotation {
     init(_ pin: StationPin) {
         self.pin = pin
         coordinate = CLLocationCoordinate2D(latitude: pin.station.latitude, longitude: pin.station.longitude)
-        title = "\(pin.station.system.rawValue) \(pin.station.name)"
+        // In English with the explanation of the name: "S Hauptbahnhof (Central Station)".
+        title = "\(pin.station.system.rawValue) \(pin.station.names.full())"
         let lines = pin.station.lines.joined(separator: " · ")
         if let date = pin.collectedAt {
-            subtitle = "\(lines) – collected \(date.formatted(date: .abbreviated, time: .omitted))"
+            subtitle = tr("{0} – collected {1}", lines, Formatters.date(date))
         } else {
-            subtitle = "\(lines) – not collected yet"
+            subtitle = tr("{0} – not collected yet", lines)
         }
     }
 }
 
 final class StationAnnotationView: MKAnnotationView {
-    static let reuseIdentifier = "Station"
+    static let reuseIdentifier = "Station" // not localized
     private static let size: CGFloat = 17
     private let letter = UILabel()
 
@@ -143,13 +144,14 @@ struct StationToastView: View {
             }
             VStack(alignment: .leading, spacing: 1) {
                 if toast.stations.count == 1, let station = toast.stations.first {
-                    Text("\(station.name) collected")
+                    Text(tr("{0} collected", station.name))
                         .font(.subheadline.weight(.semibold))
-                    Text(station.lines.joined(separator: " · "))
+                    // In English with the explanation of the name: "Central Station · S3 · S5 · S7 · S9".
+                    Text(([station.otherName].compactMap { $0 } + station.lines).joined(separator: " · "))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 } else {
-                    Text("\(toast.stations.count) stations collected")
+                    Text(tr("{0} stations collected", toast.stations.count))
                         .font(.subheadline.weight(.semibold))
                     Text(toast.stations.prefix(3).map(\.name).joined(separator: ", ") + (toast.stations.count > 3 ? " …" : ""))
                         .font(.caption)

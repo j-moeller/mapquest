@@ -1,0 +1,173 @@
+/* German translations of the app's text: sights, captures, achievements, remembrance. */
+
+/* CaptureModel.swift – sight categories */
+"Landmark" = "Wahrzeichen";
+"Museum" = "Museum";
+"Palace" = "Schloss";
+"Church" = "Kirche";
+"Viewpoint" = "Aussichtspunkt";
+"Place of remembrance" = "Gedenkort";
+"Park" = "Park";
+"Square" = "Platz";
+"Culture" = "Kultur";
+"Monument" = "Denkmal";
+"Zoo" = "Zoo";
+"Bridge" = "Brücke";
+"Stadium or arena" = "Stadion oder Arena";
+"Fountain" = "Brunnen";
+"Market" = "Markt";
+"Seat of government" = "Regierungssitz";
+"Cemetery" = "Friedhof";
+"Club" = "Club";
+
+/* CaptureListView.swift */
+"Sights" = "Sehenswertes";
+"Achievements" = "Erfolge";
+"Remembrance" = "Gedenken";
+"Nearby" = "In der Nähe";
+"Through time" = "Durch die Zeit";
+"Show" = "Anzeigen";
+"Order" = "Reihenfolge";
+"Done" = "Fertig";
+"{0} of {1} sights captured" = "{0} von {1} Sehenswürdigkeiten eingefangen";
+"{0} discovered · {1} of {2} stations collected" = "{0} entdeckt · {1} von {2} Bahnhöfen gesammelt";
+"A sight is discovered once you have been there – when the circles of the radius view cover it (large parks and squares: when they reach into them) – and its entry opens. Photograph it there to capture it. Stations are collected just by going there. Places of remembrance are not part of the game: they are under Remembrance." = "Sobald du an einer Sehenswürdigkeit warst, ist sie entdeckt – wenn die Kreise der Radius-Ebene sie abdecken (große Parks und Plätze: wenn sie hineinreichen) – und ihr Eintrag öffnet sich. Fotografiere sie dort, um sie einzufangen. Bahnhöfe sammelst du einfach, indem du hingehst. Gedenkorte gehören nicht zum Spiel: Du findest sie unter „Gedenken“.";
+"Berlin's history in its sights, by the year they were built. Discover a sight to learn who built it, who ruled at the time, and its story." = "Berlins Geschichte in seinen Sehenswürdigkeiten, nach dem Jahr ihrer Erbauung. Entdecke eine Sehenswürdigkeit, um ihre Geschichte zu erfahren: wer sie erbaut hat und wer damals regierte.";
+"{0} of {1} achievements completed" = "{0} von {1} Erfolgen abgeschlossen";
+"Complete collections, eras, districts and the works of Berlin's great architects by capturing (photographing) their sights, and the U-Bahn and S-Bahn lines by collecting their stations. Each sight's entry shows what it counts towards." = "Vervollständige Sammlungen, Epochen, Bezirke und die Werke der großen Berliner Baumeister, indem du ihre Sehenswürdigkeiten einfängst (fotografierst), und die U- und S-Bahn-Linien, indem du ihre Bahnhöfe sammelst. Der Eintrag jeder Sehenswürdigkeit zeigt, wofür sie zählt.";
+"captured" = "eingefangen";
+"discovered, new entry, photograph it to capture it" = "entdeckt, neuer Eintrag, zum Einfangen fotografieren";
+"discovered, photograph it to capture it" = "entdeckt, zum Einfangen fotografieren";
+"not discovered" = "nicht entdeckt";
+"NEW" = "NEU";
+"Opens its entry" = "Öffnet den Eintrag";
+"Shows how to unlock it" = "Zeigt, wie du den Eintrag freischaltest";
+"Undated" = "Ohne Jahr";
+"{0} away" = "{0} entfernt";
+"captured {0}" = "eingefangen am {0}";
+"photograph it to capture it" = "zum Einfangen fotografieren";
+
+/* AchievementViews.swift */
+"All" = "Alle";
+"Completed" = "Erreicht";
+"Started" = "Begonnen";
+"Not started" = "Offen";
+"No achievements here." = "Hier gibt es keine Erfolge.";
+"No achievement completed yet. Capture sights by photographing them, and collect stations by going there." = "Noch kein Erfolg abgeschlossen. Fang Sehenswürdigkeiten mit einem Foto ein und sammle Bahnhöfe, indem du hingehst.";
+"No achievement under way. Capture a sight or collect a station to start one." = "Kein Erfolg begonnen. Fang eine Sehenswürdigkeit ein oder sammle einen Bahnhof, um einen zu beginnen.";
+"You have started every achievement." = "Du hast jeden Erfolg begonnen.";
+"Almost there" = "Fast geschafft";
+"complete" = "abgeschlossen";
+"{0} of {1}" = "{0} von {1}";
+"Show on map" = "Auf der Karte zeigen";
+"Next up" = "Nächstes Ziel";
+"Next up: the nearest" = "Nächstes Ziel: das nächstgelegene";
+"Stations" = "Bahnhöfe";
+"A sight counts once it is captured: discovered by going there, then photographed there." = "Eine Sehenswürdigkeit zählt, sobald sie eingefangen ist: entdeckt, indem du hingehst, und dort fotografiert.";
+"This achievement does not exist (any more)." = "Diesen Erfolg gibt es nicht (mehr).";
+"Completed {0}" = "Abgeschlossen am {0}";
+"{0} of {1} – {2} to go" = "{0} von {1} – noch {2}";
+"A station is collected by going there – walking past it, or riding through it above ground. No photo needed." = "Einen Bahnhof sammelst du, indem du hinkommst – zu Fuß oder oberirdisch mit dem Zug. Kein Foto nötig.";
+"collected" = "gesammelt";
+"not collected" = "nicht gesammelt";
+"Shows it on the map" = "Zeigt ihn auf der Karte";
+"Counts towards" = "Zählt für";
+
+/* SightEntryView.swift */
+"Undiscovered" = "Unentdeckt";
+"The photo could not be saved" = "Das Foto konnte nicht gespeichert werden";
+"OK" = "OK";
+"Captured {0}" = "Eingefangen am {0}";
+"Your photo of {0}" = "Dein Foto: {0}";
+"Share or save" = "Teilen oder sichern";
+"New photo" = "Neues Foto";
+"Capture it" = "Fang sie ein";
+"Take a photo" = "Foto aufnehmen";
+"Photograph {0} and keep the photo: it captures the sight and counts towards its achievements." = "Fotografiere „{0}“ und behalte das Foto: So fängst du die Sehenswürdigkeit ein, und sie zählt für ihre Erfolge.";
+"This device has no camera." = "Dieses Gerät hat keine Kamera.";
+"Go back there to photograph it ({0} away): within about {1} of it the camera opens." = "Geh für ein Foto wieder hin ({0} entfernt): Im Umkreis von etwa {1} öffnet sich die Kamera.";
+"Go there to photograph it: the camera opens once you are near it." = "Geh für ein Foto hin: Die Kamera öffnet sich, sobald du in der Nähe bist.";
+"Drag, pinch, turn and tilt" = "Ziehen, zoomen, drehen, neigen";
+"Undiscovered {0}" = "Unentdeckt: {0}";
+"Discovered {0}" = "Entdeckt am {0}";
+"No entry for this sight yet." = "Noch kein Eintrag zu dieser Sehenswürdigkeit.";
+"No entry for this place yet." = "Noch kein Eintrag zu diesem Ort.";
+"This entry is locked." = "Dieser Eintrag ist noch gesperrt.";
+"Go there to discover it: once the circles of the radius view cover the sight, it appears on your map and its entry opens here – with when it was built and by whom, who ruled Berlin then, and the history of the place. Then photograph it there to capture it." = "Geh hin, um diese Sehenswürdigkeit zu entdecken: Sobald die Kreise der Radius-Ebene sie abdecken, erscheint sie auf deiner Karte, und hier öffnet sich ihr Eintrag – wann und von wem sie erbaut wurde, wer damals Berlin regierte und die Geschichte des Ortes. Dann fotografiere sie dort, um sie einzufangen.";
+"History" = "Geschichte";
+"Read more" = "Weiterlesen";
+"Read the full article on Wikipedia" = "Ganzen Artikel auf Wikipedia lesen";
+"Text: Wikipedia, “{0}” ({1}), CC BY-SA 4.0" = "Text: Wikipedia, „{0}“ ({1}), CC BY-SA 4.0";
+"German" = "Deutsch";
+"English" = "Englisch";
+"Licence: {0}" = "Lizenz: {0}";
+"Facts: checked by hand against Wikidata (CC0) and Wikipedia; rulers and eras: MapQuest" = "Fakten: von Hand mit Wikidata (CC0) und Wikipedia abgeglichen; Herrscher und Epochen: MapQuest";
+"Wikidata item" = "Wikidata-Datenobjekt";
+"Photo: {0}, {1}" = "Foto: {0}, {1}";
+"Photo on Wikimedia Commons" = "Foto auf Wikimedia Commons";
+"In history" = "Geschichtliches";
+"Built" = "Erbaut";
+"Opened" = "Eröffnet";
+"Style" = "Baustil";
+"Styles" = "Baustile";
+"Architect" = "Architekt";
+"Architects and artists" = "Architekten und Künstler";
+"Commissioned by" = "Bauherr";
+"Ruling in {0}" = "An der Macht {0}";
+"Ruling at the time" = "Damals an der Macht";
+"Era" = "Epoche";
+"While Berlin was divided" = "Im geteilten Berlin";
+
+/* CaptureCelebrationView.swift */
+"Tap anywhere to continue" = "Tippe irgendwo, um fortzufahren";
+"ACHIEVEMENT UNLOCKED" = "ERFOLG FREIGESCHALTET";
+"ACHIEVEMENTS UNLOCKED" = "ERFOLGE FREIGESCHALTET";
+"and {0} more" = "und {0} weitere";
+"Discovered!" = "Entdeckt!";
+"{0} sights discovered!" = "{0} Sehenswürdigkeiten entdeckt!";
+"Captured!" = "Eingefangen!";
+"Line complete!" = "Linie komplett!";
+"Achievement unlocked!" = "Erfolg freigeschaltet!";
+"{0} of {1} sights discovered" = "{0} von {1} Sehenswürdigkeiten entdeckt";
+"{0} of {1} stations collected" = "{0} von {1} Bahnhöfen gesammelt";
+"Entry unlocked · photograph it to capture it" = "Eintrag freigeschaltet · zum Einfangen fotografieren";
+"Entries unlocked · photograph them to capture them" = "Einträge freigeschaltet · zum Einfangen fotografieren";
+"Photo saved in its entry" = "Foto im Eintrag gespeichert";
+"Read entry" = "Eintrag lesen";
+"See the sights" = "Zu den Sehenswürdigkeiten";
+"See the achievements" = "Zu den Erfolgen";
+
+/* RemembranceViews.swift – places of remembrance: sober and respectful */
+"PLACE OF REMEMBRANCE" = "GEDENKORT";
+"You have been at {0} places of remembrance" = "Du warst an {0} Gedenkorten";
+"Places of remembrance are not part of the game: there is nothing to capture and nothing to collect." = "Gedenkorte gehören nicht zum Spiel: Hier gibt es nichts einzufangen und nichts zu sammeln.";
+"Read about this place" = "Mehr über diesen Ort";
+"Close" = "Schließen";
+"A place of remembrance. It is not part of the game – there is nothing to capture and no achievement – and its entry is open to everyone. Please visit it with respect." = "Ein Gedenkort. Er gehört nicht zum Spiel: Es gibt nichts einzufangen und keinen Erfolg, und sein Eintrag ist für alle offen. Bitte besuche ihn mit Respekt.";
+"You were here on {0}" = "Du warst am {0} hier";
+
+/* RemembranceGuideView.swift */
+"Berlin remembers" = "Berlin erinnert";
+"Memorials, memorial sites and cemeteries keep the memory of the people who were persecuted, murdered and killed in war, and of those who resisted. They are not part of the game: there is nothing to capture or collect, and every entry is open. Read about them here, or visit them on a walk – in your own time, and with respect." = "Denkmäler, Gedenkstätten und Friedhöfe bewahren die Erinnerung an die Menschen, die verfolgt, ermordet und im Krieg getötet wurden, und an jene, die Widerstand leisteten. Sie gehören nicht zum Spiel: Es gibt nichts einzufangen oder zu sammeln, und jeder Eintrag ist offen. Lies hier über sie oder besuche sie auf einem Rundgang – in Ruhe und mit Respekt.";
+"Other places of remembrance" = "Weitere Gedenkorte";
+"Walks" = "Rundgänge";
+"Places of remembrance close to each other, in an order that tells their history." = "Gedenkorte nahe beieinander, in einer Reihenfolge, die ihre Geschichte erzählt.";
+"{0} place · about {1}" = "{0} Ort · etwa {1}";
+"{0} places · about {1}" = "{0} Orte · etwa {1}";
+"you were here on {0}" = "du warst am {0} hier";
+"Between the places" = "Zwischen den Orten";
+"about {0}" = "etwa {0}";
+"As the crow flies; the way on foot is longer. Take your time at each place." = "Luftlinie; zu Fuß ist der Weg länger. Nimm dir an jedem Ort Zeit.";
+"The places" = "Die Orte";
+"Show the first place on the map" = "Ersten Ort auf der Karte zeigen";
+
+/* SightAnnotations.swift */
+"Place of remembrance – you were here on {0}" = "Gedenkort – du warst am {0} hier";
+"Discovered – photograph it to capture it" = "Entdeckt – zum Einfangen fotografieren";
+"Not discovered yet" = "Noch nicht entdeckt";
+
+/* StationAnnotations.swift */
+"{0} – collected {1}" = "{0} – gesammelt am {1}";
+"{0} – not collected yet" = "{0} – noch nicht gesammelt";
+"{0} collected" = "{0} gesammelt";
+"{0} stations collected" = "{0} Bahnhöfe gesammelt";
