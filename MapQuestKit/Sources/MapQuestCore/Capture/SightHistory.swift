@@ -6,8 +6,8 @@ public enum BerlinSector: String, Codable, Hashable, Sendable {
 
     public var title: String {
         switch self {
-        case .east: return "East Berlin"
-        case .west: return "West Berlin"
+        case .east: return LocalizedString("East Berlin", de: "Ost-Berlin")()
+        case .west: return LocalizedString("West Berlin", de: "West-Berlin")()
         }
     }
 }
@@ -78,10 +78,13 @@ public struct SightHistory: Codable, Hashable, Sendable {
         year.flatMap { BerlinHistory.context(in: $0, sector: sector) }
     }
 
-    /// `built` as a phrase: "Built 1788–1791", "Laid out from 1741".
+    /// `built` as a phrase: "Built 1788–1791", "Laid out from 1741" ("Erbaut 1788–1791",
+    /// "Angelegt ab 1741" with German facts).
     public var builtPhrase: String? {
         guard let built, let first = built.first else { return nil }
-        if first.isNumber || built.hasPrefix("c. ") { return "Built " + built }
+        if first.isNumber || built.hasPrefix("c. ") || built.hasPrefix("um ") {
+            return LocalizedString("Built", de: "Erbaut")() + " " + built
+        }
         return first.uppercased() + built.dropFirst()
     }
 

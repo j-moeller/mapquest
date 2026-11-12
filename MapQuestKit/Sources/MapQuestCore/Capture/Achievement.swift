@@ -5,16 +5,18 @@ public enum AchievementGroup: String, Codable, CaseIterable, Sendable {
     case milestones, collections, stories, lines, eras, styles, architects, districts
 
     public var title: String {
+        let title: LocalizedString
         switch self {
-        case .milestones: return "Milestones"
-        case .collections: return "Collections"
-        case .stories: return "Stories"
-        case .lines: return "Lines"
-        case .eras: return "Through time"
-        case .styles: return "Styles"
-        case .architects: return "Master builders"
-        case .districts: return "Districts"
+        case .milestones: title = LocalizedString("Milestones", de: "Meilensteine")
+        case .collections: title = LocalizedString("Collections", de: "Sammlungen")
+        case .stories: title = LocalizedString("Stories", de: "Geschichten")
+        case .lines: title = LocalizedString("Lines", de: "Linien")
+        case .eras: title = LocalizedString("Through time", de: "Durch die Zeit")
+        case .styles: title = LocalizedString("Styles", de: "Baustile")
+        case .architects: title = LocalizedString("Master builders", de: "Baumeister")
+        case .districts: title = LocalizedString("Districts", de: "Bezirke")
         }
+        return title()
     }
 }
 
@@ -103,24 +105,54 @@ public struct AchievementRule: Codable, Hashable, Sendable {
 /// an era or by an architect, every sight of a district, a themed walk, or a
 /// number of captures.
 public struct Achievement: Codable, Hashable, Identifiable, Sendable {
+    /// Title and description in another language.
+    public struct Translation: Codable, Hashable, Sendable {
+        public var title: String
+        public var description: String
+
+        public init(title: String, description: String) {
+            self.title = title
+            self.description = description
+        }
+    }
+
     public var id: String
     public var group: AchievementGroup
-    public var title: String
-    public var description: String
+    public var englishTitle: String
+    public var englishDescription: String
+    /// German title and description.
+    public var de: Translation?
     /// An SF Symbol.
     public var symbol: String
     public var rule: AchievementRule
 
-    public init(id: String, group: AchievementGroup, title: String, description: String, symbol: String, rule: AchievementRule) {
+    enum CodingKeys: String, CodingKey {
+        case id, group, englishTitle = "title", englishDescription = "description", de, symbol, rule
+    }
+
+    public init(id: String, group: AchievementGroup, title: String, description: String, de: Translation? = nil,
+                symbol: String, rule: AchievementRule) {
         self.id = id
         self.group = group
-        self.title = title
-        self.description = description
+        self.englishTitle = title
+        self.englishDescription = description
+        self.de = de
         self.symbol = symbol
         self.rule = rule
     }
 
-    /// Reads `{"achievements": [{id, group, title, description, symbol, rule}]}` (`<city>-achievements.json`).
+    /// The title in the app's language.
+    public var title: String {
+        Localization.language == .de ? de?.title ?? englishTitle : englishTitle
+    }
+
+    /// The description in the app's language.
+    public var description: String {
+        Localization.language == .de ? de?.description ?? englishDescription : englishDescription
+    }
+
+    /// Reads `{"achievements": [{id, group, title, description, de: {title, description}, symbol, rule}]}`
+    /// (`<city>-achievements.json`; English, with the German translation).
     public static func decodeList(_ data: Data) throws -> [Achievement] {
         struct Document: Decodable { var achievements: [Achievement] }
         return try JSONDecoder().decode(Document.self, from: data).achievements

@@ -4,6 +4,7 @@
   {
    "id": "brandenburger-tor",
    "name": "Brandenburger Tor",
+   "nameEn": "Brandenburg Gate",
    "category": "monument",
    "latitude": 52.51627,
    "longitude": 13.377705,
@@ -13,6 +14,7 @@
   {
    "id": "reichstag",
    "name": "Reichstagsgebäude",
+   "nameEn": "Reichstag Building",
    "category": "government",
    "latitude": 52.518653,
    "longitude": 13.376101,
@@ -22,6 +24,7 @@
   {
    "id": "fernsehturm",
    "name": "Berliner Fernsehturm",
+   "nameEn": "Berlin TV Tower",
    "category": "viewpoint",
    "latitude": 52.52082,
    "longitude": 13.40942,
@@ -31,6 +34,7 @@
   {
    "id": "berliner-dom",
    "name": "Berliner Dom",
+   "nameEn": "Berlin Cathedral",
    "category": "church",
    "latitude": 52.519084,
    "longitude": 13.401094,
@@ -40,6 +44,7 @@
   {
    "id": "pergamonmuseum",
    "name": "Pergamonmuseum",
+   "nameEn": "Pergamon Museum",
    "category": "museum",
    "latitude": 52.520934,
    "longitude": 13.395628,
@@ -67,6 +72,7 @@
   {
    "id": "alte-nationalgalerie",
    "name": "Alte Nationalgalerie",
+   "nameEn": "Old National Gallery",
    "category": "museum",
    "latitude": 52.520863,
    "longitude": 13.398267,
@@ -76,6 +82,7 @@
   {
    "id": "bode-museum",
    "name": "Bode-Museum",
+   "nameEn": "Bode Museum",
    "category": "museum",
    "latitude": 52.521653,
    "longitude": 13.395,
@@ -94,6 +101,7 @@
   {
    "id": "rotes-rathaus",
    "name": "Rotes Rathaus",
+   "nameEn": "Red City Hall",
    "category": "government",
    "latitude": 52.518271,
    "longitude": 13.407832,
@@ -103,6 +111,7 @@
   {
    "id": "neptunbrunnen",
    "name": "Neptunbrunnen",
+   "nameEn": "Neptune Fountain",
    "category": "fountain",
    "latitude": 52.519596,
    "longitude": 13.406845,
@@ -112,6 +121,7 @@
   {
    "id": "marienkirche",
    "name": "St. Marienkirche",
+   "nameEn": "St. Mary's Church",
    "category": "church",
    "latitude": 52.520549,
    "longitude": 13.407177,
@@ -121,6 +131,7 @@
   {
    "id": "weltzeituhr",
    "name": "Weltzeituhr",
+   "nameEn": "World Clock",
    "category": "landmark",
    "latitude": 52.521163,
    "longitude": 13.413303,
@@ -139,6 +150,7 @@
   {
    "id": "nikolaikirche",
    "name": "Nikolaikirche",
+   "nameEn": "St. Nicholas' Church",
    "category": "church",
    "latitude": 52.516825,
    "longitude": 13.40751,
@@ -166,6 +178,7 @@
   {
    "id": "franzoesischer-dom",
    "name": "Französischer Dom",
+   "nameEn": "French Cathedral",
    "category": "church",
    "latitude": 52.514376,
    "longitude": 13.392441,
@@ -175,6 +188,7 @@
   {
    "id": "deutscher-dom",
    "name": "Deutscher Dom",
+   "nameEn": "German Cathedral",
    "category": "church",
    "latitude": 52.512731,
    "longitude": 13.392709,
@@ -193,6 +207,7 @@
   {
    "id": "staatsoper",
    "name": "Staatsoper Unter den Linden",
+   "nameEn": "Berlin State Opera",
    "category": "culture",
    "latitude": 52.516704,
    "longitude": 13.394737,
@@ -202,6 +217,7 @@
   {
    "id": "hedwigs-kathedrale",
    "name": "St. Hedwigs-Kathedrale",
+   "nameEn": "St. Hedwig's Cathedral",
    "category": "church",
    "latitude": 52.515754,
    "longitude": 13.394845,
@@ -220,6 +236,7 @@
   {
    "id": "dhm",
    "name": "Deutsches Historisches Museum",
+   "nameEn": "German Historical Museum",
    "category": "museum",
    "latitude": 52.517749,
    "longitude": 13.397022,
@@ -229,6 +246,7 @@
   {
    "id": "humboldt-universitaet",
    "name": "Humboldt-Universität",
+   "nameEn": "Humboldt University",
    "category": "landmark",
    "latitude": 52.518581,
    "longitude": 13.3936,
@@ -238,6 +256,7 @@
   {
    "id": "holocaust-mahnmal",
    "name": "Denkmal für die ermordeten Juden Europas",
+   "nameEn": "Memorial to the Murdered Jews of Europe",
    "category": "memorial",
    "latitude": 52.513874,
    "longitude": 13.378735,
@@ -265,6 +284,7 @@
   {
    "id": "neue-synagoge",
    "name": "Neue Synagoge",
+   "nameEn": "New Synagogue",
    "category": "landmark",
    "latitude": 52.524985,
    "longitude": 13.394319,
@@ -274,6 +294,7 @@
   {
    "id": "naturkundemuseum",
    "name": "Museum für Naturkunde",
+   "nameEn": "Natural History Museum",
    "category": "museum",
    "latitude": 52.530491,
    "longitude": 13.379116,
@@ -301,6 +322,7 @@
   {
    "id": "kanzleramt",
    "name": "Bundeskanzleramt",
+   "nameEn": "Federal Chancellery",
    "category": "government",
    "latitude": 52.520194,
    "longitude": 13.369128,
@@ -310,6 +332,7 @@
   {
    "id": "hkw",
    "name": "Haus der Kulturen der Welt",
+   "nameEn": "House of World Cultures",
    "category": "culture",
    "latitude": 52.51879,
    "longitude": 13.364836,
@@ -319,6 +342,7 @@
   {
    "id": "mauer-gedenkstaette",
    "name": "Gedenkstätte Berliner Mauer",
+   "nameEn": "Berlin Wall Memorial",
    "category": "memorial",
    "latitude": 52.535301,
    "longitude": 13.389555,
@@ -355,6 +379,7 @@
   {
    "id": "neue-nationalgalerie",
    "name": "Neue Nationalgalerie",
+   "nameEn": "New National Gallery",
    "category": "museum",
    "latitude": 52.50704,
    "longitude": 13.36762,
@@ -364,6 +389,7 @@
   {
    "id": "siegessaeule",
    "name": "Siegessäule",
+   "nameEn": "Victory Column",
    "category": "viewpoint",
    "latitude": 52.51451,
    "longitude": 13.350111,
@@ -373,6 +399,7 @@
   {
    "id": "schloss-bellevue",
    "name": "Schloss Bellevue",
+   "nameEn": "Bellevue Palace",
    "category": "palace",
    "latitude": 52.517285,
    "longitude": 13.352433,
@@ -382,6 +409,7 @@
   {
    "id": "ehrenmal-tiergarten",
    "name": "Sowjetisches Ehrenmal Tiergarten",
+   "nameEn": "Soviet War Memorial (Tiergarten)",
    "category": "memorial",
    "latitude": 52.516694,
    "longitude": 13.371917,
@@ -391,6 +419,7 @@
   {
    "id": "zoo",
    "name": "Zoologischer Garten (Elefantentor)",
+   "nameEn": "Berlin Zoo (Elephant Gate)",
    "category": "zoo",
    "latitude": 52.5051,
    "longitude": 13.3377,
@@ -418,6 +447,7 @@
   {
    "id": "humboldthain",
    "name": "Humboldthöhe (Flakturm)",
+   "nameEn": "Humboldthöhe (Flak Tower)",
    "category": "viewpoint",
    "latitude": 52.547333,
    "longitude": 13.384776,
@@ -427,6 +457,7 @@
   {
    "id": "monbijoupark",
    "name": "Monbijoupark",
+   "nameEn": "Monbijou Park",
    "category": "park",
    "latitude": 52.523203,
    "longitude": 13.396974,
@@ -445,6 +476,7 @@
   {
    "id": "oberbaumbruecke",
    "name": "Oberbaumbrücke",
+   "nameEn": "Oberbaum Bridge",
    "category": "bridge",
    "latitude": 52.501728,
    "longitude": 13.445731,
@@ -472,6 +504,7 @@
   {
    "id": "maerchenbrunnen",
    "name": "Märchenbrunnen",
+   "nameEn": "Fairy Tale Fountain",
    "category": "fountain",
    "latitude": 52.527939,
    "longitude": 13.426779,
@@ -481,6 +514,7 @@
   {
    "id": "topographie",
    "name": "Topographie des Terrors",
+   "nameEn": "Topography of Terror",
    "category": "memorial",
    "latitude": 52.506214,
    "longitude": 13.384153,
@@ -499,6 +533,7 @@
   {
    "id": "juedisches-museum",
    "name": "Jüdisches Museum Berlin",
+   "nameEn": "Jewish Museum Berlin",
    "category": "museum",
    "latitude": 52.501871,
    "longitude": 13.396207,
@@ -508,6 +543,7 @@
   {
    "id": "technikmuseum",
    "name": "Deutsches Technikmuseum",
+   "nameEn": "German Museum of Technology",
    "category": "museum",
    "latitude": 52.497182,
    "longitude": 13.37593,
@@ -517,6 +553,7 @@
   {
    "id": "kreuzbergdenkmal",
    "name": "Nationaldenkmal auf dem Kreuzberg",
+   "nameEn": "National Monument on the Kreuzberg",
    "category": "viewpoint",
    "latitude": 52.487648,
    "longitude": 13.381476,
@@ -562,6 +599,7 @@
   {
    "id": "wasserturm",
    "name": "Wasserturm Prenzlauer Berg",
+   "nameEn": "Prenzlauer Berg Water Tower",
    "category": "landmark",
    "latitude": 52.534185,
    "longitude": 13.418598,
@@ -580,6 +618,7 @@
   {
    "id": "planetarium",
    "name": "Zeiss-Großplanetarium",
+   "nameEn": "Zeiss Major Planetarium",
    "category": "museum",
    "latitude": 52.543056,
    "longitude": 13.428141,
@@ -589,6 +628,7 @@
   {
    "id": "gethsemanekirche",
    "name": "Gethsemanekirche",
+   "nameEn": "Gethsemane Church",
    "category": "church",
    "latitude": 52.547721,
    "longitude": 13.416168,
@@ -598,6 +638,7 @@
   {
    "id": "schloss-schoenhausen",
    "name": "Schloss Schönhausen",
+   "nameEn": "Schönhausen Palace",
    "category": "palace",
    "latitude": 52.578348,
    "longitude": 13.405697,
@@ -607,6 +648,7 @@
   {
    "id": "zionskirche",
    "name": "Zionskirche",
+   "nameEn": "Zion Church",
    "category": "church",
    "latitude": 52.534648,
    "longitude": 13.403733,
@@ -616,6 +658,7 @@
   {
    "id": "gedaechtniskirche",
    "name": "Kaiser-Wilhelm-Gedächtniskirche",
+   "nameEn": "Kaiser Wilhelm Memorial Church",
    "category": "church",
    "latitude": 52.504895,
    "longitude": 13.334613,
@@ -625,6 +668,7 @@
   {
    "id": "schloss-charlottenburg",
    "name": "Schloss Charlottenburg",
+   "nameEn": "Charlottenburg Palace",
    "category": "palace",
    "latitude": 52.520983,
    "longitude": 13.295699,
@@ -634,6 +678,7 @@
   {
    "id": "funkturm",
    "name": "Funkturm Berlin",
+   "nameEn": "Berlin Radio Tower",
    "category": "viewpoint",
    "latitude": 52.505029,
    "longitude": 13.278142,
@@ -652,6 +697,7 @@
   {
    "id": "olympiastadion",
    "name": "Olympiastadion",
+   "nameEn": "Olympic Stadium",
    "category": "stadium",
    "latitude": 52.514585,
    "longitude": 13.239813,
@@ -661,6 +707,7 @@
   {
    "id": "glockenturm",
    "name": "Glockenturm am Olympiapark",
+   "nameEn": "Olympic Bell Tower",
    "category": "viewpoint",
    "latitude": 52.513978,
    "longitude": 13.231879,
@@ -679,6 +726,7 @@
   {
    "id": "grunewaldturm",
    "name": "Grunewaldturm",
+   "nameEn": "Grunewald Tower",
    "category": "viewpoint",
    "latitude": 52.478193,
    "longitude": 13.196731,
@@ -688,6 +736,7 @@
   {
    "id": "jagdschloss-grunewald",
    "name": "Jagdschloss Grunewald",
+   "nameEn": "Grunewald Hunting Lodge",
    "category": "palace",
    "latitude": 52.467371,
    "longitude": 13.261507,
@@ -724,6 +773,7 @@
   {
    "id": "zitadelle",
    "name": "Zitadelle Spandau",
+   "nameEn": "Spandau Citadel",
    "category": "palace",
    "latitude": 52.541033,
    "longitude": 13.212744,
@@ -733,6 +783,7 @@
   {
    "id": "nikolaikirche-spandau",
    "name": "St.-Nikolai-Kirche Spandau",
+   "nameEn": "St. Nicholas' Church Spandau",
    "category": "church",
    "latitude": 52.538361,
    "longitude": 13.205341,
@@ -742,6 +793,7 @@
   {
    "id": "pfaueninsel",
    "name": "Pfaueninsel",
+   "nameEn": "Peacock Island",
    "category": "palace",
    "latitude": 52.43092,
    "longitude": 13.119854,
@@ -751,6 +803,7 @@
   {
    "id": "wannsee-konferenz",
    "name": "Haus der Wannsee-Konferenz",
+   "nameEn": "House of the Wannsee Conference",
    "category": "memorial",
    "latitude": 52.432922,
    "longitude": 13.165601,
@@ -760,6 +813,7 @@
   {
    "id": "strandbad-wannsee",
    "name": "Strandbad Wannsee",
+   "nameEn": "Wannsee Lido",
    "category": "landmark",
    "latitude": 52.438171,
    "longitude": 13.178036,
@@ -769,6 +823,7 @@
   {
    "id": "liebermann-villa",
    "name": "Liebermann-Villa",
+   "nameEn": "Liebermann Villa",
    "category": "museum",
    "latitude": 52.428771,
    "longitude": 13.164888,
@@ -778,6 +833,7 @@
   {
    "id": "botanischer-garten",
    "name": "Botanischer Garten",
+   "nameEn": "Botanical Garden",
    "category": "park",
    "latitude": 52.454398,
    "longitude": 13.304121,
@@ -796,6 +852,7 @@
   {
    "id": "bruecke-museum",
    "name": "Brücke-Museum",
+   "nameEn": "Brücke Museum",
    "category": "museum",
    "latitude": 52.466933,
    "longitude": 13.274751,
@@ -805,6 +862,7 @@
   {
    "id": "alliiertenmuseum",
    "name": "AlliiertenMuseum",
+   "nameEn": "Allied Museum",
    "category": "museum",
    "latitude": 52.455689,
    "longitude": 13.272321,
@@ -814,6 +872,7 @@
   {
    "id": "schloss-glienicke",
    "name": "Schloss Glienicke",
+   "nameEn": "Glienicke Palace",
    "category": "palace",
    "latitude": 52.413928,
    "longitude": 13.095499,
@@ -823,6 +882,7 @@
   {
    "id": "nikolskoe",
    "name": "Kirche St. Peter und Paul",
+   "nameEn": "Church of Sts. Peter and Paul",
    "category": "church",
    "latitude": 52.423288,
    "longitude": 13.1187,
@@ -832,6 +892,7 @@
   {
    "id": "tempelhofer-feld",
    "name": "Tempelhofer Feld",
+   "nameEn": "Tempelhof Field",
    "category": "park",
    "latitude": 52.4733,
    "longitude": 13.4019,
@@ -841,6 +902,7 @@
   {
    "id": "flughafen-tempelhof",
    "name": "Flughafen Tempelhof",
+   "nameEn": "Tempelhof Airport",
    "category": "landmark",
    "latitude": 52.480297,
    "longitude": 13.388633,
@@ -850,6 +912,7 @@
   {
    "id": "luftbrueckendenkmal",
    "name": "Luftbrückendenkmal",
+   "nameEn": "Berlin Airlift Memorial",
    "category": "memorial",
    "latitude": 52.4846,
    "longitude": 13.3866,
@@ -859,6 +922,7 @@
   {
    "id": "rathaus-schoeneberg",
    "name": "Rathaus Schöneberg",
+   "nameEn": "Schöneberg Town Hall",
    "category": "government",
    "latitude": 52.484825,
    "longitude": 13.344103,
@@ -868,6 +932,7 @@
   {
    "id": "gasometer",
    "name": "Gasometer Schöneberg",
+   "nameEn": "Schöneberg Gasometer",
    "category": "landmark",
    "latitude": 52.482,
    "longitude": 13.3569,
@@ -877,6 +942,7 @@
   {
    "id": "schloss-britz",
    "name": "Schloss Britz",
+   "nameEn": "Britz Manor House",
    "category": "palace",
    "latitude": 52.446905,
    "longitude": 13.437899,
@@ -895,6 +961,7 @@
   {
    "id": "hufeisensiedlung",
    "name": "Hufeisensiedlung",
+   "nameEn": "Horseshoe Estate",
    "category": "landmark",
    "latitude": 52.449,
    "longitude": 13.4505,
@@ -913,6 +980,7 @@
   {
    "id": "rathaus-neukoelln",
    "name": "Rathaus Neukölln",
+   "nameEn": "Neukölln Town Hall",
    "category": "government",
    "latitude": 52.481565,
    "longitude": 13.436515,
@@ -922,6 +990,7 @@
   {
    "id": "ehrenmal-treptow",
    "name": "Sowjetisches Ehrenmal Treptow",
+   "nameEn": "Soviet War Memorial (Treptower Park)",
    "category": "memorial",
    "latitude": 52.487664,
    "longitude": 13.46882,
@@ -931,6 +1000,7 @@
   {
    "id": "archenhold",
    "name": "Archenhold-Sternwarte",
+   "nameEn": "Archenhold Observatory",
    "category": "museum",
    "latitude": 52.485854,
    "longitude": 13.47633,
@@ -940,6 +1010,7 @@
   {
    "id": "schloss-koepenick",
    "name": "Schloss Köpenick",
+   "nameEn": "Köpenick Palace",
    "category": "palace",
    "latitude": 52.44386,
    "longitude": 13.572729,
@@ -949,6 +1020,7 @@
   {
    "id": "rathaus-koepenick",
    "name": "Rathaus Köpenick",
+   "nameEn": "Köpenick Town Hall",
    "category": "government",
    "latitude": 52.445417,
    "longitude": 13.575234,
@@ -967,6 +1039,7 @@
   {
    "id": "gaerten-der-welt",
    "name": "Gärten der Welt",
+   "nameEn": "Gardens of the World",
    "category": "park",
    "latitude": 52.537255,
    "longitude": 13.574923,
@@ -976,6 +1049,7 @@
   {
    "id": "schloss-biesdorf",
    "name": "Schloss Biesdorf",
+   "nameEn": "Biesdorf Palace",
    "category": "palace",
    "latitude": 52.509842,
    "longitude": 13.557633,
@@ -1003,6 +1077,7 @@
   {
    "id": "schloss-friedrichsfelde",
    "name": "Schloss Friedrichsfelde",
+   "nameEn": "Friedrichsfelde Palace",
    "category": "palace",
    "latitude": 52.504693,
    "longitude": 13.523585,
@@ -1021,6 +1096,7 @@
   {
    "id": "hohenschoenhausen",
    "name": "Gedenkstätte Berlin-Hohenschönhausen",
+   "nameEn": "Berlin-Hohenschönhausen Memorial",
    "category": "memorial",
    "latitude": 52.541706,
    "longitude": 13.50136,
@@ -1030,6 +1106,7 @@
   {
    "id": "mies-van-der-rohe-haus",
    "name": "Mies van der Rohe Haus",
+   "nameEn": "Mies van der Rohe House",
    "category": "museum",
    "latitude": 52.549189,
    "longitude": 13.49053,
@@ -1039,6 +1116,7 @@
   {
    "id": "schloss-tegel",
    "name": "Schloss Tegel",
+   "nameEn": "Tegel Palace",
    "category": "palace",
    "latitude": 52.595091,
    "longitude": 13.276339,
@@ -1048,6 +1126,7 @@
   {
    "id": "borsigturm",
    "name": "Borsigturm",
+   "nameEn": "Borsig Tower",
    "category": "landmark",
    "latitude": 52.585526,
    "longitude": 13.287326,
@@ -1066,6 +1145,7 @@
   {
    "id": "buddhistisches-haus",
    "name": "Buddhistisches Haus",
+   "nameEn": "Buddhist House",
    "category": "landmark",
    "latitude": 52.635612,
    "longitude": 13.30292,
@@ -1075,6 +1155,7 @@
   {
    "id": "brunnen-voelkerfreundschaft",
    "name": "Brunnen der Völkerfreundschaft",
+   "nameEn": "Fountain of International Friendship",
    "category": "fountain",
    "latitude": 52.522,
    "longitude": 13.4128,
@@ -1084,6 +1165,7 @@
   {
    "id": "wrangelbrunnen",
    "name": "Wrangelbrunnen",
+   "nameEn": "Wrangel Fountain",
    "category": "fountain",
    "latitude": 52.4921,
    "longitude": 13.4131,
@@ -1093,6 +1175,7 @@
   {
    "id": "spindlerbrunnen",
    "name": "Spindlerbrunnen",
+   "nameEn": "Spindler Fountain",
    "category": "fountain",
    "latitude": 52.5119,
    "longitude": 13.4011,
@@ -1102,6 +1185,7 @@
   {
    "id": "stierbrunnen",
    "name": "Stierbrunnen",
+   "nameEn": "Bull Fountain",
    "category": "fountain",
    "latitude": 52.5331,
    "longitude": 13.4372,
@@ -1111,6 +1195,7 @@
   {
    "id": "weltkugelbrunnen",
    "name": "Weltkugelbrunnen",
+   "nameEn": "Globe Fountain",
    "category": "fountain",
    "latitude": 52.504652,
    "longitude": 13.33649,
@@ -1138,6 +1223,7 @@
   {
    "id": "arminiusmarkthalle",
    "name": "Arminiusmarkthalle",
+   "nameEn": "Arminius Market Hall",
    "category": "market",
    "latitude": 52.527834,
    "longitude": 13.33862,
@@ -1165,6 +1251,7 @@
   {
    "id": "bundesrat",
    "name": "Bundesrat (Preußisches Herrenhaus)",
+   "nameEn": "Bundesrat (Prussian House of Lords)",
    "category": "government",
    "latitude": 52.5093,
    "longitude": 13.381176,
@@ -1174,6 +1261,7 @@
   {
    "id": "abgeordnetenhaus",
    "name": "Abgeordnetenhaus von Berlin",
+   "nameEn": "Berlin House of Representatives",
    "category": "government",
    "latitude": 52.507866,
    "longitude": 13.381503,
@@ -1192,6 +1280,7 @@
   {
    "id": "rathaus-charlottenburg",
    "name": "Rathaus Charlottenburg",
+   "nameEn": "Charlottenburg Town Hall",
    "category": "government",
    "latitude": 52.517582,
    "longitude": 13.308799,
@@ -1201,6 +1290,7 @@
   {
    "id": "rathaus-spandau",
    "name": "Rathaus Spandau",
+   "nameEn": "Spandau Town Hall",
    "category": "government",
    "latitude": 52.535072,
    "longitude": 13.200679,
@@ -1210,6 +1300,7 @@
   {
    "id": "glienicker-bruecke",
    "name": "Glienicker Brücke",
+   "nameEn": "Glienicke Bridge",
    "category": "bridge",
    "latitude": 52.4137,
    "longitude": 13.0915,
@@ -1219,6 +1310,7 @@
   {
    "id": "weisse-stadt",
    "name": "Weiße Stadt",
+   "nameEn": "White City",
    "category": "landmark",
    "latitude": 52.56917,
    "longitude": 13.35278,
@@ -1228,6 +1320,7 @@
   {
    "id": "flughafen-tegel",
    "name": "Flughafen Tegel",
+   "nameEn": "Tegel Airport",
    "category": "landmark",
    "latitude": 52.5538,
    "longitude": 13.2895,
@@ -1246,6 +1339,7 @@
   {
    "id": "russischer-friedhof-tegel",
    "name": "Russischer Friedhof Tegel",
+   "nameEn": "Russian Orthodox Cemetery Tegel",
    "category": "cemetery",
    "latitude": 52.57767,
    "longitude": 13.30067,
@@ -1255,6 +1349,7 @@
   {
    "id": "siedlung-schillerpark",
    "name": "Siedlung Schillerpark",
+   "nameEn": "Schillerpark Housing Estate",
    "category": "landmark",
    "latitude": 52.5605,
    "longitude": 13.3495,
@@ -1273,6 +1368,7 @@
   {
    "id": "alte-nazarethkirche",
    "name": "Alte Nazarethkirche",
+   "nameEn": "Old Nazareth Church",
    "category": "church",
    "latitude": 52.546936,
    "longitude": 13.359508,
@@ -1282,6 +1378,7 @@
   {
    "id": "strandbad-ploetzensee",
    "name": "Strandbad Plötzensee",
+   "nameEn": "Plötzensee Lido",
    "category": "landmark",
    "latitude": 52.543527,
    "longitude": 13.329361,
@@ -1291,6 +1388,7 @@
   {
    "id": "gedenkstaette-ploetzensee",
    "name": "Gedenkstätte Plötzensee",
+   "nameEn": "Plötzensee Memorial",
    "category": "memorial",
    "latitude": 52.540867,
    "longitude": 13.322816,
@@ -1300,6 +1398,7 @@
   {
    "id": "dorotheenstaedtischer-friedhof",
    "name": "Dorotheenstädtischer Friedhof",
+   "nameEn": "Dorotheenstadt Cemetery",
    "category": "cemetery",
    "latitude": 52.528411,
    "longitude": 13.383704,
@@ -1309,6 +1408,7 @@
   {
    "id": "kolk",
    "name": "Kolk (Altstadt Spandau)",
+   "nameEn": "Kolk (Spandau Old Town)",
    "category": "square",
    "latitude": 52.539458,
    "longitude": 13.207625,
@@ -1327,6 +1427,7 @@
   {
    "id": "flugplatz-gatow",
    "name": "Militärhistorisches Museum Flugplatz Gatow",
+   "nameEn": "Military History Museum – Gatow Airfield",
    "category": "museum",
    "latitude": 52.471937,
    "longitude": 13.138734,
@@ -1336,6 +1437,7 @@
   {
    "id": "siemensstadt",
    "name": "Großsiedlung Siemensstadt",
+   "nameEn": "Siemensstadt Housing Estate",
    "category": "landmark",
    "latitude": 52.538205,
    "longitude": 13.27871,
@@ -1354,6 +1456,7 @@
   {
    "id": "gedenkstaette-sozialisten",
    "name": "Gedenkstätte der Sozialisten",
+   "nameEn": "Memorial to the Socialists",
    "category": "cemetery",
    "latitude": 52.514921,
    "longitude": 13.511227,
@@ -1363,6 +1466,7 @@
   {
    "id": "rathaus-lichtenberg",
    "name": "Rathaus Lichtenberg",
+   "nameEn": "Lichtenberg Town Hall",
    "category": "government",
    "latitude": 52.515783,
    "longitude": 13.479838,
@@ -1390,6 +1494,7 @@
   {
    "id": "regattastrecke-gruenau",
    "name": "Regattastrecke Grünau",
+   "nameEn": "Grünau Regatta Course",
    "category": "stadium",
    "latitude": 52.410767,
    "longitude": 13.605478,
@@ -1399,6 +1504,7 @@
   {
    "id": "wasserwerk-friedrichshagen",
    "name": "Museum im Wasserwerk Friedrichshagen",
+   "nameEn": "Friedrichshagen Waterworks Museum",
    "category": "museum",
    "latitude": 52.451825,
    "longitude": 13.642648,
@@ -1408,6 +1514,7 @@
   {
    "id": "strandbad-mueggelsee",
    "name": "Strandbad Müggelsee",
+   "nameEn": "Müggelsee Lido",
    "category": "landmark",
    "latitude": 52.4454,
    "longitude": 13.6762,
@@ -1417,6 +1524,7 @@
   {
    "id": "aerodynamischer-park",
    "name": "Aerodynamischer Park",
+   "nameEn": "Aerodynamic Park",
    "category": "park",
    "latitude": 52.431944,
    "longitude": 13.528889,
@@ -1426,6 +1534,7 @@
   {
    "id": "gartenstadt-falkenberg",
    "name": "Gartenstadt Falkenberg",
+   "nameEn": "Falkenberg Garden City",
    "category": "landmark",
    "latitude": 52.410278,
    "longitude": 13.564722,
@@ -1435,6 +1544,7 @@
   {
    "id": "marzahner-muehle",
    "name": "Marzahner Bockwindmühle",
+   "nameEn": "Marzahn Windmill",
    "category": "landmark",
    "latitude": 52.544,
    "longitude": 13.5635,
@@ -1444,6 +1554,7 @@
   {
    "id": "gruenderzeitmuseum",
    "name": "Gründerzeitmuseum Mahlsdorf",
+   "nameEn": "Gründerzeit Museum Mahlsdorf",
    "category": "museum",
    "latitude": 52.5024,
    "longitude": 13.6139,
@@ -1453,6 +1564,7 @@
   {
    "id": "zwangslager-marzahn",
    "name": "Gedenkstein Zwangslager Marzahn",
+   "nameEn": "Memorial Stone at the Marzahn Forced Camp",
    "category": "memorial",
    "latitude": 52.5485,
    "longitude": 13.5415,
@@ -1462,6 +1574,7 @@
   {
    "id": "juedischer-friedhof-weissensee",
    "name": "Jüdischer Friedhof Weißensee",
+   "nameEn": "Weißensee Jewish Cemetery",
    "category": "cemetery",
    "latitude": 52.544722,
    "longitude": 13.458333,
@@ -1471,6 +1584,7 @@
   {
    "id": "ehrenmal-schoenholzer-heide",
    "name": "Sowjetisches Ehrenmal Schönholzer Heide",
+   "nameEn": "Soviet War Memorial (Schönholzer Heide)",
    "category": "memorial",
    "latitude": 52.581667,
    "longitude": 13.3725,
@@ -1489,6 +1603,7 @@
   {
    "id": "rathaus-pankow",
    "name": "Rathaus Pankow",
+   "nameEn": "Pankow Town Hall",
    "category": "government",
    "latitude": 52.568992,
    "longitude": 13.402312,
@@ -1507,6 +1622,7 @@
   {
    "id": "carl-legien",
    "name": "Wohnstadt Carl Legien",
+   "nameEn": "Carl Legien Housing Estate",
    "category": "landmark",
    "latitude": 52.546389,
    "longitude": 13.432778,
@@ -1516,6 +1632,7 @@
   {
    "id": "schlosskirche-buch",
    "name": "Schlosskirche Buch",
+   "nameEn": "Buch Palace Church",
    "category": "church",
    "latitude": 52.6354,
    "longitude": 13.4986,
@@ -1651,6 +1768,7 @@
   {
    "id": "claerchens-ballhaus",
    "name": "Clärchens Ballhaus",
+   "nameEn": "Clärchen's Ballroom",
    "category": "club",
    "latitude": 52.526473,
    "longitude": 13.39691,

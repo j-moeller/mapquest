@@ -194,6 +194,12 @@ def district_of(districts, lat: float, lon: float):
     return None
 
 
+def english(row: dict) -> dict:
+    """The English name, where English uses another than the German one (column name_en)."""
+    name = (row.get("name_en") or "").strip()
+    return {"nameEn": name} if name and name != row["name"] else {}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("sights", type=pathlib.Path)
@@ -210,7 +216,7 @@ def main():
         if row["aliases"].strip() == "@manual":
             print(f"{row['id']:28}      –  manual position")
             found.append({
-                "id": row["id"], "name": row["name"], "category": row["category"],
+                "id": row["id"], "name": row["name"], **english(row), "category": row["category"],
                 "latitude": float(row["lat"]), "longitude": float(row["lon"]), "radius": int(row["radius"]),
             })
             continue
@@ -222,7 +228,7 @@ def main():
         _, lat, lon, osm_name, cls, layer, d = match
         print(f"{row['id']:28} {d:6.0f} m  {layer}/{cls}: {osm_name}")
         found.append({
-            "id": row["id"], "name": row["name"], "category": row["category"],
+            "id": row["id"], "name": row["name"], **english(row), "category": row["category"],
             "latitude": round(lat, 6), "longitude": round(lon, 6), "radius": int(row["radius"]),
         })
     for sight in found:

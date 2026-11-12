@@ -1,0 +1,4 @@
+/* Permission texts (Info.plist), English. */
+"NSCameraUsageDescription" = "MapQuest captures a sight when you photograph it there. The photo is kept in the app, in the sight's entry.";
+"NSLocationWhenInUseUsageDescription" = "MapQuest lifts the fog of war where you go. Your position is used to reveal the parts of the map you visit and is stored only on this iPhone.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Allow MapQuest to keep discovering the map while it is in the background, so places you pass are revealed even when the app is closed. Positions are stored only on this iPhone.";

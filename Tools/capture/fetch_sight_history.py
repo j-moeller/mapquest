@@ -21,12 +21,19 @@ The ruler at the time is not stored: the app derives it from the year
 Wikidata (CC0). Requests are batched (about 15), cached and patient with rate
 limits (shared with fetch_sight_info.py).
 
+With --german it also writes the facts in German: the phrases (dates in words,
+styles, clients, notes on architects) from berlin_sight_history_de.csv – every
+phrase needs a row there – and the history from the German article.
+
 Usage: pip install mwparserfromhell
        python3 Tools/capture/fetch_sight_history.py App/MapQuest/Resources/Berlin/berlin-sights.json \\
            App/MapQuest/Resources/Berlin/berlin-sight-info.json \\
-           App/MapQuest/Resources/Berlin/berlin-sight-history.json --cache build-sights/wiki
+           App/MapQuest/Resources/Berlin/berlin-sight-history.json --cache build-sights/wiki \\
+           --german-info App/MapQuest/Resources/Berlin/berlin-sight-info-de.json \\
+           --german App/MapQuest/Resources/Berlin/berlin-sight-history-de.json
 """
 import argparse
+import csv
 import json
 import pathlib
 import re
@@ -39,6 +46,11 @@ import fetch_sight_info as wiki  # noqa: E402
 
 MAX_HISTORY = 1_800
 HISTORY_SECTIONS = re.compile(r"^\s*(History|Historical background|Background|Construction|Geschichte|Baugeschichte|Entstehung)\s*$", re.I)
+# The German facts take the history from the German article, whose sections are named more freely.
+GERMAN_HISTORY_SECTIONS = re.compile(r"^\s*(Geschichte(?: (?:des|der|und) .*)?|Baugeschichte|Entstehung|Entstehungsgeschichte"
+                                     r"|Historie|Geschichte und Architektur)\s*$", re.I)
+# The language of the wikitext being rendered ("en", "de"): words added by templates follow it.
+LANGUAGE = "en"
 YEAR = re.compile(r"\b(1[0-9]{3}|20[0-4][0-9])\b")
 
 
@@ -139,7 +151,7 @@ def render_template(template) -> str:
     if name in ("unbulleted list", "ubl", "plainlist", "plain list", "flatlist", "hlist", "bulleted list", "indented plainlist"):
         return ", ".join(re.sub(r"^\s*\*\s*", "", line) for v in positional for line in v.split("\n") if line.strip(" *"))
     if name in ("circa", "c.", "ca.", "ca"):
-        return "c. " + (positional[0] if positional else "")
+        return ("ca. " if LANGUAGE == "de" else "c. ") + (positional[0] if positional else "")
     if name in ("ndash", "snd", "spaced ndash"):
         return " – " if name != "ndash" else "–"
     if name in ("mdash",):
@@ -208,8 +220,8 @@ def years_in(text: str | None) -> list[int]:
     return [int(y) for y in YEAR.findall(text or "")]
 
 
-def history_text(code) -> str | None:
-    sections = code.get_sections(levels=[2], matches=lambda heading: bool(HISTORY_SECTIONS.match(str(heading).strip())))
+def history_text(code, headings=HISTORY_SECTIONS) -> str | None:
+    sections = code.get_sections(levels=[2], matches=lambda heading: bool(headings.match(str(heading).strip())))
     if not sections:
         return None
     section = sections[0]
@@ -256,6 +268,36 @@ def apply_facts(record: dict, facts: dict) -> dict:
     return record
 
 
+def read_translations(path: pathlib.Path) -> dict:
+    """The German phrases of the facts: (field, English) → German (berlin_sight_history_de.csv)."""
+    with open(path, encoding="utf-8") as f:
+        return {(row["field"], row["en"]): row["de"] for row in csv.DictReader(f, delimiter=";") if row["de"].strip()}
+
+
+def german_record(record: dict, table: dict, missing: set) -> dict:
+    """The facts in German: phrases from the table; years, names and the sector as they are."""
+    def phrase(field, value):
+        if value is None or not re.search(r"[A-Za-z]", value):
+            return value
+        if (field, value) not in table:
+            missing.add((field, value))
+            return value
+        return table[(field, value)]
+
+    def architect(value):
+        match = re.match(r"^(.*) \(([^()]*)\)$", value)
+        return f"{match.group(1)} ({phrase('architectNote', match.group(2))})" if match else value
+
+    german = dict(record)
+    german["built"] = phrase("built", record["built"])
+    german["opened"] = phrase("opened", record["opened"])
+    german["styles"] = [phrase("style", s) for s in record["styles"]]
+    german["architects"] = [architect(a) for a in record["architects"]]
+    german["commissionedBy"] = [phrase("commissionedBy", c) for c in record["commissionedBy"]]
+    german["history"] = None
+    return german
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("sights", type=pathlib.Path)
@@ -264,6 +306,11 @@ def main():
     parser.add_argument("--cache", type=pathlib.Path, required=True)
     parser.add_argument("--facts", type=pathlib.Path, default=pathlib.Path(__file__).resolve().parent / "berlin_sight_history.csv",
                         help="hand-checked facts that take precedence over the fetched ones")
+    parser.add_argument("--german-info", type=pathlib.Path, help="the German entries (fetch_sight_info.py --german)")
+    parser.add_argument("--german", type=pathlib.Path, help="also write the facts in German")
+    parser.add_argument("--translations", type=pathlib.Path,
+                        default=pathlib.Path(__file__).resolve().parent / "berlin_sight_history_de.csv",
+                        help="German phrases of the facts (field;en;de)")
     args = parser.parse_args()
     args.cache.mkdir(parents=True, exist_ok=True)
     wiki.CACHE = args.cache
@@ -343,10 +390,43 @@ def main():
         "entries": result,
     }
     args.output.write_text(json.dumps(document, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    if args.german:
+        write_german(args, result)
     dated = sum(1 for r in result.values() if r["year"])
     print(f"{len(result)} sights: {dated} dated, {sum(1 for r in result.values() if r['architects'])} with architects, "
           f"{sum(1 for r in result.values() if r['styles'])} with style, {sum(1 for r in result.values() if r['commissionedBy'])} commissioned, "
           f"{sum(1 for r in result.values() if r['history'])} with history")
+
+
+def write_german(args, result: dict) -> None:
+    """The German facts: translated phrases, and the history from the German article."""
+    global LANGUAGE
+    if not args.german_info:
+        sys.exit("--german needs --german-info")
+    german_entries = json.loads(args.german_info.read_text(encoding="utf-8"))["entries"]
+    titles = sorted({e["title"] for e in german_entries.values() if e["language"] == "de"})
+    texts = wikitexts("de.wikipedia.org", titles)
+    table = read_translations(args.translations)
+    missing = set()
+    german = {}
+    LANGUAGE = "de"
+    for sight_id, record in result.items():
+        entry = german_entries.get(sight_id)
+        german[sight_id] = german_record(record, table, missing)
+        if entry and entry["language"] == "de":
+            german[sight_id]["history"] = history_text(mwparserfromhell.parse(texts.get(entry["title"], "")), GERMAN_HISTORY_SECTIONS)
+    LANGUAGE = "en"
+    if missing:
+        for field, value in sorted(missing):
+            print(f"no German for {field}: {value}", file=sys.stderr)
+        sys.exit(f"{len(missing)} phrases without German in {args.translations}")
+    document = {
+        "license": "Fakten: von Hand geprüft (Tools/capture/berlin_sight_history.csv, übersetzt in berlin_sight_history_de.csv), "
+                   "Wikidata (CC0) und Wikipedia-Infoboxen; Geschichte: Wikipedia (CC BY-SA 4.0), aus dem deutschen Artikel.",
+        "entries": german,
+    }
+    args.german.write_text(json.dumps(document, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    print(f"German: {len(german)} sights, {sum(1 for r in german.values() if r['history'])} with history")
 
 
 if __name__ == "__main__":

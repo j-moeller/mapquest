@@ -18,7 +18,10 @@ public enum TransitSystem: String, Codable, CaseIterable, Hashable, Sendable {
 public struct Station: Codable, Hashable, Identifiable, Sendable {
     /// "u:alexanderplatz", "s:alexanderplatz".
     public var id: String
+    /// The station's name, German as on the signs ("Hauptbahnhof").
     public var name: String
+    /// An English explanation of the name, for the few that need one ("Central Station").
+    public var englishName: String?
     public var system: TransitSystem
     /// The lines stopping here, e.g. ["U2", "U5", "U8"].
     public var lines: [String]
@@ -29,10 +32,15 @@ public struct Station: Codable, Hashable, Identifiable, Sendable {
     /// The district it lies in; `nil` outside the city.
     public var district: String?
 
-    public init(id: String, name: String, system: TransitSystem, lines: [String], latitude: Double, longitude: Double,
-                radius: Double = 80, district: String? = nil) {
+    enum CodingKeys: String, CodingKey {
+        case id, name, englishName = "nameEn", system, lines, latitude, longitude, radius, district
+    }
+
+    public init(id: String, name: String, englishName: String? = nil, system: TransitSystem, lines: [String],
+                latitude: Double, longitude: Double, radius: Double = 80, district: String? = nil) {
         self.id = id
         self.name = name
+        self.englishName = englishName
         self.system = system
         self.lines = lines
         self.latitude = latitude
@@ -40,6 +48,12 @@ public struct Station: Codable, Hashable, Identifiable, Sendable {
         self.radius = radius
         self.district = district
     }
+
+    /// Both names: the German one always first ("Hauptbahnhof · Central Station").
+    public var names: BilingualName { BilingualName(german: name, english: englishName, germanFirst: true) }
+
+    /// The English explanation, in English.
+    public var otherName: String? { names.secondary() }
 
     /// As for sights: the circles of the radius view must reach within this many metres.
     public var captureTolerance: Double { max(0, radius - 50) }

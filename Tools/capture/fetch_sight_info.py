@@ -22,7 +22,10 @@ identifying User-Agent, one request at a time, batched (about 40 requests for
 
 Usage: python3 Tools/capture/fetch_sight_info.py App/MapQuest/Resources/Berlin/berlin-sights.json \
            App/MapQuest/Resources/Berlin/berlin-sight-info.json --cache build-sights/wiki \
-           --aliases Tools/capture/berlin_sights.csv --overrides Tools/capture/berlin_sight_articles.csv
+           --aliases Tools/capture/berlin_sights.csv --overrides Tools/capture/berlin_sight_articles.csv \
+           --german App/MapQuest/Resources/Berlin/berlin-sight-info-de.json
+
+With --german it also writes the German entries: the German articles' introductions.
 
 Overrides (id;German article title, or "-" for none) fix sights whose name is no
 article and whose search finds a neighbouring one (they skip the position check).
@@ -155,6 +158,8 @@ def clean(text: str) -> str:
     """Plain introduction: no pronunciation notes, whole paragraphs up to MAX_TEXT."""
     # Parentheses with pronunciations, IPA or audio hints.
     text = re.sub(r"\s*\([^()]*(?:pronounced|Aussprache|\[|listen|anhören|ⓘ)[^()]*\)", "", text)
+    # Pronunciations in brackets (IPA): "Schloss Bellevue [ʃlɔs bɛlˈvyː]".
+    text = re.sub(r"\s*\[[^\]]*[ˈˌːʃʒŋɐəɛɔʊʏøœɪʁχç][^\]]*\]", "", text)
     # What remains of nested ones: "()" or "(; …)".
     text = re.sub(r"\s*\(\s*[;,]?\s*\)", "", text)
     text = re.sub(r"\(\s*[;,]\s*", "(", text)
@@ -215,6 +220,8 @@ def main():
     parser.add_argument("--overrides", type=pathlib.Path, help="id;German article title (or '-' for none)")
     parser.add_argument("--cache", type=pathlib.Path, help="directory for cached API answers")
     parser.add_argument("--aliases", type=pathlib.Path, help="the sight list with aliases (id;…;aliases), e.g. berlin_sights.csv")
+    parser.add_argument("--german", type=pathlib.Path,
+                        help="also write the German entries (the German introductions; English where there is no German article)")
     args = parser.parse_args()
     global CACHE
     if args.cache:
@@ -276,6 +283,7 @@ def main():
     images = commons_images(sorted(image_names))
 
     entries = {}
+    german = {}
     for sight in sights:
         if sight["id"] not in matches:
             continue
@@ -303,6 +311,15 @@ def main():
             "text": text,
             "image": image,
         }
+        # German: the German introduction (the article the sight was matched with).
+        german_source = de if de_text else source
+        german[sight["id"]] = {
+            "title": german_source["title"],
+            "language": "de" if german_source is de else "en",
+            "url": german_source["fullurl"],
+            "text": de_text or text,
+            "image": image,
+        }
         print(f"{sight['id']:28} {d:5.0f} m  {title} -> {source['title']} ({entries[sight['id']]['language']}, "
               f"{len(text)} chars, {'photo' if image else 'no photo'})")
     document = {
@@ -310,6 +327,13 @@ def main():
         "entries": entries,
     }
     args.output.write_text(json.dumps(document, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    if args.german:
+        document_de = {
+            "license": "Texte: Wikipedia, CC BY-SA 4.0 (Artikel je Eintrag). Fotos: Wikimedia Commons, Urheber und Lizenz je Eintrag.",
+            "entries": german,
+        }
+        args.german.write_text(json.dumps(document_de, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+        print(f"German: {len(german)} entries, {sum(1 for e in german.values() if e['language'] == 'de')} from German articles")
     print(f"{len(entries)} entries, {sum(1 for e in entries.values() if e['image'])} with photo; missing: {', '.join(missing)}")
 
 

@@ -22,7 +22,10 @@ public enum SightCategory: String, Codable, CaseIterable, Sendable {
 /// or, for large open areas, reaches within `captureTolerance` of it.
 public struct Sight: Codable, Hashable, Identifiable, Sendable {
     public var id: String
-    public var name: String
+    /// The German name, the original ("Brandenburger Tor").
+    public var germanName: String
+    /// The English name, where English uses another ("Brandenburg Gate").
+    public var englishName: String?
     public var category: SightCategory
     public var latitude: Double
     public var longitude: Double
@@ -31,16 +34,30 @@ public struct Sight: Codable, Hashable, Identifiable, Sendable {
     /// The city district it lies in (e.g. "Friedrichshain-Kreuzberg"), if known.
     public var district: String?
 
-    public init(id: String, name: String, category: SightCategory, latitude: Double, longitude: Double, radius: Double = 40,
-                district: String? = nil) {
+    enum CodingKeys: String, CodingKey {
+        case id, germanName = "name", englishName = "nameEn", category, latitude, longitude, radius, district
+    }
+
+    public init(id: String, name: String, englishName: String? = nil, category: SightCategory, latitude: Double,
+                longitude: Double, radius: Double = 40, district: String? = nil) {
         self.id = id
-        self.name = name
+        self.germanName = name
+        self.englishName = englishName
         self.category = category
         self.latitude = latitude
         self.longitude = longitude
         self.radius = radius
         self.district = district
     }
+
+    /// Both names.
+    public var names: BilingualName { BilingualName(german: germanName, english: englishName) }
+
+    /// The name in the app's language: in English the English name where there is one.
+    public var name: String { names.primary() }
+
+    /// The other name, next to it (in English: the German original).
+    public var otherName: String? { names.secondary() }
 
     /// A place of remembrance (a memorial, a memorial site, a cemetery): not part of the game.
     public var isPlaceOfRemembrance: Bool { category.isRemembrance }
@@ -69,7 +86,8 @@ public struct SightCatalog: Sendable {
         self.index = index
     }
 
-    /// Reads a sight list: `{"source": …, "sights": [{id, name, category, latitude, longitude, radius, district}]}`.
+    /// Reads a sight list: `{"source": …, "sights": [{id, name, nameEn, category, latitude, longitude, radius, district}]}`
+    /// (`name` German, `nameEn` English where it differs).
     public static func decode(_ data: Data) throws -> SightCatalog {
         struct Document: Decodable { var sights: [Sight] }
         return SightCatalog(sights: try JSONDecoder().decode(Document.self, from: data).sights)

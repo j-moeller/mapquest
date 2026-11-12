@@ -1,185 +1,185 @@
-id;name;category;lat;lon;radius;aliases
-brandenburger-tor;Brandenburger Tor;monument;52.5163;13.3777;40;Brandenburger Tor
-reichstag;Reichstagsgebäude;government;52.5186;13.3762;50;Reichstagsgebäude|Reichstag|Deutscher Bundestag
-fernsehturm;Berliner Fernsehturm;viewpoint;52.5208;13.4094;40;Berliner Fernsehturm|Fernsehturm
-berliner-dom;Berliner Dom;church;52.5191;13.4010;40;Berliner Dom
-pergamonmuseum;Pergamonmuseum;museum;52.5212;13.3967;40;Pergamonmuseum
-altes-museum;Altes Museum;museum;52.5194;13.3985;40;Altes Museum
-neues-museum;Neues Museum;museum;52.5205;13.3977;40;Neues Museum
-alte-nationalgalerie;Alte Nationalgalerie;museum;52.5208;13.3982;40;Alte Nationalgalerie
-bode-museum;Bode-Museum;museum;52.5219;13.3946;40;Bode-Museum
-humboldt-forum;Humboldt Forum;palace;52.5172;13.4025;50;Humboldt Forum|Berliner Schloss|Humboldt-Forum
-rotes-rathaus;Rotes Rathaus;government;52.5185;13.4083;40;Rotes Rathaus|Berliner Rathaus
-neptunbrunnen;Neptunbrunnen;fountain;52.5192;13.4067;30;Neptunbrunnen
-marienkirche;St. Marienkirche;church;52.5208;13.4065;30;St. Marienkirche|Marienkirche
-weltzeituhr;Weltzeituhr;landmark;52.5213;13.4133;30;Weltzeituhr|Urania-Weltzeituhr
-alexanderplatz;Alexanderplatz;square;52.5219;13.4132;80;Alexanderplatz
-nikolaikirche;Nikolaikirche;church;52.5169;13.4075;30;Nikolaikirche|Museum Nikolaikirche|St. Nikolai
-gendarmenmarkt;Gendarmenmarkt;square;52.5137;13.3927;60;Gendarmenmarkt
-konzerthaus;Konzerthaus Berlin;culture;52.5135;13.3918;40;Konzerthaus Berlin|Konzerthaus
-franzoesischer-dom;Französischer Dom;church;52.5142;13.3925;30;Französischer Dom|Französische Friedrichstadtkirche
-deutscher-dom;Deutscher Dom;church;52.5128;13.3925;30;Deutscher Dom
-bebelplatz;Bebelplatz;square;52.5163;13.3941;40;Bebelplatz
-staatsoper;Staatsoper Unter den Linden;culture;52.5165;13.3955;40;Staatsoper Unter den Linden|Staatsoper
-hedwigs-kathedrale;St. Hedwigs-Kathedrale;church;52.5156;13.3947;30;St. Hedwigs-Kathedrale|Sankt-Hedwigs-Kathedrale
-neue-wache;Neue Wache;memorial;52.5179;13.3970;30;Neue Wache
-dhm;Deutsches Historisches Museum;museum;52.5178;13.3970;40;Deutsches Historisches Museum|Zeughaus
-humboldt-universitaet;Humboldt-Universität;landmark;52.5178;13.3936;40;Humboldt-Universität zu Berlin|Humboldt-Universität
-holocaust-mahnmal;Denkmal für die ermordeten Juden Europas;memorial;52.5139;13.3787;60;Denkmal für die ermordeten Juden Europas|Holocaust-Mahnmal
-checkpoint-charlie;Checkpoint Charlie;landmark;52.5075;13.3904;30;Checkpoint Charlie
-hackesche-hoefe;Hackesche Höfe;landmark;52.5245;13.4022;40;Hackesche Höfe
-neue-synagoge;Neue Synagoge;landmark;52.5248;13.3946;30;Neue Synagoge|Centrum Judaicum
-naturkundemuseum;Museum für Naturkunde;museum;52.5300;13.3790;40;Museum für Naturkunde
-hamburger-bahnhof;Hamburger Bahnhof;museum;52.5283;13.3720;40;Hamburger Bahnhof|Hamburger Bahnhof – Nationalgalerie der Gegenwart|Hamburger Bahnhof - Nationalgalerie der Gegenwart
-hauptbahnhof;Berlin Hauptbahnhof;landmark;52.5251;13.3694;60;@manual
-kanzleramt;Bundeskanzleramt;government;52.5203;13.3691;50;Bundeskanzleramt
-hkw;Haus der Kulturen der Welt;culture;52.5186;13.3650;40;Haus der Kulturen der Welt
-mauer-gedenkstaette;Gedenkstätte Berliner Mauer;memorial;52.5352;13.3903;60;Gedenkstätte Berliner Mauer
-potsdamer-platz;Potsdamer Platz;square;52.5096;13.3759;60;Potsdamer Platz
-sony-center;Sony Center;landmark;52.5098;13.3733;40;@manual
-philharmonie;Berliner Philharmonie;culture;52.5097;13.3699;40;Philharmonie|Berliner Philharmonie
-neue-nationalgalerie;Neue Nationalgalerie;museum;52.5070;13.3676;40;Neue Nationalgalerie
-siegessaeule;Siegessäule;viewpoint;52.5145;13.3501;40;Siegessäule
-schloss-bellevue;Schloss Bellevue;palace;52.5172;13.3533;50;Schloss Bellevue
-ehrenmal-tiergarten;Sowjetisches Ehrenmal Tiergarten;memorial;52.5166;13.3717;30;Sowjetisches Ehrenmal|Sowjetisches Ehrenmal Tiergarten
-zoo;Zoologischer Garten (Elefantentor);zoo;52.5051;13.3377;50;@manual
-maerkisches-museum;Märkisches Museum;museum;52.5131;13.4103;40;Märkisches Museum
-futurium;Futurium;museum;52.5214;13.3725;40;Futurium
-humboldthain;Humboldthöhe (Flakturm);viewpoint;52.5453;13.3843;60;Humboldthöhe|Flakturm Humboldthain|Flakturmruine Humboldthain
-monbijoupark;Monbijoupark;park;52.5232;13.3970;80;Monbijoupark
-east-side-gallery;East Side Gallery;landmark;52.5050;13.4397;60;East Side Gallery
-oberbaumbruecke;Oberbaumbrücke;bridge;52.5018;13.4456;40;Oberbaumbrücke
-frankfurter-tor;Frankfurter Tor;landmark;52.5158;13.4543;50;Frankfurter Tor
-strausberger-platz;Strausberger Platz;square;52.5182;13.4283;60;Strausberger Platz
-maerchenbrunnen;Märchenbrunnen;fountain;52.5272;13.4290;40;Märchenbrunnen
-topographie;Topographie des Terrors;memorial;52.5066;13.3837;40;Topographie des Terrors
-gropius-bau;Gropius Bau;museum;52.5066;13.3818;40;Gropius Bau|Martin-Gropius-Bau
-juedisches-museum;Jüdisches Museum Berlin;museum;52.5020;13.3946;40;Jüdisches Museum Berlin|Jüdisches Museum
-technikmuseum;Deutsches Technikmuseum;museum;52.4986;13.3775;60;Deutsches Technikmuseum
-kreuzbergdenkmal;Nationaldenkmal auf dem Kreuzberg;viewpoint;52.4876;13.3820;40;Nationaldenkmal für die Befreiungskriege|Kreuzbergdenkmal|Nationaldenkmal
-berlinische-galerie;Berlinische Galerie;museum;52.5034;13.3986;40;Berlinische Galerie
-molecule-man;Molecule Man;monument;52.4973;13.4637;60;Molecule Man
-mauerpark;Mauerpark;park;52.5430;13.4027;80;Mauerpark
-kulturbrauerei;Kulturbrauerei;landmark;52.5390;13.4130;50;Kulturbrauerei
-wasserturm;Wasserturm Prenzlauer Berg;landmark;52.5317;13.4170;40;Wasserturm Prenzlauer Berg|Wasserturm
-kollwitzplatz;Kollwitzplatz;square;52.5361;13.4175;50;Kollwitzplatz
-planetarium;Zeiss-Großplanetarium;museum;52.5420;13.4277;40;Zeiss-Großplanetarium|Planetarium
-gethsemanekirche;Gethsemanekirche;church;52.5470;13.4130;30;Gethsemanekirche
-schloss-schoenhausen;Schloss Schönhausen;palace;52.5810;13.4033;50;Schloss Schönhausen
-zionskirche;Zionskirche;church;52.5355;13.4029;30;Zionskirche
-gedaechtniskirche;Kaiser-Wilhelm-Gedächtniskirche;church;52.5048;13.3350;40;Kaiser-Wilhelm-Gedächtniskirche|Gedächtniskirche
-schloss-charlottenburg;Schloss Charlottenburg;palace;52.5208;13.2957;60;Schloss Charlottenburg
-funkturm;Funkturm Berlin;viewpoint;52.5051;13.2785;40;Funkturm Berlin|Funkturm
-kadewe;KaDeWe;landmark;52.5016;13.3411;40;KaDeWe|Kaufhaus des Westens
-olympiastadion;Olympiastadion;stadium;52.5147;13.2395;80;Olympiastadion Berlin|Olympiastadion
-glockenturm;Glockenturm am Olympiapark;viewpoint;52.5153;13.2280;40;Glockenturm|Glockenturm Olympiapark
-teufelsberg;Teufelsberg;viewpoint;52.4977;13.2410;80;Teufelsberg|Field Station Berlin|Abhörstation Teufelsberg
-grunewaldturm;Grunewaldturm;viewpoint;52.4733;13.1810;40;Grunewaldturm|Kaiser-Wilhelm-Turm
-jagdschloss-grunewald;Jagdschloss Grunewald;palace;52.4709;13.2650;50;Jagdschloss Grunewald
-waldbuehne;Waldbühne;culture;52.5163;13.2310;60;Waldbühne
-corbusierhaus;Corbusierhaus;landmark;52.5085;13.2380;40;Corbusierhaus|Unité d'Habitation
-deutsche-oper;Deutsche Oper Berlin;culture;52.5121;13.3087;40;Deutsche Oper Berlin|Deutsche Oper
-zitadelle;Zitadelle Spandau;palace;52.5413;13.2129;80;Zitadelle Spandau|Zitadelle
-nikolaikirche-spandau;St.-Nikolai-Kirche Spandau;church;52.5370;13.2042;30;St. Nikolai|St.-Nikolai-Kirche|Nikolaikirche
-pfaueninsel;Pfaueninsel;palace;52.4330;13.1290;80;Schloss Pfaueninsel|Pfaueninsel
-wannsee-konferenz;Haus der Wannsee-Konferenz;memorial;52.4330;13.1650;40;Haus der Wannsee-Konferenz|Gedenk- und Bildungsstätte Haus der Wannsee-Konferenz
-strandbad-wannsee;Strandbad Wannsee;landmark;52.4380;13.1780;80;Strandbad Wannsee
-liebermann-villa;Liebermann-Villa;museum;52.4296;13.1640;40;Liebermann-Villa|Liebermann-Villa am Wannsee
-botanischer-garten;Botanischer Garten;park;52.4550;13.3050;100;Botanischer Garten Berlin|Botanischer Garten
-bierpinsel;Bierpinsel;landmark;52.4590;13.3220;30;Bierpinsel|Turmrestaurant Steglitz
-bruecke-museum;Brücke-Museum;museum;52.4580;13.2670;40;Brücke-Museum
-alliiertenmuseum;AlliiertenMuseum;museum;52.4520;13.2690;40;AlliiertenMuseum|Alliiertenmuseum
-schloss-glienicke;Schloss Glienicke;palace;52.4157;13.0950;50;Schloss Glienicke
-nikolskoe;Kirche St. Peter und Paul;church;52.4280;13.1400;60;Kirche St. Peter und Paul|St. Peter und Paul|Blockhaus Nikolskoe
-tempelhofer-feld;Tempelhofer Feld;park;52.4733;13.4019;150;@manual
-flughafen-tempelhof;Flughafen Tempelhof;landmark;52.4840;13.3880;80;Flughafen Berlin-Tempelhof|Flughafen Tempelhof|Flughafengebäude Tempelhof
-luftbrueckendenkmal;Luftbrückendenkmal;memorial;52.4846;13.3866;40;@manual
-rathaus-schoeneberg;Rathaus Schöneberg;government;52.4850;13.3440;40;Rathaus Schöneberg
-gasometer;Gasometer Schöneberg;landmark;52.4820;13.3569;80;@manual
-schloss-britz;Schloss Britz;palace;52.4440;13.4370;40;Schloss Britz|Gutshof Britz
-britzer-garten;Britzer Garten;park;52.4290;13.4180;120;Britzer Garten
-hufeisensiedlung;Hufeisensiedlung;landmark;52.4490;13.4505;100;@manual
-koernerpark;Körnerpark;park;52.4710;13.4370;60;Körnerpark
-rathaus-neukoelln;Rathaus Neukölln;government;52.4815;13.4350;40;Rathaus Neukölln
-ehrenmal-treptow;Sowjetisches Ehrenmal Treptow;memorial;52.4860;13.4710;80;Sowjetisches Ehrenmal|Sowjetisches Ehrenmal Treptower Park
-archenhold;Archenhold-Sternwarte;museum;52.4860;13.4770;40;Archenhold-Sternwarte
-schloss-koepenick;Schloss Köpenick;palace;52.4440;13.5730;50;Schloss Köpenick
-rathaus-koepenick;Rathaus Köpenick;government;52.4460;13.5760;40;Rathaus Köpenick
-mueggelturm;Müggelturm;viewpoint;52.4175;13.6380;40;Müggelturm
-gaerten-der-welt;Gärten der Welt;park;52.5390;13.5770;120;Gärten der Welt
-schloss-biesdorf;Schloss Biesdorf;palace;52.5050;13.5600;50;Schloss Biesdorf
-wolkenhain;Wolkenhain;viewpoint;52.5340;13.5900;40;Wolkenhain|Aussichtsplattform Wolkenhain
-tierpark;Tierpark Berlin;zoo;52.5000;13.5300;100;Tierpark Berlin|Tierpark Berlin-Friedrichsfelde
-schloss-friedrichsfelde;Schloss Friedrichsfelde;palace;52.5070;13.5270;50;Schloss Friedrichsfelde
-stasimuseum;Stasimuseum;memorial;52.5146;13.4880;40;Stasimuseum|Stasi-Museum
-hohenschoenhausen;Gedenkstätte Berlin-Hohenschönhausen;memorial;52.5420;13.5000;40;Gedenkstätte Berlin-Hohenschönhausen
-mies-van-der-rohe-haus;Mies van der Rohe Haus;museum;52.5470;13.4960;40;Mies van der Rohe Haus|Mies-van-der-Rohe-Haus
-schloss-tegel;Schloss Tegel;palace;52.5960;13.2690;50;Schloss Tegel|Humboldtschloss
-borsigturm;Borsigturm;landmark;52.5880;13.2850;40;Borsigturm
-tegeler-hafen;Greenwichpromenade;landmark;52.5870;13.2780;60;Greenwichpromenade
-buddhistisches-haus;Buddhistisches Haus;landmark;52.6340;13.3080;40;Buddhistisches Haus|Das Buddhistische Haus
-brunnen-voelkerfreundschaft;Brunnen der Völkerfreundschaft;fountain;52.522;13.4128;30;@manual
-wrangelbrunnen;Wrangelbrunnen;fountain;52.4921;13.4131;30;@manual
-spindlerbrunnen;Spindlerbrunnen;fountain;52.5119;13.4011;30;@manual
-stierbrunnen;Stierbrunnen;fountain;52.5331;13.4372;60;@manual
-weltkugelbrunnen;Weltkugelbrunnen;fountain;52.504652;13.33649;30;@manual
-hackescher-markt;Hackescher Markt;market;52.5233;13.4028;50;Hackescher Markt
-markthalle-neun;Markthalle Neun;market;52.5022;13.4315;40;Markthalle IX|Markthalle Neun
-arminiusmarkthalle;Arminiusmarkthalle;market;52.5278;13.3386;40;Arminiusmarkthalle|Markthalle Moabit|Moabiter Markthalle
-ackerhalle;Ackerhalle;market;52.5321;13.3970;40;@manual
-winterfeldtplatz;Winterfeldtplatz;market;52.495;13.35472;80;@manual
-bundesrat;Bundesrat (Preußisches Herrenhaus);government;52.50917;13.38139;50;Bundesrat|Preußisches Herrenhaus
-abgeordnetenhaus;Abgeordnetenhaus von Berlin;government;52.507984;13.38157;50;Abgeordnetenhaus von Berlin|Abgeordnetenhaus
-detlev-rohwedder-haus;Detlev-Rohwedder-Haus;government;52.508675;13.384058;60;@manual
-rathaus-charlottenburg;Rathaus Charlottenburg;government;52.51778;13.30861;50;Rathaus Charlottenburg
-rathaus-spandau;Rathaus Spandau;government;52.535;13.20028;50;Rathaus Spandau
-glienicker-bruecke;Glienicker Brücke;bridge;52.4137;13.0915;60;@manual
-weisse-stadt;Weiße Stadt;landmark;52.56917;13.35278;100;@manual
-flughafen-tegel;Flughafen Tegel;landmark;52.5538;13.2895;150;@manual
-dicke-marie;Dicke Marie;park;52.59357;13.264987;30;@manual
-russischer-friedhof-tegel;Russischer Friedhof Tegel;cemetery;52.57767;13.30067;60;@manual
-siedlung-schillerpark;Siedlung Schillerpark;landmark;52.5605;13.3495;80;@manual
-volkspark-rehberge;Volkspark Rehberge;park;52.551479;13.330375;150;@manual
-alte-nazarethkirche;Alte Nazarethkirche;church;52.546936;13.359508;30;@manual
-strandbad-ploetzensee;Strandbad Plötzensee;landmark;52.543527;13.329361;60;@manual
-gedenkstaette-ploetzensee;Gedenkstätte Plötzensee;memorial;52.54083;13.3225;40;Gedenkstätte Plötzensee
-dorotheenstaedtischer-friedhof;Dorotheenstädtischer Friedhof;cemetery;52.528411;13.383704;60;@manual
-kolk;Kolk (Altstadt Spandau);square;52.539458;13.207625;50;@manual
-fort-hahneberg;Fort Hahneberg;landmark;52.521811;13.138306;100;@manual
-flugplatz-gatow;Militärhistorisches Museum Flugplatz Gatow;museum;52.471937;13.138734;100;@manual
-siemensstadt;Großsiedlung Siemensstadt;landmark;52.5388;13.2815;100;Großsiedlung Siemensstadt|Ringsiedlung
-museum-karlshorst;Museum Berlin-Karlshorst;memorial;52.486111;13.539722;50;Museum Berlin-Karlshorst|Deutsch-Russisches Museum
-gedenkstaette-sozialisten;Gedenkstätte der Sozialisten;cemetery;52.514921;13.511227;50;@manual
-rathaus-lichtenberg;Rathaus Lichtenberg;government;52.5158;13.4797;50;Rathaus Lichtenberg
-orankesee;Orankesee;park;52.548889;13.4825;100;@manual
-spreepark;Spreepark;park;52.485833;13.487778;120;@manual
-regattastrecke-gruenau;Regattastrecke Grünau;stadium;52.410767;13.605478;100;@manual
-wasserwerk-friedrichshagen;Museum im Wasserwerk Friedrichshagen;museum;52.451825;13.642648;60;@manual
-strandbad-mueggelsee;Strandbad Müggelsee;landmark;52.4454;13.6762;80;@manual
-aerodynamischer-park;Aerodynamischer Park;park;52.431944;13.528889;80;@manual
-gartenstadt-falkenberg;Gartenstadt Falkenberg;landmark;52.410278;13.564722;80;@manual
-marzahner-muehle;Marzahner Bockwindmühle;landmark;52.544;13.5635;30;@manual
-gruenderzeitmuseum;Gründerzeitmuseum Mahlsdorf;museum;52.5024;13.6139;40;@manual
-zwangslager-marzahn;Gedenkstein Zwangslager Marzahn;memorial;52.5485;13.5415;80;@manual
-juedischer-friedhof-weissensee;Jüdischer Friedhof Weißensee;cemetery;52.544722;13.458333;80;@manual
-ehrenmal-schoenholzer-heide;Sowjetisches Ehrenmal Schönholzer Heide;memorial;52.581667;13.3725;60;@manual
-buergerpark-pankow;Bürgerpark Pankow;park;52.569444;13.393056;100;@manual
-rathaus-pankow;Rathaus Pankow;government;52.5691;13.4023;50;Rathaus Pankow
-weisser-see;Weißer See;park;52.554167;13.464028;100;@manual
-carl-legien;Wohnstadt Carl Legien;landmark;52.546389;13.432778;80;@manual
-schlosskirche-buch;Schlosskirche Buch;church;52.6354;13.4986;30;@manual
-velodrom;Velodrom;stadium;52.530833;13.450833;80;Velodrom
-max-schmeling-halle;Max-Schmeling-Halle;stadium;52.544792;13.404484;60;Max-Schmeling-Halle
-uber-arena;Uber Arena;stadium;52.505556;13.443333;80;Uber Arena|Mercedes-Benz Arena
-alte-foersterei;Stadion An der Alten Försterei;stadium;52.457222;13.568056;80;Stadion An der Alten Försterei|An der Alten Försterei
-tempodrom;Tempodrom;culture;52.5017;13.3811;50;Tempodrom
-columbiahalle;Columbiahalle;culture;52.4846;13.3922;40;@manual
-parkbuehne-wuhlheide;Parkbühne Wuhlheide;culture;52.4619;13.5453;80;Parkbühne Wuhlheide|Kindl-Bühne Wuhlheide
-neue-welt;Huxleys Neue Welt;culture;52.486452;13.42147;40;@manual
-berghain;Berghain;club;52.5111;13.4431;40;Berghain|Berghain / Panorama Bar
-tresor;Tresor;club;52.5104;13.4196;40;Tresor|Tresor Berlin
-so36;SO36;club;52.5003;13.4222;30;SO36
-kitkatclub;KitKatClub;club;52.511111;13.416667;30;KitKatClub|KitKat Club|Kit Kat Club
-kater-club;Kater Club;club;52.5114;13.4267;40;Kater Club|Kater Blau
-club-der-visionaere;Club der Visionaere;club;52.49676;13.450448;30;Club der Visionaere|Club der Visionäre
-claerchens-ballhaus;Clärchens Ballhaus;club;52.5269;13.3967;30;Clärchens Ballhaus
+id;name;category;lat;lon;radius;aliases;name_en
+brandenburger-tor;Brandenburger Tor;monument;52.5163;13.3777;40;Brandenburger Tor;Brandenburg Gate
+reichstag;Reichstagsgebäude;government;52.5186;13.3762;50;Reichstagsgebäude|Reichstag|Deutscher Bundestag;Reichstag Building
+fernsehturm;Berliner Fernsehturm;viewpoint;52.5208;13.4094;40;Berliner Fernsehturm|Fernsehturm;Berlin TV Tower
+berliner-dom;Berliner Dom;church;52.5191;13.4010;40;Berliner Dom;Berlin Cathedral
+pergamonmuseum;Pergamonmuseum;museum;52.5212;13.3967;40;Pergamonmuseum;Pergamon Museum
+altes-museum;Altes Museum;museum;52.5194;13.3985;40;Altes Museum;
+neues-museum;Neues Museum;museum;52.5205;13.3977;40;Neues Museum;
+alte-nationalgalerie;Alte Nationalgalerie;museum;52.5208;13.3982;40;Alte Nationalgalerie;Old National Gallery
+bode-museum;Bode-Museum;museum;52.5219;13.3946;40;Bode-Museum;Bode Museum
+humboldt-forum;Humboldt Forum;palace;52.5172;13.4025;50;Humboldt Forum|Berliner Schloss|Humboldt-Forum;
+rotes-rathaus;Rotes Rathaus;government;52.5185;13.4083;40;Rotes Rathaus|Berliner Rathaus;Red City Hall
+neptunbrunnen;Neptunbrunnen;fountain;52.5192;13.4067;30;Neptunbrunnen;Neptune Fountain
+marienkirche;St. Marienkirche;church;52.5208;13.4065;30;St. Marienkirche|Marienkirche;St. Mary's Church
+weltzeituhr;Weltzeituhr;landmark;52.5213;13.4133;30;Weltzeituhr|Urania-Weltzeituhr;World Clock
+alexanderplatz;Alexanderplatz;square;52.5219;13.4132;80;Alexanderplatz;
+nikolaikirche;Nikolaikirche;church;52.5169;13.4075;30;Nikolaikirche|Museum Nikolaikirche|St. Nikolai;St. Nicholas' Church
+gendarmenmarkt;Gendarmenmarkt;square;52.5137;13.3927;60;Gendarmenmarkt;
+konzerthaus;Konzerthaus Berlin;culture;52.5135;13.3918;40;Konzerthaus Berlin|Konzerthaus;
+franzoesischer-dom;Französischer Dom;church;52.5142;13.3925;30;Französischer Dom|Französische Friedrichstadtkirche;French Cathedral
+deutscher-dom;Deutscher Dom;church;52.5128;13.3925;30;Deutscher Dom;German Cathedral
+bebelplatz;Bebelplatz;square;52.5163;13.3941;40;Bebelplatz;
+staatsoper;Staatsoper Unter den Linden;culture;52.5165;13.3955;40;Staatsoper Unter den Linden|Staatsoper;Berlin State Opera
+hedwigs-kathedrale;St. Hedwigs-Kathedrale;church;52.5156;13.3947;30;St. Hedwigs-Kathedrale|Sankt-Hedwigs-Kathedrale;St. Hedwig's Cathedral
+neue-wache;Neue Wache;memorial;52.5179;13.3970;30;Neue Wache;
+dhm;Deutsches Historisches Museum;museum;52.5178;13.3970;40;Deutsches Historisches Museum|Zeughaus;German Historical Museum
+humboldt-universitaet;Humboldt-Universität;landmark;52.5178;13.3936;40;Humboldt-Universität zu Berlin|Humboldt-Universität;Humboldt University
+holocaust-mahnmal;Denkmal für die ermordeten Juden Europas;memorial;52.5139;13.3787;60;Denkmal für die ermordeten Juden Europas|Holocaust-Mahnmal;Memorial to the Murdered Jews of Europe
+checkpoint-charlie;Checkpoint Charlie;landmark;52.5075;13.3904;30;Checkpoint Charlie;
+hackesche-hoefe;Hackesche Höfe;landmark;52.5245;13.4022;40;Hackesche Höfe;
+neue-synagoge;Neue Synagoge;landmark;52.5248;13.3946;30;Neue Synagoge|Centrum Judaicum;New Synagogue
+naturkundemuseum;Museum für Naturkunde;museum;52.5300;13.3790;40;Museum für Naturkunde;Natural History Museum
+hamburger-bahnhof;Hamburger Bahnhof;museum;52.5283;13.3720;40;Hamburger Bahnhof|Hamburger Bahnhof – Nationalgalerie der Gegenwart|Hamburger Bahnhof - Nationalgalerie der Gegenwart;
+hauptbahnhof;Berlin Hauptbahnhof;landmark;52.5251;13.3694;60;@manual;
+kanzleramt;Bundeskanzleramt;government;52.5203;13.3691;50;Bundeskanzleramt;Federal Chancellery
+hkw;Haus der Kulturen der Welt;culture;52.5186;13.3650;40;Haus der Kulturen der Welt;House of World Cultures
+mauer-gedenkstaette;Gedenkstätte Berliner Mauer;memorial;52.5352;13.3903;60;Gedenkstätte Berliner Mauer;Berlin Wall Memorial
+potsdamer-platz;Potsdamer Platz;square;52.5096;13.3759;60;Potsdamer Platz;
+sony-center;Sony Center;landmark;52.5098;13.3733;40;@manual;
+philharmonie;Berliner Philharmonie;culture;52.5097;13.3699;40;Philharmonie|Berliner Philharmonie;
+neue-nationalgalerie;Neue Nationalgalerie;museum;52.5070;13.3676;40;Neue Nationalgalerie;New National Gallery
+siegessaeule;Siegessäule;viewpoint;52.5145;13.3501;40;Siegessäule;Victory Column
+schloss-bellevue;Schloss Bellevue;palace;52.5172;13.3533;50;Schloss Bellevue;Bellevue Palace
+ehrenmal-tiergarten;Sowjetisches Ehrenmal Tiergarten;memorial;52.5166;13.3717;30;Sowjetisches Ehrenmal|Sowjetisches Ehrenmal Tiergarten;Soviet War Memorial (Tiergarten)
+zoo;Zoologischer Garten (Elefantentor);zoo;52.5051;13.3377;50;@manual;Berlin Zoo (Elephant Gate)
+maerkisches-museum;Märkisches Museum;museum;52.5131;13.4103;40;Märkisches Museum;
+futurium;Futurium;museum;52.5214;13.3725;40;Futurium;
+humboldthain;Humboldthöhe (Flakturm);viewpoint;52.5453;13.3843;60;Humboldthöhe|Flakturm Humboldthain|Flakturmruine Humboldthain;Humboldthöhe (Flak Tower)
+monbijoupark;Monbijoupark;park;52.5232;13.3970;80;Monbijoupark;Monbijou Park
+east-side-gallery;East Side Gallery;landmark;52.5050;13.4397;60;East Side Gallery;
+oberbaumbruecke;Oberbaumbrücke;bridge;52.5018;13.4456;40;Oberbaumbrücke;Oberbaum Bridge
+frankfurter-tor;Frankfurter Tor;landmark;52.5158;13.4543;50;Frankfurter Tor;
+strausberger-platz;Strausberger Platz;square;52.5182;13.4283;60;Strausberger Platz;
+maerchenbrunnen;Märchenbrunnen;fountain;52.5272;13.4290;40;Märchenbrunnen;Fairy Tale Fountain
+topographie;Topographie des Terrors;memorial;52.5066;13.3837;40;Topographie des Terrors;Topography of Terror
+gropius-bau;Gropius Bau;museum;52.5066;13.3818;40;Gropius Bau|Martin-Gropius-Bau;
+juedisches-museum;Jüdisches Museum Berlin;museum;52.5020;13.3946;40;Jüdisches Museum Berlin|Jüdisches Museum;Jewish Museum Berlin
+technikmuseum;Deutsches Technikmuseum;museum;52.4986;13.3775;60;Deutsches Technikmuseum;German Museum of Technology
+kreuzbergdenkmal;Nationaldenkmal auf dem Kreuzberg;viewpoint;52.4876;13.3820;40;Nationaldenkmal für die Befreiungskriege|Kreuzbergdenkmal|Nationaldenkmal;National Monument on the Kreuzberg
+berlinische-galerie;Berlinische Galerie;museum;52.5034;13.3986;40;Berlinische Galerie;
+molecule-man;Molecule Man;monument;52.4973;13.4637;60;Molecule Man;
+mauerpark;Mauerpark;park;52.5430;13.4027;80;Mauerpark;
+kulturbrauerei;Kulturbrauerei;landmark;52.5390;13.4130;50;Kulturbrauerei;
+wasserturm;Wasserturm Prenzlauer Berg;landmark;52.5317;13.4170;40;Wasserturm Prenzlauer Berg|Wasserturm;Prenzlauer Berg Water Tower
+kollwitzplatz;Kollwitzplatz;square;52.5361;13.4175;50;Kollwitzplatz;
+planetarium;Zeiss-Großplanetarium;museum;52.5420;13.4277;40;Zeiss-Großplanetarium|Planetarium;Zeiss Major Planetarium
+gethsemanekirche;Gethsemanekirche;church;52.5470;13.4130;30;Gethsemanekirche;Gethsemane Church
+schloss-schoenhausen;Schloss Schönhausen;palace;52.5810;13.4033;50;Schloss Schönhausen;Schönhausen Palace
+zionskirche;Zionskirche;church;52.5355;13.4029;30;Zionskirche;Zion Church
+gedaechtniskirche;Kaiser-Wilhelm-Gedächtniskirche;church;52.5048;13.3350;40;Kaiser-Wilhelm-Gedächtniskirche|Gedächtniskirche;Kaiser Wilhelm Memorial Church
+schloss-charlottenburg;Schloss Charlottenburg;palace;52.5208;13.2957;60;Schloss Charlottenburg;Charlottenburg Palace
+funkturm;Funkturm Berlin;viewpoint;52.5051;13.2785;40;Funkturm Berlin|Funkturm;Berlin Radio Tower
+kadewe;KaDeWe;landmark;52.5016;13.3411;40;KaDeWe|Kaufhaus des Westens;
+olympiastadion;Olympiastadion;stadium;52.5147;13.2395;80;Olympiastadion Berlin|Olympiastadion;Olympic Stadium
+glockenturm;Glockenturm am Olympiapark;viewpoint;52.5153;13.2280;40;Glockenturm|Glockenturm Olympiapark;Olympic Bell Tower
+teufelsberg;Teufelsberg;viewpoint;52.4977;13.2410;80;Teufelsberg|Field Station Berlin|Abhörstation Teufelsberg;
+grunewaldturm;Grunewaldturm;viewpoint;52.4733;13.1810;40;Grunewaldturm|Kaiser-Wilhelm-Turm;Grunewald Tower
+jagdschloss-grunewald;Jagdschloss Grunewald;palace;52.4709;13.2650;50;Jagdschloss Grunewald;Grunewald Hunting Lodge
+waldbuehne;Waldbühne;culture;52.5163;13.2310;60;Waldbühne;
+corbusierhaus;Corbusierhaus;landmark;52.5085;13.2380;40;Corbusierhaus|Unité d'Habitation;
+deutsche-oper;Deutsche Oper Berlin;culture;52.5121;13.3087;40;Deutsche Oper Berlin|Deutsche Oper;
+zitadelle;Zitadelle Spandau;palace;52.5413;13.2129;80;Zitadelle Spandau|Zitadelle;Spandau Citadel
+nikolaikirche-spandau;St.-Nikolai-Kirche Spandau;church;52.5370;13.2042;30;St. Nikolai|St.-Nikolai-Kirche|Nikolaikirche;St. Nicholas' Church Spandau
+pfaueninsel;Pfaueninsel;palace;52.4330;13.1290;80;Schloss Pfaueninsel|Pfaueninsel;Peacock Island
+wannsee-konferenz;Haus der Wannsee-Konferenz;memorial;52.4330;13.1650;40;Haus der Wannsee-Konferenz|Gedenk- und Bildungsstätte Haus der Wannsee-Konferenz;House of the Wannsee Conference
+strandbad-wannsee;Strandbad Wannsee;landmark;52.4380;13.1780;80;Strandbad Wannsee;Wannsee Lido
+liebermann-villa;Liebermann-Villa;museum;52.4296;13.1640;40;Liebermann-Villa|Liebermann-Villa am Wannsee;Liebermann Villa
+botanischer-garten;Botanischer Garten;park;52.4550;13.3050;100;Botanischer Garten Berlin|Botanischer Garten;Botanical Garden
+bierpinsel;Bierpinsel;landmark;52.4590;13.3220;30;Bierpinsel|Turmrestaurant Steglitz;
+bruecke-museum;Brücke-Museum;museum;52.4580;13.2670;40;Brücke-Museum;Brücke Museum
+alliiertenmuseum;AlliiertenMuseum;museum;52.4520;13.2690;40;AlliiertenMuseum|Alliiertenmuseum;Allied Museum
+schloss-glienicke;Schloss Glienicke;palace;52.4157;13.0950;50;Schloss Glienicke;Glienicke Palace
+nikolskoe;Kirche St. Peter und Paul;church;52.4280;13.1400;60;Kirche St. Peter und Paul|St. Peter und Paul|Blockhaus Nikolskoe;Church of Sts. Peter and Paul
+tempelhofer-feld;Tempelhofer Feld;park;52.4733;13.4019;150;@manual;Tempelhof Field
+flughafen-tempelhof;Flughafen Tempelhof;landmark;52.4840;13.3880;80;Flughafen Berlin-Tempelhof|Flughafen Tempelhof|Flughafengebäude Tempelhof;Tempelhof Airport
+luftbrueckendenkmal;Luftbrückendenkmal;memorial;52.4846;13.3866;40;@manual;Berlin Airlift Memorial
+rathaus-schoeneberg;Rathaus Schöneberg;government;52.4850;13.3440;40;Rathaus Schöneberg;Schöneberg Town Hall
+gasometer;Gasometer Schöneberg;landmark;52.4820;13.3569;80;@manual;Schöneberg Gasometer
+schloss-britz;Schloss Britz;palace;52.4440;13.4370;40;Schloss Britz|Gutshof Britz;Britz Manor House
+britzer-garten;Britzer Garten;park;52.4290;13.4180;120;Britzer Garten;
+hufeisensiedlung;Hufeisensiedlung;landmark;52.4490;13.4505;100;@manual;Horseshoe Estate
+koernerpark;Körnerpark;park;52.4710;13.4370;60;Körnerpark;
+rathaus-neukoelln;Rathaus Neukölln;government;52.4815;13.4350;40;Rathaus Neukölln;Neukölln Town Hall
+ehrenmal-treptow;Sowjetisches Ehrenmal Treptow;memorial;52.4860;13.4710;80;Sowjetisches Ehrenmal|Sowjetisches Ehrenmal Treptower Park;Soviet War Memorial (Treptower Park)
+archenhold;Archenhold-Sternwarte;museum;52.4860;13.4770;40;Archenhold-Sternwarte;Archenhold Observatory
+schloss-koepenick;Schloss Köpenick;palace;52.4440;13.5730;50;Schloss Köpenick;Köpenick Palace
+rathaus-koepenick;Rathaus Köpenick;government;52.4460;13.5760;40;Rathaus Köpenick;Köpenick Town Hall
+mueggelturm;Müggelturm;viewpoint;52.4175;13.6380;40;Müggelturm;
+gaerten-der-welt;Gärten der Welt;park;52.5390;13.5770;120;Gärten der Welt;Gardens of the World
+schloss-biesdorf;Schloss Biesdorf;palace;52.5050;13.5600;50;Schloss Biesdorf;Biesdorf Palace
+wolkenhain;Wolkenhain;viewpoint;52.5340;13.5900;40;Wolkenhain|Aussichtsplattform Wolkenhain;
+tierpark;Tierpark Berlin;zoo;52.5000;13.5300;100;Tierpark Berlin|Tierpark Berlin-Friedrichsfelde;
+schloss-friedrichsfelde;Schloss Friedrichsfelde;palace;52.5070;13.5270;50;Schloss Friedrichsfelde;Friedrichsfelde Palace
+stasimuseum;Stasimuseum;memorial;52.5146;13.4880;40;Stasimuseum|Stasi-Museum;
+hohenschoenhausen;Gedenkstätte Berlin-Hohenschönhausen;memorial;52.5420;13.5000;40;Gedenkstätte Berlin-Hohenschönhausen;Berlin-Hohenschönhausen Memorial
+mies-van-der-rohe-haus;Mies van der Rohe Haus;museum;52.5470;13.4960;40;Mies van der Rohe Haus|Mies-van-der-Rohe-Haus;Mies van der Rohe House
+schloss-tegel;Schloss Tegel;palace;52.5960;13.2690;50;Schloss Tegel|Humboldtschloss;Tegel Palace
+borsigturm;Borsigturm;landmark;52.5880;13.2850;40;Borsigturm;Borsig Tower
+tegeler-hafen;Greenwichpromenade;landmark;52.5870;13.2780;60;Greenwichpromenade;
+buddhistisches-haus;Buddhistisches Haus;landmark;52.6340;13.3080;40;Buddhistisches Haus|Das Buddhistische Haus;Buddhist House
+brunnen-voelkerfreundschaft;Brunnen der Völkerfreundschaft;fountain;52.522;13.4128;30;@manual;Fountain of International Friendship
+wrangelbrunnen;Wrangelbrunnen;fountain;52.4921;13.4131;30;@manual;Wrangel Fountain
+spindlerbrunnen;Spindlerbrunnen;fountain;52.5119;13.4011;30;@manual;Spindler Fountain
+stierbrunnen;Stierbrunnen;fountain;52.5331;13.4372;60;@manual;Bull Fountain
+weltkugelbrunnen;Weltkugelbrunnen;fountain;52.504652;13.33649;30;@manual;Globe Fountain
+hackescher-markt;Hackescher Markt;market;52.5233;13.4028;50;Hackescher Markt;
+markthalle-neun;Markthalle Neun;market;52.5022;13.4315;40;Markthalle IX|Markthalle Neun;
+arminiusmarkthalle;Arminiusmarkthalle;market;52.5278;13.3386;40;Arminiusmarkthalle|Markthalle Moabit|Moabiter Markthalle;Arminius Market Hall
+ackerhalle;Ackerhalle;market;52.5321;13.3970;40;@manual;
+winterfeldtplatz;Winterfeldtplatz;market;52.495;13.35472;80;@manual;
+bundesrat;Bundesrat (Preußisches Herrenhaus);government;52.50917;13.38139;50;Bundesrat|Preußisches Herrenhaus;Bundesrat (Prussian House of Lords)
+abgeordnetenhaus;Abgeordnetenhaus von Berlin;government;52.507984;13.38157;50;Abgeordnetenhaus von Berlin|Abgeordnetenhaus;Berlin House of Representatives
+detlev-rohwedder-haus;Detlev-Rohwedder-Haus;government;52.508675;13.384058;60;@manual;
+rathaus-charlottenburg;Rathaus Charlottenburg;government;52.51778;13.30861;50;Rathaus Charlottenburg;Charlottenburg Town Hall
+rathaus-spandau;Rathaus Spandau;government;52.535;13.20028;50;Rathaus Spandau;Spandau Town Hall
+glienicker-bruecke;Glienicker Brücke;bridge;52.4137;13.0915;60;@manual;Glienicke Bridge
+weisse-stadt;Weiße Stadt;landmark;52.56917;13.35278;100;@manual;White City
+flughafen-tegel;Flughafen Tegel;landmark;52.5538;13.2895;150;@manual;Tegel Airport
+dicke-marie;Dicke Marie;park;52.59357;13.264987;30;@manual;
+russischer-friedhof-tegel;Russischer Friedhof Tegel;cemetery;52.57767;13.30067;60;@manual;Russian Orthodox Cemetery Tegel
+siedlung-schillerpark;Siedlung Schillerpark;landmark;52.5605;13.3495;80;@manual;Schillerpark Housing Estate
+volkspark-rehberge;Volkspark Rehberge;park;52.551479;13.330375;150;@manual;
+alte-nazarethkirche;Alte Nazarethkirche;church;52.546936;13.359508;30;@manual;Old Nazareth Church
+strandbad-ploetzensee;Strandbad Plötzensee;landmark;52.543527;13.329361;60;@manual;Plötzensee Lido
+gedenkstaette-ploetzensee;Gedenkstätte Plötzensee;memorial;52.54083;13.3225;40;Gedenkstätte Plötzensee;Plötzensee Memorial
+dorotheenstaedtischer-friedhof;Dorotheenstädtischer Friedhof;cemetery;52.528411;13.383704;60;@manual;Dorotheenstadt Cemetery
+kolk;Kolk (Altstadt Spandau);square;52.539458;13.207625;50;@manual;Kolk (Spandau Old Town)
+fort-hahneberg;Fort Hahneberg;landmark;52.521811;13.138306;100;@manual;
+flugplatz-gatow;Militärhistorisches Museum Flugplatz Gatow;museum;52.471937;13.138734;100;@manual;Military History Museum – Gatow Airfield
+siemensstadt;Großsiedlung Siemensstadt;landmark;52.5388;13.2815;100;Großsiedlung Siemensstadt|Ringsiedlung;Siemensstadt Housing Estate
+museum-karlshorst;Museum Berlin-Karlshorst;memorial;52.486111;13.539722;50;Museum Berlin-Karlshorst|Deutsch-Russisches Museum;
+gedenkstaette-sozialisten;Gedenkstätte der Sozialisten;cemetery;52.514921;13.511227;50;@manual;Memorial to the Socialists
+rathaus-lichtenberg;Rathaus Lichtenberg;government;52.5158;13.4797;50;Rathaus Lichtenberg;Lichtenberg Town Hall
+orankesee;Orankesee;park;52.548889;13.4825;100;@manual;
+spreepark;Spreepark;park;52.485833;13.487778;120;@manual;
+regattastrecke-gruenau;Regattastrecke Grünau;stadium;52.410767;13.605478;100;@manual;Grünau Regatta Course
+wasserwerk-friedrichshagen;Museum im Wasserwerk Friedrichshagen;museum;52.451825;13.642648;60;@manual;Friedrichshagen Waterworks Museum
+strandbad-mueggelsee;Strandbad Müggelsee;landmark;52.4454;13.6762;80;@manual;Müggelsee Lido
+aerodynamischer-park;Aerodynamischer Park;park;52.431944;13.528889;80;@manual;Aerodynamic Park
+gartenstadt-falkenberg;Gartenstadt Falkenberg;landmark;52.410278;13.564722;80;@manual;Falkenberg Garden City
+marzahner-muehle;Marzahner Bockwindmühle;landmark;52.544;13.5635;30;@manual;Marzahn Windmill
+gruenderzeitmuseum;Gründerzeitmuseum Mahlsdorf;museum;52.5024;13.6139;40;@manual;Gründerzeit Museum Mahlsdorf
+zwangslager-marzahn;Gedenkstein Zwangslager Marzahn;memorial;52.5485;13.5415;80;@manual;Memorial Stone at the Marzahn Forced Camp
+juedischer-friedhof-weissensee;Jüdischer Friedhof Weißensee;cemetery;52.544722;13.458333;80;@manual;Weißensee Jewish Cemetery
+ehrenmal-schoenholzer-heide;Sowjetisches Ehrenmal Schönholzer Heide;memorial;52.581667;13.3725;60;@manual;Soviet War Memorial (Schönholzer Heide)
+buergerpark-pankow;Bürgerpark Pankow;park;52.569444;13.393056;100;@manual;
+rathaus-pankow;Rathaus Pankow;government;52.5691;13.4023;50;Rathaus Pankow;Pankow Town Hall
+weisser-see;Weißer See;park;52.554167;13.464028;100;@manual;
+carl-legien;Wohnstadt Carl Legien;landmark;52.546389;13.432778;80;@manual;Carl Legien Housing Estate
+schlosskirche-buch;Schlosskirche Buch;church;52.6354;13.4986;30;@manual;Buch Palace Church
+velodrom;Velodrom;stadium;52.530833;13.450833;80;Velodrom;
+max-schmeling-halle;Max-Schmeling-Halle;stadium;52.544792;13.404484;60;Max-Schmeling-Halle;
+uber-arena;Uber Arena;stadium;52.505556;13.443333;80;Uber Arena|Mercedes-Benz Arena;
+alte-foersterei;Stadion An der Alten Försterei;stadium;52.457222;13.568056;80;Stadion An der Alten Försterei|An der Alten Försterei;
+tempodrom;Tempodrom;culture;52.5017;13.3811;50;Tempodrom;
+columbiahalle;Columbiahalle;culture;52.4846;13.3922;40;@manual;
+parkbuehne-wuhlheide;Parkbühne Wuhlheide;culture;52.4619;13.5453;80;Parkbühne Wuhlheide|Kindl-Bühne Wuhlheide;
+neue-welt;Huxleys Neue Welt;culture;52.486452;13.42147;40;@manual;
+berghain;Berghain;club;52.5111;13.4431;40;Berghain|Berghain / Panorama Bar;
+tresor;Tresor;club;52.5104;13.4196;40;Tresor|Tresor Berlin;
+so36;SO36;club;52.5003;13.4222;30;SO36;
+kitkatclub;KitKatClub;club;52.511111;13.416667;30;KitKatClub|KitKat Club|Kit Kat Club;
+kater-club;Kater Club;club;52.5114;13.4267;40;Kater Club|Kater Blau;
+club-der-visionaere;Club der Visionaere;club;52.49676;13.450448;30;Club der Visionaere|Club der Visionäre;
+claerchens-ballhaus;Clärchens Ballhaus;club;52.5269;13.3967;30;Clärchens Ballhaus;Clärchen's Ballroom

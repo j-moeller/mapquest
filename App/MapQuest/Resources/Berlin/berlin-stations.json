@@ -1246,6 +1246,7 @@
   {
    "id": "u:freie-universitaet-thielplatz",
    "name": "Freie Universität (Thielplatz)",
+   "nameEn": "Free University (Thielplatz)",
    "system": "U",
    "lines": [
     "U3"
@@ -1419,6 +1420,7 @@
   {
    "id": "u:hauptbahnhof",
    "name": "Hauptbahnhof",
+   "nameEn": "Central Station",
    "system": "U",
    "lines": [
     "U5"
@@ -1944,6 +1946,7 @@
   {
    "id": "u:museumsinsel",
    "name": "Museumsinsel",
+   "nameEn": "Museum Island",
    "system": "U",
    "lines": [
     "U5"
@@ -2019,6 +2022,7 @@
   {
    "id": "u:olympia-stadion",
    "name": "Olympia-Stadion",
+   "nameEn": "Olympic Stadium",
    "system": "U",
    "lines": [
     "U2"
@@ -2164,6 +2168,7 @@
   {
    "id": "u:platz-der-luftbruecke",
    "name": "Platz der Luftbrücke",
+   "nameEn": "Airlift Square",
    "system": "U",
    "lines": [
     "U6"
@@ -2213,6 +2218,7 @@
   {
    "id": "u:rathaus-neukoelln",
    "name": "Rathaus Neukölln",
+   "nameEn": "Neukölln Town Hall",
    "system": "U",
    "lines": [
     "U7"
@@ -2225,6 +2231,7 @@
   {
    "id": "u:rathaus-reinickendorf",
    "name": "Rathaus Reinickendorf",
+   "nameEn": "Reinickendorf Town Hall",
    "system": "U",
    "lines": [
     "U8"
@@ -2237,6 +2244,7 @@
   {
    "id": "u:rathaus-schoeneberg",
    "name": "Rathaus Schöneberg",
+   "nameEn": "Schöneberg Town Hall",
    "system": "U",
    "lines": [
     "U4"
@@ -2249,6 +2257,7 @@
   {
    "id": "u:rathaus-spandau",
    "name": "Rathaus Spandau",
+   "nameEn": "Spandau Town Hall",
    "system": "U",
    "lines": [
     "U7"
@@ -2261,6 +2270,7 @@
   {
    "id": "u:rathaus-steglitz",
    "name": "Rathaus Steglitz",
+   "nameEn": "Steglitz Town Hall",
    "system": "U",
    "lines": [
     "U9"
@@ -2357,6 +2367,7 @@
   {
    "id": "u:rotes-rathaus",
    "name": "Rotes Rathaus",
+   "nameEn": "Red City Hall",
    "system": "U",
    "lines": [
     "U5"
@@ -2575,6 +2586,7 @@
   {
    "id": "u:stadtmitte",
    "name": "Stadtmitte",
+   "nameEn": "City Centre",
    "system": "U",
    "lines": [
     "U2",
@@ -2636,6 +2648,7 @@
   {
    "id": "u:tierpark",
    "name": "Tierpark",
+   "nameEn": "Zoo East",
    "system": "U",
    "lines": [
     "U5"
@@ -2904,6 +2917,7 @@
   {
    "id": "u:zoologischer-garten",
    "name": "Zoologischer Garten",
+   "nameEn": "Zoo",
    "system": "U",
    "lines": [
     "U2",
@@ -3338,6 +3352,7 @@
   {
    "id": "s:flughafen-ber",
    "name": "Flughafen BER",
+   "nameEn": "BER Airport",
    "system": "S",
    "lines": [
     "S85",
@@ -3569,6 +3584,7 @@
   {
    "id": "s:hauptbahnhof",
    "name": "Hauptbahnhof",
+   "nameEn": "Central Station",
    "system": "S",
    "lines": [
     "S15",
@@ -4065,6 +4081,7 @@
   {
    "id": "s:messe-nord-zob",
    "name": "Messe Nord/ZOB",
+   "nameEn": "Exhibition Grounds North / Central Bus Station",
    "system": "S",
    "lines": [
     "S41",
@@ -4079,6 +4096,7 @@
   {
    "id": "s:messe-sued-eichkamp",
    "name": "Messe Süd (Eichkamp)",
+   "nameEn": "Exhibition Grounds South",
    "system": "S",
    "lines": [
     "S3",
@@ -4195,6 +4213,7 @@
   {
    "id": "s:olympiastadion",
    "name": "Olympiastadion",
+   "nameEn": "Olympic Stadium",
    "system": "S",
    "lines": [
     "S3",
@@ -4247,6 +4266,7 @@
   {
    "id": "s:ostbahnhof",
    "name": "Ostbahnhof",
+   "nameEn": "East Station",
    "system": "S",
    "lines": [
     "S3",
@@ -4361,6 +4381,7 @@
   {
    "id": "s:potsdam-hauptbahnhof",
    "name": "Potsdam Hauptbahnhof",
+   "nameEn": "Potsdam Central Station",
    "system": "S",
    "lines": [
     "S7"
@@ -4440,6 +4461,7 @@
   {
    "id": "s:rathaus-steglitz",
    "name": "Rathaus Steglitz",
+   "nameEn": "Steglitz Town Hall",
    "system": "S",
    "lines": [
     "S1"
@@ -5108,6 +5130,7 @@
   {
    "id": "s:zoologischer-garten",
    "name": "Zoologischer Garten",
+   "nameEn": "Zoo",
    "system": "S",
    "lines": [
     "S3",

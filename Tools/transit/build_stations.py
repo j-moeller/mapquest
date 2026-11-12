@@ -95,6 +95,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--routes", type=pathlib.Path, required=True, help="Overpass answer (fetched if missing)")
     parser.add_argument("--additions", type=pathlib.Path)
+    parser.add_argument("--names-en", type=pathlib.Path,
+                        default=pathlib.Path(__file__).resolve().parent / "berlin_station_names_en.csv",
+                        help="English explanations of station names (name;name_en)")
     parser.add_argument("--districts", type=pathlib.Path)
     parser.add_argument("output", type=pathlib.Path)
     args = parser.parse_args()
@@ -167,6 +170,11 @@ def main():
                 positions.setdefault((sys_, row["name"]), []).append((float(row["lat"]), float(row["lon"])))
 
     districts = read_districts(args.districts) if args.districts else []
+    # English explanations of a few names (Hauptbahnhof → Central Station); the German name stays first.
+    names_en = {}
+    if args.names_en and args.names_en.exists():
+        with open(args.names_en, encoding="utf-8") as f:
+            names_en = {row["name"]: row["name_en"] for row in csv.DictReader(f, delimiter=";")}
     station_lines = {}
     for ref, stations in lines.items():
         for name in stations:
@@ -177,7 +185,8 @@ def main():
         lat = sum(p[0] for p in points) / len(points)
         lon = sum(p[1] for p in points) / len(points)
         station = {
-            "id": f"{sys_.lower()}:{slug(name)}", "name": name, "system": sys_,
+            "id": f"{sys_.lower()}:{slug(name)}", "name": name,
+            **({"nameEn": names_en[name]} if name in names_en else {}), "system": sys_,
             "lines": sorted(refs, key=line_key), "latitude": round(lat, 6), "longitude": round(lon, 6), "radius": RADIUS,
         }
         if districts:

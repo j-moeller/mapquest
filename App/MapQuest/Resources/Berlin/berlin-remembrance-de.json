@@ -1,0 +1,77 @@
+{
+ "about": "Gedenkorte in Berlin als kurze Geschichte und als Rundgänge, auf Deutsch (die englische Fassung: berlin-remembrance.json, mit denselben Kapiteln, Orten und Rundgängen). Sie sind nicht Teil des Spiels.",
+ "chapters": [
+  {
+   "id": "holocaust",
+   "title": "Der Mord an den Juden Europas",
+   "years": "1933–1945",
+   "text": "Ab 1933 nahm das NS-Regime den Juden in Deutschland ihre Rechte, ihre Existenzgrundlage und ihre Wohnungen. Ab Oktober 1941 deportierte es die Berliner Juden in Ghettos und Vernichtungslager. Sechs Millionen Juden Europas wurden ermordet.",
+   "places": [
+    {"sight": "wannsee-konferenz", "remembers": "Am 20. Januar 1942 kamen in dieser Villa hohe Beamte des Regimes zusammen, um die Deportation und Ermordung der Juden Europas zu koordinieren."},
+    {"sight": "holocaust-mahnmal", "remembers": "Das Denkmal für die ermordeten Juden Europas: ein Feld aus 2.711 Betonstelen, darunter der Ort der Information."},
+    {"sight": "juedischer-friedhof-weissensee", "remembers": "Einer der größten jüdischen Friedhöfe Europas, belegt seit 1880, mit den Gräbern vieler Verfolgter und einem Gedenkort für die Ermordeten."}
+   ]
+  },
+  {
+   "id": "terror",
+   "title": "Terror und Widerstand",
+   "years": "1933–1945",
+   "text": "Das Regime verfolgte seine Gegner und alle, die es für nicht zugehörig erklärte: Kommunisten und Sozialdemokraten, Sinti und Roma, Homosexuelle, Zeugen Jehovas, Menschen mit Behinderungen. Seine Geheimpolizei und die SS lenkten den Terror von Berlin aus; Tausende, die Widerstand leisteten, wurden getötet.",
+   "places": [
+    {"sight": "topographie", "remembers": "Auf dem Gelände der Zentralen von Gestapo, SS und Reichssicherheitshauptamt: ein Dokumentationszentrum über die Institutionen des Terrors."},
+    {"sight": "gedenkstaette-ploetzensee", "remembers": "Im Hinrichtungsschuppen des Gefängnisses Plötzensee wurden fast 3.000 Menschen getötet, viele von ihnen wegen ihres Widerstands – unter ihnen Männer des 20. Juli 1944."},
+    {"sight": "zwangslager-marzahn", "remembers": "Im Juli 1936, vor den Olympischen Spielen, zwang die Berliner Polizei Sinti und Roma in ein Lager an diesem Ort; die meisten von ihnen wurden später nach Auschwitz deportiert."}
+   ]
+  },
+  {
+   "id": "war",
+   "title": "Der Krieg und seine Toten",
+   "years": "1939–1945",
+   "text": "Der Krieg, den Deutschland 1939 begann, kostete mehr als 60 Millionen Menschen das Leben, etwa 27 Millionen von ihnen in der Sowjetunion. Er endete in Berlin mit der bedingungslosen Kapitulation der Wehrmacht am 8. Mai 1945.",
+   "places": [
+    {"sight": "neue-wache", "remembers": "Die Zentrale Gedenkstätte der Bundesrepublik Deutschland für die Opfer von Krieg und Gewaltherrschaft, mit Käthe Kollwitz’ „Mutter mit totem Sohn“."},
+    {"sight": "museum-karlshorst", "remembers": "Hier wurde in der Nacht vom 8. auf den 9. Mai 1945 die bedingungslose Kapitulation der Wehrmacht unterzeichnet; heute ein Museum über den deutschen Vernichtungskrieg gegen die Sowjetunion."},
+    {"sight": "ehrenmal-tiergarten", "remembers": "Ein 1945 errichtetes sowjetisches Ehrenmal mit den Gräbern von rund 2.000 Soldaten der Roten Armee, die in der Schlacht um Berlin fielen."},
+    {"sight": "ehrenmal-treptow", "remembers": "Das größte der sowjetischen Ehrenmale Berlins, 1949 vollendet, und der Friedhof von etwa 7.000 Soldaten der Roten Armee."},
+    {"sight": "ehrenmal-schoenholzer-heide", "remembers": "Das sowjetische Ehrenmal mit dem größten Friedhof: Mehr als 13.000 Soldaten der Roten Armee sind hier begraben."}
+   ]
+  },
+  {
+   "id": "division",
+   "title": "Teilung und Diktatur",
+   "years": "1945–1990",
+   "text": "Nach dem Krieg wurde die Stadt geteilt. 1948 blockierte die Sowjetunion West-Berlin; ab 1961 mauerte die DDR es ein. Mindestens 140 Menschen wurden an der Mauer in Berlin getötet, und die Geheimpolizei der DDR verfolgte alle, die sie für Feinde hielt.",
+   "places": [
+    {"sight": "luftbrueckendenkmal", "remembers": "Das Denkmal für die Berliner Luftbrücke 1948–1949 und für die Menschen, die beim Versorgen der blockierten Stadt aus der Luft ums Leben kamen."},
+    {"sight": "mauer-gedenkstaette", "remembers": "An der Bernauer Straße, wo die Mauer mitten durch die Straße verlief: die zentrale Gedenkstätte an die deutsche Teilung und an die Opfer der Mauer."},
+    {"sight": "hohenschoenhausen", "remembers": "Ab 1945 ein sowjetisches Speziallager, dann die zentrale Untersuchungshaftanstalt der Stasi, in der bis 1989 politische Gefangene festgehalten und verhört wurden."},
+    {"sight": "stasimuseum", "remembers": "Die Zentrale des Ministeriums für Staatssicherheit mit dem Dienstsitz seines Ministers Erich Mielke; im Januar 1990 besetzten Bürgerinnen und Bürger das Gelände."}
+   ]
+  },
+  {
+   "id": "rest",
+   "title": "Orte der Ruhe",
+   "years": "seit 1762",
+   "text": "Friedhöfe bewahren die Erinnerung an die Menschen, die dort begraben sind.",
+   "places": [
+    {"sight": "dorotheenstaedtischer-friedhof", "remembers": "Die Gräber von Fichte, Hegel, Schinkel, Brecht und vielen weiteren Schriftstellern, Künstlern und Gelehrten."},
+    {"sight": "russischer-friedhof-tegel", "remembers": "Berlins einziger russisch-orthodoxer Friedhof, 1894 geweiht, mit der Kirche der heiligen Konstantin und Helena."},
+    {"sight": "gedenkstaette-sozialisten", "remembers": "Auf dem Friedhof Friedrichsfelde eine Gedenkstätte von 1951 für Rosa Luxemburg, Karl Liebknecht und andere Sozialisten, die die DDR zum Ort staatlicher Feiern machte."}
+   ]
+  }
+ ],
+ "tours": [
+  {
+   "id": "centre",
+   "title": "Ein Weg durch die Mitte",
+   "text": "Von Unter den Linden am Rand des Tiergartens entlang zum Gelände der Gestapo-Zentrale: Krieg und Gewaltherrschaft, das Ende des Krieges, die ermordeten Juden Europas, die Täter.",
+   "stops": ["neue-wache", "ehrenmal-tiergarten", "holocaust-mahnmal", "topographie"]
+  },
+  {
+   "id": "lichtenberg",
+   "title": "Die Stasi in Lichtenberg",
+   "text": "Die Zentrale der Geheimpolizei der DDR und ihre zentrale Untersuchungshaftanstalt.",
+   "stops": ["stasimuseum", "hohenschoenhausen"]
+  }
+ ]
+}
