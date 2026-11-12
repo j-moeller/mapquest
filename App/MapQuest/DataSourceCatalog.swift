@@ -12,7 +12,17 @@ struct DataProfile: Codable, Hashable, Identifiable {
     var recordsLocations: Bool
 
     var id: String { descriptor.id }
-    var name: String { descriptor.displayName }
+
+    /// The name shown: the app's own data sources in the app's language (their stored
+    /// `displayName` stays English), other sources as stored.
+    var name: String {
+        switch id {
+        case DataSourceCatalog.ownProfileID: return tr("My discoveries")
+        case DataSourceCatalog.sandboxProfileID: return tr("Sandbox (testing)")
+        case BerlinData.demoProfileID: return tr("Demo explorer")
+        default: return descriptor.displayName
+        }
+    }
 }
 
 enum DataSourceError: LocalizedError {
@@ -21,7 +31,7 @@ enum DataSourceError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .missingToken:
-            return "The access token of this remote data source is missing. Add the data source again."
+            return tr("The access token of this remote data source is missing. Add the data source again.")
         }
     }
 }
@@ -56,7 +66,7 @@ final class DataSourceCatalog {
         if !profiles.contains(where: { $0.id == Self.ownProfileID }) {
             profiles.insert(DataProfile(
                 descriptor: DataSourceDescriptor(
-                    id: Self.ownProfileID, displayName: "My discoveries", kind: .localDatabase(path: "me.sqlite")
+                    id: Self.ownProfileID, displayName: "My discoveries", kind: .localDatabase(path: "me.sqlite") // not localized: stored; shown as `name`
                 ),
                 recordsLocations: true
             ), at: 0)
@@ -65,7 +75,7 @@ final class DataSourceCatalog {
         if !profiles.contains(where: { $0.id == Self.sandboxProfileID }) {
             profiles.append(DataProfile(
                 descriptor: DataSourceDescriptor(
-                    id: Self.sandboxProfileID, displayName: "Sandbox (testing)", kind: .localDatabase(path: "sandbox.sqlite")
+                    id: Self.sandboxProfileID, displayName: "Sandbox (testing)", kind: .localDatabase(path: "sandbox.sqlite") // not localized: stored; shown as `name`
                 ),
                 recordsLocations: true
             ))

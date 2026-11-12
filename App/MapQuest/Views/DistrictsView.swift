@@ -11,7 +11,7 @@ struct DistrictsView: View {
             if isComputing && model.districtCoverage.isEmpty {
                 HStack {
                     ProgressView()
-                    Text("Computing…")
+                    Text(tr("Computing…"))
                         .foregroundStyle(.secondary)
                 }
             }
@@ -27,13 +27,16 @@ struct DistrictsView: View {
                 } header: {
                     Text(city.city.name)
                 } footer: {
-                    Text("\(city.city.name): \(Formatters.percent(city.city.fraction)) – \(Formatters.area(city.city.discoveredSquareMeters)) of \(Formatters.area(city.city.areaSquareMeters))")
+                    Text(tr(
+                        "{0}: {1} – {2} of {3}", city.city.name, Formatters.percent(city.city.fraction),
+                        Formatters.area(city.city.discoveredSquareMeters), Formatters.area(city.city.areaSquareMeters)
+                    ))
                 }
             }
         }
-        .navigationTitle("Cities and districts")
+        .navigationTitle(tr("Cities and districts"))
         .safeAreaInset(edge: .top) {
-            Picker("Discovery", selection: $model.selectedLayer) {
+            Picker(tr("Discovery"), selection: $model.selectedLayer) {
                 ForEach(MapLayer.allCases) { layer in
                     Text(layer.title).tag(layer)
                 }
@@ -64,7 +67,7 @@ private struct CoverageRow: View {
                     .foregroundStyle(.secondary)
             }
             ProgressView(value: coverage.fraction)
-            Text("\(Formatters.area(coverage.discoveredSquareMeters)) of \(Formatters.area(coverage.areaSquareMeters))")
+            Text(tr("{0} of {1}", Formatters.area(coverage.discoveredSquareMeters), Formatters.area(coverage.areaSquareMeters)))
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }

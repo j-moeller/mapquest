@@ -17,6 +17,7 @@ struct ContentView: View {
     @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var tracker: LocationTracker
     @EnvironmentObject private var captures: CaptureModel
+    @EnvironmentObject private var languages: LanguageSettings
     @State private var showsSettings = false
     @State private var showsMapView = false
     @AppStorage("ContentView.mode") private var mode: MapMode = .twoD
@@ -73,7 +74,7 @@ struct ContentView: View {
                             }
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel("Menu")
+                    .accessibilityLabel(tr("Menu"))
                 }
                 PermissionBanner()
                 if mode == .threeD {
@@ -94,6 +95,8 @@ struct ContentView: View {
             }
             .padding()
         }
+        // Another language: the map and everything on it are built again (open sheets stay).
+        .id(languages.language)
         .modifier(CaptureHooks(captures: captures))
         // The capture component follows the discovered area of the selected data source.
         .task(id: captureInput) { updateCaptures() }
@@ -123,7 +126,7 @@ struct ContentView: View {
                 MapViewSettingsView()
                     .toolbar {
                         ToolbarItem(placement: .confirmationAction) {
-                            Button("Done") { showsMapView = false }
+                            Button(tr("Done")) { showsMapView = false }
                         }
                     }
             }
@@ -176,7 +179,7 @@ struct ViewChip: View {
                     .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
             }
             .buttonStyle(.plain)
-            .accessibilityHint("Opens the map view settings")
+            .accessibilityHint(tr("Opens the map view settings"))
         }
     }
 
@@ -216,9 +219,9 @@ struct BottomBar: View {
                             }
                         }
                     VStack(alignment: .leading, spacing: 0) {
-                        Text("\(captures.capturedCount)")
+                        Text(Formatters.number(captures.capturedCount))
                             .font(.title3.monospacedDigit().bold())
-                        Text(captures.capturedCount == 1 ? "capture" : "captures")
+                        Text(trn("capture", "captures", captures.capturedCount))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -226,8 +229,8 @@ struct BottomBar: View {
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("\(captures.capturedCount) of \(captures.gameSightCount) sights captured")
-            .accessibilityHint("Opens the sights and achievements")
+            .accessibilityLabel(tr("{0} of {1} sights captured", captures.capturedCount, captures.gameSightCount))
+            .accessibilityHint(tr("Opens the sights and achievements"))
             Spacer(minLength: 8)
             if model.isBusy || model.progress != nil || model.viewProgress != nil || model.dataRefresh != nil {
                 ProgressView()
@@ -261,48 +264,12 @@ struct TrackingButton: View {
         .buttonStyle(.plain)
         .disabled(!available)
         .opacity(available ? 1 : 0.5)
-        .accessibilityLabel(on ? "Tracking is on" : "Start tracking")
-        .accessibilityHint(on ? "Pauses recording your positions" : "Records your positions and lifts the fog where you go")
+        .accessibilityLabel(on ? tr("Tracking is on") : tr("Start tracking"))
+        .accessibilityHint(on ? tr("Pauses recording your positions") : tr("Records your positions and lifts the fog where you go"))
     }
 
     private func title(on: Bool) -> String {
-        if !model.profile.recordsLocations { return "View only" }
-        return on ? "Tracking" : "Start tracking"
-    }
-}
-
-enum Formatters {
-    static func area(_ squareMeters: Double) -> String {
-        if squareMeters >= 100_000 {
-            return String(format: "%.2f km²", squareMeters / 1_000_000)
-        }
-        return String(format: "%.0f m²", squareMeters)
-    }
-
-    static func percent(_ fraction: Double) -> String {
-        if fraction > 0, fraction < 0.001 {
-            return "<0.1 %"
-        }
-        return String(format: "%.1f %%", fraction * 100)
-    }
-
-    static func bytes(_ count: Int) -> String {
-        ByteCountFormatter.string(fromByteCount: Int64(count), countStyle: .file)
-    }
-
-    static func distance(_ meters: Double) -> String {
-        meters >= 1_000 ? String(format: "%.1f km", meters / 1_000) : String(format: "%.0f m", meters)
-    }
-
-    static func duration(_ seconds: TimeInterval) -> String {
-        let minutes = Int((seconds / 60).rounded())
-        return minutes >= 60 ? String(format: "%d h %02d min", minutes / 60, minutes % 60) : "\(minutes) min"
-    }
-
-    /// "12 345 positions · 74 KB" (bytes only once something is written).
-    static func track(_ summary: TrackSummary) -> String {
-        let count = summary.pointCount.formatted()
-        guard summary.byteCount > 0 else { return "\(count) positions" }
-        return "\(count) positions · \(bytes(summary.byteCount))"
+        if !model.profile.recordsLocations { return tr("View only") }
+        return on ? tr("Tracking") : tr("Start tracking")
     }
 }

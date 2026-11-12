@@ -1,0 +1,272 @@
+/* German translations of the app's text (keys: the English text, see MapQuestCore tr()). Views, map, menu, debug. */
+
+/* Formatters.swift */
+"{0} min" = "{0} Min.";
+"{0} h {1} min" = "{0} Std. {1} Min.";
+"{1} position" = "{1} Position";
+"{1} positions" = "{1} Positionen";
+
+/* LanguageSettings.swift */
+"System ({0})" = "System ({0})";
+
+/* ContentView.swift */
+"Menu" = "Menü";
+"Done" = "Fertig";
+"Opens the map view settings" = "Öffnet die Einstellungen der Kartenansicht";
+"capture" = "Fang";
+"captures" = "Fänge";
+"{0} of {1} sights captured" = "{0} von {1} Sehenswürdigkeiten eingefangen";
+"Opens the sights and achievements" = "Öffnet Sehenswürdigkeiten und Erfolge";
+"Tracking is on" = "Aufzeichnung läuft";
+"Start tracking" = "Aufzeichnen";
+"Pauses recording your positions" = "Pausiert die Aufzeichnung deiner Positionen";
+"Records your positions and lifts the fog where you go" = "Zeichnet deine Positionen auf und lichtet den Nebel, wo du hingehst";
+"View only" = "Nur ansehen";
+"Tracking" = "Zeichnet auf";
+
+/* SettingsView.swift */
+"Map view" = "Kartenansicht";
+"Statistics" = "Statistik";
+"Recording" = "Aufzeichnung";
+"Data source" = "Datenquelle";
+"Discovered area" = "Entdeckte Fläche";
+"Rebuild needed" = "Neuaufbau nötig";
+"Building data" = "Gebäudedaten";
+"Updating…" = "Wird aktualisiert…";
+"Map data" = "Kartendaten";
+"Data" = "Daten";
+"Language" = "Sprache";
+"Names keep their German original next to the English name. The system's own dialogs (camera, permissions) follow the next time the app starts." = "Auf Englisch steht neben englischen Namen das deutsche Original. Die Dialoge des Systems (Kamera, Berechtigungen) wechseln beim nächsten Start der App.";
+"Debug settings" = "Debug-Einstellungen";
+"Developer" = "Entwickler";
+"Tune radius, line of sight, fog and recording on the fly, and place test positions – in a panel over the map, which stays usable." = "Radius, Sichtlinie, Nebel und Aufzeichnung live anpassen und Testpositionen setzen – in einem Bereich über der Karte, die bedienbar bleibt.";
+"Delete all data of “{0}”" = "Alle Daten von „{0}“ löschen";
+"Delete all positions and discoveries of “{0}”?" = "Alle Positionen und Entdeckungen von „{0}“ löschen?";
+"Delete" = "Löschen";
+"Heatmap" = "Heatmap";
+"Fog" = "Nebel";
+"All time" = "Gesamt";
+"Not allowed" = "Nicht erlaubt";
+"On" = "An";
+"Off" = "Aus";
+"Not asked yet" = "Noch nicht gefragt";
+"Restricted" = "Eingeschränkt";
+"Denied" = "Abgelehnt";
+"Always" = "Immer";
+"While using the app" = "Beim Verwenden der App";
+"Unknown" = "Unbekannt";
+"Record positions" = "Positionen aufzeichnen";
+"Permission" = "Berechtigung";
+"Allow background discovery" = "Entdecken im Hintergrund erlauben";
+"While recording, every position (about one per second) is added to the track, compactly encoded (≈ 6 bytes per position). The positions that reveal something new also drive the fog of war. The button at the bottom of the map starts and pauses recording too." = "Während der Aufzeichnung kommt jede Position (etwa eine pro Sekunde) kompakt kodiert zur Strecke (≈ 6 Byte pro Position). Die Positionen, die Neues aufdecken, lichten auch den Nebel. Der Knopf unten auf der Karte startet und pausiert die Aufzeichnung ebenfalls.";
+"“{0}” shows another user's discoveries and records nothing. Choose your own data under Data source to record." = "„{0}“ zeigt die Entdeckungen eines anderen Nutzers und zeichnet nichts auf. Wähle unter „Datenquelle“ deine eigenen Daten, um aufzuzeichnen.";
+"Records your positions" = "Zeichnet deine Positionen auf";
+"Add remote data source…" = "Server-Datenquelle hinzufügen…";
+"Location data and discovered area always travel together. Switching the data source shows another user's discoveries – the rest of the app stays the same." = "Standortdaten und entdeckte Fläche gehören immer zusammen. Eine andere Datenquelle zeigt die Entdeckungen eines anderen Nutzers – der Rest der App bleibt gleich.";
+"{1} in {0} region" = "{1} in {0} Gebiet";
+"{1} in {0} regions" = "{1} in {0} Gebieten";
+"Some positions are missing in this layer. Rebuild it." = "In dieser Ebene fehlen Positionen. Baue sie neu auf.";
+"Radius (2D)" = "Radius (2D)";
+"{0} m around each position" = "{0} m um jede Position";
+"Line of sight (3D)" = "Sichtlinie (3D)";
+"{0} rays, up to {1} m" = "{0} Strahlen, bis {1} m";
+"Layers" = "Ebenen";
+"The fog of war lifts everywhere. {0} also have 3D building and terrain data for the line of sight; elsewhere it reveals the radius circle." = "Der Nebel lichtet sich überall. {0} haben zusätzlich 3D-Gebäude- und Geländedaten für die Sichtlinie; anderswo deckt sie den Radiuskreis auf.";
+"Rebuild discovered area" = "Entdeckte Fläche neu aufbauen";
+"The discovered area is a cache computed from the stored positions. Rebuilding recomputes both layers from scratch; usually this is not needed – areas are recomputed automatically when building data changes." = "Die entdeckte Fläche ist ein Cache, berechnet aus den gespeicherten Positionen. Der Neuaufbau berechnet beide Ebenen von Grund auf; meist ist das nicht nötig – Flächen werden automatisch neu berechnet, wenn sich Gebäudedaten ändern.";
+"Download automatically" = "Automatisch laden";
+"Explored areas" = "Erkundete Gebiete";
+"{0} × {1} km tiles" = "{0} Kacheln à {1} km";
+"With building data" = "Mit Gebäudedaten";
+"{0} bundled, {1} downloaded" = "{0} mitgeliefert, {1} geladen";
+"Default map (no data)" = "Standardkarte (ohne Daten)";
+"Updating {0} for new building data…" = "{0} wird für neue Gebäudedaten aktualisiert…";
+"Download missing building data" = "Fehlende Gebäudedaten laden";
+"Building data is bundled for the cities with 3D data and downloaded (OpenStreetMap) only around them. Where none is available (other places, offline), the line-of-sight layer uses the radius circle – the default map. When building data arrives, by download or with a newer bundled dataset, exactly the areas whose view it can change are recomputed from the stored positions." = "Gebäudedaten sind für die Städte mit 3D-Daten enthalten und werden (aus OpenStreetMap) nur um sie herum geladen. Wo keine verfügbar sind (andere Orte, offline), nutzt die Sichtlinien-Ebene den Radiuskreis – die Standardkarte. Kommen Gebäudedaten hinzu, per Download oder mit einem neueren mitgelieferten Datensatz, werden genau die Flächen, deren Sicht sie ändern können, aus den gespeicherten Positionen neu berechnet.";
+"Stored on this iPhone" = "Auf diesem iPhone gespeichert";
+"Delete map data" = "Kartendaten löschen";
+"The map is drawn on this iPhone from OpenStreetMap data (OpenFreeMap vector tiles, no labels). Every area you have looked at is kept here, compressed, and works offline; it is refreshed after 90 days and limited to 500 MB." = "Die Karte wird auf diesem iPhone aus OpenStreetMap-Daten gezeichnet (OpenFreeMap-Vektorkacheln, ohne Beschriftung). Jedes Gebiet, das du angesehen hast, bleibt komprimiert hier und funktioniert offline; es wird nach 90 Tagen erneuert, insgesamt höchstens 500 MB.";
+
+/* MapViewSettingsView.swift */
+"Map" = "Karte";
+"The 2D map with the fog of war over everything not discovered yet." = "Die 2D-Karte mit Nebel über allem, was du noch nicht entdeckt hast.";
+"The 3D scene of the buildings around you, with what you have seen between them (the line of sight)." = "Die 3D-Szene der Gebäude um dich herum, mit dem, was du zwischen ihnen gesehen hast (die Sichtlinie).";
+"Show" = "Anzeigen";
+"Discovered by" = "Entdeckt durch";
+"Display" = "Darstellung";
+"The fog of war lifts where you have been; the heatmap shows how often you were there. Radius: everything around your positions. Line of sight: what you could see between the buildings." = "Der Nebel lichtet sich, wo du warst; die Heatmap zeigt, wie oft du dort warst. Radius: alles um deine Positionen. Sichtlinie: was du zwischen den Gebäuden sehen konntest.";
+"Time span" = "Zeitraum";
+"Show today" = "Heute zeigen";
+"Time" = "Zeit";
+"All time shows everything you have discovered. A day, week, month or year shows what you saw in it." = "„Gesamte Zeit“ zeigt alles, was du entdeckt hast. Ein Tag, eine Woche, ein Monat oder ein Jahr zeigt, was du darin gesehen hast.";
+"Map style" = "Kartenstil";
+"Base map" = "Grundkarte";
+
+/* ViewOptions.swift */
+"Fog of war" = "Nebel";
+"Day" = "Tag";
+"Week" = "Woche";
+"Month" = "Monat";
+"Year" = "Jahr";
+"Previous day" = "Vorheriger Tag";
+"Previous week" = "Vorherige Woche";
+"Previous month" = "Vorheriger Monat";
+"Previous year" = "Vorheriges Jahr";
+"Next day" = "Nächster Tag";
+"Next week" = "Nächste Woche";
+"Next month" = "Nächster Monat";
+"Next year" = "Nächstes Jahr";
+"Week {0} · {1}" = "KW {0} · {1}";
+"Could not compute the view: {0}" = "Ansicht konnte nicht berechnet werden: {0}";
+
+/* StatisticsView.swift */
+"{0} region" = "{0} Gebiet";
+"{0} regions" = "{0} Gebiete";
+"{0} of {1}" = "{0} von {1}";
+"Some positions are missing in this layer. Rebuild it under Discovered area." = "In dieser Ebene fehlen Positionen. Baue sie unter „Entdeckte Fläche“ neu auf.";
+"Track" = "Strecke";
+"Map-changing positions" = "Kartenwirksame Positionen";
+"Cities and districts" = "Städte und Bezirke";
+"Discovered" = "Entdeckt";
+"Everything discovered with “{0}”, all time. Radius: everything around your positions. Line of sight: what you could see between the buildings." = "Alles, was mit „{0}“ entdeckt wurde, gesamte Zeit. Radius: alles um deine Positionen. Sichtlinie: was du zwischen den Gebäuden sehen konntest.";
+"Computing…" = "Wird berechnet…";
+"Area seen" = "Gesehene Fläche";
+"Distance travelled" = "Zurückgelegte Strecke";
+"Time recorded" = "Aufgezeichnete Zeit";
+"Active days" = "Aktive Tage";
+"What the map shows now. Change it under Map view." = "Was die Karte gerade zeigt. Ändern unter „Kartenansicht“.";
+"Sights captured" = "Eingefangen";
+"Sights discovered" = "Entdeckt";
+"Stations collected" = "Bahnhöfe gesammelt";
+"Achievements" = "Erfolge";
+"Sights" = "Sehenswürdigkeiten";
+"A sight is discovered when you go there and captured when you take its photo there. Stations are collected by going there. Places of remembrance are not counted." = "Eine Sehenswürdigkeit ist entdeckt, wenn du hingehst, und eingefangen, wenn du sie dort fotografierst. Bahnhöfe sammelst du, indem du hingehst. Gedenkorte zählen nicht mit.";
+"Working…" = "Wird bearbeitet…";
+"Status" = "Status";
+
+/* DistrictsView.swift */
+"{0}: {1} – {2} of {3}" = "{0}: {1} – {2} von {3}";
+"Discovery" = "Entdeckung";
+
+/* AddRemoteSourceView.swift */
+"Server URL" = "Server-URL";
+"Access token" = "Zugangstoken";
+"The token identifies your account on the server (created with `mapquest_server.py add-user`). It is stored in the Keychain." = "Das Token weist dein Konto auf dem Server aus (erstellt mit `mapquest_server.py add-user`). Es wird im Schlüsselbund gespeichert.";
+"Record my positions into this account" = "Meine Positionen in dieses Konto aufzeichnen";
+"Off: view the account's discoveries only (e.g. a friend's). On: this iPhone adds its positions – requires a network connection." = "Aus: nur die Entdeckungen des Kontos ansehen (z. B. die eines Freundes). An: Dieses iPhone fügt seine Positionen hinzu – braucht eine Netzwerkverbindung.";
+"Connect" = "Verbinden";
+"Remote data source" = "Server-Datenquelle";
+"Could not connect: {0}" = "Verbindung fehlgeschlagen: {0}";
+
+/* PermissionView.swift */
+"Lift the fog of war" = "Lichte den Nebel";
+"MapQuest only shows the parts of Berlin you have actually been to. Everything else stays in the dark until you go there." = "MapQuest zeigt nur die Teile Berlins, in denen du wirklich warst. Alles andere bleibt im Dunkeln, bis du hingehst.";
+"Your position is used to reveal the map around you – also in the background, if you allow it." = "Deine Position deckt die Karte um dich herum auf – auch im Hintergrund, wenn du es erlaubst.";
+"Positions are stored only on this iPhone, and only when they reveal something new." = "Positionen werden nur auf diesem iPhone gespeichert, und nur, wenn sie Neues aufdecken.";
+"You can pause tracking or delete all data at any time." = "Du kannst die Aufzeichnung jederzeit pausieren oder alle Daten löschen.";
+"Allow location access" = "Standortzugriff erlauben";
+"Not now" = "Nicht jetzt";
+"Location access is off, so nothing can be discovered." = "Der Standortzugriff ist aus, also kann nichts entdeckt werden.";
+"Open Settings" = "Einstellungen öffnen";
+"Allow location access to start discovering." = "Erlaube den Standortzugriff, um mit dem Entdecken zu beginnen.";
+"Allow" = "Erlauben";
+"Allow “Always” to keep discovering after MapQuest was closed." = "Erlaube „Immer“, um auch nach dem Schließen von MapQuest weiter zu entdecken.";
+"Upgrade" = "Erweitern";
+"Precise location is off – discoveries need it." = "Der genaue Standort ist aus – Entdeckungen brauchen ihn.";
+
+/* AppModel.swift */
+"Radius" = "Radius";
+"Line of sight" = "Sichtlinie";
+"radius" = "Radius";
+"line of sight" = "Sichtlinie";
+"Viewing {0} – not recording" = "Ansicht von „{0}“ – keine Aufzeichnung";
+"New area discovered" = "Neue Fläche entdeckt";
+"Known territory" = "Bekanntes Gebiet";
+"Waiting for a precise position" = "Warte auf eine genaue Position";
+"Outside the recording area" = "Außerhalb des Aufzeichnungsgebiets";
+"No valid position" = "Keine gültige Position";
+"Could not record position: {0}" = "Position konnte nicht aufgezeichnet werden: {0}";
+"{0} layer incomplete: {1}" = "Ebene „{0}“ unvollständig: {1}";
+"Could not load data: {0}" = "Daten konnten nicht geladen werden: {0}";
+"Building the {0} layer…" = "Ebene „{0}“ wird aufgebaut…";
+"Could not open {0}: {1}" = "„{0}“ konnte nicht geöffnet werden: {1}";
+"Importing the demo explorer's track…" = "Strecke des Demo-Entdeckers wird importiert…";
+"Unused layers deleted" = "Ungenutzte Ebenen gelöscht";
+"Could not delete layers: {0}" = "Ebenen konnten nicht gelöscht werden: {0}";
+"stored" = "gespeichert";
+"skipped by the sampler (≈ every {0} m)" = "vom Sampler übersprungen (≈ alle {0} m)";
+"not stored" = "nicht gespeichert";
+"rejected: {0}" = "abgelehnt: {0}";
+"{0}: {1} m² new of {2} m² ({3} %)" = "{0}: {1} m² neu von {2} m² ({3} %)";
+"altitude {0} m (±{1}), ground {2} m, eye {3} m, above surroundings {4} m, sight {5} m" = "Höhe {0} m (±{1}), Boden {2} m, Auge {3} m, über Umgebung {4} m, Sicht {5} m";
+"Could not write the track: {0}" = "Strecke konnte nicht geschrieben werden: {0}";
+"{1} updated for new building data ({2} position)" = "{1} für neue Gebäudedaten aktualisiert ({2} Position)";
+"{1} updated for new building data ({2} positions)" = "{1} für neue Gebäudedaten aktualisiert ({2} Positionen)";
+"Could not update {0}: {1}" = "{0} konnte nicht aktualisiert werden: {1}";
+"Building data is available for all explored areas in the cities" = "Für alle erkundeten Gebiete in den Städten gibt es Gebäudedaten";
+"Downloading building data for {0} tile…" = "Lade Gebäudedaten für {0} Kachel…";
+"Downloading building data for {0} tiles…" = "Lade Gebäudedaten für {0} Kacheln…";
+"Building data downloaded – updating the line of sight…" = "Gebäudedaten geladen – Sichtlinie wird aktualisiert…";
+"Downloaded {0} of {1} tiles (offline or server busy? Try again later)" = "{0} von {1} Kacheln geladen (offline oder Server ausgelastet? Versuch es später noch mal)";
+"Rebuilding discovered area…" = "Entdeckte Fläche wird neu aufgebaut…";
+"Discovered area rebuilt" = "Entdeckte Fläche neu aufgebaut";
+"Rebuild failed: {0}" = "Neuaufbau fehlgeschlagen: {0}";
+"Delete failed: {0}" = "Löschen fehlgeschlagen: {0}";
+
+/* DataSourceCatalog.swift, BerlinData.swift (names of the app's own data sources) */
+"My discoveries" = "Meine Entdeckungen";
+"Sandbox (testing)" = "Sandbox (Tests)";
+"Demo explorer" = "Demo-Entdecker";
+"The access token of this remote data source is missing. Add the data source again." = "Das Zugangstoken dieser Server-Datenquelle fehlt. Füge die Datenquelle erneut hinzu.";
+
+/* Cities.swift */
+"District" = "Bezirk";
+
+/* BaseMapTiles.swift */
+"Streets" = "Straßen";
+"Light" = "Hell";
+"Dark" = "Dunkel";
+
+/* Map3DView.swift */
+"Loading buildings…" = "Gebäude werden geladen…";
+"No building data for this area yet (offline?)" = "Noch keine Gebäudedaten für dieses Gebiet (offline?)";
+"Building data missing for part of this area" = "Für einen Teil dieses Gebiets fehlen Gebäudedaten";
+"No buildings in this area" = "Keine Gebäude in diesem Gebiet";
+"Eye height {1} m · sight {2} m · {3} building" = "Augenhöhe {1} m · Sicht {2} m · {3} Gebäude";
+"Eye height {1} m · sight {2} m · {3} buildings" = "Augenhöhe {1} m · Sicht {2} m · {3} Gebäude";
+"Center on my position" = "Auf meine Position zentrieren";
+
+/* DebugSettingsView.swift, DebugPanel.swift */
+"Fog opacity" = "Deckkraft des Nebels";
+"Blur under the fog" = "Unschärfe unter dem Nebel";
+"Soft fog edges" = "Weiche Nebelränder";
+"Applies immediately. The blur shows through the fog only below 100 % opacity; soft edges fade the fog out over the given width on the ground inside discovered areas. The base map is drawn without labels from OpenStreetMap data (OpenFreeMap); only city and district names are shown, above the fog." = "Gilt sofort. Die Unschärfe scheint nur unter 100 % Deckkraft durch den Nebel; weiche Ränder blenden den Nebel in entdeckten Flächen über die angegebene Breite am Boden aus. Die Grundkarte wird ohne Beschriftung aus OpenStreetMap-Daten (OpenFreeMap) gezeichnet; nur Stadt- und Bezirksnamen erscheinen, über dem Nebel.";
+"Radius layer (2D)" = "Radius-Ebene (2D)";
+"Rays" = "Strahlen";
+"Sight at street level" = "Sicht auf Straßenhöhe";
+"Extra sight per metre of height" = "Zusätzliche Sicht pro Meter Höhe";
+"Maximum sight" = "Maximale Sicht";
+"Height counted as street level" = "Als Straßenhöhe gezählte Höhe";
+"Use the cities' terrain models" = "Geländemodelle der Städte nutzen";
+"Download buildings outside the cities" = "Gebäude außerhalb der Städte laden";
+"Line-of-sight layer (3D)" = "Sichtlinien-Ebene (3D)";
+"Heights up to the threshold plus the GPS vertical accuracy count as street level. With the terrain model, hills count as high points. Buildings are downloaded only around the cities with 3D data; elsewhere the line of sight uses the radius circle, unless downloads outside the cities are allowed (immediate)." = "Höhen bis zur Schwelle plus der vertikalen GPS-Genauigkeit gelten als Straßenhöhe. Mit dem Geländemodell zählen Hügel als hohe Punkte. Gebäude werden nur um die Städte mit 3D-Daten geladen; anderswo nutzt die Sichtlinie den Radiuskreis, außer Downloads außerhalb der Städte sind erlaubt (sofort).";
+"Apply and rebuild layers" = "Anwenden und Ebenen neu aufbauen";
+"Discovery parameters unchanged" = "Entdeckungsparameter unverändert";
+"Discovery parameters define the layer. Changing them switches to another layer, which is rebuilt from the stored positions (the old one stays cached)." = "Die Entdeckungsparameter bestimmen die Ebene. Eine Änderung wechselt zu einer anderen Ebene, die aus den gespeicherten Positionen neu aufgebaut wird (die alte bleibt im Cache).";
+"New area to store a position" = "Neue Fläche zum Speichern einer Position";
+"Sampling spacing (evaluate every …)" = "Abtastabstand (auswerten alle …)";
+"Applies immediately to new positions." = "Gilt sofort für neue Positionen.";
+"Long-press the 2D map to place a position" = "Langes Drücken auf die 2D-Karte setzt eine Position";
+"Eye height of test positions" = "Augenhöhe von Testpositionen";
+"Place a test position here" = "Hier eine Testposition setzen";
+"Show evaluation details" = "Auswertungsdetails zeigen";
+"Show all sights and stations on the map" = "Alle Sehenswürdigkeiten und Bahnhöfe auf der Karte zeigen";
+"Photograph sights from anywhere" = "Sehenswürdigkeiten von überall fotografieren";
+"Reset discovered and captured sights" = "Entdeckte und eingefangene Sehenswürdigkeiten zurücksetzen";
+"Testing" = "Testen";
+"Test positions are recorded into “{0}” like tracked ones. Use the “{1}” data source to keep your own discoveries clean." = "Testpositionen werden wie echte in „{0}“ aufgezeichnet. Nutze die Datenquelle „{1}“, damit deine eigenen Entdeckungen sauber bleiben.";
+"“{0}” is view-only: switch to a recording data source (e.g. “{1}”) to place test positions." = "„{0}“ ist nur zum Ansehen: Wechsle zu einer aufzeichnenden Datenquelle (z. B. „{1}“), um Testpositionen zu setzen.";
+"Reset to defaults" = "Auf Standard zurücksetzen";
+"Delete unused cached layers" = "Ungenutzte Ebenen im Cache löschen";
+"Debug" = "Debug";

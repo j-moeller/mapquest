@@ -9,7 +9,7 @@ enum BerlinData {
     static var demoProfile: DataProfile {
         DataProfile(
             descriptor: DataSourceDescriptor(
-                id: demoProfileID, displayName: "Demo explorer", kind: .localDatabase(path: "demo.sqlite")
+                id: demoProfileID, displayName: "Demo explorer", kind: .localDatabase(path: "demo.sqlite") // not localized: stored; shown as `DataProfile.name`
             ),
             recordsLocations: false
         )

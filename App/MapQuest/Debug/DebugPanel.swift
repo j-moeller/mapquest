@@ -1,3 +1,4 @@
+import MapQuestCore
 import SwiftUI
 
 /// The debug settings as a panel over the map: a sheet with three heights, the
@@ -12,7 +13,7 @@ struct DebugPanel: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("Done") { model.showsDebugPanel = false }
+                        Button(tr("Done")) { model.showsDebugPanel = false }
                     }
                 }
         }

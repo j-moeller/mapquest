@@ -14,66 +14,66 @@ struct DebugSettingsView: View {
     var body: some View {
         Form {
             Section {
-                ValueSlider(title: "Fog opacity", value: $draft.fogOpacity, range: 0.1...1, step: 0.01, format: "%.0f %%", scale: 100)
-                ValueSlider(title: "Blur under the fog", value: $draft.fogBlur, range: 0...1, step: 0.05, format: "%.0f %%", scale: 100)
-                ValueSlider(title: "Soft fog edges", value: $draft.fogSoftness, range: 0...40, step: 1, format: "%.0f m")
-                Picker("Base map", selection: $draft.baseMap) {
+                ValueSlider(title: tr("Fog opacity"), value: $draft.fogOpacity, range: 0.1...1, step: 0.01, unit: " %", scale: 100)
+                ValueSlider(title: tr("Blur under the fog"), value: $draft.fogBlur, range: 0...1, step: 0.05, unit: " %", scale: 100)
+                ValueSlider(title: tr("Soft fog edges"), value: $draft.fogSoftness, range: 0...40, step: 1, unit: " m")
+                Picker(tr("Base map"), selection: $draft.baseMap) {
                     ForEach(BaseMapStyle.allCases) { style in
                         Text(style.title).tag(style)
                     }
                 }
             } header: {
-                Text("Map")
+                Text(tr("Map"))
             } footer: {
-                Text("Applies immediately. The blur shows through the fog only below 100 % opacity; soft edges fade the fog out over the given width on the ground inside discovered areas. The base map is drawn without labels from OpenStreetMap data (OpenFreeMap); only city and district names are shown, above the fog.")
+                Text(tr("Applies immediately. The blur shows through the fog only below 100 % opacity; soft edges fade the fog out over the given width on the ground inside discovered areas. The base map is drawn without labels from OpenStreetMap data (OpenFreeMap); only city and district names are shown, above the fog."))
             }
 
             Section {
-                ValueSlider(title: "Radius", value: $draft.radius, range: 10...200, step: 5, format: "%.0f m")
+                ValueSlider(title: tr("Radius"), value: $draft.radius, range: 10...200, step: 5, unit: " m")
             } header: {
-                Text("Radius layer (2D)")
+                Text(tr("Radius layer (2D)"))
             }
 
             Section {
-                ValueSlider(title: "Rays", value: Binding(
+                ValueSlider(title: tr("Rays"), value: Binding(
                     get: { Double(draft.rayCount) }, set: { draft.rayCount = Int($0) }
-                ), range: 90...2_880, step: 90, format: "%.0f")
-                ValueSlider(title: "Sight at street level", value: $draft.baseDistance, range: 50...600, step: 10, format: "%.0f m")
-                ValueSlider(title: "Extra sight per metre of height", value: $draft.distancePerMeterOfHeight, range: 0...50, step: 1, format: "%.0f m")
-                ValueSlider(title: "Maximum sight", value: $draft.maximumDistance, range: 200...5_000, step: 100, format: "%.0f m")
-                ValueSlider(title: "Height counted as street level", value: $draft.elevatedThreshold, range: 0...30, step: 1, format: "%.0f m")
-                Toggle("Use the cities' terrain models", isOn: $draft.usesTerrain)
+                ), range: 90...2_880, step: 90)
+                ValueSlider(title: tr("Sight at street level"), value: $draft.baseDistance, range: 50...600, step: 10, unit: " m")
+                ValueSlider(title: tr("Extra sight per metre of height"), value: $draft.distancePerMeterOfHeight, range: 0...50, step: 1, unit: " m")
+                ValueSlider(title: tr("Maximum sight"), value: $draft.maximumDistance, range: 200...5_000, step: 100, unit: " m")
+                ValueSlider(title: tr("Height counted as street level"), value: $draft.elevatedThreshold, range: 0...30, step: 1, unit: " m")
+                Toggle(tr("Use the cities' terrain models"), isOn: $draft.usesTerrain)
                     .disabled(model.cityTerrain == nil)
-                Toggle("Download buildings outside the cities", isOn: $draft.downloadsBuildingsEverywhere)
+                Toggle(tr("Download buildings outside the cities"), isOn: $draft.downloadsBuildingsEverywhere)
             } header: {
-                Text("Line-of-sight layer (3D)")
+                Text(tr("Line-of-sight layer (3D)"))
             } footer: {
-                Text("Heights up to the threshold plus the GPS vertical accuracy count as street level. With the terrain model, hills count as high points. Buildings are downloaded only around the cities with 3D data; elsewhere the line of sight uses the radius circle, unless downloads outside the cities are allowed (immediate).")
+                Text(tr("Heights up to the threshold plus the GPS vertical accuracy count as street level. With the terrain model, hills count as high points. Buildings are downloaded only around the cities with 3D data; elsewhere the line of sight uses the radius circle, unless downloads outside the cities are allowed (immediate)."))
             }
 
             Section {
-                Button(needsApply ? "Apply and rebuild layers" : "Discovery parameters unchanged") {
+                Button(needsApply ? tr("Apply and rebuild layers") : tr("Discovery parameters unchanged")) {
                     let settings = draft
                     Task { await model.applyDebugSettings(settings) }
                 }
                 .disabled(!needsApply || model.isBusy)
             } footer: {
-                Text("Discovery parameters define the layer. Changing them switches to another layer, which is rebuilt from the stored positions (the old one stays cached).")
+                Text(tr("Discovery parameters define the layer. Changing them switches to another layer, which is rebuilt from the stored positions (the old one stays cached)."))
             }
 
             Section {
-                ValueSlider(title: "New area to store a position", value: $draft.minimumNewAreaPercent, range: 1...50, step: 1, format: "%.0f %%")
-                ValueSlider(title: "Sampling spacing (evaluate every …)", value: $draft.minimumMovement, range: 1...40, step: 1, format: "%.0f m")
+                ValueSlider(title: tr("New area to store a position"), value: $draft.minimumNewAreaPercent, range: 1...50, step: 1, unit: " %")
+                ValueSlider(title: tr("Sampling spacing (evaluate every …)"), value: $draft.minimumMovement, range: 1...40, step: 1, unit: " m")
             } header: {
-                Text("Recording")
+                Text(tr("Recording"))
             } footer: {
-                Text("Applies immediately to new positions.")
+                Text(tr("Applies immediately to new positions."))
             }
 
             Section {
-                Toggle("Long-press the 2D map to place a position", isOn: $draft.placesPositionsOnLongPress)
-                ValueSlider(title: "Eye height of test positions", value: $draft.testEyeHeight, range: 1.7...400, step: 0.5, format: "%.1f m")
-                Button("Place a test position here") {
+                Toggle(tr("Long-press the 2D map to place a position"), isOn: $draft.placesPositionsOnLongPress)
+                ValueSlider(title: tr("Eye height of test positions"), value: $draft.testEyeHeight, range: 1.7...400, step: 0.5, digits: 1, unit: " m")
+                Button(tr("Place a test position here")) {
                     guard let location = tracker.lastLocation else { return }
                     Task {
                         await model.placeTestPosition(at: GeoCoordinate(
@@ -82,31 +82,34 @@ struct DebugSettingsView: View {
                     }
                 }
                 .disabled(tracker.lastLocation == nil || !model.profile.recordsLocations)
-                Toggle("Show evaluation details", isOn: $draft.showsEvaluation)
-                Toggle("Show all sights and stations on the map", isOn: $draft.showsAllSights)
-                Toggle("Photograph sights from anywhere", isOn: $draft.photosAnywhere)
-                Button("Reset discovered and captured sights", role: .destructive) {
+                Toggle(tr("Show evaluation details"), isOn: $draft.showsEvaluation)
+                Toggle(tr("Show all sights and stations on the map"), isOn: $draft.showsAllSights)
+                Toggle(tr("Photograph sights from anywhere"), isOn: $draft.photosAnywhere)
+                Button(tr("Reset discovered and captured sights"), role: .destructive) {
                     captures.resetCaptures()
                 }
             } header: {
-                Text("Testing")
+                Text(tr("Testing"))
             } footer: {
+                // {1}: the sandbox's name in the app's language.
                 Text(model.profile.recordsLocations
-                     ? "Test positions are recorded into “\(model.profile.name)” like tracked ones. Use the “Sandbox (testing)” data source to keep your own discoveries clean."
-                     : "“\(model.profile.name)” is view-only: switch to a recording data source (e.g. “Sandbox (testing)”) to place test positions.")
+                     ? tr("Test positions are recorded into “{0}” like tracked ones. Use the “{1}” data source to keep your own discoveries clean.",
+                          model.profile.name, tr("Sandbox (testing)"))
+                     : tr("“{0}” is view-only: switch to a recording data source (e.g. “{1}”) to place test positions.",
+                          model.profile.name, tr("Sandbox (testing)")))
             }
 
             Section {
-                Button("Reset to defaults") {
+                Button(tr("Reset to defaults")) {
                     draft = .defaults
                 }
-                Button("Delete unused cached layers", role: .destructive) {
+                Button(tr("Delete unused cached layers"), role: .destructive) {
                     Task { await model.deleteUnusedLayers() }
                 }
                 .disabled(model.isBusy)
             }
         }
-        .navigationTitle("Debug")
+        .navigationTitle(tr("Debug"))
         .onAppear {
             if !loaded {
                 draft = model.debug
@@ -135,13 +138,16 @@ struct DebugSettingsView: View {
     }
 }
 
-/// A labelled slider with its current value.
+/// A labelled slider with its current value ("12 m", "1,5 m" in German).
 private struct ValueSlider: View {
     let title: String
     @Binding var value: Double
     let range: ClosedRange<Double>
     let step: Double
-    let format: String
+    /// Decimal places of the value shown.
+    var digits = 0
+    /// After the value: " m", " %" or nothing.
+    var unit = ""
     var scale: Double = 1
 
     var body: some View {
@@ -149,7 +155,7 @@ private struct ValueSlider: View {
             HStack {
                 Text(title)
                 Spacer()
-                Text(String(format: format, value * scale))
+                Text(Formatters.decimal(value * scale, digits: digits) + unit)
                     .monospacedDigit()
                     .foregroundStyle(.secondary)
             }

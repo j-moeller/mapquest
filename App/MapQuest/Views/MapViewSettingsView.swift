@@ -11,44 +11,44 @@ struct MapViewSettingsView: View {
     var body: some View {
         Form {
             Section {
-                Picker("Map", selection: $mode) {
+                Picker(tr("Map"), selection: $mode) {
                     ForEach(MapMode.allCases) { mode in
                         Text(mode.rawValue).tag(mode)
                     }
                 }
                 .pickerStyle(.segmented)
             } header: {
-                Text("Map")
+                Text(tr("Map"))
             } footer: {
                 Text(mode == .twoD
-                     ? "The 2D map with the fog of war over everything not discovered yet."
-                     : "The 3D scene of the buildings around you, with what you have seen between them (the line of sight).")
+                     ? tr("The 2D map with the fog of war over everything not discovered yet.")
+                     : tr("The 3D scene of the buildings around you, with what you have seen between them (the line of sight)."))
             }
 
             if mode == .twoD {
                 Section {
-                    Picker("Show", selection: $model.aggregate) {
+                    Picker(tr("Show"), selection: $model.aggregate) {
                         ForEach(MapAggregate.allCases) { aggregate in
                             Text(aggregate.title).tag(aggregate)
                         }
                     }
                     .pickerStyle(.segmented)
-                    Picker("Discovered by", selection: $model.selectedLayer) {
+                    Picker(tr("Discovered by"), selection: $model.selectedLayer) {
                         ForEach(MapLayer.allCases) { layer in
                             Text(layer.title).tag(layer)
                         }
                     }
                     .pickerStyle(.segmented)
                 } header: {
-                    Text("Display")
+                    Text(tr("Display"))
                 } footer: {
-                    Text("The fog of war lifts where you have been; the heatmap shows how often you were there. Radius: everything around your positions. Line of sight: what you could see between the buildings.")
+                    Text(tr("The fog of war lifts where you have been; the heatmap shows how often you were there. Radius: everything around your positions. Line of sight: what you could see between the buildings."))
                 }
             }
 
             Section {
-                Picker("Time span", selection: Binding(get: { model.periodKind }, set: { model.showPeriod($0) })) {
-                    Text("All time").tag(PeriodKind?.none)
+                Picker(tr("Time span"), selection: Binding(get: { model.periodKind }, set: { model.showPeriod($0) })) {
+                    Text(tr("All time")).tag(PeriodKind?.none)
                     ForEach(PeriodKind.allCases, id: \.self) { kind in
                         Text(kind.title).tag(PeriodKind?.some(kind))
                     }
@@ -62,7 +62,7 @@ struct MapViewSettingsView: View {
                             Image(systemName: "chevron.left")
                                 .frame(width: 36, height: 30)
                         }
-                        .accessibilityLabel("Previous \(period.kind.title.lowercased())")
+                        .accessibilityLabel(period.kind.previousTitle)
                         Spacer()
                         Text(period.title())
                             .font(.headline)
@@ -76,19 +76,19 @@ struct MapViewSettingsView: View {
                                 .frame(width: 36, height: 30)
                         }
                         .disabled(!model.canShiftForward)
-                        .accessibilityLabel("Next \(period.kind.title.lowercased())")
+                        .accessibilityLabel(period.kind.nextTitle)
                     }
                     .buttonStyle(.borderless)
-                    Button("Show today") { model.showToday() }
+                    Button(tr("Show today")) { model.showToday() }
                 }
             } header: {
-                Text("Time")
+                Text(tr("Time"))
             } footer: {
-                Text("All time shows everything you have discovered. A day, week, month or year shows what you saw in it.")
+                Text(tr("All time shows everything you have discovered. A day, week, month or year shows what you saw in it."))
             }
 
             Section {
-                Picker("Map style", selection: Binding(
+                Picker(tr("Map style"), selection: Binding(
                     get: { model.debug.baseMap },
                     set: { style in
                         var settings = model.debug
@@ -101,10 +101,11 @@ struct MapViewSettingsView: View {
                     }
                 }
             } header: {
-                Text("Style")
+                // Not "Style": that is the architectural style elsewhere (another German word).
+                Text(tr("Base map"))
             }
         }
-        .navigationTitle("Map view")
+        .navigationTitle(tr("Map view"))
         .navigationBarTitleDisplayMode(.inline)
     }
 }

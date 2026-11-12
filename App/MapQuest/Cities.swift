@@ -19,9 +19,9 @@ struct City: Hashable, Identifiable {
 
 enum Cities {
     static let all = [
-        City(id: "berlin", name: "Berlin", groundElevation: 35, hasPhotorealistic3D: true),
-        City(id: "braunschweig", name: "Braunschweig", groundElevation: 75),
-        City(id: "peine", name: "Peine", groundElevation: 67),
+        City(id: "berlin", name: "Berlin", groundElevation: 35, hasPhotorealistic3D: true), // not localized: city name
+        City(id: "braunschweig", name: "Braunschweig", groundElevation: 75), // not localized: city name
+        City(id: "peine", name: "Peine", groundElevation: 67), // not localized: city name
     ]
 
     /// The outline of a city with its districts as subdivisions, if bundled.
@@ -35,7 +35,7 @@ enum Cities {
            let districtsData = try? Data(contentsOf: districtsURL),
            let features = try? GeoJSON.polygonFeatures(from: districtsData) {
             area.subdivisions = features
-                .map { PlayArea(name: $0.properties["name"] ?? "District", polygons: $0.polygons) }
+                .map { PlayArea(name: $0.properties["name"] ?? tr("District"), polygons: $0.polygons) }
                 .sorted { $0.name < $1.name }
         }
         return area

@@ -8,6 +8,7 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var tracker: LocationTracker
+    @EnvironmentObject private var languages: LanguageSettings
     @Environment(\.dismiss) private var dismiss
     @AppStorage("ContentView.mode") private var mode: MapMode = .twoD
     @State private var confirmDelete = false
@@ -19,12 +20,12 @@ struct SettingsView: View {
                     NavigationLink {
                         page(MapViewSettingsView())
                     } label: {
-                        MenuRow(title: "Map view", systemImage: "map.fill", tint: .blue, detail: mapViewDetail)
+                        MenuRow(title: tr("Map view"), systemImage: "map.fill", tint: .blue, detail: mapViewDetail)
                     }
                     NavigationLink {
                         page(StatisticsView())
                     } label: {
-                        MenuRow(title: "Statistics", systemImage: "chart.bar.fill", tint: .indigo,
+                        MenuRow(title: tr("Statistics"), systemImage: "chart.bar.fill", tint: .indigo,
                                 detail: Formatters.area(model.state(.radius).discoveredSquareMeters))
                     }
                 }
@@ -33,38 +34,51 @@ struct SettingsView: View {
                     NavigationLink {
                         page(RecordingSettingsView())
                     } label: {
-                        MenuRow(title: "Recording", systemImage: "location.fill", tint: .green, detail: recordingDetail)
+                        MenuRow(title: tr("Recording"), systemImage: "location.fill", tint: .green, detail: recordingDetail)
                     }
                     NavigationLink {
                         page(DataSourceView())
                     } label: {
-                        MenuRow(title: "Data source", systemImage: "person.2.fill", tint: .teal, detail: model.profile.name)
+                        MenuRow(title: tr("Data source"), systemImage: "person.2.fill", tint: .teal, detail: model.profile.name)
                     }
                 } header: {
-                    Text("Recording")
+                    Text(tr("Recording"))
                 }
 
                 Section {
                     NavigationLink {
                         page(DiscoveredAreaView())
                     } label: {
-                        MenuRow(title: "Discovered area", systemImage: "square.dashed.inset.filled", tint: .orange,
-                                detail: model.staleLayers.isEmpty ? nil : "Rebuild needed",
+                        MenuRow(title: tr("Discovered area"), systemImage: "square.dashed.inset.filled", tint: .orange,
+                                detail: model.staleLayers.isEmpty ? nil : tr("Rebuild needed"),
                                 warns: !model.staleLayers.isEmpty)
                     }
                     NavigationLink {
                         page(BuildingDataView())
                     } label: {
-                        MenuRow(title: "Building data", systemImage: "building.2.fill", tint: .brown,
-                                detail: model.dataRefresh != nil ? "Updating…" : nil)
+                        MenuRow(title: tr("Building data"), systemImage: "building.2.fill", tint: .brown,
+                                detail: model.dataRefresh != nil ? tr("Updating…") : nil)
                     }
                     NavigationLink {
                         page(MapDataView())
                     } label: {
-                        MenuRow(title: "Map data", systemImage: "externaldrive.fill", tint: .gray)
+                        MenuRow(title: tr("Map data"), systemImage: "externaldrive.fill", tint: .gray)
                     }
                 } header: {
-                    Text("Data")
+                    Text(tr("Data"))
+                }
+
+                Section {
+                    Picker(selection: $languages.choice) {
+                        ForEach(LanguageChoice.allCases) { choice in
+                            Text(languages.title(of: choice)).tag(choice)
+                        }
+                    } label: {
+                        MenuRow(title: tr("Language"), systemImage: "globe", tint: .cyan)
+                    }
+                    .pickerStyle(.navigationLink)
+                } footer: {
+                    Text(tr("Names keep their German original next to the English name. The system's own dialogs (camera, permissions) follow the next time the app starts."))
                 }
 
                 Section {
@@ -73,46 +87,48 @@ struct SettingsView: View {
                         model.opensDebugPanelAfterSettings = true
                         dismiss()
                     } label: {
-                        MenuRow(title: "Debug settings", systemImage: "slider.horizontal.3", tint: .purple)
+                        MenuRow(title: tr("Debug settings"), systemImage: "slider.horizontal.3", tint: .purple)
                     }
                     .foregroundStyle(.primary)
                 } header: {
-                    Text("Developer")
+                    Text(tr("Developer"))
                 } footer: {
-                    Text("Tune radius, line of sight, fog and recording on the fly, and place test positions – in a panel over the map, which stays usable.")
+                    Text(tr("Tune radius, line of sight, fog and recording on the fly, and place test positions – in a panel over the map, which stays usable."))
                 }
 
                 Section {
-                    Button("Delete all data of “\(model.profile.name)”", role: .destructive) {
+                    Button(tr("Delete all data of “{0}”", model.profile.name), role: .destructive) {
                         confirmDelete = true
                     }
                     .disabled(model.isBusy)
                 }
             }
-            .navigationTitle("Menu")
+            .navigationTitle(tr("Menu"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { dismiss() }
+                    Button(tr("Done")) { dismiss() }
                 }
             }
             .confirmationDialog(
-                "Delete all positions and discoveries of “\(model.profile.name)”?",
+                tr("Delete all positions and discoveries of “{0}”?", model.profile.name),
                 isPresented: $confirmDelete,
                 titleVisibility: .visible
             ) {
-                Button("Delete", role: .destructive) {
+                Button(tr("Delete"), role: .destructive) {
                     Task { await model.deleteAllData() }
                 }
             }
         }
+        // Another language: the menu is built again, at its first page.
+        .id(languages.language)
     }
 
     /// A page of the menu, with Done to close the menu from there.
     private func page<Content: View>(_ content: Content) -> some View {
         content.toolbar {
             ToolbarItem(placement: .confirmationAction) {
-                Button("Done") { dismiss() }
+                Button(tr("Done")) { dismiss() }
             }
         }
     }
@@ -120,25 +136,25 @@ struct SettingsView: View {
     /// "2D · Fog · All time".
     private var mapViewDetail: String {
         var parts = [mode.rawValue]
-        if mode == .twoD { parts.append(model.aggregate == .heatmap ? "Heatmap" : "Fog") }
-        parts.append(model.currentPeriod?.kind.title ?? "All time")
+        if mode == .twoD { parts.append(model.aggregate == .heatmap ? tr("Heatmap") : tr("Fog")) }
+        parts.append(model.currentPeriod?.kind.title ?? tr("All time"))
         return parts.joined(separator: " · ")
     }
 
     private var recordingDetail: String {
-        if !model.profile.recordsLocations { return "View only" }
-        if !tracker.isAuthorized { return "Not allowed" }
-        return tracker.isTrackingEnabled ? "On" : "Off"
+        if !model.profile.recordsLocations { return tr("View only") }
+        if !tracker.isAuthorized { return tr("Not allowed") }
+        return tracker.isTrackingEnabled ? tr("On") : tr("Off")
     }
 
     static func describe(_ status: CLAuthorizationStatus) -> String {
         switch status {
-        case .notDetermined: return "Not asked yet"
-        case .restricted: return "Restricted"
-        case .denied: return "Denied"
-        case .authorizedAlways: return "Always"
-        case .authorizedWhenInUse: return "While using the app"
-        @unknown default: return "Unknown"
+        case .notDetermined: return tr("Not asked yet")
+        case .restricted: return tr("Restricted")
+        case .denied: return tr("Denied")
+        case .authorizedAlways: return tr("Always")
+        case .authorizedWhenInUse: return tr("While using the app")
+        @unknown default: return tr("Unknown")
         }
     }
 }
@@ -183,24 +199,24 @@ struct RecordingSettingsView: View {
     var body: some View {
         Form {
             Section {
-                Toggle("Record positions", isOn: Binding(
+                Toggle(tr("Record positions"), isOn: Binding(
                     get: { tracker.isTrackingEnabled },
                     set: { tracker.isTrackingEnabled = $0 }
                 ))
                 .disabled(!tracker.isAuthorized || !model.profile.recordsLocations)
-                LabeledContent("Permission", value: SettingsView.describe(tracker.authorizationStatus))
+                LabeledContent(tr("Permission"), value: SettingsView.describe(tracker.authorizationStatus))
                 if tracker.authorizationStatus == .authorizedWhenInUse {
-                    Button("Allow background discovery") {
+                    Button(tr("Allow background discovery")) {
                         tracker.requestAlwaysAuthorization()
                     }
                 }
             } footer: {
                 Text(model.profile.recordsLocations
-                     ? "While recording, every position (about one per second) is added to the track, compactly encoded (≈ 6 bytes per position). The positions that reveal something new also drive the fog of war. The button at the bottom of the map starts and pauses recording too."
-                     : "“\(model.profile.name)” shows another user's discoveries and records nothing. Choose your own data under Data source to record.")
+                     ? tr("While recording, every position (about one per second) is added to the track, compactly encoded (≈ 6 bytes per position). The positions that reveal something new also drive the fog of war. The button at the bottom of the map starts and pauses recording too.")
+                     : tr("“{0}” shows another user's discoveries and records nothing. Choose your own data under Data source to record.", model.profile.name))
             }
         }
-        .navigationTitle("Recording")
+        .navigationTitle(tr("Recording"))
         .navigationBarTitleDisplayMode(.inline)
     }
 }
@@ -220,7 +236,7 @@ struct DataSourceView: View {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(profile.name)
                                     .foregroundStyle(.primary)
-                                Text(profile.recordsLocations ? "Records your positions" : "View only")
+                                Text(profile.recordsLocations ? tr("Records your positions") : tr("View only"))
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
                             }
@@ -232,14 +248,14 @@ struct DataSourceView: View {
                         }
                     }
                 }
-                NavigationLink("Add remote data source…") {
+                NavigationLink(tr("Add remote data source…")) {
                     AddRemoteSourceView()
                 }
             } footer: {
-                Text("Location data and discovered area always travel together. Switching the data source shows another user's discoveries – the rest of the app stays the same.")
+                Text(tr("Location data and discovered area always travel together. Switching the data source shows another user's discoveries – the rest of the app stays the same."))
             }
         }
-        .navigationTitle("Data source")
+        .navigationTitle(tr("Data source"))
         .navigationBarTitleDisplayMode(.inline)
     }
 }
@@ -253,25 +269,35 @@ struct DiscoveredAreaView: View {
             Section {
                 ForEach(MapLayer.allCases) { layer in
                     let state = model.state(layer)
-                    LabeledContent(layer.title, value: "\(Formatters.area(state.discoveredSquareMeters)) in \(state.regionCount) \(state.regionCount == 1 ? "region" : "regions")")
+                    LabeledContent(layer.title, value: trn(
+                        "{1} in {0} region", "{1} in {0} regions", state.regionCount, Formatters.area(state.discoveredSquareMeters)
+                    ))
                     if model.staleLayers.contains(layer) {
-                        Label("Some positions are missing in this layer. Rebuild it.", systemImage: "exclamationmark.triangle")
+                        Label(tr("Some positions are missing in this layer. Rebuild it."), systemImage: "exclamationmark.triangle")
                             .font(.caption)
                             .foregroundStyle(.orange)
                     }
                 }
-                LabeledContent("Radius (2D)", value: "\(Int(model.circleModel.radius)) m around each position")
-                LabeledContent("Line of sight (3D)", value: "\(model.viewshedModel.configuration.rayCount) rays, up to \(Int(model.viewshedModel.configuration.maximumDistance)) m")
+                LabeledContent(tr("Radius (2D)"), value: tr(
+                    "{0} m around each position", Formatters.number(Int(model.circleModel.radius))
+                ))
+                LabeledContent(tr("Line of sight (3D)"), value: tr(
+                    "{0} rays, up to {1} m", Formatters.number(model.viewshedModel.configuration.rayCount),
+                    Formatters.number(Int(model.viewshedModel.configuration.maximumDistance))
+                ))
             } header: {
-                Text("Layers")
+                Text(tr("Layers"))
             } footer: {
                 if !model.cities.isEmpty {
-                    Text("The fog of war lifts everywhere. \(model.cities.map(\.name).joined(separator: ", ")) also have 3D building and terrain data for the line of sight; elsewhere it reveals the radius circle.")
+                    Text(tr(
+                        "The fog of war lifts everywhere. {0} also have 3D building and terrain data for the line of sight; elsewhere it reveals the radius circle.",
+                        model.cities.map(\.name).formatted(.list(type: .and).locale(Formatters.locale))
+                    ))
                 }
             }
 
             Section {
-                Button("Rebuild discovered area") {
+                Button(tr("Rebuild discovered area")) {
                     Task { await model.rebuildDiscoveredArea() }
                 }
                 .disabled(model.isBusy)
@@ -279,10 +305,10 @@ struct DiscoveredAreaView: View {
                     ProgressView(value: progress)
                 }
             } footer: {
-                Text("The discovered area is a cache computed from the stored positions. Rebuilding recomputes both layers from scratch; usually this is not needed – areas are recomputed automatically when building data changes.")
+                Text(tr("The discovered area is a cache computed from the stored positions. Rebuilding recomputes both layers from scratch; usually this is not needed – areas are recomputed automatically when building data changes."))
             }
         }
-        .navigationTitle("Discovered area")
+        .navigationTitle(tr("Discovered area"))
         .navigationBarTitleDisplayMode(.inline)
     }
 }
@@ -294,7 +320,7 @@ struct BuildingDataView: View {
     var body: some View {
         Form {
             Section {
-                Toggle("Download automatically", isOn: Binding(
+                Toggle(tr("Download automatically"), isOn: Binding(
                     get: { model.debug.downloadsBuildings },
                     set: { enabled in
                         var settings = model.debug
@@ -303,12 +329,16 @@ struct BuildingDataView: View {
                     }
                 ))
                 let data = model.buildingData
-                LabeledContent("Explored areas", value: "\(data.bundled + data.downloaded + data.missing) × 1.5 km tiles")
-                LabeledContent("With building data", value: "\(data.bundled) bundled, \(data.downloaded) downloaded")
-                LabeledContent("Default map (no data)", value: "\(data.missing)")
+                LabeledContent(tr("Explored areas"), value: tr(
+                    "{0} × {1} km tiles", Formatters.number(data.bundled + data.downloaded + data.missing), Formatters.decimal(1.5, digits: 1)
+                ))
+                LabeledContent(tr("With building data"), value: tr(
+                    "{0} bundled, {1} downloaded", Formatters.number(data.bundled), Formatters.number(data.downloaded)
+                ))
+                LabeledContent(tr("Default map (no data)"), value: Formatters.number(data.missing))
                 if let refresh = model.dataRefresh {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Updating \(refresh.layer.title.lowercased()) for new building data…")
+                        Text(tr("Updating {0} for new building data…", refresh.layer.titleInSentence))
                             .font(.subheadline)
                         if let fraction = refresh.fraction {
                             ProgressView(value: fraction)
@@ -321,7 +351,7 @@ struct BuildingDataView: View {
                     Task { await model.downloadMissingBuildingData() }
                 } label: {
                     HStack {
-                        Text("Download missing building data")
+                        Text(tr("Download missing building data"))
                         if model.isDownloadingBuildings {
                             Spacer()
                             ProgressView()
@@ -330,10 +360,10 @@ struct BuildingDataView: View {
                 }
                 .disabled(model.isDownloadingBuildings || data.missing == 0)
             } footer: {
-                Text("Building data is bundled for the cities with 3D data and downloaded (OpenStreetMap) only around them. Where none is available (other places, offline), the line-of-sight layer uses the radius circle – the default map. When building data arrives, by download or with a newer bundled dataset, exactly the areas whose view it can change are recomputed from the stored positions.")
+                Text(tr("Building data is bundled for the cities with 3D data and downloaded (OpenStreetMap) only around them. Where none is available (other places, offline), the line-of-sight layer uses the radius circle – the default map. When building data arrives, by download or with a newer bundled dataset, exactly the areas whose view it can change are recomputed from the stored positions."))
             }
         }
-        .navigationTitle("Building data")
+        .navigationTitle(tr("Building data"))
         .navigationBarTitleDisplayMode(.inline)
         .task { await model.checkBuildingData(fetchingMissing: false) }
     }
@@ -346,10 +376,8 @@ struct MapDataView: View {
     var body: some View {
         Form {
             Section {
-                LabeledContent("Stored on this iPhone", value: bytes.map {
-                    ByteCountFormatter.string(fromByteCount: Int64($0), countStyle: .file)
-                } ?? "…")
-                Button("Delete map data", role: .destructive) {
+                LabeledContent(tr("Stored on this iPhone"), value: bytes.map(Formatters.bytes) ?? "…")
+                Button(tr("Delete map data"), role: .destructive) {
                     Task {
                         await Task.detached(priority: .userInitiated) { VectorTileStore.shared.clear() }.value
                         await measure()
@@ -357,10 +385,10 @@ struct MapDataView: View {
                 }
                 .disabled((bytes ?? 0) == 0)
             } footer: {
-                Text("The map is drawn on this iPhone from OpenStreetMap data (OpenFreeMap vector tiles, no labels). Every area you have looked at is kept here, compressed, and works offline; it is refreshed after 90 days and limited to 500 MB.")
+                Text(tr("The map is drawn on this iPhone from OpenStreetMap data (OpenFreeMap vector tiles, no labels). Every area you have looked at is kept here, compressed, and works offline; it is refreshed after 90 days and limited to 500 MB."))
             }
         }
-        .navigationTitle("Map data")
+        .navigationTitle(tr("Map data"))
         .navigationBarTitleDisplayMode(.inline)
         .task { await measure() }
     }

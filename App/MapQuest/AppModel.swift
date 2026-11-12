@@ -15,8 +15,16 @@ enum MapLayer: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .radius: return "Radius"
-        case .lineOfSight: return "Line of sight"
+        case .radius: return tr("Radius")
+        case .lineOfSight: return tr("Line of sight")
+        }
+    }
+
+    /// The title inside a sentence ("Updating line of sight …"; German nouns keep their capital).
+    var titleInSentence: String {
+        switch self {
+        case .radius: return tr("radius")
+        case .lineOfSight: return tr("line of sight")
         }
     }
 }
@@ -329,7 +337,7 @@ final class AppModel: ObservableObject {
 
     private func process(_ sample: LocationSample) async {
         guard profile.recordsLocations else {
-            lastOutcome = "Viewing \(profile.name) – not recording"
+            lastOutcome = tr("Viewing {0} – not recording", profile.name)
             return
         }
         // The track keeps every fix, right away – also while a layer is being rebuilt.
@@ -348,7 +356,7 @@ final class AppModel: ObservableObject {
             case .recorded(_, let updates):
                 sampleCount += 1
                 periodViewTouched()
-                lastOutcome = "New area discovered"
+                lastOutcome = tr("New area discovered")
                 for update in updates {
                     if let layer = layer(for: update.layer) {
                         await publish(layer, changedTiles: update.changedTiles)
@@ -357,18 +365,18 @@ final class AppModel: ObservableObject {
                     scheduleDataRefresh(update.staleDataTiles)
                 }
             case .alreadyDiscovered:
-                lastOutcome = "Known territory"
+                lastOutcome = tr("Known territory")
             case .rejected(.inaccurate):
-                lastOutcome = "Waiting for a precise position"
+                lastOutcome = tr("Waiting for a precise position")
             case .rejected(.outsidePlayArea):
-                lastOutcome = "Outside the recording area"
+                lastOutcome = tr("Outside the recording area")
             case .rejected(.invalidPosition):
-                lastOutcome = "No valid position"
+                lastOutcome = tr("No valid position")
             }
             await updateStaleLayers()
         } catch {
             // Not an alert: with a remote data source this can happen for every fix while offline.
-            lastOutcome = "Could not record position: \(error.localizedDescription)"
+            lastOutcome = tr("Could not record position: {0}", error.localizedDescription)
         }
     }
 
@@ -427,14 +435,14 @@ final class AppModel: ObservableObject {
                 guard let engine = engines[layer] else { continue }
                 do {
                     if sampleCount > 0, !existing.contains(engine.layer) {
-                        try await rebuild(engine, label: layer.title)
+                        try await rebuild(engine, label: layer.titleInSentence)
                     } else {
                         try await engine.loadAll()
                     }
                 } catch {
                     // E.g. building data unavailable offline: keep the other layers working.
                     failedLayers.insert(layer)
-                    lastOutcome = "\(layer.title) layer incomplete: \(error.localizedDescription)"
+                    lastOutcome = tr("{0} layer incomplete: {1}", layer.title, error.localizedDescription)
                 }
             }
             await refreshAll()
@@ -444,18 +452,19 @@ final class AppModel: ObservableObject {
             // a newer bundled dataset after an app update): refresh those areas.
             Task { [weak self] in await self?.checkBuildingData(fetchingMissing: self?.debug.downloadsBuildings ?? false) }
         } catch {
-            errorMessage = "Could not load data: \(error.localizedDescription)"
+            errorMessage = tr("Could not load data: {0}", error.localizedDescription)
         }
     }
 
     /// Rebuilds one layer from the stored positions, reporting progress.
+    /// - Parameter label: the layer's title inside a sentence (`MapLayer.titleInSentence`).
     private func rebuild(_ engine: DiscoveryEngine, label: String) async throws {
         isRebuilding = true
         defer {
             isRebuilding = false
             progress = nil
         }
-        lastOutcome = "Building the \(label.lowercased()) layer…"
+        lastOutcome = tr("Building the {0} layer…", label)
         progress = 0
         let samples = try await store.samples(matching: .all)
         let stale = try await engine.rebuild(from: samples) { done, total in
@@ -488,7 +497,7 @@ final class AppModel: ObservableObject {
             lastOutcome = ""
             await reload()
         } catch {
-            errorMessage = "Could not open \(profile.name): \(error.localizedDescription)"
+            errorMessage = tr("Could not open {0}: {1}", profile.name, error.localizedDescription)
         }
     }
 
@@ -509,7 +518,7 @@ final class AppModel: ObservableObject {
     /// key samples are (nearly) the same at a fraction of the evaluations.
     private func importDemoData() async throws {
         let recorder = self.recorder
-        lastOutcome = "Importing the demo explorer's track…"
+        lastOutcome = tr("Importing the demo explorer's track…")
         let points = try BerlinData.demoTrack()
         defer { progress = nil }
         // The whole track goes in as segments of ten minutes.
@@ -602,34 +611,38 @@ final class AppModel: ObservableObject {
                 if layer.rawValue.contains("@day:"), used.contains(base) { continue }
                 try await store.removeAllPieces(layer: layer)
             }
-            lastOutcome = "Unused layers deleted"
+            lastOutcome = tr("Unused layers deleted")
         } catch {
-            errorMessage = "Could not delete layers: \(error.localizedDescription)"
+            errorMessage = tr("Could not delete layers: {0}", error.localizedDescription)
         }
     }
 
     private func summarizeEvaluation(of sample: LocationSample, outcome: RecordingOutcome) async {
         let evaluations = await recorder.lastEvaluations
         var lines: [String] = []
+        func number(_ value: Double, digits: Int = 0) -> String { Formatters.decimal(value, digits: digits) }
         switch outcome {
-        case .recorded: lines.append("stored")
-        case .alreadyDiscovered(let evaluated) where evaluated.isEmpty: lines.append("skipped by the sampler (≈ every \(Int(debug.minimumMovement)) m)")
-        case .alreadyDiscovered: lines.append("not stored")
-        case .rejected(let reason): lines.append("rejected: \(reason)")
+        case .recorded: lines.append(tr("stored"))
+        case .alreadyDiscovered(let evaluated) where evaluated.isEmpty:
+            lines.append(tr("skipped by the sampler (≈ every {0} m)", Int(debug.minimumMovement)))
+        case .alreadyDiscovered: lines.append(tr("not stored"))
+        // The reason is the case's name (inaccurate, outsidePlayArea, …): a symbol for developers.
+        case .rejected(let reason): lines.append(tr("rejected: {0}", String(describing: reason)))
         }
         for evaluation in evaluations {
             let name = layer(for: evaluation.layer)?.title ?? evaluation.layer.rawValue
-            lines.append(String(
-                format: "%@: %.0f m² new of %.0f m² (%.0f %%)",
-                name, evaluation.newAreaSquareMeters, evaluation.revealedAreaSquareMeters, evaluation.newAreaFraction * 100
+            lines.append(tr(
+                "{0}: {1} m² new of {2} m² ({3} %)",
+                name, number(evaluation.newAreaSquareMeters), number(evaluation.revealedAreaSquareMeters),
+                number(evaluation.newAreaFraction * 100)
             ))
         }
         let heights = viewshedModel.heights(for: sample)
         let ground = viewshedModel.terrain.elevation(at: sample.worldPoint)
-        lines.append(String(
-            format: "altitude %.0f m (±%.0f), ground %.0f m, eye %.1f m, above surroundings %.0f m, sight %.0f m",
-            sample.altitude, sample.verticalAccuracy, ground, heights.eye, heights.effective,
-            viewshedModel.configuration.viewDistance(eyeHeight: heights.effective)
+        lines.append(tr(
+            "altitude {0} m (±{1}), ground {2} m, eye {3} m, above surroundings {4} m, sight {5} m",
+            number(sample.altitude), number(sample.verticalAccuracy), number(ground), number(heights.eye, digits: 1),
+            number(heights.effective), number(viewshedModel.configuration.viewDistance(eyeHeight: heights.effective))
         ))
         evaluationSummary = lines.joined(separator: "\n")
     }
@@ -644,7 +657,7 @@ final class AppModel: ObservableObject {
                 if trackSummary.first == nil { trackSummary.first = sample.timestamp }
             }
         } catch {
-            lastOutcome = "Could not write the track: \(error.localizedDescription)"
+            lastOutcome = tr("Could not write the track: {0}", error.localizedDescription)
         }
     }
 
@@ -708,10 +721,13 @@ final class AppModel: ObservableObject {
                         await publish(layer, changedTiles: result.changedTiles)
                     }
                     if result.affectedSamples > 0 {
-                        lastOutcome = "\(layer.title) updated for new building data (\(result.recomputedSamples) positions)"
+                        lastOutcome = trn(
+                            "{1} updated for new building data ({2} position)", "{1} updated for new building data ({2} positions)",
+                            result.recomputedSamples, layer.title, Formatters.number(result.recomputedSamples)
+                        )
                     }
                 } catch {
-                    lastOutcome = "Could not update \(layer.title.lowercased()): \(error.localizedDescription)"
+                    lastOutcome = tr("Could not update {0}: {1}", layer.titleInSentence, error.localizedDescription)
                 }
             }
         }
@@ -745,16 +761,16 @@ final class AppModel: ObservableObject {
             if await buildings.mayDownload(tile) { missing.insert(tile) }
         }
         guard !missing.isEmpty else {
-            lastOutcome = "Building data is available for all explored areas in the cities"
+            lastOutcome = tr("Building data is available for all explored areas in the cities")
             return
         }
-        lastOutcome = "Downloading building data for \(missing.count) \(missing.count == 1 ? "tile" : "tiles")…"
+        lastOutcome = trn("Downloading building data for {0} tile…", "Downloading building data for {0} tiles…", missing.count)
         let stale = (try? await engine.staleDataTiles(fetchingMissing: true)) ?? []
         scheduleDataRefresh(stale)
         let downloaded = stale.intersection(missing).count
         lastOutcome = downloaded == missing.count
-            ? "Building data downloaded – updating the line of sight…"
-            : "Downloaded \(downloaded) of \(missing.count) tiles (offline or server busy? Try again later)"
+            ? tr("Building data downloaded – updating the line of sight…")
+            : tr("Downloaded {0} of {1} tiles (offline or server busy? Try again later)", downloaded, missing.count)
         await updateBuildingDataSummary()
     }
 
@@ -785,13 +801,13 @@ final class AppModel: ObservableObject {
             isBusy = false
         }
         do {
-            lastOutcome = "Rebuilding discovered area…"
+            lastOutcome = tr("Rebuilding discovered area…")
             let stale = try await recorder.rebuildAllLayers()
             scheduleDataRefresh(stale)
             failedLayers = []
-            lastOutcome = "Discovered area rebuilt"
+            lastOutcome = tr("Discovered area rebuilt")
         } catch {
-            errorMessage = "Rebuild failed: \(error.localizedDescription)"
+            errorMessage = tr("Rebuild failed: {0}", error.localizedDescription)
         }
         await refreshAll()
         await updateStaleLayers()
@@ -822,7 +838,7 @@ final class AppModel: ObservableObject {
             // Other components (captures) forget what depended on the deleted area.
             NotificationCenter.default.post(name: .discoveredDataDeleted, object: profile.id)
         } catch {
-            errorMessage = "Delete failed: \(error.localizedDescription)"
+            errorMessage = tr("Delete failed: {0}", error.localizedDescription)
         }
     }
 }

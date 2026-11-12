@@ -1,3 +1,4 @@
+import MapQuestCore
 import SwiftUI
 
 /// Adds an account on a MapQuest server (PostgreSQL behind Server/mapquest_server.py).
@@ -13,18 +14,19 @@ struct AddRemoteSourceView: View {
     var body: some View {
         Form {
             Section {
-                TextField("Server URL", text: $url)
+                TextField(tr("Server URL"), text: $url)
                     .keyboardType(.URL)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
-                SecureField("Access token", text: $token)
+                SecureField(tr("Access token"), text: $token)
             } footer: {
-                Text("The token identifies your account on the server (created with `mapquest_server.py add-user`). It is stored in the Keychain.")
+                // Markdown: the command in code style.
+                Text((try? AttributedString(markdown: tr("The token identifies your account on the server (created with `mapquest_server.py add-user`). It is stored in the Keychain."))) ?? "")
             }
             Section {
-                Toggle("Record my positions into this account", isOn: $records)
+                Toggle(tr("Record my positions into this account"), isOn: $records)
             } footer: {
-                Text("Off: view the account's discoveries only (e.g. a friend's). On: this iPhone adds its positions – requires a network connection.")
+                Text(tr("Off: view the account's discoveries only (e.g. a friend's). On: this iPhone adds its positions – requires a network connection."))
             }
             if let error {
                 Section {
@@ -35,12 +37,12 @@ struct AddRemoteSourceView: View {
                 Button {
                     Task { await add() }
                 } label: {
-                    if isChecking { ProgressView() } else { Text("Connect") }
+                    if isChecking { ProgressView() } else { Text(tr("Connect")) }
                 }
                 .disabled(isChecking || URL(string: url)?.host == nil || token.isEmpty)
             }
         }
-        .navigationTitle("Remote data source")
+        .navigationTitle(tr("Remote data source"))
     }
 
     private func add() async {
@@ -51,7 +53,7 @@ struct AddRemoteSourceView: View {
             try await model.addRemoteDataSource(url: serverURL, token: token.trimmingCharacters(in: .whitespacesAndNewlines), records: records)
             dismiss()
         } catch {
-            self.error = "Could not connect: \(error.localizedDescription)"
+            self.error = tr("Could not connect: {0}", error.localizedDescription)
         }
     }
 }

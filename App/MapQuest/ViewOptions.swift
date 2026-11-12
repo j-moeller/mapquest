@@ -10,8 +10,8 @@ enum MapAggregate: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .fog: return "Fog of war"
-        case .heatmap: return "Heatmap"
+        case .fog: return tr("Fog of war")
+        case .heatmap: return tr("Heatmap")
         }
     }
 
@@ -39,18 +39,39 @@ struct HeatPoints {
 extension PeriodKind {
     var title: String {
         switch self {
-        case .day: return "Day"
-        case .week: return "Week"
-        case .month: return "Month"
-        case .year: return "Year"
+        case .day: return tr("Day")
+        case .week: return tr("Week")
+        case .month: return tr("Month")
+        case .year: return tr("Year")
+        }
+    }
+
+    /// Accessibility label of the button to the period before.
+    var previousTitle: String {
+        switch self {
+        case .day: return tr("Previous day")
+        case .week: return tr("Previous week")
+        case .month: return tr("Previous month")
+        case .year: return tr("Previous year")
+        }
+    }
+
+    /// Accessibility label of the button to the period after.
+    var nextTitle: String {
+        switch self {
+        case .day: return tr("Next day")
+        case .week: return tr("Next week")
+        case .month: return tr("Next month")
+        case .year: return tr("Next year")
         }
     }
 }
 
 extension Period {
-    /// "Sun, 8 Nov 2026", "Week 45 · 2–8 Nov", "November 2026", "2026".
+    /// "Sun, 8 Nov 2026", "Week 45 · 2–8 Nov", "November 2026", "2026" (in the app's language).
     func title(calendar: Calendar = .current) -> String {
         let formatter = DateFormatter()
+        formatter.locale = Formatters.locale
         formatter.calendar = calendar
         formatter.timeZone = calendar.timeZone
         switch kind {
@@ -60,10 +81,11 @@ extension Period {
         case .week:
             let week = calendar.component(.weekOfYear, from: start)
             let interval = DateIntervalFormatter()
+            interval.locale = Formatters.locale
             interval.calendar = calendar
             interval.timeZone = calendar.timeZone
             interval.dateTemplate = "dMMM"
-            return "Week \(week) · \(interval.string(from: start, to: end.addingTimeInterval(-1)))"
+            return tr("Week {0} · {1}", week, interval.string(from: start, to: end.addingTimeInterval(-1)))
         case .month:
             formatter.setLocalizedDateFormatFromTemplate("MMMMyyyy")
             return formatter.string(from: start)
@@ -201,7 +223,7 @@ extension AppModel {
                 }
             }
         } catch {
-            if !Task.isCancelled { lastOutcome = "Could not compute the view: \(error.localizedDescription)" }
+            if !Task.isCancelled { lastOutcome = tr("Could not compute the view: {0}", error.localizedDescription) }
         }
     }
 

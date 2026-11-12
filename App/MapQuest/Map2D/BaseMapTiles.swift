@@ -17,9 +17,9 @@ enum BaseMapStyle: String, Codable, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .streets: return "Streets"
-        case .light: return "Light"
-        case .dark: return "Dark"
+        case .streets: return tr("Streets")
+        case .light: return tr("Light")
+        case .dark: return tr("Dark")
         }
     }
 
@@ -31,8 +31,8 @@ enum BaseMapStyle: String, Codable, CaseIterable, Identifiable {
         }
     }
 
-    /// Required credit, shown on the map (OpenFreeMap's attribution).
-    static let attribution = "OpenFreeMap © OpenMapTiles · Data © OpenStreetMap contributors"
+    /// Required credit, shown on the map (OpenFreeMap's attribution, as the providers word it).
+    static let attribution = "OpenFreeMap © OpenMapTiles · Data © OpenStreetMap contributors" // not localized: credit line
     /// Drawn tiles go this deep; the vector data stops at zoom 14 and is enlarged (sharp).
     static let maximumZoom = 21
 }
@@ -81,7 +81,7 @@ final class VectorTileStore: @unchecked Sendable {
         configuration.timeoutIntervalForRequest = 20
         configuration.httpMaximumConnectionsPerHost = 4
         configuration.urlCache = nil  // cached here, on disk, for good
-        configuration.httpAdditionalHeaders = ["User-Agent": "MapQuest/\(version) (iOS)"]
+        configuration.httpAdditionalHeaders = ["User-Agent": "MapQuest/\(version) (iOS)"] // not localized: HTTP header
         session = URLSession(configuration: configuration)
 
         if let data = UserDefaults.standard.data(forKey: Self.tileJSONKey) {

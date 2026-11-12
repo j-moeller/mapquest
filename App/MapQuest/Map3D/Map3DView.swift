@@ -8,7 +8,7 @@ import SwiftUI
 @MainActor
 final class Scene3DController: ObservableObject {
     /// Shown as an overlay while loading or when building data is missing.
-    @Published private(set) var status: String?
+    @Published private(set) var status: Scene3DStatus?
     @Published private(set) var buildingCount = 0
     /// Incremented to ask the scene to re-centre on the user.
     @Published private(set) var reloadRequests = 0
@@ -102,7 +102,7 @@ final class Scene3DController: ObservableObject {
         interiorPoints = [:]
         buildingCount = 0
         mapImage = nil
-        status = "Loading buildings…"
+        status = .loading
         placeSights()
         renderedVersion = -1
         await recolor(snapshot: snapshot, version: version, fogStyle: fogStyle)
@@ -128,11 +128,11 @@ final class Scene3DController: ObservableObject {
         buildingCount = loaded.count
         placeSights()
         if coverage.coveredTiles.isEmpty {
-            status = "No building data for this area yet (offline?)"
+            status = .noData
         } else if coverage.coveredTiles.count < coverage.versions.count {
-            status = "Building data missing for part of this area"
+            status = .partialData
         } else {
-            status = loaded.isEmpty ? "No buildings in this area" : nil
+            status = loaded.isEmpty ? .noBuildings : nil
         }
         guard token == generation else { return }
         renderedVersion = -1
@@ -236,6 +236,24 @@ struct SceneKitView: UIViewRepresentable {
     func updateUIView(_ view: SCNView, context: Context) {}
 }
 
+/// What the 3D scene reports while it loads or when building data is missing
+/// (its text follows the app's language).
+enum Scene3DStatus: Equatable {
+    case loading
+    case noData
+    case partialData
+    case noBuildings
+
+    var text: String {
+        switch self {
+        case .loading: return tr("Loading buildings…")
+        case .noData: return tr("No building data for this area yet (offline?)")
+        case .partialData: return tr("Building data missing for part of this area")
+        case .noBuildings: return tr("No buildings in this area")
+        }
+    }
+}
+
 /// Status line and re-centre button of the 3D map, shown in the main overlay.
 struct Scene3DOverlay: View {
     @EnvironmentObject private var model: AppModel
@@ -252,13 +270,15 @@ struct Scene3DOverlay: View {
             if controller.status != nil || showsFigures {
                 VStack(alignment: .leading, spacing: 4) {
                     if let status = controller.status {
-                        Text(status)
+                        Text(status.text)
                             .font(.footnote)
                     }
                     if showsFigures {
-                        Text(String(
-                            format: "Eye height %.0f m · sight %.0f m · %d buildings",
-                            heights.eye, model.viewshedModel.configuration.viewDistance(eyeHeight: heights.effective), controller.buildingCount
+                        Text(trn(
+                            "Eye height {1} m · sight {2} m · {3} building", "Eye height {1} m · sight {2} m · {3} buildings",
+                            controller.buildingCount, Formatters.decimal(heights.eye, digits: 0),
+                            Formatters.decimal(model.viewshedModel.configuration.viewDistance(eyeHeight: heights.effective), digits: 0),
+                            Formatters.number(controller.buildingCount)
                         ))
                         .font(.caption2.monospacedDigit())
                         .foregroundStyle(.secondary)
@@ -277,7 +297,7 @@ struct Scene3DOverlay: View {
                     .padding(8)
                     .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
             }
-            .accessibilityLabel("Center on my position")
+            .accessibilityLabel(tr("Center on my position"))
         }
     }
 }

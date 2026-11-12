@@ -13,6 +13,7 @@ Berlin, where it comes from, and how to regenerate it.
 | Sights (184, all 12 districts) | Curated list (`Tools/capture/berlin_sights.csv`); positions from OpenStreetMap points of interest via OpenFreeMap vector tiles (`Tools/capture/locate_sights.py`), about 50 placed by hand or from Wikidata; district from the district polygons | ODbL 1.0 (© OpenStreetMap contributors); Wikidata CC0 | `App/MapQuest/Resources/Berlin/berlin-sights.json` |
 | U-Bahn and S-Bahn stations (343) and lines (25) | OpenStreetMap route relations of the lines (`Tools/transit/build_stations.py`); the U6 north from Wikipedia | ODbL 1.0 (© OpenStreetMap contributors) | `App/MapQuest/Resources/Berlin/berlin-stations.json` |
 | Achievements (102) | Hand-written rules over the sights and their historical facts | – | `App/MapQuest/Resources/Berlin/berlin-achievements.json` |
+| German versions | Entries: German Wikipedia introductions; history: German articles and translated facts; achievements and remembrance guide translated by hand; English sight names and station explanations by hand ([docs/08](08-localization.md)) | CC BY-SA 4.0 (texts) | `berlin-sight-info-de.json`, `berlin-sight-history-de.json`, `berlin-remembrance-de.json`, `"de"` in `berlin-achievements.json`, `nameEn` in `berlin-sights.json` and `berlin-stations.json` |
 | Remembrance guide (5 chapters, 2 walks) | Hand-written: what each of the 18 places of remembrance remembers, in chapters of history, and walks between them | – | `App/MapQuest/Resources/Berlin/berlin-remembrance.json` |
 | Sight entries (text and photo) | Wikipedia introductions (English, else German) and lead photos from Wikimedia Commons (`Tools/capture/fetch_sight_info.py`) | Texts CC BY-SA 4.0; photos per entry (author and licence in the file) | `App/MapQuest/Resources/Berlin/berlin-sight-info.json` |
 | Sight history (dates, style, architects, clients, history texts) | Wikidata and the articles' infoboxes, checked by hand (`Tools/capture/berlin_sight_history.csv`); the articles' history sections (`Tools/capture/fetch_sight_history.py`); rulers and eras in `BerlinHistory` | Facts: Wikidata CC0; history texts CC BY-SA 4.0 | `App/MapQuest/Resources/Berlin/berlin-sight-history.json` |
@@ -93,7 +94,7 @@ batches (about 40 requests), waits on "429" answers and caches every answer,
 so a re-run only fetches what is new.
 
 ```bash
-python3 Tools/capture/fetch_sight_info.py App/MapQuest/Resources/Berlin/berlin-sights.json App/MapQuest/Resources/Berlin/berlin-sight-info.json --cache build-sights/wiki --aliases Tools/capture/berlin_sights.csv --overrides Tools/capture/berlin_sight_articles.csv
+python3 Tools/capture/fetch_sight_info.py App/MapQuest/Resources/Berlin/berlin-sights.json App/MapQuest/Resources/Berlin/berlin-sight-info.json --cache build-sights/wiki --aliases Tools/capture/berlin_sights.csv --overrides Tools/capture/berlin_sight_articles.csv --german App/MapQuest/Resources/Berlin/berlin-sight-info-de.json
 ```
 
 Their historical facts (`berlin-sight-history.json`: all 184 dated, about 135
@@ -114,8 +115,21 @@ pip install mwparserfromhell
 ```
 
 ```bash
-python3 Tools/capture/fetch_sight_history.py App/MapQuest/Resources/Berlin/berlin-sights.json App/MapQuest/Resources/Berlin/berlin-sight-info.json App/MapQuest/Resources/Berlin/berlin-sight-history.json --cache build-sights/wiki
+python3 Tools/capture/fetch_sight_history.py App/MapQuest/Resources/Berlin/berlin-sights.json App/MapQuest/Resources/Berlin/berlin-sight-info.json App/MapQuest/Resources/Berlin/berlin-sight-history.json --cache build-sights/wiki --german-info App/MapQuest/Resources/Berlin/berlin-sight-info-de.json --german App/MapQuest/Resources/Berlin/berlin-sight-history-de.json
 ```
+
+### German versions and English names
+
+With `--german`, `fetch_sight_info.py` also writes `berlin-sight-info-de.json`
+(the German articles' introductions) and `fetch_sight_history.py` writes
+`berlin-sight-history-de.json`: the same facts with their phrases in German
+from `Tools/capture/berlin_sight_history_de.csv` (`field;en;de` for styles,
+clients, notes on architects and dates in words – every phrase of the English
+facts needs a row, else the tool stops and lists the missing ones) and the
+history from the German article. The English sight names are the `name_en`
+column of `berlin_sights.csv` (empty where English uses the German name), the
+English explanations of station names `Tools/transit/berlin_station_names_en.csv`;
+both end up as `nameEn` in the JSON. See [docs/08](08-localization.md).
 
 ### Places of remembrance
 

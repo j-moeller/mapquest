@@ -517,6 +517,7 @@ marks the 3D layer as *stale*, and the app offers a rebuild once online.
 | `App/MapQuest/BundledBuildings.swift` | Unpacks the bundled building databases (one per city) |
 | `App/MapQuest/Keychain.swift`, `Views/AddRemoteSourceView.swift` | Remote data sources (token in the Keychain) |
 | `App/MapQuestUITests/` | Smoke test on an iPhone 13 mini simulator (run from Xcode) |
+| `App/MapQuest/Localization/LanguageSettings.swift`, `MapQuestKit/Sources/MapQuestCore/Localization/*` | The app's language (System, English, German), `tr`/`trn`, bilingual names ([docs/08](08-localization.md)) |
 | `App/MapQuest/Views/*` | Main screen (map, menu button, the note on what the map shows, captures and tracking at the bottom), the menu and its pages (`SettingsView`), statistics, districts |
 
 ### 3D map (SceneKit)

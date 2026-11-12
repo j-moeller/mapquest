@@ -1,3 +1,4 @@
+import MapQuestCore
 import SwiftUI
 import UIKit
 
@@ -14,18 +15,18 @@ struct PermissionView: View {
                 .font(.system(size: 72))
                 .foregroundStyle(.tint)
             VStack(spacing: 12) {
-                Text("Lift the fog of war")
+                Text(tr("Lift the fog of war"))
                     .font(.largeTitle.bold())
                     .multilineTextAlignment(.center)
-                Text("MapQuest only shows the parts of Berlin you have actually been to. Everything else stays in the dark until you go there.")
+                Text(tr("MapQuest only shows the parts of Berlin you have actually been to. Everything else stays in the dark until you go there."))
                     .font(.body)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.secondary)
             }
             VStack(alignment: .leading, spacing: 14) {
-                PrivacyRow(symbol: "location.fill", text: "Your position is used to reveal the map around you – also in the background, if you allow it.")
-                PrivacyRow(symbol: "internaldrive", text: "Positions are stored only on this iPhone, and only when they reveal something new.")
-                PrivacyRow(symbol: "hand.raised.fill", text: "You can pause tracking or delete all data at any time.")
+                PrivacyRow(symbol: "location.fill", text: tr("Your position is used to reveal the map around you – also in the background, if you allow it."))
+                PrivacyRow(symbol: "internaldrive", text: tr("Positions are stored only on this iPhone, and only when they reveal something new."))
+                PrivacyRow(symbol: "hand.raised.fill", text: tr("You can pause tracking or delete all data at any time."))
             }
             .padding()
             .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 16))
@@ -33,13 +34,13 @@ struct PermissionView: View {
             Button {
                 tracker.requestWhenInUseAuthorization()
             } label: {
-                Text("Allow location access")
+                Text(tr("Allow location access"))
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 6)
             }
             .buttonStyle(.borderedProminent)
-            Button("Not now", action: onSkip)
+            Button(tr("Not now"), action: onSkip)
                 .font(.subheadline)
         }
         .padding(24)
@@ -69,26 +70,26 @@ struct PermissionBanner: View {
     var body: some View {
         if tracker.isDenied {
             banner(
-                text: "Location access is off, so nothing can be discovered.",
-                action: "Open Settings",
+                text: tr("Location access is off, so nothing can be discovered."),
+                action: tr("Open Settings"),
                 perform: openSettings
             )
         } else if tracker.needsPermissionPrompt {
             banner(
-                text: "Allow location access to start discovering.",
-                action: "Allow",
+                text: tr("Allow location access to start discovering."),
+                action: tr("Allow"),
                 perform: tracker.requestWhenInUseAuthorization
             )
         } else if tracker.authorizationStatus == .authorizedWhenInUse {
             banner(
-                text: "Allow “Always” to keep discovering after MapQuest was closed.",
-                action: "Upgrade",
+                text: tr("Allow “Always” to keep discovering after MapQuest was closed."),
+                action: tr("Upgrade"),
                 perform: tracker.requestAlwaysAuthorization
             )
         } else if tracker.accuracyAuthorization == .reducedAccuracy {
             banner(
-                text: "Precise location is off – discoveries need it.",
-                action: "Open Settings",
+                text: tr("Precise location is off – discoveries need it."),
+                action: tr("Open Settings"),
                 perform: openSettings
             )
         }
