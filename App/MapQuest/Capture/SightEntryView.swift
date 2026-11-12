@@ -311,7 +311,7 @@ struct SightEntryView: View {
     /// A place of remembrance: why it is not part of the game, its entry and history.
     private var remembrance: some View {
         VStack(alignment: .leading, spacing: 14) {
-            RemembranceHeader(visitedAt: record?.capturedAt)
+            RemembranceHeader(visitedAt: record?.capturedAt, chapter: captures.remembrance.chapter(of: sight.id))
             if let info {
                 ForEach(Array(info.paragraphs.enumerated()), id: \.offset) { _, paragraph in
                     Text(paragraph)

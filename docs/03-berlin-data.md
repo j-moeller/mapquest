@@ -13,6 +13,7 @@ Berlin, where it comes from, and how to regenerate it.
 | Sights (184, all 12 districts) | Curated list (`Tools/capture/berlin_sights.csv`); positions from OpenStreetMap points of interest via OpenFreeMap vector tiles (`Tools/capture/locate_sights.py`), about 50 placed by hand or from Wikidata; district from the district polygons | ODbL 1.0 (© OpenStreetMap contributors); Wikidata CC0 | `App/MapQuest/Resources/Berlin/berlin-sights.json` |
 | U-Bahn and S-Bahn stations (343) and lines (25) | OpenStreetMap route relations of the lines (`Tools/transit/build_stations.py`); the U6 north from Wikipedia | ODbL 1.0 (© OpenStreetMap contributors) | `App/MapQuest/Resources/Berlin/berlin-stations.json` |
 | Achievements (102) | Hand-written rules over the sights and their historical facts | – | `App/MapQuest/Resources/Berlin/berlin-achievements.json` |
+| Remembrance guide (5 chapters, 2 walks) | Hand-written: what each of the 18 places of remembrance remembers, in chapters of history, and walks between them | – | `App/MapQuest/Resources/Berlin/berlin-remembrance.json` |
 | Sight entries (text and photo) | Wikipedia introductions (English, else German) and lead photos from Wikimedia Commons (`Tools/capture/fetch_sight_info.py`) | Texts CC BY-SA 4.0; photos per entry (author and licence in the file) | `App/MapQuest/Resources/Berlin/berlin-sight-info.json` |
 | Sight history (dates, style, architects, clients, history texts) | Wikidata and the articles' infoboxes, checked by hand (`Tools/capture/berlin_sight_history.csv`); the articles' history sections (`Tools/capture/fetch_sight_history.py`); rulers and eras in `BerlinHistory` | Facts: Wikidata CC0; history texts CC BY-SA 4.0 | `App/MapQuest/Resources/Berlin/berlin-sight-history.json` |
 | Demo explorer track (1 Hz, TrackCodec) | Generated (`Tools/berlin/make_demo_data.py`) | – | `App/MapQuest/Resources/Berlin/demo-track.mqtrack` |
@@ -115,6 +116,20 @@ pip install mwparserfromhell
 ```bash
 python3 Tools/capture/fetch_sight_history.py App/MapQuest/Resources/Berlin/berlin-sights.json App/MapQuest/Resources/Berlin/berlin-sight-info.json App/MapQuest/Resources/Berlin/berlin-sight-history.json --cache build-sights/wiki
 ```
+
+### Places of remembrance
+
+`berlin-remembrance.json` tells the 18 places of remembrance (the sights of
+the categories memorial and cemetery) outside the game: five chapters – the
+murder of Europe's Jews, terror and resistance, war and its dead, division and
+dictatorship, places of rest – each with a short paragraph and its places, a
+sentence on what each remembers; and two walks (through the centre: Neue
+Wache, the Soviet memorial in the Tiergarten, the Holocaust memorial, the
+Topographie des Terrors; the Stasi in Lichtenberg). It is written by hand,
+soberly and from the places' own descriptions; a test checks that every place
+of remembrance is in exactly one chapter and that the walks name only places
+of remembrance. A new memorial in `berlin-sights.json` needs a place in a
+chapter here.
 
 ### U-Bahn and S-Bahn stations
 

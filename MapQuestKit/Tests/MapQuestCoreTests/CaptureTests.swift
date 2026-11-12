@@ -548,3 +548,30 @@ final class StationTests: XCTestCase {
         try store.delete()
     }
 }
+
+final class RemembranceGuideTests: XCTestCase {
+    func testBundledBerlinGuide() throws {
+        let sights = try CaptureTests.berlinSights()
+        let guide = try RemembranceGuide.decode(Data(contentsOf: BraunschweigDataTests.root.appendingPathComponent("Berlin/berlin-remembrance.json")))
+        let places = guide.chapters.flatMap(\.places).map(\.sight)
+        let remembrance = sights.sights.filter(\.isPlaceOfRemembrance).map(\.id)
+        XCTAssertEqual(places.sorted(), remembrance.sorted(), "every place of remembrance in exactly one chapter, nothing else")
+        XCTAssertEqual(Set(guide.chapters.map(\.id)).count, guide.chapters.count)
+        for chapter in guide.chapters {
+            XCTAssertFalse(chapter.title.isEmpty)
+            XCTAssertGreaterThan(chapter.text.count, 40, chapter.id)
+            for place in chapter.places { XCTAssertGreaterThan(place.remembers.count, 40, place.sight) }
+        }
+        XCTAssertEqual(guide.chapter(of: "holocaust-mahnmal")?.id, "holocaust")
+        XCTAssertTrue(guide.remembers("wannsee-konferenz")?.contains("20 January 1942") ?? false)
+        XCTAssertNil(guide.chapter(of: "brandenburger-tor"), "game sights are not in the guide")
+        for tour in guide.tours {
+            XCTAssertGreaterThanOrEqual(tour.stops.count, 2, tour.id)
+            for stop in tour.stops { XCTAssertTrue(places.contains(stop), "\(tour.id): \(stop)") }
+            let length = RemembranceGuide.length(of: tour.stops.compactMap { sights[$0]?.coordinate })
+            XCTAssertLessThan(length, 6_000, "\(tour.id) is a walk")
+        }
+        let centre = try XCTUnwrap(guide.tours.first { $0.id == "centre" })
+        XCTAssertEqual(RemembranceGuide.length(of: centre.stops.compactMap { sights[$0]?.coordinate }), 3_000, accuracy: 600)
+    }
+}

@@ -9,12 +9,16 @@ enum MapMode: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
-/// The main screen: the map with status and controls on top.
+/// The main screen: only the map, a menu button, a note when the map shows
+/// something other than everything discovered, and at the bottom the captures
+/// and the tracking button. How the map is shown, the statistics and all
+/// settings are in the menu.
 struct ContentView: View {
     @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var tracker: LocationTracker
     @EnvironmentObject private var captures: CaptureModel
     @State private var showsSettings = false
+    @State private var showsMapView = false
     @AppStorage("ContentView.mode") private var mode: MapMode = .twoD
     @StateObject private var scene3D = Scene3DController()
     @State private var debugDetent = DebugPanelDetent.small
@@ -49,25 +53,27 @@ struct ContentView: View {
 
             VStack(spacing: 8) {
                 HStack(alignment: .top) {
-                    Picker("Map", selection: $mode) {
-                        ForEach(MapMode.allCases) { mode in
-                            Text(mode.rawValue).tag(mode)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    .frame(width: 100)
-                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
-                    ViewBar(showsAggregate: mode == .twoD)
-                    Spacer(minLength: 0)
+                    ViewChip(mode: mode) { showsMapView = true }
+                    Spacer(minLength: 8)
                     Button {
-                        model.showsDebugPanel.toggle()
+                        showsSettings = true
                     } label: {
-                        Image(systemName: "slider.horizontal.3")
-                            .frame(width: 36, height: 30)
-                            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+                        Image(systemName: "line.3.horizontal")
+                            .font(.title3.weight(.semibold))
+                            .frame(width: 40, height: 40)
+                            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
+                            .overlay(alignment: .topTrailing) {
+                                // A layer misses positions: Discovered area in the menu rebuilds it.
+                                if !model.staleLayers.isEmpty {
+                                    Circle()
+                                        .fill(Color.orange)
+                                        .frame(width: 9, height: 9)
+                                        .offset(x: 2, y: -2)
+                                }
+                            }
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel("Debug settings")
+                    .accessibilityLabel("Menu")
                 }
                 PermissionBanner()
                 if mode == .threeD {
@@ -84,8 +90,7 @@ struct ContentView: View {
                         .background(.regularMaterial, in: Capsule())
                         .frame(maxWidth: .infinity, alignment: .trailing)
                 }
-                // The 3D scene always shows the line-of-sight layer.
-                StatusPanel(showsSettings: $showsSettings, fixedLayer: mode == .threeD ? .lineOfSight : nil)
+                BottomBar()
             }
             .padding()
         }
@@ -112,6 +117,17 @@ struct ContentView: View {
             }
         }) {
             SettingsView()
+        }
+        .sheet(isPresented: $showsMapView) {
+            NavigationStack {
+                MapViewSettingsView()
+                    .toolbar {
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button("Done") { showsMapView = false }
+                        }
+                    }
+            }
+            .presentationDetents([.medium, .large])
         }
         .debugPanel(isPresented: $model.showsDebugPanel, detent: $debugDetent)
         .alert("MapQuest", isPresented: Binding(
@@ -141,137 +157,117 @@ extension ContentView {
     }
 }
 
-/// Discovery statistics and the tracking switch.
-struct StatusPanel: View {
+/// What the map shows, when it is not everything discovered (fog of war,
+/// radius, all time): e.g. "Heatmap · Week 45, 2026". Tapping it opens the map view settings.
+struct ViewChip: View {
     @EnvironmentObject private var model: AppModel
-    @EnvironmentObject private var tracker: LocationTracker
-    @Binding var showsSettings: Bool
-    /// Shows this layer's statistics without a layer picker (3D mode).
-    var fixedLayer: MapLayer?
-    /// Collapsed, the panel only shows the header and the statistics (small screens).
-    @AppStorage("StatusPanel.collapsed") private var collapsed = false
+    let mode: MapMode
+    let onTap: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack {
-                Button {
-                    withAnimation(.snappy) { collapsed.toggle() }
-                } label: {
-                    HStack(spacing: 6) {
-                        Image(systemName: collapsed ? "chevron.up" : "chevron.down")
-                            .font(.caption.bold())
-                        Label(model.profile.name, systemImage: model.profile.recordsLocations ? "person.fill" : "person.2.fill")
-                            .font(.headline)
-                            .lineLimit(1)
-                    }
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(collapsed ? "Show details" : "Hide details")
-                Spacer(minLength: 4)
-                if model.isBusy { ProgressView() }
-                CaptureButton()
-                Toggle("Tracking", isOn: Binding(
-                    get: { tracker.isTrackingEnabled },
-                    set: { tracker.isTrackingEnabled = $0 }
-                ))
-                .labelsHidden()
-                .disabled(!tracker.isAuthorized || !model.profile.recordsLocations)
-                Button {
-                    showsSettings = true
-                } label: {
-                    Image(systemName: "gearshape.fill")
-                        .font(.title3)
-                }
-                .accessibilityLabel("Settings")
+        let parts = description
+        if !parts.isEmpty {
+            Button(action: onTap) {
+                Label(parts.joined(separator: " · "), systemImage: "slider.horizontal.below.rectangle")
+                    .font(.subheadline.weight(.medium))
+                    .lineLimit(1)
+                    .padding(.horizontal, 12)
+                    .frame(height: 40)
+                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
             }
-            if fixedLayer == nil && !collapsed {
-                Picker("Discovery", selection: $model.selectedLayer) {
-                    ForEach(MapLayer.allCases) { layer in
-                        Text(layer.title).tag(layer)
-                    }
-                }
-                .pickerStyle(.segmented)
-            }
-            let shown = fixedLayer ?? model.selectedLayer
-            let layer = model.state(shown)
-            let heatmap = model.aggregate == .heatmap && fixedLayer == nil
-            if model.periodKind == nil && !heatmap {
-                HStack(spacing: 12) {
-                    Statistic(value: Formatters.area(layer.discoveredSquareMeters), label: "discovered")
-                    if let share = model.playAreaFraction(shown) {
-                        Statistic(value: Formatters.percent(share.fraction), label: "of \(share.city)")
-                    }
-                    Statistic(value: "\(layer.regionCount)", label: layer.regionCount == 1 ? "region" : "regions")
-                    Statistic(value: "\(model.sampleCount)", label: "positions")
-                }
-            } else {
-                // A period or the heatmap: figures from the track.
-                let summary = model.viewSummary
-                HStack(spacing: 12) {
-                    if let area = summary?.areaSquareMeters {
-                        Statistic(value: Formatters.area(area), label: "seen")
-                    }
-                    Statistic(value: Formatters.distance(summary?.statistics.distanceMeters ?? 0), label: "travelled")
-                    Statistic(value: Formatters.duration(summary?.statistics.recordedSeconds ?? 0), label: "recorded")
-                    if let days = summary?.statistics.activeDays, model.periodKind != .day {
-                        Statistic(value: "\(days)", label: days == 1 ? "day" : "days")
-                    }
-                }
-            }
-            if let progress = model.viewProgress, !collapsed {
-                ProgressView(value: progress) {
-                    Text("Computing \(model.currentPeriod?.title() ?? "")…").font(.caption)
-                }
-            }
-            if model.staleLayers.contains(shown) && !collapsed {
-                Label("Some positions are missing in this layer. Rebuild it in Settings.", systemImage: "exclamationmark.triangle")
-                    .font(.caption)
-                    .foregroundStyle(.orange)
-            }
-            if let progress = model.progress {
-                ProgressView(value: progress)
-            } else if let refresh = model.dataRefresh, !collapsed {
-                VStack(alignment: .leading, spacing: 4) {
-                    Label("Updating \(refresh.layer.title.lowercased()) for new building data", systemImage: "building.2")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                    if let fraction = refresh.fraction {
-                        ProgressView(value: fraction)
-                    }
-                }
-            }
-            if let summary = model.evaluationSummary, model.debug.showsEvaluation, !collapsed {
-                Text(summary)
-                    .font(.caption2.monospacedDigit())
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            if !model.lastOutcome.isEmpty && !collapsed {
-                Text(model.lastOutcome)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(2)
-            }
+            .buttonStyle(.plain)
+            .accessibilityHint("Opens the map view settings")
         }
-        .padding(12)
+    }
+
+    private var description: [String] {
+        var parts: [String] = []
+        if mode == .twoD {
+            if model.aggregate == .heatmap { parts.append(MapAggregate.heatmap.title) }
+            if model.selectedLayer == .lineOfSight { parts.append(MapLayer.lineOfSight.title) }
+        }
+        if let period = model.currentPeriod { parts.append(period.title()) }
+        return parts
+    }
+}
+
+/// The bottom of the main screen: the number of captures (opens the sights and
+/// achievements) and the tracking button.
+struct BottomBar: View {
+    @EnvironmentObject private var model: AppModel
+    @EnvironmentObject private var captures: CaptureModel
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Button {
+                captures.showsList = true
+            } label: {
+                HStack(spacing: 10) {
+                    Image(systemName: "trophy.fill")
+                        .font(.title2)
+                        .foregroundStyle(Color.captureGold)
+                        .overlay(alignment: .topTrailing) {
+                            // Entries not read yet.
+                            if captures.unreadEntryCount > 0 {
+                                Circle()
+                                    .fill(Color.red)
+                                    .frame(width: 9, height: 9)
+                                    .offset(x: 4, y: -2)
+                            }
+                        }
+                    VStack(alignment: .leading, spacing: 0) {
+                        Text("\(captures.capturedCount)")
+                            .font(.title3.monospacedDigit().bold())
+                        Text(captures.capturedCount == 1 ? "capture" : "captures")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("\(captures.capturedCount) of \(captures.gameSightCount) sights captured")
+            .accessibilityHint("Opens the sights and achievements")
+            Spacer(minLength: 8)
+            if model.isBusy || model.progress != nil || model.viewProgress != nil || model.dataRefresh != nil {
+                ProgressView()
+            }
+            TrackingButton()
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 10)
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
     }
 }
 
-private struct Statistic: View {
-    let value: String
-    let label: String
+/// Starts and pauses recording positions.
+struct TrackingButton: View {
+    @EnvironmentObject private var model: AppModel
+    @EnvironmentObject private var tracker: LocationTracker
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(value)
-                .font(.title3.monospacedDigit().bold())
-                .lineLimit(1)
-                .minimumScaleFactor(0.6)
-            Text(label)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
+        let on = tracker.isTrackingEnabled
+        let available = tracker.isAuthorized && model.profile.recordsLocations
+        Button {
+            tracker.isTrackingEnabled.toggle()
+        } label: {
+            Label(title(on: on), systemImage: on ? "location.fill" : "location")
+                .font(.headline)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 10)
+                .foregroundStyle(.white)
+                .background(on ? Color.green : Color.accentColor, in: Capsule())
         }
+        .buttonStyle(.plain)
+        .disabled(!available)
+        .opacity(available ? 1 : 0.5)
+        .accessibilityLabel(on ? "Tracking is on" : "Start tracking")
+        .accessibilityHint(on ? "Pauses recording your positions" : "Records your positions and lifts the fog where you go")
+    }
+
+    private func title(on: Bool) -> String {
+        if !model.profile.recordsLocations { return "View only" }
+        return on ? "Tracking" : "Start tracking"
     }
 }
 

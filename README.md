@@ -15,7 +15,7 @@ The app has four major components:
 |---|---|
 | **Location tracking** | Records the position about once per second in a compact track (≈ 6 bytes per fix); the positions that reveal new parts of the map drive the fog of war |
 | **Discovered area** | Turns stored positions into discovered-area polygons, merges adjacent areas into regions, keeps disconnected areas apart; it is a cache that can always be rebuilt from the positions |
-| **Capture** | 184 Berlin sights (all districts, the outer ones too) are discovered once you have been there (the radius view covers them) and captured when you photograph them there; 343 U-Bahn and S-Bahn stations are collected just by going there: animations, a list of all sights, badges on the map and gems in 3D; 102 achievements (eras, architects, districts, collections, stories, lines, clubs and stages). Places of remembrance (memorials, memorial sites, cemeteries) are not part of the game: never captured or celebrated, in no achievement, their entries open to all |
+| **Capture** | 184 Berlin sights (all districts, the outer ones too) are discovered once you have been there (the radius view covers them) and captured when you photograph them there; 343 U-Bahn and S-Bahn stations are collected just by going there: animations, a list of all sights, badges on the map and gems in 3D; 102 achievements (eras, architects, districts, collections, stories, lines, clubs and stages). Places of remembrance (memorials, memorial sites, cemeteries) are not part of the game: never captured or celebrated, in no achievement, their entries open to all, told in a tab of their own as a short history with walks |
 | **Map display** | 2D: a label-free base map with a black fog (80 %, blurred map underneath) drawn into it, the discovered area cut out. 3D: buildings that block the view; seen buildings are revealed |
 
 ## How it works
@@ -57,11 +57,20 @@ The app has four major components:
 
 * First launch explains the purpose and asks for location access; upgrading
   to *Always* keeps discovering in the background.
-* **2D / 3D** switch at the top, next to the view bar: fog of war or heatmap,
-  and *All time / Day / Week / Month / Year* with ‹ › to step through
-  periods; in 2D the *Radius / Line of sight* picker chooses the layer.
-* The panel shows discovered area, share of the current city, regions and stored
-  positions; tap the chevron to collapse it on small screens (iPhone 13 mini).
+* **The main screen** is the map: the menu button at the top right and, at
+  the bottom, your number of captures (opens the sights, achievements and
+  places of remembrance) and the button that starts and pauses tracking.
+  When the map shows something other than everything discovered (a heatmap,
+  the line of sight, a week…), a note at the top left says so; tap it to
+  change it.
+* **The menu**: *Map view* (2D map or 3D scene, fog of war or heatmap,
+  *Radius / Line of sight*, *All time / Day / Week / Month / Year* with ‹ ›
+  to step through periods and *Show today*, the map style) and *Statistics*
+  (discovered area per layer, share of the current city, regions, positions,
+  cities and districts; distance, time recorded and active days of the period
+  shown; sights, stations and achievements); then *Recording*, *Data source*,
+  *Discovered area*, *Building data*, *Map data*, the developer's *Debug
+  settings* and deleting all data – each its own page.
 * **Sights**: walk up to one of 184 Berlin sights – from palaces to Berghain – until the circles of the
   radius view cover it – and it is discovered, with an animation (tap to skip):
   it appears on your map and unlocks its entry. **Photograph it there** (the
@@ -73,13 +82,14 @@ The app has four major components:
   (Apple's 3D city model, where available) or its photo, description and
   history (from Wikipedia and Wikimedia Commons), with its place in Berlin's
   history: when it was built and opened, its style, its architects, who
-  commissioned it, who ruled Berlin then and in which era. The trophy button
-  in the panel lists all sights, nearest first or *Through time* (by year, in
-  Berlin's eras) – captured ones in orange, the others in grey; tap one to
-  see it on the map. **Stations**: the 343 U-Bahn and S-Bahn stations are
+  commissioned it, who ruled Berlin then and in which era. The captures at
+  the bottom of the map open three tabs: **Sights**, nearest first or
+  *Through time* (by year, in Berlin's eras) – captured ones in orange, the
+  others in grey; tap one to see it on the map. **Stations**: the 343 U-Bahn and S-Bahn stations are
   collected just by going there (walking past, or riding through above
   ground) – small blue "U" and green "S" signs on the map, a notice for each.
-  **Achievements** (third tab, 102): every station of a line (U1–U9, every
+  **Achievements** (102; filter *All / Completed / Started / Not started*):
+  every station of a line (U1–U9, every
   S-Bahn line, the Ringbahn), every church,
   fountain, market or museum; everything from an era; the works of Schinkel,
   Knobelsdorff or Blankenstein; every sight of a district; themed walks such
@@ -87,15 +97,19 @@ The app has four major components:
   missing and the nearest sight to go for next; a capture that completes one
   says so in its animation. Captured sights are golden badges on the map and golden buildings
   with floating gems in 3D. *Debug › Show all sights* marks the uncaptured
-  ones too.
-* **Settings** switch the data source (*My discoveries*, *Sandbox (testing)*,
-  the view-only *Demo explorer*, or a **remote account** on a MapQuest server
-  backed by PostgreSQL), show per-district coverage, rebuild the discovered
-  area, pause recording or delete data. **Building data** shows which
-  explored areas have bundled, downloaded or no building data, turns
-  automatic OpenStreetMap downloads on or off, and downloads missing data
-  for areas that were computed with the default map.
-* **Debug settings** (slider button on the map, or Settings › Developer) open
+  ones too. **Remembrance**, the third tab, is outside the game: a short
+  history in chapters (the murder of Europe's Jews, terror and resistance,
+  war and its dead, division and dictatorship, places of rest), each with the
+  places that remember it and what they remember, and walks between them
+  (stops in order, the distance, the first stop on the map). No counts, no
+  progress, nothing to collect.
+* **Data source** (menu): *My discoveries*, *Sandbox (testing)*, the
+  view-only *Demo explorer*, or a **remote account** on a MapQuest server
+  backed by PostgreSQL. **Discovered area** rebuilds the layers; **Building
+  data** shows which explored areas have bundled, downloaded or no building
+  data, turns automatic OpenStreetMap downloads on or off, and downloads
+  missing data for areas that were computed with the default map.
+* **Debug settings** (menu › Developer) open
   as a panel over the map, which stays visible and usable while tuning
   everything on the fly: fog opacity (up to 100 %), blur under the fog,
   soft fog edges and the base map style (streets, light, dark),

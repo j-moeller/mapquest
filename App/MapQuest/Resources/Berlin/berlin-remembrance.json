@@ -1,0 +1,77 @@
+{
+ "about": "Places of remembrance in Berlin, as a short history and as walks. They are not part of the game. Each place of remembrance (category memorial or cemetery in berlin-sights.json) is in exactly one chapter.",
+ "chapters": [
+  {
+   "id": "holocaust",
+   "title": "The murder of Europe's Jews",
+   "years": "1933–1945",
+   "text": "From 1933 the Nazi regime deprived Germany's Jews of their rights, their livelihoods and their homes. From October 1941 it deported Berlin's Jews to ghettos and extermination camps. Six million Jews of Europe were murdered.",
+   "places": [
+    {"sight": "wannsee-konferenz", "remembers": "On 20 January 1942, senior officials of the regime met in this villa to coordinate the deportation and murder of Europe's Jews."},
+    {"sight": "holocaust-mahnmal", "remembers": "The Memorial to the Murdered Jews of Europe: a field of 2,711 concrete stelae, with an information centre beneath it."},
+    {"sight": "juedischer-friedhof-weissensee", "remembers": "One of Europe's largest Jewish cemeteries, in use since 1880, with the graves of many who were persecuted and a memorial to the murdered."}
+   ]
+  },
+  {
+   "id": "terror",
+   "title": "Terror and resistance",
+   "years": "1933–1945",
+   "text": "The regime persecuted its opponents and everyone it declared not to belong: communists and social democrats, Sinti and Roma, homosexuals, Jehovah's Witnesses, people with disabilities. Its secret police and the SS ran their terror from Berlin; thousands who resisted were killed.",
+   "places": [
+    {"sight": "topographie", "remembers": "On the site of the headquarters of the Gestapo, the SS and the Reich Security Main Office: a documentation centre on the institutions of terror."},
+    {"sight": "gedenkstaette-ploetzensee", "remembers": "In the execution shed of Plötzensee prison nearly 3,000 people were killed, many of them for resisting – among them men of the plot of 20 July 1944."},
+    {"sight": "zwangslager-marzahn", "remembers": "In July 1936, before the Olympics, the Berlin police forced Sinti and Roma into a camp here; most of them were later deported to Auschwitz."}
+   ]
+  },
+  {
+   "id": "war",
+   "title": "War and its dead",
+   "years": "1939–1945",
+   "text": "The war Germany began in 1939 cost the lives of more than 60 million people, about 27 million of them in the Soviet Union. It ended in Berlin with the unconditional surrender of the Wehrmacht on 8 May 1945.",
+   "places": [
+    {"sight": "neue-wache", "remembers": "The Central Memorial of the Federal Republic of Germany to the Victims of War and Tyranny, with Käthe Kollwitz's Mother with her Dead Son."},
+    {"sight": "museum-karlshorst", "remembers": "Here the Wehrmacht's unconditional surrender was signed on the night of 8 May 1945; today a museum of the German war of annihilation against the Soviet Union."},
+    {"sight": "ehrenmal-tiergarten", "remembers": "A Soviet war memorial built in 1945, with the graves of some 2,000 soldiers of the Red Army who fell in the Battle of Berlin."},
+    {"sight": "ehrenmal-treptow", "remembers": "The largest of Berlin's Soviet war memorials, completed in 1949, and the cemetery of about 7,000 soldiers of the Red Army."},
+    {"sight": "ehrenmal-schoenholzer-heide", "remembers": "The Soviet memorial with the largest cemetery: more than 13,000 soldiers of the Red Army are buried here."}
+   ]
+  },
+  {
+   "id": "division",
+   "title": "Division and dictatorship",
+   "years": "1945–1990",
+   "text": "After the war the city was divided. In 1948 the Soviet Union blockaded West Berlin; from 1961 the GDR walled it in. At least 140 people were killed at the Wall in Berlin, and the GDR's secret police persecuted everyone it took for an enemy.",
+   "places": [
+    {"sight": "luftbrueckendenkmal", "remembers": "The memorial to the Berlin Airlift of 1948–1949 and to those who lost their lives flying supplies into the blockaded city."},
+    {"sight": "mauer-gedenkstaette", "remembers": "On Bernauer Straße, where the Wall cut through the street: the central memorial to the division of Germany and to the victims of the Wall."},
+    {"sight": "hohenschoenhausen", "remembers": "A Soviet special camp from 1945, then the central remand prison of the Stasi, where political prisoners were held and interrogated until 1989."},
+    {"sight": "stasimuseum", "remembers": "The headquarters of the Ministry for State Security, with the office of its minister Erich Mielke; citizens occupied it in January 1990."}
+   ]
+  },
+  {
+   "id": "rest",
+   "title": "Places of rest",
+   "years": "since 1762",
+   "text": "Cemeteries keep the memory of the people buried in them.",
+   "places": [
+    {"sight": "dorotheenstaedtischer-friedhof", "remembers": "The graves of Fichte, Hegel, Schinkel, Brecht and many other writers, artists and scholars."},
+    {"sight": "russischer-friedhof-tegel", "remembers": "Berlin's only Russian Orthodox cemetery, consecrated in 1894, with the Church of Saints Constantine and Helena."},
+    {"sight": "gedenkstaette-sozialisten", "remembers": "In the Friedrichsfelde cemetery, a memorial of 1951 to Rosa Luxemburg, Karl Liebknecht and other socialists, which the GDR made a place of state ceremony."}
+   ]
+  }
+ ],
+ "tours": [
+  {
+   "id": "centre",
+   "title": "A walk through the centre",
+   "text": "From Unter den Linden through the edge of the Tiergarten to the site of the Gestapo headquarters: war and tyranny, the end of the war, the murdered Jews of Europe, the perpetrators.",
+   "stops": ["neue-wache", "ehrenmal-tiergarten", "holocaust-mahnmal", "topographie"]
+  },
+  {
+   "id": "lichtenberg",
+   "title": "The Stasi in Lichtenberg",
+   "text": "The headquarters of the GDR's secret police and its central remand prison.",
+   "stops": ["stasimuseum", "hohenschoenhausen"]
+  }
+ ]
+}

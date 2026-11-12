@@ -245,22 +245,29 @@ struct Scene3DOverlay: View {
     var body: some View {
         let heights = tracker.lastLocation.map { model.viewshedModel.heights(for: LocationSample($0)) }
             ?? (eye: model.viewshedModel.configuration.streetEyeHeight, effective: model.viewshedModel.configuration.streetEyeHeight)
+        // The main screen stays clean: the scene's status while it loads, the
+        // eye height and view distance only with the developer figures on.
+        let showsFigures = model.debug.showsEvaluation
         HStack(alignment: .top) {
-            VStack(alignment: .leading, spacing: 4) {
-                if let status = controller.status {
-                    Text(status)
-                        .font(.footnote)
+            if controller.status != nil || showsFigures {
+                VStack(alignment: .leading, spacing: 4) {
+                    if let status = controller.status {
+                        Text(status)
+                            .font(.footnote)
+                    }
+                    if showsFigures {
+                        Text(String(
+                            format: "Eye height %.0f m · sight %.0f m · %d buildings",
+                            heights.eye, model.viewshedModel.configuration.viewDistance(eyeHeight: heights.effective), controller.buildingCount
+                        ))
+                        .font(.caption2.monospacedDigit())
+                        .foregroundStyle(.secondary)
+                    }
                 }
-                Text(String(
-                    format: "Eye height %.0f m · sight %.0f m · %d buildings",
-                    heights.eye, model.viewshedModel.configuration.viewDistance(eyeHeight: heights.effective), controller.buildingCount
-                ))
-                .font(.caption2.monospacedDigit())
-                .foregroundStyle(.secondary)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 6)
+                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
             }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 6)
-            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
             Spacer()
             Button {
                 controller.requestReload()

@@ -67,18 +67,56 @@ struct AchievementSymbol: View {
     }
 }
 
-/// The achievements in the sight list: those almost complete first, then by group.
+/// Which achievements the list shows: all, the completed ones, the ones under
+/// way, or the ones not started yet.
+enum AchievementFilter: String, CaseIterable, Identifiable {
+    case all, completed, started, notStarted
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .all: return "All"
+        case .completed: return "Completed"
+        case .started: return "Started"
+        case .notStarted: return "Not started"
+        }
+    }
+
+    func includes(_ progress: AchievementProgress) -> Bool {
+        switch self {
+        case .all: return true
+        case .completed: return progress.isComplete
+        case .started: return !progress.isComplete && progress.count > 0
+        case .notStarted: return progress.count == 0 && !progress.isComplete
+        }
+    }
+
+    /// When nothing matches.
+    var emptyText: String {
+        switch self {
+        case .all: return "No achievements here."
+        case .completed: return "No achievement completed yet. Capture sights by photographing them, and collect stations by going there."
+        case .started: return "No achievement under way. Capture a sight or collect a station to start one."
+        case .notStarted: return "You have started every achievement."
+        }
+    }
+}
+
+/// The achievements by group, the ones nearly done first.
 struct AchievementSections: View {
     @EnvironmentObject private var captures: CaptureModel
+    var filter: AchievementFilter = .all
 
     var body: some View {
         let all = captures.achievementProgress
+        let shown = all.filter { self.filter.includes($0) }
         // Started, not milestones, fewest sights to go first.
         let almost = all
             .filter { !$0.isComplete && $0.count > 0 && !$0.achievement.rule.isMilestone }
             .sorted { ($0.remaining, -$0.fraction, $0.achievement.title) < ($1.remaining, -$1.fraction, $1.achievement.title) }
             .prefix(3)
-        if !almost.isEmpty {
+        if !almost.isEmpty && (filter == .all || filter == .started) {
             Section {
                 ForEach(Array(almost)) { progress in
                     AchievementRow(progress: progress)
@@ -87,15 +125,23 @@ struct AchievementSections: View {
                 Text("Almost there")
             }
         }
+        if shown.isEmpty {
+            Section {
+                Text(filter.emptyText)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+        }
         ForEach(AchievementGroup.allCases, id: \.self) { group in
-            let items = all.filter { $0.achievement.group == group }
+            let items = shown.filter { $0.achievement.group == group }
             if !items.isEmpty {
+                let ofGroup = all.filter { $0.achievement.group == group }
                 Section {
                     ForEach(items) { progress in
                         AchievementRow(progress: progress)
                     }
                 } header: {
-                    Text("\(group.title) · \(items.filter(\.isComplete).count)/\(items.count)")
+                    Text("\(group.title) · \(ofGroup.filter(\.isComplete).count)/\(ofGroup.count)")
                 }
             }
         }

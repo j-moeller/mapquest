@@ -84,6 +84,8 @@ final class CaptureModel: ObservableObject {
     let achievements: AchievementBook
     /// Sights in cities with photorealistic 3D buildings (Apple Maps): their entries show them.
     let photorealistic3D: Set<String>
+    /// The places of remembrance as a short history and as walks, outside the game.
+    let remembrance: RemembranceGuide
     @Published private(set) var log = CaptureLog()
     @Published private(set) var celebration: Celebration?
     @Published private(set) var focus: SightFocus?
@@ -134,6 +136,16 @@ final class CaptureModel: ObservableObject {
                                        stations: stations)
         photorealistic3D = Set(Cities.all.filter(\.hasPhotorealistic3D).flatMap { city in
             Self.loadCatalog(bundle, cities: [city]).sights.map(\.id)
+        })
+        remembrance = Self.loadRemembrance(bundle)
+    }
+
+    /// The remembrance guides of all bundled cities (`<city>-remembrance.json`).
+    static func loadRemembrance(_ bundle: Bundle) -> RemembranceGuide {
+        .merged(Cities.all.compactMap { city -> RemembranceGuide? in
+            guard let url = bundle.url(forResource: "\(city.id)-remembrance", withExtension: "json"),
+                  let data = try? Data(contentsOf: url) else { return nil }
+            return try? RemembranceGuide.decode(data)
         })
     }
 

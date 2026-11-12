@@ -2,26 +2,36 @@ import CoreLocation
 import MapQuestCore
 import SwiftUI
 
-/// All sights in one list – captured ones in orange, the others in grey – either
-/// nearest first (when the position is known) or through time: by the year they
-/// were built, in Berlin's eras. Tapping one opens its entry (locked until
-/// captured), which can show it on the map. The third tab lists the achievements.
+/// The sights, the achievements and the places of remembrance, in three tabs.
+/// Sights: captured ones in orange, the others in grey, nearest first (when the
+/// position is known) or through time – by the year they were built, in Berlin's
+/// eras. Tapping one opens its entry (locked until discovered), which can show it
+/// on the map. Achievements: filtered by how far they are. Remembrance: outside
+/// the game, as a short history and walks.
 struct CaptureListView: View {
+    enum Tab: String, CaseIterable, Identifiable {
+        case sights, achievements, remembrance
+        var id: String { rawValue }
+        var title: String {
+            switch self {
+            case .sights: return "Sights"
+            case .achievements: return "Achievements"
+            case .remembrance: return "Remembrance"
+            }
+        }
+    }
+
     enum Order: String, CaseIterable, Identifiable {
-        case nearby, timeline, achievements
+        case nearby, timeline
         var id: String { rawValue }
         var title: String {
             switch self {
             case .nearby: return "Nearby"
             case .timeline: return "Through time"
-            case .achievements: return "Achievements"
             }
         }
     }
 
-    @EnvironmentObject private var captures: CaptureModel
-    @EnvironmentObject private var tracker: LocationTracker
-    @Environment(\.dismiss) private var dismiss
     /// The sights of one era in the timeline.
     struct EraGroup: Identifiable {
         let era: HistoricalEra?
@@ -29,70 +39,43 @@ struct CaptureListView: View {
         var id: String { era?.id ?? "undated" }
     }
 
+    static let tabKey = "sightListTab"
+
+    /// The tab the list opens on next time.
+    static func select(_ tab: Tab) {
+        UserDefaults.standard.set(tab.rawValue, forKey: tabKey)
+    }
+
+    @EnvironmentObject private var captures: CaptureModel
+    @EnvironmentObject private var tracker: LocationTracker
+    @Environment(\.dismiss) private var dismiss
+    @AppStorage(CaptureListView.tabKey) private var tab: Tab = .sights
     @AppStorage("sightListOrder") private var order: Order = .nearby
+    @AppStorage("achievementFilter") private var filter: AchievementFilter = .all
 
     var body: some View {
         NavigationStack {
             List {
                 Section {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("\(captures.capturedCount) of \(captures.gameSightCount) sights captured")
-                            .font(.headline)
-                        Text("\(captures.discoveredCount) discovered · \(captures.collectedStationCount) of \(captures.stations.count) stations collected")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                        if order == .achievements {
-                            let progress = captures.achievementProgress
-                            Text("\(progress.filter(\.isComplete).count) of \(progress.count) achievements")
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
+                    Picker("Show", selection: $tab) {
+                        ForEach(Tab.allCases) { tab in
+                            Text(tab.title).tag(tab)
                         }
-                        ProgressView(value: Double(captures.capturedCount), total: Double(max(captures.gameSightCount, 1)))
-                            .tint(.orange)
-                        Picker("Order", selection: $order) {
-                            ForEach(Order.allCases) { order in
-                                Text(order.title).tag(order)
-                            }
-                        }
-                        .pickerStyle(.segmented)
-                        .padding(.top, 4)
                     }
-                    .padding(.vertical, 4)
-                } footer: {
-                    Text(footer)
+                    .pickerStyle(.segmented)
+                    .listRowBackground(Color.clear)
+                    .listRowInsets(EdgeInsets())
                 }
-                switch order {
-                case .nearby:
-                    Section {
-                        ForEach(sights.filter { !$0.isPlaceOfRemembrance }, id: \.id) { sight in
-                            row(sight, record: captures.log.records[sight.id])
-                        }
-                    }
-                    // Not part of the game: apart from it, nearest first.
-                    Section {
-                        ForEach(sights.filter(\.isPlaceOfRemembrance), id: \.id) { sight in
-                            row(sight, record: captures.log.records[sight.id])
-                        }
-                    } header: {
-                        Text("Places of remembrance")
-                    } footer: {
-                        Text("Memorials, memorial sites and cemeteries are not part of the game: nothing to capture, no achievements. Their entries are open to everyone.")
-                    }
+                switch tab {
+                case .sights:
+                    sightSections
                 case .achievements:
-                    AchievementSections()
-                case .timeline:
-                    ForEach(timeline) { group in
-                        Section {
-                            ForEach(group.sights, id: \.id) { sight in
-                                row(sight, record: captures.log.records[sight.id], year: captures.histories[sight.id]?.year)
-                            }
-                        } header: {
-                            eraHeader(group.era)
-                        }
-                    }
+                    achievementSections
+                case .remembrance:
+                    RemembranceSections()
                 }
             }
-            .navigationTitle("Sights")
+            .navigationTitle(tab.title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
@@ -102,61 +85,78 @@ struct CaptureListView: View {
         }
     }
 
-    private var footer: String {
+    @ViewBuilder
+    private var sightSections: some View {
+        Section {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(captures.capturedCount) of \(captures.gameSightCount) sights captured")
+                    .font(.headline)
+                Text("\(captures.discoveredCount) discovered · \(captures.collectedStationCount) of \(captures.stations.count) stations collected")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                ProgressView(value: Double(captures.capturedCount), total: Double(max(captures.gameSightCount, 1)))
+                    .tint(.orange)
+                Picker("Order", selection: $order) {
+                    ForEach(Order.allCases) { order in
+                        Text(order.title).tag(order)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .padding(.top, 4)
+            }
+            .padding(.vertical, 4)
+        } footer: {
+            Text(order == .nearby
+                 ? "A sight is discovered once you have been there – when the circles of the radius view cover it (large parks and squares: when they reach into them) – and its entry opens. Photograph it there to capture it. Stations are collected just by going there. Places of remembrance are not part of the game: they are under Remembrance."
+                 : "Berlin's history in its sights, by the year they were built. Discover a sight to learn who built it, who ruled at the time, and its story.")
+        }
         switch order {
         case .nearby:
-            return "A sight is discovered once you have been there – when the circles of the radius view cover it (large parks and squares: when they reach into them) – and its entry opens. Photograph it there to capture it. Stations are collected just by going there. Places of remembrance are listed apart, outside the game."
-        case .timeline:
-            return "Berlin's history in its sights, by the year they were built. Capture a sight to learn who built it, who ruled at the time, and its story."
-        case .achievements:
-            return "Complete collections, eras, districts and the works of Berlin's great architects by capturing (photographing) their sights, and the U-Bahn and S-Bahn lines by collecting their stations. Each sight's entry shows what it counts towards."
-        }
-    }
-
-    /// A sight; in the timeline with the year it was built in front.
-    private func row(_ sight: Sight, record: CaptureRecord?, year: Int? = nil) -> some View {
-        if sight.isPlaceOfRemembrance {
-            return AnyView(remembranceRow(sight, record: record, year: year))
-        }
-        return AnyView(gameRow(sight, record: record, year: year))
-    }
-
-    /// A place of remembrance: quiet, no game states; its entry is always open.
-    private func remembranceRow(_ sight: Sight, record: CaptureRecord?, year: Int?) -> some View {
-        let inTimeline = order == .timeline
-        var parts = [sight.category.title]
-        if let location = tracker.lastLocation {
-            let meters = distance(to: sight, from: location)
-            parts.append(meters < 1_000 ? "\(Int((meters / 10).rounded() * 10)) m away" : String(format: "%.1f km away", meters / 1_000))
-        }
-        if let record {
-            parts.append("you were here on \(record.capturedAt.formatted(date: .abbreviated, time: .omitted))")
-        }
-        return NavigationLink {
-            SightEntryView(sight: sight)
-        } label: {
-            HStack(spacing: 12) {
-                if inTimeline {
-                    Text(year.map { String($0) } ?? "–")
-                        .font(.subheadline.monospacedDigit())
-                        .foregroundStyle(.secondary)
-                        .frame(width: 42, alignment: .leading)
+            Section {
+                ForEach(sights, id: \.id) { sight in
+                    row(sight, record: captures.log.records[sight.id])
                 }
-                SightBadge(category: sight.category, captured: false, size: 34)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(sight.name)
-                        .foregroundStyle(.primary)
-                    Text(parts.joined(separator: " · "))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+            }
+        case .timeline:
+            ForEach(timeline) { group in
+                Section {
+                    ForEach(group.sights, id: \.id) { sight in
+                        row(sight, record: captures.log.records[sight.id], year: captures.histories[sight.id]?.year)
+                    }
+                } header: {
+                    eraHeader(group.era)
                 }
             }
         }
-        .accessibilityLabel("\(sight.name), place of remembrance\(record != nil ? ", visited" : "")")
-        .accessibilityHint("Opens its entry")
     }
 
-    private func gameRow(_ sight: Sight, record: CaptureRecord?, year: Int?) -> some View {
+    @ViewBuilder
+    private var achievementSections: some View {
+        let progress = captures.achievementProgress
+        let completed = progress.filter(\.isComplete).count
+        Section {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(completed) of \(progress.count) achievements completed")
+                    .font(.headline)
+                ProgressView(value: Double(completed), total: Double(max(progress.count, 1)))
+                    .tint(.orange)
+                Picker("Show", selection: $filter) {
+                    ForEach(AchievementFilter.allCases) { filter in
+                        Text(filter.title).tag(filter)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .padding(.top, 4)
+            }
+            .padding(.vertical, 4)
+        } footer: {
+            Text("Complete collections, eras, districts and the works of Berlin's great architects by capturing (photographing) their sights, and the U-Bahn and S-Bahn lines by collecting their stations. Each sight's entry shows what it counts towards.")
+        }
+        AchievementSections(filter: filter)
+    }
+
+    /// A sight of the game; in the timeline with the year it was built in front.
+    private func row(_ sight: Sight, record: CaptureRecord?, year: Int? = nil) -> some View {
         let discovered = record != nil
         let captured = captures.log.isCaptured(sight.id)
         let isNew = captures.hasUnreadEntry(sight)
@@ -205,7 +205,8 @@ struct CaptureListView: View {
     /// Berlin apart); undated sights last.
     private var timeline: [EraGroup] {
         func year(_ sight: Sight) -> Int { captures.histories[sight.id]?.year ?? .max }
-        let sorted = captures.catalog.sights.sorted { a, b in
+        // Places of remembrance are not part of the game: they are under Remembrance.
+        let sorted = captures.catalog.sights.filter { !$0.isPlaceOfRemembrance }.sorted { a, b in
             year(a) != year(b) ? year(a) < year(b) : a.name < b.name
         }
         var groups: [EraGroup] = []
@@ -257,9 +258,9 @@ struct CaptureListView: View {
         return parts.isEmpty ? sight.category.title : parts.joined(separator: " · ")
     }
 
-    /// Every sight, nearest first when the position is known, else by name.
+    /// The sights of the game, nearest first when the position is known, else by name.
     private var sights: [Sight] {
-        let all = captures.catalog.sights
+        let all = captures.catalog.sights.filter { !$0.isPlaceOfRemembrance }
         guard let location = tracker.lastLocation else { return all.sorted { $0.name < $1.name } }
         return all.sorted { distance(to: $0, from: location) < distance(to: $1, from: location) }
     }
@@ -327,35 +328,6 @@ struct SightBadge: View {
     }
 }
 
-/// The trophy button with the number of captures.
-struct CaptureButton: View {
-    @EnvironmentObject private var captures: CaptureModel
-
-    var body: some View {
-        Button {
-            captures.showsList = true
-        } label: {
-            HStack(spacing: 3) {
-                Image(systemName: "trophy.fill")
-                Text("\(captures.capturedCount)")
-                    .font(.subheadline.monospacedDigit().bold())
-            }
-            .foregroundStyle(Color.captureGold)
-            .overlay(alignment: .topTrailing) {
-                // Unread entries.
-                if captures.unreadEntryCount > 0 {
-                    Circle()
-                        .fill(Color.red)
-                        .frame(width: 8, height: 8)
-                        .offset(x: 5, y: -3)
-                }
-            }
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel("Sights: \(captures.capturedCount) of \(captures.gameSightCount) captured")
-    }
-}
-
 /// The capture component on the main screen: the capture animation over
 /// everything, the quiet note on places of remembrance, notices of collected
 /// stations, the sight list sheet, and forgetting captures of deleted data.
@@ -386,9 +358,7 @@ struct CaptureHooks: ViewModifier {
                                 captures.show(sight)
                             },
                             onList: {
-                                if celebration.kind == .lines {
-                                    UserDefaults.standard.set(CaptureListView.Order.achievements.rawValue, forKey: "sightListOrder")
-                                }
+                                CaptureListView.select(celebration.kind == .lines ? .achievements : .sights)
                                 captures.finishCelebration()
                                 captures.showsList = true
                             }

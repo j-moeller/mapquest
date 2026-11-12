@@ -278,10 +278,21 @@ keeps its own data and photos; nothing else depends on it.
   everyone, visited or not, in stone grey, with a note that the place is not
   part of the game and – once you were there – when. On the 2D map they are
   always shown, as small stone-grey markers without reveal animation; in 3D as
-  a still line with their name (no gem). The sight list shows them apart in
-  *Nearby* ("Places of remembrance") and in their year *Through time*, without
-  game states or "NEW". Their symbol is a plain stone (not a flame, not a
-  crescent).
+  a still line with their name (no gem). The sight list leaves them out of
+  its *Sights* tab; they have a tab of their own, *Remembrance* (below). Their
+  symbol is a plain stone (not a flame, not a crescent).
+* **Remembrance guide** (`RemembranceGuide`, `<city>-remembrance.json`,
+  loaded by `CaptureModel.loadRemembrance`): the places of remembrance as a
+  history lesson and a city walk, outside the game. Chapters (title, years, a
+  paragraph) each list their places with a sentence on what each remembers;
+  every place of remembrance is in exactly one chapter (tested). Tours are
+  walks between places in an order that tells their history;
+  `RemembranceGuide.length(of:)` gives the distance between the stops as the
+  crow flies. The *Remembrance* tab (`RemembranceGuideView.swift`) shows an
+  introduction, the chapters with their places (distance and – once you were
+  there – when, no game states) and the walks (numbered stops, the distance,
+  *Show the first place on the map*); no counts, no progress. A place's entry
+  names its chapter (`RemembranceHeader`).
 * **Photo capture** (`PhotoCapture`): a discovered sight is captured by
   photographing it there – the entry's *Take a photo* (or *Take a photo* in the
   discovery animation) opens the system camera only within the sight's extent
@@ -369,8 +380,11 @@ keeps its own data and photos; nothing else depends on it.
   the entry. Unopened entries are marked NEW in the list and by a dot on the
   trophy button (`CaptureLog.readEntries`). Celebrations wait while the list
   or an entry is open.
-* **Views**: the trophy button in the status panel (number of captures)
-  opens one list of all sights, *Nearby* (nearest first) or *Through time*
+* **Views**: the captures at the bottom of the main screen (number of
+  photographed sights, a dot for unread entries) open the list with three
+  tabs – *Sights*, *Achievements*, *Remembrance* (`CaptureListView.Tab`, kept
+  in `sightListTab`; a celebration's button opens the right one). *Sights*:
+  the sights of the game, *Nearby* (nearest first) or *Through time*
   (by the year they were built, in sections per era with its years and
   summary; discovered ones show style and ruler) – discovered ones in orange
   (an orange ring and a camera: photograph it; filled and a seal once
@@ -422,9 +436,12 @@ celebrated before, not without it), shown in the capture animation.
   belongs to exactly one district achievement and – unless built 1933–1949 – one
   era achievement (tested; the oak from the Slavic era counts towards
   *Medieval Roots*).
-* **Views**: the sight list's third tab, *Achievements* – "Almost there"
-  (the three started ones with the fewest sights to go), then the groups with
-  medals (gold when complete, a progress ring otherwise). An achievement's
+* **Views**: the sight list's *Achievements* tab – the number completed, a
+  filter (`AchievementFilter`: *All*, *Completed*, *Started*, *Not started*;
+  kept in `achievementFilter`), "Almost there" (the three started ones with
+  the fewest sights to go; with *All* and *Started*), then the groups with
+  medals (gold when complete, a progress ring otherwise; the header counts
+  the whole group). An achievement's
   page shows its description, progress or completion date, *Next up* (the
   nearest sight still missing, with *Show on map*) and its sights by year.
   Each entry lists the achievements its sight counts towards (also when
@@ -484,7 +501,7 @@ marks the 3D layer as *stale*, and the app offers a rebuild once online.
 |---|---|
 | `App/MapQuest/Location/LocationTracker.swift` | `CLLocationManager` wrapper: permission, continuous updates (also in the background), significant-change relaunch |
 | `App/MapQuest/AppModel.swift` | Writes every fix to the track and streams fixes through the `LocationRecorder`, owns the selected data source, publishes snapshots and statistics, refreshes areas when building data changes |
-| `App/MapQuest/ViewOptions.swift`, `Views/ViewBar.swift` | Viewing options: fog of war or heatmap; all time or a day/week/month/year (computed in the background, live while the period includes now) |
+| `App/MapQuest/ViewOptions.swift`, `Views/MapViewSettingsView.swift` | Viewing options: 2D or 3D, fog of war or heatmap, the layer, all time or a day/week/month/year (computed in the background, live while the period includes now), the map style |
 | `App/MapQuest/Cities.swift` | Bundled cities (outline, districts, terrain, buildings) |
 | `App/MapQuest/DataSourceCatalog.swift` | Profiles (own data, other users, demo); one SQLite file each; only the own profile records |
 | `App/MapQuest/Map2D/BaseMapTiles.swift` | Map data (OpenFreeMap vector tiles: download, disk cache) and the label-free map tiles drawn from it |
@@ -500,7 +517,7 @@ marks the 3D layer as *stale*, and the app offers a rebuild once online.
 | `App/MapQuest/BundledBuildings.swift` | Unpacks the bundled building databases (one per city) |
 | `App/MapQuest/Keychain.swift`, `Views/AddRemoteSourceView.swift` | Remote data sources (token in the Keychain) |
 | `App/MapQuestUITests/` | Smoke test on an iPhone 13 mini simulator (run from Xcode) |
-| `App/MapQuest/Views/*` | Main screen (2D/3D switch), statistics panel, settings, districts |
+| `App/MapQuest/Views/*` | Main screen (map, menu button, the note on what the map shows, captures and tracking at the bottom), the menu and its pages (`SettingsView`), statistics, districts |
 
 ### 3D map (SceneKit)
 
@@ -517,8 +534,9 @@ Alexanderplatz):
   scene's Web Mercator rectangle (an Apple Maps snapshot without points of
   interest if the tiles are unavailable), with the same fog as the 2D map, on
   an unlit plane.
-* **User marker** at eye height; the HUD shows the estimated eye height, the
-  resulting view distance and the number of buildings.
+* **User marker** at eye height; with *Debug › Show evaluation details* the
+  HUD shows the estimated eye height, the resulting view distance and the
+  number of buildings.
 * Orbit/pan/zoom via SceneKit's camera controller; recolouring runs off the
   main thread whenever the layer changes.
 
@@ -529,8 +547,7 @@ renderer-independent, so a later move to RealityKit only replaces
 ### Debug settings
 
 The debug panel tunes parameters on the device. It is a sheet over the map
-(slider button in the map's top bar, or *Settings › Developer › Debug
-settings*) with three heights; at the small and medium heights the map above
+(*menu › Developer › Debug settings*) with three heights; at the small and medium heights the map above
 it stays visible and interactive (`presentationBackgroundInteraction`), so
 changes can be watched – and the map panned, zoomed or long-pressed for test
 positions – while tuning (`Debug/DebugPanel.swift`).
@@ -568,7 +585,7 @@ OpenStreetMap vector data, leaving out every label and icon:
   `Application Support/MapQuest/MapData` (excluded from backups, limited to
   500 MB, oldest first out) and reused offline and for every deeper zoom;
   tiles older than 90 days are refreshed in the background when used.
-  Decoded tiles and drawn tiles are kept in memory. *Settings › Map data*
+  Decoded tiles and drawn tiles are kept in memory. *menu › Map data*
   shows the size and deletes it.
 * **Drawing** (`MapRenderPlan`, MapQuestCore, unit-tested with a real tile):
   only the layers `landuse`, `landcover`, `water`, `waterway`, `aeroway`,

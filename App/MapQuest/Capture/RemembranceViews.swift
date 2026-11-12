@@ -64,9 +64,16 @@ struct RemembranceNoticeView: View {
 /// and – once you were there – when.
 struct RemembranceHeader: View {
     let visitedAt: Date?
+    /// The chapter of history the place remembers (Remembrance in the sight list).
+    var chapter: RemembranceGuide.Chapter?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
+            if let chapter {
+                Text("\(chapter.title) · \(chapter.years)")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
+            }
             Text("A place of remembrance. It is not part of the game – there is nothing to capture and no achievement – and its entry is open to everyone. Please visit it with respect.")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)

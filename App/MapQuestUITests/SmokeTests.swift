@@ -42,6 +42,26 @@ final class SmokeTests: XCTestCase {
         }
     }
 
+    /// A row of the open menu, by the start of its label ("Map view, 2D · Fog · All time").
+    private func menuRow(_ title: String) -> XCUIElement {
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", title)).firstMatch
+    }
+
+    /// Opens the menu and one of its pages.
+    private func openMenu(_ title: String) {
+        app.buttons["Menu"].tap()
+        let row = menuRow(title)
+        if row.waitForExistence(timeout: 5) { row.tap() }
+    }
+
+    /// Changes the map view (2D/3D, fog or heatmap, layer, time span) from the menu.
+    private func mapView(_ change: () -> Void) {
+        openMenu("Map view")
+        XCTAssertTrue(app.navigationBars["Map view"].waitForExistence(timeout: 5), "map view settings")
+        change()
+        app.buttons["Done"].tap()
+    }
+
     func testMainScreens() throws {
         // Onboarding appears while location permission is undetermined.
         if app.buttons["Allow location access"].waitForExistence(timeout: 5) {
@@ -49,8 +69,8 @@ final class SmokeTests: XCTestCase {
             app.buttons["Allow location access"].tap()
             allowLocation()
         }
-        let settings = app.buttons["Settings"]
-        XCTAssertTrue(settings.waitForExistence(timeout: 15), "main screen")
+        let menu = app.buttons["Menu"]
+        XCTAssertTrue(menu.waitForExistence(timeout: 15), "main screen")
         pause(15) // the simulated position (Alexanderplatz) is recorded and the map zooms to it
         screenshot("01-map-2d")
         // The fog must cover newly exposed map at once (no unfogged flash when zooming out).
@@ -64,34 +84,30 @@ final class SmokeTests: XCTestCase {
             pause(2)
         }
 
-        app.buttons["Line of sight"].tap()
+        mapView { app.buttons["Line of sight"].tap() }
         pause(30) // building download and ray casting
         screenshot("02-map-2d-line-of-sight")
 
-        app.buttons["3D"].tap()
+        mapView { app.buttons["3D"].tap() }
         pause(40)
         screenshot("03-map-3d")
-        app.buttons["2D"].tap()
+        mapView { app.buttons["2D"].tap() }
 
-        settings.tap()
-        XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 5))
-        screenshot("04-settings")
-        let downloads = app.switches["Download automatically"]
-        scrollTo(downloads, in: app.collectionViews.firstMatch)
-        screenshot("04b-settings-building-data")
+        menu.tap()
+        XCTAssertTrue(app.navigationBars["Menu"].waitForExistence(timeout: 5))
+        screenshot("04-menu")
+        menuRow("Building data").tap()
+        XCTAssertTrue(app.switches["Download automatically"].waitForExistence(timeout: 5))
+        screenshot("04b-building-data")
+        app.navigationBars.buttons.element(boundBy: 0).tap() // back to the menu
 
         // Switch to the demo explorer: imports its walks through the recorder.
+        menuRow("Data source").tap()
         let demo = app.buttons.matching(NSPredicate(format: "label CONTAINS 'Demo explorer'")).firstMatch
-        let list = app.collectionViews.firstMatch
-        var attempts = 0
-        while !demo.isHittable && attempts < 8 {
-            list.swipeDown()
-            attempts += 1
-        }
-        demo.tap()
+        if demo.waitForExistence(timeout: 5) { demo.tap() }
         app.buttons["Done"].tap()
         pause(120) // the demo track (113 000 fixes at 1 Hz, sampled) is imported through the recorder
-        app.buttons["Radius"].tap()
+        mapView { app.buttons["Radius"].tap() }
         pause(3)
         screenshot("06-demo-explorer")
         if map.exists {
@@ -101,7 +117,8 @@ final class SmokeTests: XCTestCase {
         }
 
         // The debug panel over the map: sliders and a usable map at the same time.
-        let debugButton = app.buttons["Debug settings"]
+        menu.tap()
+        let debugButton = menuRow("Debug settings")
         if debugButton.waitForExistence(timeout: 5) {
             if map.exists { map.pinch(withScale: 4, velocity: 3) }
             debugButton.tap()
@@ -124,38 +141,34 @@ final class SmokeTests: XCTestCase {
         }
 
         // Time-based view: October 2026 (commutes, walks, a day in Braunschweig).
-        let timeSpan = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Time span'")).firstMatch
-        if timeSpan.waitForExistence(timeout: 5) {
-            if map.exists { map.pinch(withScale: 4, velocity: 3) } // back to street scale around the walks
-            timeSpan.tap()
-            let month = app.buttons["Month"]
-            if month.waitForExistence(timeout: 3) { month.tap() }
+        if map.exists { map.pinch(withScale: 4, velocity: 3) } // back to street scale around the walks
+        mapView {
+            app.buttons["Month"].tap()
             let previous = app.buttons["Previous month"]
             if previous.waitForExistence(timeout: 5) { previous.tap() }
-            pause(25)
-            screenshot("08-month-fog")
+        }
+        pause(25)
+        screenshot("08-month-fog")
 
-            // Heatmap of the same month.
-            let heatmap = app.buttons["Heatmap"]
-            if heatmap.waitForExistence(timeout: 3) {
-                heatmap.tap()
-                pause(10)
-                screenshot("09-month-heatmap")
-                if map.exists {
-                    map.pinch(withScale: 3, velocity: 3)
-                    pause(6)
-                    screenshot("10-heatmap-zoomed-in")
-                }
-            }
+        // Heatmap of the same month.
+        mapView { app.buttons["Heatmap"].tap() }
+        pause(10)
+        screenshot("09-month-heatmap")
+        if map.exists {
+            map.pinch(withScale: 3, velocity: 3)
+            pause(6)
+            screenshot("10-heatmap-zoomed-in")
         }
 
-        // All bundled cities (Berlin, Braunschweig, Peine) in the districts list.
-        settings.tap()
+        // The statistics, and all bundled cities (Berlin, Braunschweig, Peine) in the districts list.
+        openMenu("Statistics")
+        XCTAssertTrue(app.navigationBars["Statistics"].waitForExistence(timeout: 5))
+        screenshot("11-statistics")
         let districts = app.buttons["Cities and districts"]
         if districts.waitForExistence(timeout: 5) {
             districts.tap()
             pause(8)
-            screenshot("11-districts")
+            screenshot("12-districts")
         }
     }
 }
