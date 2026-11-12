@@ -279,8 +279,11 @@ keeps its own data and photos; nothing else depends on it.
   part of the game and – once you were there – when. On the 2D map they are
   always shown, as small stone-grey markers without reveal animation; in 3D as
   a still line with their name (no gem). The sight list leaves them out of
-  its *Sights* tab; they have a tab of their own, *Remembrance* (below). Their
-  symbol is a plain stone (not a flame, not a crescent).
+  *Nearby*; *Through time* shows them in their year among the sights, plainly:
+  the year and name in grey, a stone badge, "Place of remembrance · not part
+  of the game" and what the place remembers – no game state, no "NEW". They
+  also have a tab of their own, *Remembrance* (below). Their symbol is a
+  plain stone (not a flame, not a crescent).
 * **Remembrance guide** (`RemembranceGuide`, `<city>-remembrance.json`,
   loaded by `CaptureModel.loadRemembrance`): the places of remembrance as a
   history lesson and a city walk, outside the game. Chapters (title, years, a
@@ -586,8 +589,29 @@ OpenStreetMap vector data, leaving out every label and icon:
   `Application Support/MapQuest/MapData` (excluded from backups, limited to
   500 MB, oldest first out) and reused offline and for every deeper zoom;
   tiles older than 90 days are refreshed in the background when used.
-  Decoded tiles and drawn tiles are kept in memory. *menu › Map data*
-  shows the size and deletes it.
+  Caching is layered so that zooming in and out does not wait:
+  * **Finished pieces** (base map with fog) are kept per map rectangle and
+    zoom scale (`PieceCache`, 128 MB, least recently used first): MapKit asks
+    for the same pieces whenever the map returns to a zoom level, and they are
+    drawn from there instead of being composed, blurred and fogged again. A
+    piece is kept only when all its tiles were there; a change of the
+    discovered area forgets only the pieces it touches (the same rectangles
+    that are redrawn), a change of style or base map all of them, a memory
+    warning too.
+  * **Drawn tiles** are kept in memory (160 MB) and on disk as PNG in
+    `Caches/MapQuest/DrawnTiles/v<drawing version>/<style>` (300 MB, oldest
+    first out; the system may purge them, they are drawn again). A drawn tile
+    older than its map data is drawn again; raising
+    `BaseMapTiles.drawingVersion` drops all of them when the drawing changes.
+  * **Decoded data tiles**: 48 in memory (one z14 tile draws every deeper level
+    of its area).
+  * **Prefetching**: half a second after the map comes to rest, the tiles one
+    level deeper and one and two levels coarser (twice and four times the area
+    on screen) are prepared in the background – map data downloaded (at most
+    12 tiles per pass, one after the other), tiles drawn and written to disk;
+    moving the map again ends the pass.
+
+  *menu › Map data* shows the size of map data and drawn tiles and deletes both.
 * **Drawing** (`MapRenderPlan`, MapQuestCore, unit-tested with a real tile):
   only the layers `landuse`, `landcover`, `water`, `waterway`, `aeroway`,
   `transportation` and `building` are decoded (`VectorTile`, a small protocol

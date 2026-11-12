@@ -171,6 +171,8 @@ struct FogMapView: UIViewRepresentable {
         var onLongPress: ((GeoCoordinate) -> Void)?
         var onOpenSight: ((Sight) -> Void)?
         private var hasCenteredOnUser = false
+        /// The pending preparation of neighbouring zoom levels.
+        private var prefetch: DispatchWorkItem?
         /// The map opened without a known position: zoom to the first fix.
         var followsFirstFix = false
 
@@ -229,6 +231,20 @@ struct FogMapView: UIViewRepresentable {
             updateLabelVisibility(on: mapView)
             // Reopen here next time (its map data is cached by then).
             FogMapView.saveRegion(mapView.region)
+            schedulePrefetch(on: mapView)
+        }
+
+        /// Once the map rests: the tiles for zooming in and out of it are prepared in the background.
+        private func schedulePrefetch(on mapView: MKMapView) {
+            prefetch?.cancel()
+            let visible = mapView.visibleMapRect
+            guard visible.size.width > 0, mapView.bounds.width > 0 else { return }
+            let rect = MapPointConversion.worldRect(for: visible)
+            let zoom = FogMapRenderer.tileZoom(MKZoomScale(Double(mapView.bounds.width) / visible.size.width))
+            let tiles = content.tiles
+            let work = DispatchWorkItem { tiles.prefetch(around: rect, zoom: zoom) }
+            prefetch = work
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: work)
         }
 
         /// At the first position fix: zoom to the user if the map opened without a

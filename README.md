@@ -17,7 +17,7 @@ The app has four major components:
 | **Discovered area** | Turns stored positions into discovered-area polygons, merges adjacent areas into regions, keeps disconnected areas apart; it is a cache that can always be rebuilt from the positions |
 | **Capture** | 184 Berlin sights (all districts, the outer ones too) are discovered once you have been there (the radius view covers them) and captured when you photograph them there; 343 U-Bahn and S-Bahn stations are collected just by going there: animations, a list of all sights, badges on the map and gems in 3D; 102 achievements (eras, architects, districts, collections, stories, lines, clubs and stages). Places of remembrance (memorials, memorial sites, cemeteries) are not part of the game: never captured or celebrated, in no achievement, their entries open to all, told in a tab of their own as a short history with walks |
 | **Languages** | English and German (menu › Language: System, English, Deutsch), switched at once; names keep their German original next to the English one ("Brandenburg Gate · Brandenburger Tor", "Hauptbahnhof · Central Station"); entries, history, achievements and the remembrance guide in both languages ([docs/08](docs/08-localization.md)) |
-| **Map display** | 2D: a label-free base map with a black fog (80 %, blurred map underneath) drawn into it, the discovered area cut out. 3D: buildings that block the view; seen buildings are revealed |
+| **Map display** | 2D: a label-free base map with a black fog (80 %, blurred map underneath) drawn into it, the discovered area cut out; finished map pieces and drawn tiles are cached (memory and disk) and the next zoom levels prepared in the background, so zooming in and out does not wait. 3D: buildings that block the view; seen buildings are revealed |
 
 ## How it works
 
@@ -87,7 +87,8 @@ The app has four major components:
   commissioned it, who ruled Berlin then and in which era. The captures at
   the bottom of the map open three tabs: **Sights**, nearest first or
   *Through time* (by year, in Berlin's eras) – captured ones in orange, the
-  others in grey; tap one to see it on the map. **Stations**: the 343 U-Bahn and S-Bahn stations are
+  others in grey, places of remembrance plainly in their year, marked as not
+  part of the game; tap one to see it on the map. **Stations**: the 343 U-Bahn and S-Bahn stations are
   collected just by going there (walking past, or riding through above
   ground) – small blue "U" and green "S" signs on the map, a notice for each.
   **Achievements** (102; filter *All / Completed / Started / Not started*):

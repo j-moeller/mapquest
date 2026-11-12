@@ -109,7 +109,7 @@ struct CaptureListView: View {
         } footer: {
             Text(order == .nearby
                  ? tr("A sight is discovered once you have been there – when the circles of the radius view cover it (large parks and squares: when they reach into them) – and its entry opens. Photograph it there to capture it. Stations are collected just by going there. Places of remembrance are not part of the game: they are under Remembrance.")
-                 : tr("Berlin's history in its sights, by the year they were built. Discover a sight to learn who built it, who ruled at the time, and its story."))
+                 : tr("Berlin's history in its sights, by the year they were built. Discover a sight to learn who built it, who ruled at the time, and its story. Places of remembrance stand in their year, in grey: they are not part of the game."))
         }
         switch order {
         case .nearby:
@@ -122,7 +122,11 @@ struct CaptureListView: View {
             ForEach(timeline) { group in
                 Section {
                     ForEach(group.sights, id: \.id) { sight in
-                        row(sight, record: captures.log.records[sight.id], year: captures.histories[sight.id]?.year)
+                        if sight.isPlaceOfRemembrance {
+                            remembranceRow(sight, year: captures.histories[sight.id]?.year)
+                        } else {
+                            row(sight, record: captures.log.records[sight.id], year: captures.histories[sight.id]?.year)
+                        }
                     }
                 } header: {
                     eraHeader(group.era)
@@ -204,12 +208,46 @@ struct CaptureListView: View {
         .accessibilityHint(discovered ? tr("Opens its entry") : tr("Shows how to unlock it"))
     }
 
+    /// A place of remembrance in the timeline: in its year, in stone grey, without
+    /// any game state – what it remembers, and that it is not part of the game.
+    private func remembranceRow(_ sight: Sight, year: Int?) -> some View {
+        let yearText = year.map { String($0) }
+        let remembers = captures.remembrance.remembers(sight.id)
+        return NavigationLink {
+            SightEntryView(sight: sight)
+        } label: {
+            HStack(alignment: .top, spacing: 12) {
+                Text(yearText ?? "–")
+                    .font(.subheadline.monospacedDigit())
+                    .foregroundStyle(.secondary)
+                    .frame(width: 42, alignment: .leading)
+                SightBadge(category: sight.category, captured: false, size: 34)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(sight.name)
+                        .foregroundStyle(.primary)
+                    Text(tr("Place of remembrance · not part of the game"))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    if let remembers {
+                        Text(remembers)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(2)
+                    }
+                }
+            }
+        }
+        .accessibilityLabel(yearText.map { tr("{0}, {1}, place of remembrance, not part of the game", $0, sight.name) }
+                            ?? tr("{0}, place of remembrance, not part of the game", sight.name))
+        .accessibilityHint(tr("Opens its entry"))
+    }
+
     /// The sights by the year they were built, grouped by era (East and West
-    /// Berlin apart); undated sights last.
+    /// Berlin apart); undated sights last. Places of remembrance stand in their
+    /// year too, outside the game.
     private var timeline: [EraGroup] {
         func year(_ sight: Sight) -> Int { captures.histories[sight.id]?.year ?? .max }
-        // Places of remembrance are not part of the game: they are under Remembrance.
-        let sorted = captures.catalog.sights.filter { !$0.isPlaceOfRemembrance }.sorted { a, b in
+        let sorted = captures.catalog.sights.sorted { a, b in
             year(a) != year(b) ? year(a) < year(b) : a.name < b.name
         }
         var groups: [EraGroup] = []

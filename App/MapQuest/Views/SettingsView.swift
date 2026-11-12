@@ -385,7 +385,7 @@ struct MapDataView: View {
                 }
                 .disabled((bytes ?? 0) == 0)
             } footer: {
-                Text(tr("The map is drawn on this iPhone from OpenStreetMap data (OpenFreeMap vector tiles, no labels). Every area you have looked at is kept here, compressed, and works offline; it is refreshed after 90 days and limited to 500 MB."))
+                Text(tr("The map is drawn on this iPhone from OpenStreetMap data (OpenFreeMap vector tiles, no labels). Every area you have looked at is kept here, compressed, and works offline; it is refreshed after 90 days and limited to 500 MB. The drawn map is kept too (up to 300 MB), so zooming in and out shows it at once; the next zoom levels are prepared while the map rests."))
             }
         }
         .navigationTitle(tr("Map data"))

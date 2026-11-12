@@ -1,7 +1,9 @@
 import Foundation
+import ImageIO
 import MapKit
 import MapQuestCore
 import UIKit
+import UniformTypeIdentifiers
 
 /// The base map's look. The map is drawn on the device from OpenStreetMap vector
 /// data without any labels, icons or POIs (`MapRenderPlan`); only the colours differ.
@@ -67,7 +69,8 @@ final class VectorTileStore: @unchecked Sendable {
     private enum TileJSONState { case notRequested, requesting, fetched }
 
     private init() {
-        decoded.countLimit = 24
+        // Decoded data tiles: one z14 tile draws every deeper zoom level of its area.
+        decoded.countLimit = 48
         let support = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
         var directory = support.appendingPathComponent("MapQuest/MapData")
         try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
@@ -252,18 +255,26 @@ final class VectorTileStore: @unchecked Sendable {
 
     // MARK: Disk cache
 
-    /// Bytes of map data on disk.
+    /// Bytes of map data on disk, with the drawn tiles kept for it.
     func diskUsage() -> Int {
-        Self.files(in: directory).reduce(0) { $0 + $1.size }
+        (Self.files(in: directory) + Self.files(in: BaseMapTiles.drawnDirectory)).reduce(0) { $0 + $1.size }
     }
 
-    /// Deletes all map data (it is downloaded again when needed).
+    /// Deletes all map data and the drawn tiles (both come back when needed).
     func clear() {
         decoded.removeAllObjects()
-        for file in Self.files(in: directory) { try? FileManager.default.removeItem(at: file.url) }
+        for file in Self.files(in: directory) + Self.files(in: BaseMapTiles.drawnDirectory) {
+            try? FileManager.default.removeItem(at: file.url)
+        }
+        BaseMapTiles.forgetDrawn()
     }
 
-    private static func files(in directory: URL) -> [(url: URL, size: Int, date: Date)] {
+    /// When a data tile was written (to tell whether a drawn tile is older).
+    func modificationDate(_ source: TileKey) -> Date? {
+        (try? file(source).resourceValues(forKeys: [.contentModificationDateKey]))?.contentModificationDate
+    }
+
+    static func files(in directory: URL) -> [(url: URL, size: Int, date: Date)] {
         let keys: [URLResourceKey] = [.fileSizeKey, .contentModificationDateKey, .isRegularFileKey]
         guard let enumerator = FileManager.default.enumerator(at: directory, includingPropertiesForKeys: keys) else { return [] }
         var files: [(url: URL, size: Int, date: Date)] = []
@@ -275,7 +286,7 @@ final class VectorTileStore: @unchecked Sendable {
     }
 
     /// Deletes the least recently written tiles beyond `limit` bytes.
-    private static func trimDiskCache(_ directory: URL, limit: Int) {
+    static func trimDiskCache(_ directory: URL, limit: Int) {
         let all = Self.files(in: directory)
         var total = all.reduce(0) { $0 + $1.size }
         guard total > limit else { return }
@@ -287,13 +298,23 @@ final class VectorTileStore: @unchecked Sendable {
     }
 }
 
-/// Map tiles drawn on the device from the vector data, one style; drawn tiles are
-/// kept in memory. Thread-safe: the map's renderer reads tiles on MapKit's drawing threads.
+/// Map tiles drawn on the device from the vector data, one style. Drawn tiles are
+/// kept in memory and on disk (Caches: the system may purge them; they are drawn
+/// again from the map data), so zooming back and forth and reopening the app show
+/// them at once; a drawn tile older than its map data is drawn again. After the
+/// map moves, the neighbouring zoom levels are prepared in the background
+/// (`prefetch`). Thread-safe: the map's renderer reads tiles on MapKit's drawing threads.
 final class BaseMapTiles: @unchecked Sendable {
     let style: BaseMapStyle
     private let store = VectorTileStore.shared
     /// Pixels per tile side (256 points at @2x).
     static let tileSize = 512
+    /// Raise when tiles are drawn differently (render plan, palettes): older drawn tiles are dropped.
+    static let drawingVersion = 1
+    /// Drawn tiles on disk, all styles.
+    static let drawnDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        .appendingPathComponent("MapQuest/DrawnTiles")
+    static let drawnDiskLimit = 300_000_000
 
     private final class Entry {
         let image: CGImage
@@ -301,6 +322,13 @@ final class BaseMapTiles: @unchecked Sendable {
     }
 
     private let memory = NSCache<NSString, Entry>()
+    private let directory: URL
+    /// Writes drawn tiles to disk, one at a time, off the drawing threads.
+    private let writer = DispatchQueue(label: "BaseMapTiles.writer", qos: .utility)
+    /// Prepares neighbouring zoom levels, one pass at a time; a newer pass ends an older one.
+    private let prefetcher = DispatchQueue(label: "BaseMapTiles.prefetch", qos: .utility)
+    private let prefetchLock = NSLock()
+    private var prefetchPass = 0
 
     private static let instancesLock = NSLock()
     private static var instances: [BaseMapStyle: BaseMapTiles] = [:]
@@ -309,6 +337,7 @@ final class BaseMapTiles: @unchecked Sendable {
     static func shared(_ style: BaseMapStyle) -> BaseMapTiles {
         instancesLock.lock()
         defer { instancesLock.unlock() }
+        if instances.isEmpty { tidyDrawnDirectory() }
         if let tiles = instances[style] { return tiles }
         let tiles = BaseMapTiles(style: style)
         instances[style] = tiles
@@ -317,21 +346,168 @@ final class BaseMapTiles: @unchecked Sendable {
 
     private init(style: BaseMapStyle) {
         self.style = style
-        memory.countLimit = 96
+        // About 160 tiles of 1 MB; the system takes memory back from here first.
+        memory.totalCostLimit = 160 * 1_048_576
+        directory = Self.drawnDirectory.appendingPathComponent("v\(Self.drawingVersion)/\(style.rawValue)")
+    }
+
+    /// Once per launch: drawn tiles of older drawing versions go, the rest is kept within its limit.
+    private static func tidyDrawnDirectory() {
+        let root = drawnDirectory
+        DispatchQueue.global(qos: .utility).async {
+            let current = "v\(drawingVersion)"
+            for folder in (try? FileManager.default.contentsOfDirectory(atPath: root.path)) ?? [] where folder != current {
+                try? FileManager.default.removeItem(at: root.appendingPathComponent(folder))
+            }
+            VectorTileStore.trimDiskCache(root, limit: drawnDiskLimit)
+        }
+    }
+
+    /// Forgets drawn tiles in memory (after the map data was deleted).
+    static func forgetDrawn() {
+        instancesLock.lock()
+        let all = Array(instances.values)
+        instancesLock.unlock()
+        all.forEach { $0.memory.removeAllObjects() }
     }
 
     private func key(_ tile: TileKey) -> NSString { "\(tile.zoom)/\(tile.x)/\(tile.y)" as NSString }
 
-    /// The drawn tile from memory, or drawn now from stored map data when `draw`
-    /// is set; never from the network.
+    private func drawnFile(_ tile: TileKey) -> URL {
+        directory.appendingPathComponent("\(tile.zoom)/\(tile.x)/\(tile.y).png")
+    }
+
+    private func remember(_ image: CGImage, for tile: TileKey) {
+        memory.setObject(Entry(image), forKey: key(tile), cost: image.bytesPerRow * image.height)
+    }
+
+    /// The drawn tile from memory, else from disk, else drawn now from stored map
+    /// data – the last two only when `draw` is set; never from the network.
     func cachedImage(_ tile: TileKey, draw: Bool = true) -> CGImage? {
         if let entry = memory.object(forKey: key(tile)) { return entry.image }
         guard draw else { return nil }
         let source = store.source(for: tile)
+        if let image = drawnImage(tile, source: source) {
+            remember(image, for: tile)
+            return image
+        }
+        guard let image = drawFromData(tile, source: source) else { return nil }
+        remember(image, for: tile)
+        return image
+    }
+
+    /// Draws a tile from stored map data and keeps it on disk.
+    private func drawFromData(_ tile: TileKey, source: TileKey) -> CGImage? {
         guard let data = store.cachedTile(source),
               let image = Self.render(data, source: source, target: tile, palette: style.palette) else { return nil }
-        memory.setObject(Entry(image), forKey: key(tile))
+        let file = drawnFile(tile)
+        writer.async { Self.write(image, to: file) }
         return image
+    }
+
+    /// A drawn tile from disk, unless its map data is newer.
+    private func drawnImage(_ tile: TileKey, source: TileKey) -> CGImage? {
+        let file = drawnFile(tile)
+        guard let drawn = (try? file.resourceValues(forKeys: [.contentModificationDateKey]))?.contentModificationDate else {
+            return nil
+        }
+        let written = store.modificationDate(source)
+        if let written, written > drawn { return nil }
+        // Old map data is refreshed in the background, as when it is drawn (`cachedTile`).
+        if let written, Date().timeIntervalSince(written) > 90 * 86_400 {
+            let store = self.store
+            writer.async { _ = store.cachedTile(source) }
+        }
+        guard let reader = CGImageSourceCreateWithURL(file as CFURL, nil),
+              let image = CGImageSourceCreateImageAtIndex(reader, 0, [kCGImageSourceShouldCacheImmediately: true] as CFDictionary)
+        else {
+            try? FileManager.default.removeItem(at: file)
+            return nil
+        }
+        return image
+    }
+
+    private static func write(_ image: CGImage, to file: URL) {
+        try? FileManager.default.createDirectory(at: file.deletingLastPathComponent(), withIntermediateDirectories: true)
+        let temporary = file.deletingLastPathComponent().appendingPathComponent(".\(UUID().uuidString).png")
+        guard let destination = CGImageDestinationCreateWithURL(temporary as CFURL, UTType.png.identifier as CFString, 1, nil) else {
+            return
+        }
+        CGImageDestinationAddImage(destination, image, nil)
+        guard CGImageDestinationFinalize(destination) else {
+            try? FileManager.default.removeItem(at: temporary)
+            return
+        }
+        try? FileManager.default.removeItem(at: file)
+        if (try? FileManager.default.moveItem(at: temporary, to: file)) == nil {
+            try? FileManager.default.removeItem(at: temporary)
+        }
+    }
+
+    /// Whether a tile is ready to show without drawing it from map data.
+    private func isReady(_ tile: TileKey) -> Bool {
+        memory.object(forKey: key(tile)) != nil || FileManager.default.fileExists(atPath: drawnFile(tile).path)
+    }
+
+    // MARK: Prefetching
+
+    /// Prepares what zooming in or out of `rect` (the map on screen, shown at tile
+    /// zoom `zoom`) will need: the tiles one level deeper and one and two levels
+    /// coarser – map data downloaded (a few per pass), tiles drawn and kept on disk.
+    /// In the background; a newer call ends an older pass.
+    func prefetch(around rect: WorldRect, zoom: Int) {
+        prefetchLock.lock()
+        prefetchPass += 1
+        let pass = prefetchPass
+        prefetchLock.unlock()
+        prefetcher.async { [weak self] in
+            self?.runPrefetch(pass: pass, rect: rect, zoom: zoom)
+        }
+    }
+
+    private func isCurrentPass(_ pass: Int) -> Bool {
+        prefetchLock.lock()
+        defer { prefetchLock.unlock() }
+        return pass == prefetchPass
+    }
+
+    private func runPrefetch(pass: Int, rect: WorldRect, zoom: Int) {
+        var downloads = 0
+        // Coarser levels cover what zooming out reveals: twice (four times) the area.
+        for (level, scale) in [(zoom - 1, 2.0), (zoom + 1, 1.0), (zoom - 2, 4.0)] {
+            guard level >= 2, level <= BaseMapStyle.maximumZoom else { continue }
+            let range = TileRange(covering: Self.scaled(rect, by: scale), zoom: level)
+            guard range.count <= 48 else { continue }
+            for tile in range {
+                guard isCurrentPass(pass) else { return }
+                if isReady(tile) { continue }
+                let source = store.source(for: tile)
+                if !store.hasTile(source) {
+                    // Politely: a few downloads per pass, one after the other.
+                    guard downloads < 12 else { continue }
+                    downloads += 1
+                    let done = DispatchSemaphore(value: 0)
+                    var loaded = false
+                    store.load(source) { success in
+                        loaded = success
+                        done.signal()
+                    }
+                    done.wait()
+                    guard loaded else { continue }
+                }
+                _ = drawFromData(tile, source: source)
+            }
+        }
+    }
+
+    /// A rectangle grown around its centre.
+    private static func scaled(_ rect: WorldRect, by factor: Double) -> WorldRect {
+        guard factor != 1 else { return rect }
+        let halfWidth = Double(rect.maxX - rect.minX) * factor / 2
+        let halfHeight = Double(rect.maxY - rect.minY) * factor / 2
+        let centerX = Double(rect.minX + rect.maxX) / 2, centerY = Double(rect.minY + rect.maxY) / 2
+        return WorldRect(minX: Int64(centerX - halfWidth), minY: Int64(centerY - halfHeight),
+                         maxX: Int64(centerX + halfWidth), maxY: Int64(centerY + halfHeight))
     }
 
     /// The best image for a tile: the tile itself or the matching part of an

@@ -55,16 +55,35 @@ final class FogMapRenderer: MKOverlayRenderer {
 
     private let lock = NSLock()
     private var content: Content
+    /// Counts changes of what is drawn: a piece composed before a change is not kept.
+    private var generation = 0
+    /// Finished pieces, so that zooming back to a scale shows them at once.
+    private let pieces = PieceCache(limit: 128 * 1_048_576)
+    private var memoryWarning: NSObjectProtocol?
 
     init(overlay: FogMapOverlay, content: Content) {
         self.content = content
         super.init(overlay: overlay)
+        let pieces = self.pieces
+        memoryWarning = NotificationCenter.default.addObserver(
+            forName: UIApplication.didReceiveMemoryWarningNotification, object: nil, queue: nil
+        ) { _ in pieces.removeAll() }
     }
 
-    private var current: Content {
+    deinit {
+        if let memoryWarning { NotificationCenter.default.removeObserver(memoryWarning) }
+    }
+
+    private var current: (content: Content, generation: Int) {
         lock.lock()
         defer { lock.unlock() }
-        return content
+        return (content, generation)
+    }
+
+    private func isCurrent(_ generation: Int) -> Bool {
+        lock.lock()
+        defer { lock.unlock() }
+        return generation == self.generation
     }
 
     // MARK: Updates (main thread)
@@ -73,16 +92,24 @@ final class FogMapRenderer: MKOverlayRenderer {
         lock.lock()
         let changed = content.tiles !== tiles
         content.tiles = tiles
+        if changed { generation += 1 }
         lock.unlock()
-        if changed { setNeedsDisplay() }
+        if changed {
+            pieces.removeAll()
+            setNeedsDisplay()
+        }
     }
 
     func setStyle(_ style: FogStyle) {
         lock.lock()
         let changed = content.style != style
         content.style = style
+        if changed { generation += 1 }
         lock.unlock()
-        if changed { setNeedsDisplay() }
+        if changed {
+            pieces.removeAll()
+            setNeedsDisplay()
+        }
     }
 
     /// Shows another discovered area; `changedTiles` (storage tiles) limits the
@@ -91,23 +118,32 @@ final class FogMapRenderer: MKOverlayRenderer {
         lock.lock()
         let wasPlain = content.snapshot == nil
         content.snapshot = snapshot
+        generation += 1
         let softness = content.style.softness
         lock.unlock()
         guard let snapshot, let changedTiles, !wasPlain, changedTiles.count <= 400 else {
+            pieces.removeAll()
             setNeedsDisplay()
             return
         }
         for tile in changedTiles {
             // Pieces reach beyond their tile by a margin, the soft edge further still.
             let margin = snapshot.maximumMarginUnits + Int64((2 * softness + 20) / tile.metersPerUnit)
-            setNeedsDisplay(MapPointConversion.mapRect(for: tile.worldRect.expanded(by: margin)))
+            let rect = MapPointConversion.mapRect(for: tile.worldRect.expanded(by: margin))
+            pieces.remove(intersecting: rect)
+            setNeedsDisplay(rect)
         }
     }
 
     // MARK: Drawing (MapKit's drawing threads)
 
     override func draw(_ mapRect: MKMapRect, zoomScale: MKZoomScale, in context: CGContext) {
-        let content = current
+        let key = PieceCache.Key(mapRect, zoomScale: zoomScale)
+        if let piece = pieces.image(for: key) {
+            drawPiece(piece, in: mapRect, context: context)
+            return
+        }
+        let (content, generation) = current
         let pixelsPerMapPoint = Double(zoomScale) * Double(contentScaleFactor)
         let width = Int((mapRect.size.width * pixelsPerMapPoint).rounded(.up))
         let height = Int((mapRect.size.height * pixelsPerMapPoint).rounded(.up))
@@ -125,14 +161,22 @@ final class FogMapRenderer: MKOverlayRenderer {
             mapRect: mapRect, pixelsPerMapPoint: pixelsPerMapPoint,
             width: width, height: height, margin: 3 * max(blurRadius, softRadius) + 2
         )
-        guard let base = composeBase(area, zoomScale: zoomScale, tiles: content.tiles),
-              var image = base.makeImage() else { return }
+        guard let composed = composeBase(area, zoomScale: zoomScale, tiles: content.tiles),
+              var image = composed.context.makeImage() else { return }
         if let snapshot = content.snapshot,
-           let fogged = Self.fog(over: base, image: image, area: area, snapshot: snapshot, style: content.style,
+           let fogged = Self.fog(over: composed.context, image: image, area: area, snapshot: snapshot, style: content.style,
                                  blurRadius: blurRadius, softRadius: softRadius) {
             image = fogged
         }
         guard let piece = image.cropping(to: CGRect(x: area.margin, y: area.margin, width: width, height: height)) else { return }
+        // Kept only when all its tiles were there and nothing changed meanwhile.
+        if composed.complete, isCurrent(generation) {
+            pieces.insert(piece, for: key, mapRect: mapRect)
+        }
+        drawPiece(piece, in: mapRect, context: context)
+    }
+
+    private func drawPiece(_ piece: CGImage, in mapRect: MKMapRect, context: CGContext) {
         UIGraphicsPushContext(context)
         UIImage(cgImage: piece).draw(in: rect(for: mapRect))
         UIGraphicsPopContext()
@@ -191,14 +235,16 @@ final class FogMapRenderer: MKOverlayRenderer {
     }
 
     /// 256-point tiles: at zoom 20 one map point is one point on screen.
-    private static func tileZoom(_ zoomScale: MKZoomScale) -> Int {
+    static func tileZoom(_ zoomScale: MKZoomScale) -> Int {
         let zoom = 20 + log2(Double(zoomScale))
         return max(0, min(BaseMapStyle.maximumZoom, Int(zoom.rounded())))
     }
 
-    /// The base map tiles of the area; missing ones are requested and redrawn later.
-    private func composeBase(_ area: Area, zoomScale: MKZoomScale, tiles: BaseMapTiles) -> CGContext? {
+    /// The base map tiles of the area, and whether all were there; missing ones are
+    /// requested and the piece is redrawn when they arrive.
+    private func composeBase(_ area: Area, zoomScale: MKZoomScale, tiles: BaseMapTiles) -> (context: CGContext, complete: Bool)? {
         guard let context = Self.rgbaContext(area.fullWidth, area.fullHeight) else { return nil }
+        var complete = true
         context.interpolationQuality = .high
         let zoom = Self.tileZoom(zoomScale)
         let world = MapPointConversion.worldRect(for: area.fullMapRect)
@@ -210,12 +256,13 @@ final class FogMapRenderer: MKOverlayRenderer {
                 if let image { context.draw(image, in: area.pixelRect(tileRect)) }
                 if best.exact { continue }
             }
+            complete = false
             tiles.load(tile) { [weak self] success in
                 guard success else { return }
                 DispatchQueue.main.async { self?.setNeedsDisplay(tileRect, zoomScale: zoomScale) }
             }
         }
-        return context
+        return (context: context, complete: complete)
     }
 
     /// The base map with the fog drawn over undiscovered areas: the map blurred
