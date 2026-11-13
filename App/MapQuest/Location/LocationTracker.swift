@@ -8,12 +8,25 @@ import MapQuestCore
 ///
 /// The tracker does not decide what is stored – it forwards every fix to
 /// `onLocations`; the `LocationRecorder` keeps only fixes that reveal new area.
+///
+/// Energy: while the phone moves, or while the app is open, positions come from
+/// GPS at full accuracy, about once a second. Once the phone has stayed put for a
+/// few minutes with the app in the background (at home, at a desk:
+/// `StillnessDetector`), the tracker switches to coarse positions (Wi-Fi and cell,
+/// no GPS) that arrive only after moving `lowPowerDistance`; the first move away
+/// switches GPS back on. Views get `lastLocation` at most every few metres or seconds, never in
+/// the background; `currentLocation` is always the latest fix.
 final class LocationTracker: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published private(set) var authorizationStatus: CLAuthorizationStatus
     @Published private(set) var accuracyAuthorization: CLAccuracyAuthorization
+    /// The position for views: updated after moving `publishDistance` or after
+    /// `publishInterval`, not in the background (so views are not redrawn every second).
     @Published private(set) var lastLocation: CLLocation?
     @Published private(set) var isTracking = false
     @Published private(set) var lastErrorMessage: String?
+
+    /// The latest fix (not published): for decisions made now, such as whether the camera may open.
+    private(set) var currentLocation: CLLocation?
 
     /// Receives every position update, on the main thread.
     var onLocations: (([CLLocation]) -> Void)?
@@ -21,6 +34,33 @@ final class LocationTracker: NSObject, ObservableObject, CLLocationManagerDelega
     private let manager: CLLocationManager
     private let defaults: UserDefaults
     private static let trackingEnabledKey = "LocationTracker.trackingEnabled"
+
+    static let publishDistance: CLLocationDistance = 5
+    static let publishInterval: TimeInterval = 15
+    /// In low power, fixes arrive after moving this far (coarse positions jitter less than this).
+    static let lowPowerDistance: CLLocationDistance = 40
+
+    /// Whether the phone has stayed put long enough to switch GPS off (`StillnessDetector`).
+    private var stillness = StillnessDetector()
+    private var power = StillnessDetector.Power.full
+
+    /// The app is in the background: views are not updated, and the phone may go to low power when still.
+    var isInBackground = false {
+        didSet {
+            guard isInBackground != oldValue else { return }
+            apply(stillness.setInBackground(isInBackground, now: Date()))
+            if !isInBackground, let currentLocation, currentLocation !== lastLocation { lastLocation = currentLocation }
+        }
+    }
+
+    /// Whether the data source shown records positions; when it does not (another
+    /// user's data, the demo), GPS stays off.
+    var isRecordingAllowed = true {
+        didSet {
+            guard isRecordingAllowed != oldValue else { return }
+            if isRecordingAllowed { startIfAuthorized() } else { stop() }
+        }
+    }
 
     /// Whether the user wants tracking to run (persisted).
     var isTrackingEnabled: Bool {
@@ -78,9 +118,11 @@ final class LocationTracker: NSObject, ObservableObject, CLLocationManagerDelega
     // MARK: Tracking
 
     func startIfAuthorized() {
-        guard isAuthorized, isTrackingEnabled, !isTracking else { return }
+        guard isAuthorized, isTrackingEnabled, isRecordingAllowed, !isTracking else { return }
         // Requires the `location` background mode (Info.plist).
         manager.allowsBackgroundLocationUpdates = true
+        stillness.reset()
+        apply(.full)
         manager.startUpdatingLocation()
         if authorizationStatus == .authorizedAlways {
             // Relaunches the app after termination when the user moves significantly.
@@ -110,9 +152,38 @@ final class LocationTracker: NSObject, ObservableObject, CLLocationManagerDelega
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        lastLocation = locations.last
-        lastErrorMessage = nil
+        guard let latest = locations.last else { return }
+        currentLocation = latest
+        if lastErrorMessage != nil { lastErrorMessage = nil }
+        if !isInBackground, shouldPublish(latest) { lastLocation = latest }
+        for location in locations {
+            let coordinate = GeoCoordinate(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+            apply(stillness.update(coordinate, accuracy: location.horizontalAccuracy, timestamp: location.timestamp))
+        }
         onLocations?(locations)
+    }
+
+    // MARK: Energy
+
+    private func shouldPublish(_ location: CLLocation) -> Bool {
+        guard let shown = lastLocation else { return true }
+        return location.distance(from: shown) >= Self.publishDistance
+            || location.timestamp.timeIntervalSince(shown.timestamp) >= Self.publishInterval
+            || (location.horizontalAccuracy >= 0 && location.horizontalAccuracy < shown.horizontalAccuracy / 2)
+    }
+
+    /// Full: GPS, every fix. Low: no GPS – Wi-Fi and cell positions, delivered only after moving.
+    private func apply(_ newPower: StillnessDetector.Power) {
+        guard newPower != power else { return }
+        power = newPower
+        switch newPower {
+        case .full:
+            manager.desiredAccuracy = kCLLocationAccuracyBest
+            manager.distanceFilter = kCLDistanceFilterNone
+        case .low:
+            manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+            manager.distanceFilter = Self.lowPowerDistance
+        }
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

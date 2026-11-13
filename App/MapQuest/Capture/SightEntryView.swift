@@ -35,7 +35,7 @@ struct SightEntryView: View {
     private var accent: Color { isRemembrance ? .remembrance : .orange }
     /// The camera (or the photo library for testing), if it can be used here and now.
     private var cameraSource: UIImagePickerController.SourceType? {
-        guard captures.canPhotograph(sight, from: tracker.lastLocation) else { return nil }
+        guard captures.canPhotograph(sight, from: tracker.currentLocation) else { return nil }
         return CameraPicker.source(allowingLibrary: captures.photosAnywhere)
     }
 
@@ -97,7 +97,7 @@ struct SightEntryView: View {
     /// Saves the photo: the sight is captured (the animation plays for a first capture).
     private func save(_ image: UIImage) {
         do {
-            if let shown = try captures.saveCapture(image, of: sight, at: tracker.lastLocation) {
+            if let shown = try captures.saveCapture(image, of: sight, at: tracker.currentLocation) {
                 celebration = shown
             }
         } catch {
@@ -175,7 +175,7 @@ struct SightEntryView: View {
         if cameraSource != nil {
             return tr("Photograph {0} and keep the photo: it captures the sight and counts towards its achievements.", sight.name)
         }
-        if captures.canPhotograph(sight, from: tracker.lastLocation) {
+        if captures.canPhotograph(sight, from: tracker.currentLocation) {
             return tr("This device has no camera.")
         }
         if let meters = captures.distance(to: sight, from: tracker.lastLocation) {

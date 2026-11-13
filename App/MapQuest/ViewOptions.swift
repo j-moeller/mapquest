@@ -143,7 +143,7 @@ extension AppModel {
 
     /// Called when something was recorded: views of the present are refreshed soon.
     func periodViewTouched() {
-        guard showsPresent, periodKind != nil || aggregate == .heatmap else { return }
+        guard !isInBackground, showsPresent, periodKind != nil || aggregate == .heatmap else { return }
         scheduleLiveRefresh()
     }
 
@@ -155,18 +155,23 @@ extension AppModel {
         viewTask = Task { [weak self] in
             await self?.computeView(quiet: false)
         }
-        if showsPresent, periodKind != nil || aggregate == .heatmap {
+        if !isInBackground, showsPresent, periodKind != nil || aggregate == .heatmap {
             scheduleLiveRefresh()
         }
     }
 
-    /// While the present is shown, the view follows the growing track.
+    /// While the present is shown, the view follows the growing track: every 30 s
+    /// if new fixes came in; never in the background (the view catches up on return).
     private func scheduleLiveRefresh() {
-        guard liveViewTask == nil else { return }
+        guard liveViewTask == nil, !isInBackground else { return }
         liveViewTask = Task { [weak self] in
+            var computedAt = self?.liveTrackSummary.pointCount ?? 0
             while !Task.isCancelled {
                 try? await Task.sleep(nanoseconds: 30_000_000_000)
-                guard let self, !Task.isCancelled else { return }
+                guard let self, !Task.isCancelled, !self.isInBackground else { return }
+                let count = self.liveTrackSummary.pointCount
+                guard count != computedAt else { continue }
+                computedAt = count
                 await self.flushTrackOnly()
                 await self.computeView(quiet: true)
             }

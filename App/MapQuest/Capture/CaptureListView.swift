@@ -383,7 +383,7 @@ struct CaptureHooks: ViewModifier {
                         CaptureCelebrationView(
                             celebration: celebration,
                             epoch: celebration.sights.count == 1 ? captures.histories[celebration.sights[0].id]?.epoch : nil,
-                            onPhotograph: celebration.sights.count == 1 && captures.canPhotograph(celebration.sights[0], from: tracker.lastLocation)
+                            onPhotograph: celebration.sights.count == 1 && captures.canPhotograph(celebration.sights[0], from: tracker.currentLocation)
                                 ? { (sight: Sight) in
                                     captures.finishCelebration()
                                     captures.photograph(sight)

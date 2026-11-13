@@ -19,10 +19,15 @@ struct MapQuestApp: App {
                 // Dates, numbers and system controls in the app's language.
                 .environment(\.locale, Localization.locale)
         }
-        .onChange(of: scenePhase) { _, phase in
+        // Also at launch: the system can relaunch the app in the background (significant location change).
+        .onChange(of: scenePhase, initial: true) { _, phase in
             // Buffered track fixes are written before the app may be suspended.
             if phase != .active {
                 Task { await model.flushTrack() }
+            }
+            // In the background the maps rest and the tracker may save power.
+            if phase != .inactive {
+                model.setInBackground(phase == .background)
             }
         }
     }

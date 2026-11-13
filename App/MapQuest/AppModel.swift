@@ -84,7 +84,13 @@ final class AppModel: ObservableObject {
     /// Layers that missed samples (e.g. building data was unavailable offline) and need a rebuild.
     @Published private(set) var staleLayers: Set<MapLayer> = []
     @Published private(set) var sampleCount = 0
-    @Published var lastOutcome: String = ""
+    /// What happened to the latest position ("Known territory", …). Every fix sets it;
+    /// it is published only when it changes, so the views are not redrawn every second.
+    var lastOutcome: String {
+        get { outcomeText }
+        set { if newValue != outcomeText { outcomeText = newValue } }
+    }
+    @Published private var outcomeText = ""
     @Published private(set) var isBusy = false
     @Published var errorMessage: String?
     /// The cities with bundled 3D data, together (outlined on the map). Positions
@@ -106,8 +112,22 @@ final class AppModel: ObservableObject {
     /// Building data behind the line-of-sight layer (from its data watermarks).
     @Published private(set) var buildingData = BuildingDataSummary()
     @Published private(set) var isDownloadingBuildings = false
-    /// Size of the continuous track of the selected data source.
+    /// Size of the continuous track of the selected data source, published at most
+    /// every `trackPublishInterval` (it grows with every fix); `liveTrackSummary` is current.
     @Published private(set) var trackSummary = TrackSummary()
+    private(set) var liveTrackSummary = TrackSummary()
+    private var trackPublishedAt = Date.distantPast
+    static let trackPublishInterval: TimeInterval = 10
+
+    /// The app is in the background: the maps and time views are not updated (they
+    /// catch up when it comes back) and the tracker may save power while the phone is still.
+    private(set) var isInBackground = false
+    /// Layer changes made in the background, published when the app comes back.
+    private var deferredLayerChanges: [MapLayer: DeferredChange] = [:]
+    private enum DeferredChange {
+        case tiles(Set<TileKey>)
+        case all
+    }
 
     // View options (ViewOptions.swift)
     /// Fog of war (default) or heatmap.
@@ -207,6 +227,8 @@ final class AppModel: ObservableObject {
         )
         self.trackWriter = TrackWriter(store: store)
         self.periodDiscovery = PeriodDiscovery(store: store)
+        // No GPS for data sources that record nothing (another user's data, the demo).
+        tracker.isRecordingAllowed = profile.recordsLocations
         self.aggregate = UserDefaults.standard.string(forKey: Self.aggregateKey).flatMap(MapAggregate.init(rawValue:)) ?? .fog
         self.periodKind = UserDefaults.standard.string(forKey: Self.periodKindKey).flatMap(PeriodKind.init(rawValue:))
         self.layers = Self.emptyLayers(engines)
@@ -340,8 +362,11 @@ final class AppModel: ObservableObject {
             lastOutcome = tr("Viewing {0} – not recording", profile.name)
             return
         }
-        // The track keeps every fix, right away – also while a layer is being rebuilt.
-        await appendToTrack(sample)
+        // The track keeps every fix, right away – also while a layer is being rebuilt; coarse
+        // positions (Wi-Fi and cell, while the tracker saves power) stay out of it.
+        if sample.horizontalAccuracy <= Self.maximumTrackAccuracy {
+            await appendToTrack(sample)
+        }
         while isRebuilding {
             try? await Task.sleep(nanoseconds: 200_000_000)
         }
@@ -359,7 +384,7 @@ final class AppModel: ObservableObject {
                 lastOutcome = tr("New area discovered")
                 for update in updates {
                     if let layer = layer(for: update.layer) {
-                        await publish(layer, changedTiles: update.changedTiles)
+                        await publishOrDefer(layer, changedTiles: update.changedTiles)
                     }
                     // The position saw newer building data than the stored area around it.
                     scheduleDataRefresh(update.staleDataTiles)
@@ -385,8 +410,51 @@ final class AppModel: ObservableObject {
     }
 
     private func updateStaleLayers() async {
-        let stale = await recorder.staleLayers
-        staleLayers = Set(stale.compactMap(layer(for:))).union(failedLayers)
+        let stale = Set(await recorder.staleLayers.compactMap(layer(for:))).union(failedLayers)
+        if stale != staleLayers { staleLayers = stale }
+    }
+
+    /// Publishes a layer's change, or – in the background – keeps it for when the app comes back.
+    private func publishOrDefer(_ layer: MapLayer, changedTiles: Set<TileKey>?) async {
+        guard isInBackground else { return await publish(layer, changedTiles: changedTiles) }
+        switch (deferredLayerChanges[layer], changedTiles) {
+        case (.all, _), (_, nil):
+            deferredLayerChanges[layer] = .all
+        case (.tiles(let earlier), let tiles?):
+            deferredLayerChanges[layer] = .tiles(earlier.union(tiles))
+        case (nil, let tiles?):
+            deferredLayerChanges[layer] = .tiles(tiles)
+        }
+    }
+
+    // MARK: Foreground and background
+
+    /// Fixes less precise than this (metres) are not kept in the track.
+    static let maximumTrackAccuracy: Double = 100
+
+    /// Called when the app goes to the background or comes back.
+    func setInBackground(_ background: Bool) {
+        guard background != isInBackground else { return }
+        isInBackground = background
+        tracker.isInBackground = background
+        if background {
+            liveViewTask?.cancel()
+            liveViewTask = nil
+            return
+        }
+        publishTrackSummary(force: true)
+        let deferred = deferredLayerChanges
+        deferredLayerChanges = [:]
+        Task { [weak self] in
+            guard let self else { return }
+            for (layer, change) in deferred {
+                switch change {
+                case .all: await self.publish(layer, changedTiles: nil)
+                case .tiles(let tiles): await self.publish(layer, changedTiles: tiles)
+                }
+            }
+            if self.periodKind != nil || self.aggregate == .heatmap { self.refreshView() }
+        }
     }
 
     private func publish(_ layer: MapLayer, changedTiles: Set<TileKey>?) async {
@@ -485,10 +553,11 @@ final class AppModel: ObservableObject {
             await flushTrack()
             self.recorder = LocationRecorder(store: store, engines: MapLayer.allCases.compactMap { engines[$0] }, policy: debug.recordingPolicy)
             self.trackWriter = TrackWriter(store: store)
-            self.trackSummary = TrackSummary()
+            setTrackSummary(TrackSummary())
             self.periodDiscovery = PeriodDiscovery(store: store)
             self.periodStates = [:]
             self.profile = profile
+            tracker.isRecordingAllowed = profile.recordsLocations
             catalog.selectedProfileID = profile.id
             layers = Self.emptyLayers(engines)
             sampleCount = 0
@@ -652,13 +721,27 @@ final class AppModel: ObservableObject {
     private func appendToTrack(_ sample: LocationSample) async {
         do {
             if try await trackWriter.append(TrackPoint(sample)) {
-                trackSummary.pointCount += 1
-                trackSummary.last = sample.timestamp
-                if trackSummary.first == nil { trackSummary.first = sample.timestamp }
+                liveTrackSummary.pointCount += 1
+                liveTrackSummary.last = sample.timestamp
+                if liveTrackSummary.first == nil { liveTrackSummary.first = sample.timestamp }
+                publishTrackSummary(force: false)
             }
         } catch {
             lastOutcome = tr("Could not write the track: {0}", error.localizedDescription)
         }
+    }
+
+    /// Publishes the track's size: at most every `trackPublishInterval`, not in the background.
+    private func publishTrackSummary(force: Bool) {
+        let now = Date()
+        guard force || (!isInBackground && now.timeIntervalSince(trackPublishedAt) >= Self.trackPublishInterval) else { return }
+        trackPublishedAt = now
+        if trackSummary != liveTrackSummary { trackSummary = liveTrackSummary }
+    }
+
+    private func setTrackSummary(_ summary: TrackSummary) {
+        liveTrackSummary = summary
+        publishTrackSummary(force: true)
     }
 
     /// Writes buffered fixes (when the app goes to the background) and evaluates
@@ -675,7 +758,7 @@ final class AppModel: ObservableObject {
             let pending = await trackWriter.pendingPointCount
             var adjusted = summary
             adjusted.pointCount += pending
-            trackSummary = adjusted
+            setTrackSummary(adjusted)
         }
     }
 
@@ -825,7 +908,7 @@ final class AppModel: ObservableObject {
             await flushTrack()
             try await store.removeAllSamples()
             try await store.removeAllTrack()
-            trackSummary = TrackSummary()
+            setTrackSummary(TrackSummary())
             for layer in try await store.layers() {
                 try await store.removeAllPieces(layer: layer)
             }
