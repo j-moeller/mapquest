@@ -54,6 +54,28 @@ The app has four major components:
    district names above the fog. 3D: SceneKit city model, buildings coloured
    by discovery, fogged map on the ground.
 
+## Screenshots
+
+App Store-style approximations (1290 × 2796): the map is drawn by the app's own
+renderer from OpenStreetMap data, with the fog of war over the area the demo
+explorer discovered; names, history, achievements and the remembrance guide come
+from the bundled data. The screens themselves are HTML mock-ups of the SwiftUI
+views (Inter and Material Symbols standing in for SF Pro and SF Symbols, an
+illustration for the entry photo), so take the store's screenshots from the
+simulator. `Tools/screenshots/make_screenshots.sh` makes them again.
+
+<p>
+<img src="docs/screenshots/01-map.jpg" width="200" alt="The map with the fog of war">
+<img src="docs/screenshots/02-discovered.jpg" width="200" alt="A sight discovered">
+<img src="docs/screenshots/03-entry.jpg" width="200" alt="A sight's entry">
+<img src="docs/screenshots/04-history.jpg" width="200" alt="Its history">
+<img src="docs/screenshots/05-timeline.jpg" width="200" alt="Sights through time">
+<img src="docs/screenshots/06-achievements.jpg" width="200" alt="Achievements">
+<img src="docs/screenshots/07-lines.jpg" width="200" alt="A U-Bahn line">
+<img src="docs/screenshots/08-remembrance.jpg" width="200" alt="Places of remembrance">
+<img src="docs/screenshots/09-deutsch.jpg" width="200" alt="The menu in German">
+</p>
+
 ## Using the app
 
 * First launch explains the purpose and asks for location access; upgrading
@@ -181,7 +203,7 @@ The UI smoke test (`App/MapQuestUITests`, iPhone 13 mini) runs from Xcode
 | `MapQuestKit/` | Swift package: data model, SQLite store, Clipper2 polygon engine, discovery |
 | `App/MapQuest/` | The iOS app (SwiftUI, MapKit, Core Location) |
 | `App/Simulation/` | GPX walks for the iOS Simulator |
-| `Tools/` | Data preparation scripts (Berlin and Lower Saxony city data, app icon) |
+| `Tools/` | Data preparation scripts (Berlin and Lower Saxony city data, app icon), App Store mock-ups (`Tools/screenshots`) |
 | `Server/` | Remote store: PostgreSQL schema and reference REST server |
 | `docs/` | Literature review, architecture, data sources |
 | `project.yml` | XcodeGen project specification |
