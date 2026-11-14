@@ -1,8 +1,8 @@
 import SwiftUI
 import UIKit
 
-/// The system camera (or, for testing without a camera, the photo library). Its
-/// own "Use Photo" step confirms the picture; `onImage` then saves it.
+/// The system camera (or, for testing without a camera, the photo library), with
+/// the flash off. Its own "Use Photo" step confirms the picture; `onImage` then saves it.
 struct CameraPicker: UIViewControllerRepresentable {
     let source: UIImagePickerController.SourceType
     let onImage: (UIImage) -> Void
@@ -17,6 +17,12 @@ struct CameraPicker: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
         picker.sourceType = source
+        if source == .camera {
+            picker.cameraCaptureMode = .photo
+            // Sights are photographed from afar, outdoors: the flash would only light the air
+            // (and startle people nearby). It can still be switched on in the camera.
+            picker.cameraFlashMode = .off
+        }
         picker.allowsEditing = false
         picker.delegate = context.coordinator
         return picker

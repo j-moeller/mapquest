@@ -348,7 +348,7 @@ keeps its own data and photos; nothing else depends on it.
   discovery animation) opens the system camera when the sight is in view – the
   line of sight of the latest evaluated position (`AppModel.currentView`, at most
   two minutes old and 25 m away) shows it (`LineOfSightView.shows`) – or within
-  the sight's extent plus 150 m of a recent position (`CaptureModel.canPhotograph`); the camera's
+  the sight's extent plus 150 m of a recent position (`CaptureModel.canPhotograph`), flash off; the camera's
   own *Use Photo* saves it (downscaled to 2048 px, JPEG) into
   `Captures/Photos/<data source>/<sight>.jpg`. The first photo is the capture
   (its date counts); a new photo replaces the picture and keeps that date. The
