@@ -176,3 +176,20 @@
 "Place of remembrance · not part of the game" = "Gedenkort · nicht Teil des Spiels";
 "{0}, {1}, place of remembrance, not part of the game" = "{0}, {1}, Gedenkort, nicht Teil des Spiels";
 "{0}, place of remembrance, not part of the game" = "{0}, Gedenkort, nicht Teil des Spiels";
+
+/* PhotoViews.swift, SightEntryView.swift: every photo of a sight is kept */
+"Photos" = "Fotos";
+"Photo" = "Foto";
+"{0} photo" = "{0} Foto";
+"{0} photos" = "{0} Fotos";
+"{0} sight" = "{0} Sehenswürdigkeit";
+"{0} sights" = "{0} Sehenswürdigkeiten";
+"No photos yet" = "Noch keine Fotos";
+"Photograph a sight you have discovered to capture it. Every photo you take of a sight is kept here." = "Fotografiere eine entdeckte Sehenswürdigkeit, um sie einzufangen. Jedes Foto, das du von einer Sehenswürdigkeit machst, wird hier aufbewahrt.";
+"Taken {0}" = "Aufgenommen {0}";
+"Open entry" = "Eintrag öffnen";
+"Delete photo" = "Foto löschen";
+"Delete this photo?" = "Dieses Foto löschen?";
+"Delete" = "Löschen";
+"It is deleted from MapQuest only (not from the Photos app). The sight stays captured." = "Es wird nur in MapQuest gelöscht (nicht in der Fotos-App). Die Sehenswürdigkeit bleibt eingefangen.";
+"You have deleted its photos; it stays captured." = "Du hast ihre Fotos gelöscht; sie bleibt eingefangen.";

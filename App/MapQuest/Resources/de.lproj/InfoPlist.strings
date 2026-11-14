@@ -2,3 +2,4 @@
 "NSCameraUsageDescription" = "MapQuest erfasst eine Sehenswürdigkeit, wenn du sie vor Ort fotografierst. Das Foto bleibt in der App, im Eintrag der Sehenswürdigkeit.";
 "NSLocationWhenInUseUsageDescription" = "MapQuest lichtet den Nebel dort, wo du unterwegs bist. Deine Position deckt die Teile der Karte auf, die du besuchst, und wird nur auf diesem iPhone gespeichert.";
 "NSLocationAlwaysAndWhenInUseUsageDescription" = "Erlaube MapQuest, die Karte auch im Hintergrund weiter zu entdecken, damit Orte, an denen du vorbeikommst, auch bei geschlossener App aufgedeckt werden. Positionen werden nur auf diesem iPhone gespeichert.";
+"NSPhotoLibraryAddUsageDescription" = "MapQuest speichert deine Fotos von Sehenswürdigkeiten auch in deinen Fotos, mit Ort und Zeit der Aufnahme. Du kannst das im Menü ausschalten.";

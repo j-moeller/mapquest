@@ -100,8 +100,9 @@ simulator. `Tools/screenshots/make_screenshots.sh` makes them again.
   Berghain; a building counts once you saw a wall or its roof – and it is
   discovered, with an animation (tap to skip): it appears on your map and
   unlocks its entry. **Photograph it** from where you can see it (the entry's
-  *Take a photo*, or within about 150 m) to **capture** it: your photo is
-  kept in its entry and the capture counts for achievements. **Places of
+  *Take a photo*, or within about 150 m) to **capture** it: the capture
+  counts for achievements, and every photo you take of it is kept – in its
+  entry, in *Menu › Photos*, and (unless switched off) in the iPhone's Photos. **Places of
   remembrance** – memorials, memorial sites and cemeteries – are not part of
   the game: nothing to capture, no achievements, no celebration (a visit
   brings a quiet note), and their entries are open to everyone. The entry has a photorealistic 3D view

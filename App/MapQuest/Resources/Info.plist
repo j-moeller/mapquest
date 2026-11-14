@@ -24,6 +24,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>MapQuest captures a sight when you photograph it there. The photo is kept in the app, in the sight's entry.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>MapQuest saves the photos you take of sights to your Photos as well, with where and when you took them. You can turn this off in the menu.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>MapQuest lifts the fog of war where you go. Your position is used to reveal the parts of the map you visit and is stored only on this iPhone.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>

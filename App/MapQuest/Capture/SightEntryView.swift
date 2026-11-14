@@ -26,11 +26,13 @@ struct SightEntryView: View {
     /// The capture animation, over the entry, after a first photo.
     @State private var celebration: Celebration?
     @State private var saveError: String?
-    /// Your photo of the sight (loaded once per photo).
+    /// Your latest photo of the sight, small (for the capture animation).
     @State private var photo: UIImage?
     /// Photorealistic 3D at the top (the photo then follows the text).
     private var shows3D: Bool { captures.hasPhotorealistic3D(sight) }
     private var capture: PhotoCapture? { captures.log.photos[sight.id] }
+    /// Every photo you took of the sight, newest first.
+    private var photos: [TakenPhoto] { captures.log.photos(of: sight.id) }
     /// Places of remembrance are not part of the game: always open, quiet colours, nothing to capture.
     private var isRemembrance: Bool { sight.isPlaceOfRemembrance }
     private var accent: Color { isRemembrance ? .remembrance : .orange }
@@ -80,7 +82,13 @@ struct SightEntryView: View {
             }
         }
         .animation(.easeInOut(duration: 0.25), value: celebration)
-        .task(id: capture?.takenAt) { photo = captures.photo(for: sight) }
+        .task(id: capture?.fileName) {
+            if let latest = photos.first {
+                photo = await captures.thumbnail(of: latest, maxPixels: 600)
+            } else {
+                photo = nil
+            }
+        }
         .alert(tr("The photo could not be saved"), isPresented: Binding(get: { saveError != nil }, set: { if !$0 { saveError = nil } })) {
             Button(tr("OK"), role: .cancel) {}
         } message: {
@@ -95,10 +103,10 @@ struct SightEntryView: View {
         showsCamera = true
     }
 
-    /// Saves the photo: the sight is captured (the animation plays for a first capture).
+    /// Keeps the photo: the first captures the sight (the animation plays), later ones join its photos.
     private func save(_ image: UIImage) {
         do {
-            if let shown = try captures.saveCapture(image, of: sight, at: tracker.currentLocation) {
+            if let shown = try captures.saveCapture(image, of: sight, at: tracker.currentLocation, fromCamera: pickerSource == .camera) {
                 celebration = shown
             }
         } catch {
@@ -106,7 +114,7 @@ struct SightEntryView: View {
         }
     }
 
-    /// The photo capture: your photo once captured, else how to capture it.
+    /// The photo capture: your photos once captured, else how to capture it.
     @ViewBuilder
     private var captureCard: some View {
         if let capture {
@@ -114,26 +122,17 @@ struct SightEntryView: View {
                 Label(tr("Captured {0}", Formatters.date(capture.capturedAt, .long)), systemImage: "camera.fill")
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(Color.orange)
-                // In an overlay: the photo's own size never widens the layout.
-                Rectangle()
-                    .fill(Color.gray.opacity(0.2))
-                    .frame(height: 230)
-                    .overlay {
-                        if let photo {
-                            Image(uiImage: photo)
-                                .resizable()
-                                .scaledToFill()
-                        } else {
-                            ProgressView()
-                        }
-                    }
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .accessibilityLabel(tr("Your photo of {0}", sight.name))
+                if photos.isEmpty {
+                    Text(tr("You have deleted its photos; it stays captured."))
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                } else {
+                    SightPhotoStrip(photos: photos, sightName: sight.name)
+                }
                 HStack {
-                    if let photo {
-                        ShareLink(item: Image(uiImage: photo), preview: SharePreview(sight.name, image: Image(uiImage: photo))) {
-                            Label(tr("Share or save"), systemImage: "square.and.arrow.up")
-                        }
+                    if !photos.isEmpty {
+                        Text(trn("{0} photo", "{0} photos", photos.count))
+                            .foregroundStyle(.secondary)
                     }
                     Spacer()
                     if cameraSource != nil {

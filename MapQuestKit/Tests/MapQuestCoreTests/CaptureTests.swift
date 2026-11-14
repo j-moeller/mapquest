@@ -218,6 +218,38 @@ final class SightInfoTests: XCTestCase {
         XCTAssertEqual(old.photos, [:])
         XCTAssertEqual(old.stations, [:])
         XCTAssertTrue(old.readEntries.isEmpty)
+        XCTAssertEqual(old.album, [])
+    }
+
+    func testEveryPhotoIsKept() throws {
+        // A log from before the album: one photo per sight, which starts its gallery.
+        let json = #"{"version":2,"records":{},"photos":{"a":{"sightID":"a","capturedAt":"2026-11-10T10:00:00Z","takenAt":"2026-11-11T09:00:00Z","fileName":"a.jpg"}}}"#
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        var log = try decoder.decode(CaptureLog.self, from: Data(json.utf8))
+        XCTAssertEqual(log.photos(of: "a").map(\.fileName), ["a.jpg"])
+
+        // A new photo is added, not replacing the old one; the capture keeps its first date.
+        let first = log.photos["a"]!.capturedAt
+        let later = TakenPhoto(sightID: "a", takenAt: first + 86_400 * 3, latitude: 52.5, longitude: 13.4, fileName: "a-2.jpg")
+        XCTAssertFalse(log.addPhoto(later), "already captured")
+        XCTAssertEqual(log.photos(of: "a").map(\.fileName), ["a-2.jpg", "a.jpg"], "newest first")
+        XCTAssertEqual(log.photos["a"]?.capturedAt, first)
+        XCTAssertEqual(log.photos["a"]?.fileName, "a-2.jpg", "the record shows the latest photo")
+        XCTAssertTrue(log.addPhoto(TakenPhoto(sightID: "b", takenAt: first, fileName: "b-1.jpg")), "a first photo captures")
+        XCTAssertEqual(log.album.count, 3)
+        XCTAssertEqual(Set(log.captureDates.keys), ["a", "b"])
+
+        // Removing the latest photo: the sight stays captured, the record falls back to the one left.
+        log.removePhoto(later)
+        XCTAssertEqual(log.photos(of: "a").map(\.fileName), ["a.jpg"])
+        XCTAssertEqual(log.photos["a"]?.fileName, "a.jpg")
+        XCTAssertTrue(log.isCaptured("a"))
+
+        // The album survives a round trip.
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        XCTAssertEqual(try decoder.decode(CaptureLog.self, from: encoder.encode(log)), log)
     }
 }
 

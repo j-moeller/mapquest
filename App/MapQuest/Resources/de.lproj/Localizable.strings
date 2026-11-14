@@ -276,3 +276,10 @@
 "Today" = "Heute";
 "This week" = "Diese Woche";
 "A line through your positions where they follow each other closely in time and space, at walking pace (up to about 11 km/h). Standing still, rides and GPS jumps add nothing." = "Eine Linie durch deine Positionen, wo sie zeitlich und räumlich dicht aufeinander folgen, im Gehtempo (bis etwa 11 km/h). Stehen, Fahrten und GPS-Sprünge zählen nicht.";
+
+/* SettingsView.swift: photos */
+"Photos" = "Fotos";
+"All photos" = "Alle Fotos";
+"Save to the Photos app" = "In der Fotos-App sichern";
+"MapQuest may not add photos to the Photos app. Allow it in the Settings app under MapQuest › Photos." = "MapQuest darf keine Fotos zur Fotos-App hinzufügen. Erlaube es in der Einstellungen-App unter MapQuest › Fotos.";
+"Every photo you take of a sight is kept in MapQuest. Switched on, it is saved to the Photos app as well, with where and when you took it." = "Jedes Foto, das du von einer Sehenswürdigkeit machst, bleibt in MapQuest. Eingeschaltet wird es auch in der Fotos-App gesichert, mit Ort und Zeit der Aufnahme.";

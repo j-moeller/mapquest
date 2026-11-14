@@ -1,5 +1,6 @@
 import CoreLocation
 import Foundation
+import ImageIO
 import MapQuestCore
 import SwiftUI
 import UIKit
@@ -466,14 +467,47 @@ final class CaptureModel: ObservableObject {
         return directory.appendingPathComponent("Photos").appendingPathComponent(safe) // not localized
     }
 
-    /// The photo of a captured sight.
-    func photoURL(for sight: Sight) -> URL? {
-        guard let sourceID, let photo = log.photos[sight.id] else { return nil }
-        return Self.photoDirectory(for: sourceID).appendingPathComponent(photo.fileName)
+    /// Whether new photos are also saved to the Photos app (menu › Photos; on by default).
+    static let savesToPhotosKey = "CaptureModel.savesToPhotos"
+    static var savesToPhotos: Bool {
+        UserDefaults.standard.object(forKey: savesToPhotosKey) as? Bool ?? true
     }
 
-    func photo(for sight: Sight) -> UIImage? {
-        photoURL(for: sight).flatMap { UIImage(contentsOfFile: $0.path) }
+    /// All photos taken with the selected data source, newest first.
+    var allPhotos: [TakenPhoto] { log.album.sorted { $0.takenAt > $1.takenAt } }
+
+    /// The file of a photo.
+    func url(of photo: TakenPhoto) -> URL? {
+        sourceID.map { Self.photoDirectory(for: $0).appendingPathComponent(photo.fileName) }
+    }
+
+    private let thumbnails = NSCache<NSString, UIImage>()
+
+    /// A photo made small (`maxPixels` on its longer side) for galleries; read off the main thread and kept.
+    func thumbnail(of photo: TakenPhoto, maxPixels: Int) async -> UIImage? {
+        guard let url = url(of: photo) else { return nil }
+        let key = "\(photo.fileName)@\(maxPixels)" as NSString
+        if let cached = thumbnails.object(forKey: key) { return cached }
+        let image = await Task.detached(priority: .userInitiated) { () -> UIImage? in
+            guard let source = CGImageSourceCreateWithURL(url as CFURL, nil) else { return nil }
+            let options = [kCGImageSourceCreateThumbnailFromImageAlways: true, kCGImageSourceCreateThumbnailWithTransform: true,
+                           kCGImageSourceThumbnailMaxPixelSize: maxPixels] as CFDictionary
+            return CGImageSourceCreateThumbnailAtIndex(source, 0, options).map { UIImage(cgImage: $0) }
+        }.value
+        if let image { thumbnails.setObject(image, forKey: key) }
+        return image
+    }
+
+    /// Deletes a photo; the sight stays captured.
+    func deletePhoto(_ photo: TakenPhoto) {
+        if let url = url(of: photo) { try? FileManager.default.removeItem(at: url) }
+        log.removePhoto(photo)
+        persist()
+    }
+
+    /// A photo at full size.
+    func image(of photo: TakenPhoto) -> UIImage? {
+        url(of: photo).flatMap { UIImage(contentsOfFile: $0.path) }
     }
 
     /// How far the position is from the sight (`nil` without a recent position).
@@ -482,9 +516,6 @@ final class CaptureModel: ObservableObject {
         return location.distance(from: CLLocation(latitude: sight.latitude, longitude: sight.longitude))
     }
 
-    /// Whether a discovered sight can be photographed from here: within its extent
-    /// plus `photoReach` (anywhere with the debug option). Only data sources that
-    /// record this device's positions capture.
     /// Whether the camera may open for a sight: when it is in view from where you are
     /// (`view`: what the line of sight showed from your latest evaluated position, if
     /// that was near here and recent), or within `photoReach` of it.
@@ -504,25 +535,30 @@ final class CaptureModel: ObservableObject {
         return location.distance(from: seenFrom) <= 25
     }
 
-    /// Saves the photo of a sight: it is captured (a new photo replaces an earlier
-    /// one; the capture keeps its first date). Returns the celebration of a first
-    /// capture, with the achievements it completes.
-    func saveCapture(_ image: UIImage, of sight: Sight, at location: CLLocation?) throws -> Celebration? {
+    /// Keeps a photo of a sight – every photo is kept; the first captures the sight –
+    /// and, when switched on in the menu, saves it to the Photos app as well (camera
+    /// photos only: one picked from the library is there already).
+    /// Returns the celebration of a first capture, with the achievements it completes.
+    func saveCapture(_ image: UIImage, of sight: Sight, at location: CLLocation?, fromCamera: Bool = true) throws -> Celebration? {
         guard let sourceID else { return nil }
         let directory = Self.photoDirectory(for: sourceID)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        let fileName = sight.id.map { $0.isLetter || $0.isNumber || $0 == "-" ? String($0) : "_" }.joined() + ".jpg"
+        let now = Date()
+        // One file per photo: the sight and when it was taken.
+        let stamp = String(Int64((now.timeIntervalSince1970 * 1000).rounded()))
+        let fileName = sight.id.map { $0.isLetter || $0.isNumber || $0 == "-" ? String($0) : "_" }.joined() + "-" + stamp + ".jpg" // not localized
         guard let data = Self.scaled(image, maxSide: 2048).jpegData(compressionQuality: 0.85) else {
             throw CocoaError(.fileWriteUnknown)
         }
         try data.write(to: directory.appendingPathComponent(fileName), options: .atomic)
-        let now = Date()
-        let first = log.photos[sight.id] == nil
-        log.photos[sight.id] = PhotoCapture(
-            sightID: sight.id, capturedAt: log.photos[sight.id]?.capturedAt ?? now, takenAt: now,
+        let first = log.addPhoto(TakenPhoto(
+            sightID: sight.id, takenAt: now,
             latitude: location?.coordinate.latitude, longitude: location?.coordinate.longitude, fileName: fileName
-        )
+        ))
         persist()
+        if fromCamera && Self.savesToPhotos {
+            PhotoLibrary.save(image, location: location, date: now)
+        }
         guard first else { return nil }
         let unlocked = achievements.unlocked(by: [sight.id], captured: Set(log.captureDates.keys))
         return Celebration(kind: .photographed, sights: [sight], capturedCount: log.photos.count, totalCount: gameSightCount,

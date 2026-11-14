@@ -349,11 +349,18 @@ keeps its own data and photos; nothing else depends on it.
   line of sight of the latest evaluated position (`AppModel.currentView`, at most
   two minutes old and 25 m away) shows it (`LineOfSightView.shows`) – or within
   the sight's extent plus 150 m of a recent position (`CaptureModel.canPhotograph`), flash off; the camera's
-  own *Use Photo* saves it (downscaled to 2048 px, JPEG) into
-  `Captures/Photos/<data source>/<sight>.jpg`. The first photo is the capture
-  (its date counts); a new photo replaces the picture and keeps that date. The
-  entry then shows your photo (share or save it to Photos), the animation plays
-  "Captured!" with the photo in the medallion and the achievements it completes.
+  own *Use Photo* keeps it (downscaled to 2048 px, JPEG) in
+  `Captures/Photos/<data source>/<sight>-<milliseconds>.jpg`. Every photo is
+  kept (`TakenPhoto`, `CaptureLog.album`): the first is the capture (its date
+  counts, the animation plays "Captured!" with the photo in the medallion and
+  the achievements it completes), later ones join the sight's photos. The entry
+  shows the latest large and all of them in a row; a photo opens large, with
+  when it was taken, *Share or save* and *Delete photo* (the sight stays
+  captured; its record then shows the latest remaining photo). *Menu › Photos
+  › All photos* shows every photo, newest first. *Save to the Photos app* (on
+  by default) also adds each new photo to the iPhone's Photos, with where and
+  when it was taken (`PhotoLibrary`, add-only access: MapQuest never reads the
+  library; the menu says when access is denied).
   Only recording data sources capture; *Debug › Photograph sights from
   anywhere* lifts the distance check (and uses the photo library where there is
   no camera, e.g. the simulator). Discovering no longer counts for achievements;
@@ -372,8 +379,10 @@ keeps its own data and photos; nothing else depends on it.
 * **Log** (`CaptureLog`, `FileCaptureStore`): one JSON file per data source
   in `Application Support/MapQuest/Captures`, separate from the data stores:
   visits of sights (`records`, with whether their discovery was celebrated),
-  photo captures (`photos`) and collected stations (`stations`). Older logs
-  without photos or stations load as they are.
+  photo captures (`photos`, one per captured sight, showing its latest photo),
+  every photo taken (`album`) and collected stations (`stations`). Older logs
+  without photos or stations load as they are; logs from before the album get
+  one with their single photo per sight.
 * **App** (`App/MapQuest/Capture`): `CaptureModel` re-checks the
   uncaptured sights (off the main thread) whenever the selected data source's
   discovered area changes. New captures of a recording data source are

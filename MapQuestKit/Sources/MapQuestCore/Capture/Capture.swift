@@ -20,12 +20,13 @@ public struct CaptureRecord: Codable, Hashable, Sendable {
     }
 }
 
-/// A captured sight: photographed there and the photo saved.
+/// A captured sight: photographed and the photo saved. The sight's photos are
+/// all kept (`CaptureLog.album`); this record holds the capture and its latest photo.
 public struct PhotoCapture: Codable, Hashable, Sendable {
     public var sightID: String
     /// When the sight was first photographed: it counts as captured from then on.
     public var capturedAt: Date
-    /// When the photo kept now was taken (a new photo replaces the old one).
+    /// When its latest photo was taken.
     public var takenAt: Date
     /// Where it was taken.
     public var latitude: Double?
@@ -36,6 +37,28 @@ public struct PhotoCapture: Codable, Hashable, Sendable {
     public init(sightID: String, capturedAt: Date, takenAt: Date, latitude: Double? = nil, longitude: Double? = nil, fileName: String) {
         self.sightID = sightID
         self.capturedAt = capturedAt
+        self.takenAt = takenAt
+        self.latitude = latitude
+        self.longitude = longitude
+        self.fileName = fileName
+    }
+}
+
+/// A photo you took of a sight. Every photo is kept: the sight's gallery, and all
+/// of them together in the menu's Photos.
+public struct TakenPhoto: Codable, Hashable, Identifiable, Sendable {
+    public var sightID: String
+    public var takenAt: Date
+    /// Where it was taken.
+    public var latitude: Double?
+    public var longitude: Double?
+    /// The photo's file in the data source's photo folder (unique per photo).
+    public var fileName: String
+
+    public var id: String { fileName }
+
+    public init(sightID: String, takenAt: Date, latitude: Double? = nil, longitude: Double? = nil, fileName: String) {
+        self.sightID = sightID
         self.takenAt = takenAt
         self.latitude = latitude
         self.longitude = longitude
@@ -59,6 +82,8 @@ public struct CaptureLog: Codable, Equatable, Sendable {
     public var records: [String: CaptureRecord] = [:]
     /// Captured (photographed) sights.
     public var photos: [String: PhotoCapture] = [:]
+    /// Every photo taken, oldest first (a sight's gallery: `photos(of:)`).
+    public var album: [TakenPhoto] = []
     /// Collected stations.
     public var stations: [String: CaptureRecord] = [:]
     /// Sights whose unlocked entry has been opened (the others are marked new).
@@ -71,17 +96,52 @@ public struct CaptureLog: Codable, Equatable, Sendable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case version, records, photos, stations, readEntries
+        case version, records, photos, album, stations, readEntries
     }
 
-    /// Older logs have no `readEntries`, `photos` or `stations`.
+    /// Older logs have no `readEntries`, `photos`, `album` or `stations`; without an
+    /// album (one photo per sight, replaced by a new one), each sight's photo starts it.
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         version = try container.decode(Int.self, forKey: .version)
         records = try container.decode([String: CaptureRecord].self, forKey: .records)
         photos = try container.decodeIfPresent([String: PhotoCapture].self, forKey: .photos) ?? [:]
+        album = try container.decodeIfPresent([TakenPhoto].self, forKey: .album)
+            ?? photos.values.map {
+                TakenPhoto(sightID: $0.sightID, takenAt: $0.takenAt, latitude: $0.latitude, longitude: $0.longitude, fileName: $0.fileName)
+            }.sorted { ($0.takenAt, $0.fileName) < ($1.takenAt, $1.fileName) }
         stations = try container.decodeIfPresent([String: CaptureRecord].self, forKey: .stations) ?? [:]
         readEntries = try container.decodeIfPresent(Set<String>.self, forKey: .readEntries) ?? []
+    }
+
+    /// A sight's photos, newest first.
+    public func photos(of sightID: String) -> [TakenPhoto] {
+        album.filter { $0.sightID == sightID }.sorted { $0.takenAt > $1.takenAt }
+    }
+
+    /// Keeps a new photo; the first one of a sight captures it. Returns whether it did.
+    @discardableResult
+    public mutating func addPhoto(_ photo: TakenPhoto) -> Bool {
+        album.append(photo)
+        let first = photos[photo.sightID] == nil
+        photos[photo.sightID] = PhotoCapture(
+            sightID: photo.sightID, capturedAt: photos[photo.sightID]?.capturedAt ?? photo.takenAt, takenAt: photo.takenAt,
+            latitude: photo.latitude, longitude: photo.longitude, fileName: photo.fileName
+        )
+        return first
+    }
+
+    /// Removes a photo from the album. The sight stays captured (a capture is kept
+    /// once made); its record then shows its latest remaining photo.
+    public mutating func removePhoto(_ photo: TakenPhoto) {
+        album.removeAll { $0.fileName == photo.fileName }
+        guard var capture = photos[photo.sightID], capture.fileName == photo.fileName,
+              let latest = photos(of: photo.sightID).first else { return }
+        capture.takenAt = latest.takenAt
+        capture.latitude = latest.latitude
+        capture.longitude = latest.longitude
+        capture.fileName = latest.fileName
+        photos[photo.sightID] = capture
     }
 
     /// A discovered sight whose entry has not been opened yet.

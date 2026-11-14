@@ -2,15 +2,19 @@ import CoreLocation
 import MapQuestCore
 import SwiftUI
 
-/// The menu: how the map is shown and the statistics first, then recording and
-/// the data source, the stored data, the developer settings and deleting.
+/// The menu: how the map is shown and the statistics first, then your photos,
+/// recording and the data source, the stored data, the developer settings and deleting.
 /// Every entry opens its own page.
 struct SettingsView: View {
     @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var tracker: LocationTracker
     @EnvironmentObject private var languages: LanguageSettings
+    @EnvironmentObject private var captures: CaptureModel
     @Environment(\.dismiss) private var dismiss
     @AppStorage("ContentView.mode") private var mode: MapMode = .twoD
+    /// New photos of sights also go to the Photos app (on until switched off).
+    @AppStorage(CaptureModel.savesToPhotosKey) private var savesToPhotos = true
+    @State private var photosDenied = PhotoLibrary.isDenied
     @State private var confirmDelete = false
 
     var body: some View {
@@ -28,6 +32,38 @@ struct SettingsView: View {
                         MenuRow(title: tr("Statistics"), systemImage: "chart.bar.fill", tint: .indigo,
                                 detail: Formatters.area(model.state(.radius).discoveredSquareMeters))
                     }
+                }
+
+                Section {
+                    NavigationLink {
+                        page(PhotoGalleryView())
+                    } label: {
+                        MenuRow(title: tr("All photos"), systemImage: "photo.on.rectangle", tint: .pink,
+                                detail: captures.log.album.isEmpty ? nil : Formatters.number(captures.log.album.count))
+                    }
+                    Toggle(isOn: $savesToPhotos) {
+                        MenuRow(title: tr("Save to the Photos app"), systemImage: "square.and.arrow.down.fill", tint: .pink)
+                    }
+                    .onChange(of: savesToPhotos) { _, on in
+                        guard on else { return }
+                        Task { photosDenied = !(await PhotoLibrary.requestAccess()) }
+                    }
+                    if savesToPhotos && photosDenied {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Label(tr("MapQuest may not add photos to the Photos app. Allow it in the Settings app under MapQuest › Photos."),
+                                  systemImage: "exclamationmark.triangle")
+                                .font(.footnote)
+                                .foregroundStyle(.orange)
+                            if let url = URL(string: UIApplication.openSettingsURLString) {
+                                Link(tr("Open Settings"), destination: url)
+                                    .font(.footnote)
+                            }
+                        }
+                    }
+                } header: {
+                    Text(tr("Photos"))
+                } footer: {
+                    Text(tr("Every photo you take of a sight is kept in MapQuest. Switched on, it is saved to the Photos app as well, with where and when you took it."))
                 }
 
                 Section {
