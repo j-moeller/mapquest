@@ -6,8 +6,14 @@ public struct RecordingPolicy: Hashable, Sendable {
     public var maximumHorizontalAccuracy: Double
     /// A fix is stored if, for any layer, at least this fraction of its revealed area is new …
     public var minimumNewAreaFraction: Double
-    /// … or at least this much area (m²) is new.
+    /// … or at least this much area (m²) is new …
     public var minimumNewAreaSquareMeters: Double
+    /// … or it closes a gap – fog enclosed by discovered area, like the spot three
+    /// overlapping circles leave between them (`DiscoveryEngine.gapFill`) – or
+    /// fills at least this much (m²) of gaps. Gaps are often far smaller than the
+    /// thresholds above, so without this they would stay black spots for good.
+    /// (Slivers of a big gap below this are left to the usual thresholds.)
+    public var minimumGapAreaSquareMeters: Double
     /// Which fixes are evaluated at all (`CoverageSampler`): about one per
     /// `sampling.spacing` metres of movement, none while standing still.
     public var sampling: CoverageSampler.Configuration
@@ -16,12 +22,14 @@ public struct RecordingPolicy: Hashable, Sendable {
         maximumHorizontalAccuracy: Double = 50,
         minimumNewAreaFraction: Double = 0.1,
         minimumNewAreaSquareMeters: Double = 2_000,
+        minimumGapAreaSquareMeters: Double = 25,
         samplingSpacing: Double = 10,
         minimumClimb: Double = 3
     ) {
         self.maximumHorizontalAccuracy = maximumHorizontalAccuracy
         self.minimumNewAreaFraction = minimumNewAreaFraction
         self.minimumNewAreaSquareMeters = minimumNewAreaSquareMeters
+        self.minimumGapAreaSquareMeters = minimumGapAreaSquareMeters
         self.sampling = CoverageSampler.Configuration(
             spacing: samplingSpacing, minimumClimb: minimumClimb, maximumAccuracy: maximumHorizontalAccuracy
         )
@@ -31,6 +39,11 @@ public struct RecordingPolicy: Hashable, Sendable {
         evaluation.newAreaSquareMeters > 0
             && (evaluation.newAreaFraction >= minimumNewAreaFraction
                 || evaluation.newAreaSquareMeters >= minimumNewAreaSquareMeters)
+    }
+
+    /// Whether filling gaps makes a fix worth storing: it closes one, or fills enough.
+    public func isSignificant(_ fill: GapFill) -> Bool {
+        fill.closedGaps > 0 || fill.filledSquareMeters >= minimumGapAreaSquareMeters
     }
 }
 
@@ -155,7 +168,7 @@ public actor LocationRecorder {
         if evaluated.isEmpty, let failure = failures.first {
             throw failure.error
         }
-        guard evaluated.contains(where: { policy.isSignificant($0.evaluation) }) else {
+        guard try await isWorthStoring(evaluated) else {
             return .alreadyDiscovered(evaluated.map(\.evaluation))
         }
         try await store.addSamples([sample])
@@ -165,6 +178,75 @@ public actor LocationRecorder {
             updates.append(try await engine.commit(evaluation))
         }
         return .recorded(sample, updates)
+    }
+
+    /// Whether a fix reveals enough in any layer: a large enough share or area, or
+    /// it closes or fills gaps in the discovered area (looked for only when the
+    /// rest says no, and only where something is new).
+    private func isWorthStoring(_ evaluated: [(engine: DiscoveryEngine, evaluation: DiscoveryEvaluation)]) async throws -> Bool {
+        if evaluated.contains(where: { policy.isSignificant($0.evaluation) }) { return true }
+        for (engine, evaluation) in evaluated where evaluation.newAreaSquareMeters >= GapFill.minimumGapSquareMeters {
+            if policy.isSignificant(try await engine.gapFill(of: evaluation)) {
+                return true
+            }
+        }
+        return false
+    }
+
+    /// What `fillGaps` did.
+    public struct GapRepair: Sendable {
+        /// Gaps found in all layers.
+        public var gaps = 0
+        /// Positions of the track that filled gaps, now stored.
+        public var storedPositions = 0
+        /// Data tiles whose data changed since the layers around them were computed.
+        public var staleDataTiles: Set<TileKey> = []
+    }
+
+    /// Fills the gaps of the discovered area – fog enclosed by discovered area –
+    /// from the track. Before gaps counted, a position in one was not stored when it
+    /// revealed little else, so the gap stayed black although you walked through
+    /// it; the track still has those positions. Replays the track's positions within
+    /// `reach` metres of a gap (the order and sampling of live recording) and stores
+    /// those that are worth it now.
+    public func fillGaps(
+        from points: [TrackPoint], reach: Double, progress: (@Sendable (Int, Int) -> Void)? = nil
+    ) async throws -> GapRepair {
+        var repair = GapRepair()
+        // Where positions can fill a gap, indexed by storage tile.
+        var areas: [TileKey: [WorldRect]] = [:]
+        for engine in engines {
+            for gap in try await engine.gapBounds() {
+                repair.gaps += 1
+                let metersPerUnit = WebMercator.metersPerUnit(atWorldY: Double(gap.center.y))
+                let area = gap.expanded(by: Int64((reach / metersPerUnit).rounded(.up)))
+                for tile in TileRange(covering: area, zoom: DiscoveryGrid.zoom) {
+                    areas[tile, default: []].append(area)
+                }
+            }
+        }
+        guard !areas.isEmpty else { return repair }
+        var sampler = CoverageSampler(configuration: policy.sampling)
+        var candidates: [LocationSample] = []
+        for point in points {
+            let sample = point.sample
+            guard sample.hasValidPosition, sample.horizontalAccuracy <= policy.maximumHorizontalAccuracy,
+                  playArea.contains(sample.coordinate) else { continue }
+            let world = WebMercator.project(sample.coordinate)
+            guard areas[TileKey(containing: world, zoom: DiscoveryGrid.zoom)]?.contains(where: { $0.contains(world) }) == true else {
+                continue
+            }
+            candidates += sampler.add(sample)
+        }
+        candidates += sampler.finish()
+        for (index, candidate) in candidates.enumerated() {
+            if case .recorded(_, let updates) = try await evaluateAndStore(candidate) {
+                repair.storedPositions += 1
+                for update in updates { repair.staleDataTiles.formUnion(update.staleDataTiles) }
+            }
+            progress?(index + 1, candidates.count)
+        }
+        return repair
     }
 
     /// Rebuilds every layer from the stored samples. Returns the data tiles whose

@@ -27,7 +27,8 @@ The app has four major components:
    the clock). A **coverage sampler** picks the few fixes that matter for the
    area – about one per 10 m of movement, none while standing still – and the
    `LocationRecorder` asks every discovery layer how much *new* area they
-   reveal; fixes revealing ≥ 10 % (or ≥ 2 000 m²) become key samples.
+   reveal; fixes revealing ≥ 10 % (or ≥ 2 000 m²), or filling a gap enclosed by
+   discovered area, become key samples.
 2. **Storage** – one SQLite database per data source holds the location
    samples (lat, lon, altitude, accuracies, timestamp, tile key) *and* the
    discovered area. Everything goes through the `MapQuestDataStore`

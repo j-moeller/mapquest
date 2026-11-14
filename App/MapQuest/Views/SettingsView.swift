@@ -333,6 +333,15 @@ struct DiscoveredAreaView: View {
             }
 
             Section {
+                Button(tr("Fill gaps from your track")) {
+                    Task { await model.fillGapsFromTrack() }
+                }
+                .disabled(model.isBusy)
+            } footer: {
+                Text(tr("Black spots enclosed by discovered area are filled from the positions in your track that came close to them. This runs once by itself after an update; positions that fill gaps are now kept while recording."))
+            }
+
+            Section {
                 Button(tr("Rebuild discovered area")) {
                     Task { await model.rebuildDiscoveredArea() }
                 }

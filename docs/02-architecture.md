@@ -200,12 +200,29 @@ Receives every position fix and:
    about a second);
 4. evaluates the sampled fix with every engine;
 5. stores the fix as a key sample only if, for at least one layer, ≥ 10 % of
-   the revealed area or ≥ 2 000 m² is new (`RecordingPolicy`);
+   the revealed area or ≥ 2 000 m² is new, or it fills a **gap**
+   (`RecordingPolicy`, below);
 6. commits every stored fix to **every** layer, so each layer always equals a
    rebuild from the stored samples.
 
 With a 50 m radius this stores about one fix per 10 m of *new* path and none
 while moving through known territory.
+
+**Gaps.** Overlapping areas can enclose fog: three circles around a spot,
+sight lines that just miss a corner. Such a gap is often only tens of square
+metres – about 1 % of a 50 m disk – so a fix standing in it never reached the
+thresholds above and the gap stayed a black spot however often you walked
+through it. `DiscoveryEngine.gapFill` finds the gaps around a fix's revealed
+area (holes of the discovered area within 150 m of it, across tile borders:
+the pieces of neighbouring tiles are clipped and merged first) and how much of
+them the fix covers; the fix is stored if it **closes** a gap (≥ 1 m²; what is
+left is under 1 % or 1 m²) or fills ≥ 25 m² of gaps. Slivers of bigger gaps are
+left to the usual thresholds, and the check only runs when a fix reveals
+something new but too little. Gaps that versions before this rule left behind
+are filled once from the track (`LocationRecorder.fillGaps`, also *Menu ›
+Discovered area › Fill gaps from your track*): the track still has the
+positions that walked through them, and those within the circle radius of a
+gap are replayed in order through the sampler and the same rule.
 
 ### Energy
 

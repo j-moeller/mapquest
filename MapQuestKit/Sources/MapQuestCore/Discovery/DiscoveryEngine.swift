@@ -18,6 +18,23 @@ public struct DiscoveryEvaluation: Sendable {
     }
 }
 
+/// Which gaps of the discovered area – fog enclosed by discovered area – a
+/// position's revealed area fills (`DiscoveryEngine.gapFill`).
+public struct GapFill: Hashable, Sendable {
+    /// Gaps smaller than this (m²) are ignored: dust of polygon arithmetic, not a visible spot.
+    public static let minimumGapSquareMeters: Double = 1
+
+    /// Area of gaps the revealed area covers (m²).
+    public var filledSquareMeters: Double
+    /// Gaps it covers entirely: black spots that disappear.
+    public var closedGaps: Int
+
+    public init(filledSquareMeters: Double = 0, closedGaps: Int = 0) {
+        self.filledSquareMeters = filledSquareMeters
+        self.closedGaps = closedGaps
+    }
+}
+
 /// The result of merging revealed area into a layer.
 public struct DiscoveryUpdate: Sendable {
     public var layer: DiscoveryLayerID
@@ -287,6 +304,78 @@ public actor DiscoveryEngine {
             evaluation.newAreaSquareMeters += area(remaining) * scale
         }
         return evaluation
+    }
+
+    /// Which *gaps* of the discovered area an evaluation fills – fog enclosed on all
+    /// sides by discovered area, like the spot three overlapping circles leave
+    /// between them. A gap is often far below the share of new area that makes a
+    /// position worth storing, yet it stays a black spot in the middle of the map
+    /// until it is filled: `LocationRecorder` stores a position that closes one or
+    /// fills enough of them, however little else is new.
+    ///
+    /// Gaps are looked for within `gapSearchDistance` of the revealed area, across
+    /// tile borders too; bigger ones count as open fog.
+    public func gapFill(of evaluation: DiscoveryEvaluation) async throws -> GapFill {
+        guard evaluation.newAreaSquareMeters > 0, let bounds = evaluation.revealed.bounds else { return GapFill() }
+        let metersPerUnit = WebMercator.metersPerUnit(atWorldY: Double(bounds.center.y))
+        let neighbourhood = bounds.expanded(by: Int64((Self.gapSearchDistance / metersPerUnit).rounded(.up)))
+        let range = TileRange(covering: neighbourhood, zoom: DiscoveryGrid.zoom)
+        try await ensureLoaded(range)
+        var nearby: [WorldPolygon] = []
+        for tile in range {
+            for piece in cache[tile] ?? [] where piece.polygon.bounds.intersects(neighbourhood) {
+                nearby.append(piece.polygon)
+            }
+        }
+        guard !nearby.isEmpty else { return GapFill() }
+        // The discovered area around the evaluation as one set of polygons: pieces of
+        // neighbouring tiles overlap, so a gap across a tile border becomes a hole as
+        // well. A gap cut by the neighbourhood's edge is open there: not counted.
+        let squareMetersPerUnit = metersPerUnit * metersPerUnit
+        let gaps = PolygonOps.clip(nearby, to: neighbourhood).flatMap { polygon in
+            polygon.holes.map { WorldPolygon(exterior: $0) }
+        }
+        var fill = GapFill()
+        for gap in gaps where gap.bounds.intersects(bounds) {
+            let gapArea = gap.area * squareMetersPerUnit
+            guard gapArea >= GapFill.minimumGapSquareMeters else { continue }
+            let filled = area(PolygonOps.intersection(evaluation.revealed, [gap])) * squareMetersPerUnit
+            guard filled > 0 else { continue }
+            fill.filledSquareMeters += filled
+            // Closed: nothing visible of it is left.
+            if gapArea - filled <= max(GapFill.minimumGapSquareMeters, gapArea * 0.01) {
+                fill.closedGaps += 1
+            }
+        }
+        return fill
+    }
+
+    /// How far around a position's revealed area gaps are looked for (metres).
+    public static let gapSearchDistance: Double = 150
+
+    /// The bounds of every gap of the layer (as `gapFill` sees them), for repairs.
+    public func gapBounds() async throws -> [WorldRect] {
+        try await loadAll()
+        var found = Set<WorldRect>()
+        for (tile, pieces) in cache where !pieces.isEmpty {
+            let metersPerUnit = tile.metersPerUnit
+            let neighbourhood = tile.worldRect.expanded(by: Int64((Self.gapSearchDistance / metersPerUnit).rounded(.up)))
+            var nearby: [WorldPolygon] = []
+            for other in TileRange(covering: neighbourhood, zoom: DiscoveryGrid.zoom) {
+                for piece in cache[other] ?? [] where piece.polygon.bounds.intersects(neighbourhood) {
+                    nearby.append(piece.polygon)
+                }
+            }
+            for polygon in PolygonOps.clip(nearby, to: neighbourhood) {
+                for hole in polygon.holes {
+                    let gap = WorldPolygon(exterior: hole)
+                    guard gap.bounds.intersects(tile.worldRect),
+                          gap.area * metersPerUnit * metersPerUnit >= GapFill.minimumGapSquareMeters else { continue }
+                    found.insert(gap.bounds)
+                }
+            }
+        }
+        return Array(found)
     }
 
     // MARK: Updates

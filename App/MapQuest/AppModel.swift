@@ -557,6 +557,10 @@ final class AppModel: ObservableObject {
             // Building data may have changed since the layers were computed (downloads,
             // a newer bundled dataset after an app update): refresh those areas.
             Task { [weak self] in await self?.checkBuildingData(fetchingMissing: self?.debug.downloadsBuildings ?? false) }
+            // Gaps left before positions that fill gaps were stored: fill them from the track, once.
+            if !UserDefaults.standard.bool(forKey: gapsFilledKey) {
+                Task { [weak self] in await self?.fillGapsFromTrack(automatically: true) }
+            }
         } catch {
             errorMessage = tr("Could not load data: {0}", error.localizedDescription)
         }
@@ -932,6 +936,51 @@ final class AppModel: ObservableObject {
         }
         await refreshAll()
         await updateStaleLayers()
+    }
+
+    /// Set once a data source's gaps were filled from its track (`fillGapsFromTrack`).
+    private var gapsFilledKey: String { "AppModel.gapsFilledFromTrack.v1." + profile.id } // not localized
+
+    /// Fills the gaps of the discovered area – fog enclosed by discovered area, which
+    /// earlier versions left black although you walked through it – from the
+    /// positions in the track (`LocationRecorder.fillGaps`).
+    func fillGapsFromTrack(automatically: Bool = false) async {
+        if automatically {
+            // After whatever else is running at launch.
+            while isBusy { try? await Task.sleep(nanoseconds: 500_000_000) }
+        }
+        guard !isBusy else { return }
+        isBusy = true
+        defer {
+            isBusy = false
+            progress = nil
+        }
+        let recorder = self.recorder
+        let key = gapsFilledKey
+        do {
+            await flushTrack()
+            let points = try await store.trackPoints()
+            if !automatically { lastOutcome = tr("Filling gaps from your track…") }
+            let repair = try await recorder.fillGaps(from: points, reach: circleModel.radius) { done, total in
+                Task { @MainActor [weak self] in self?.progress = Double(done) / Double(max(total, 1)) }
+            }
+            guard recorder === self.recorder else { return } // data source changed meanwhile
+            UserDefaults.standard.set(true, forKey: key)
+            if repair.storedPositions > 0 {
+                sampleCount = try await store.sampleCount()
+                scheduleDataRefresh(repair.staleDataTiles)
+                periodViewTouched()
+                await refreshAll()
+            }
+            if repair.storedPositions > 0 || !automatically {
+                lastOutcome = repair.gaps == 0
+                    ? tr("No gaps in the discovered area")
+                    : tr("Gaps: {0} found, {1} positions from your track added",
+                         Formatters.number(repair.gaps), Formatters.number(repair.storedPositions))
+            }
+        } catch {
+            if !automatically { errorMessage = tr("Could not fill gaps: {0}", error.localizedDescription) }
+        }
     }
 
     /// Deletes all samples and discovered area of the selected data source.

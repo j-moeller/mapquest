@@ -228,6 +228,120 @@ final class LocationRecorderTests: XCTestCase {
         XCTAssertEqual(countAfterReturn, count)
     }
 
+    /// Three circles in a triangle leave a small gap in the middle (about 100 m²,
+    /// 1 % of a 50 m disk). Standing in it must uncover it, however little is new.
+    func testGapBetweenDiscoveredAreasIsUncoveredWhenWalkedOver() async throws {
+        let store: any MapQuestDataStore = InMemoryDataStore()
+        let engine = DiscoveryEngine(model: CircleDiscoveryModel(radius: 50), store: store)
+        let recorder = LocationRecorder(store: store, engines: [engine])
+        // An equilateral triangle with 95 m sides: its centre is 54.8 m from each corner.
+        let side = 95.0
+        let corners = [(0.0, 0.0), (side, 0.0), (side / 2, side * 3.squareRoot() / 2)]
+        for (index, corner) in corners.enumerated() {
+            let outcome = try await recorder.record(Walk.sample(east: corner.0, north: corner.1, second: Double(index * 60)))
+            XCTAssertTrue(outcome.isRecorded)
+        }
+        let centre = (side / 2, side * 3.squareRoot() / 6)
+        let gapBefore = try await engine.isDiscovered(Walk.coordinate(east: centre.0, north: centre.1))
+        XCTAssertFalse(gapBefore, "the three circles leave a gap")
+
+        let outcome = try await recorder.record(Walk.sample(east: centre.0, north: centre.1, second: 300))
+        XCTAssertTrue(outcome.isRecorded, "a fix that fills a gap is stored")
+        let gapAfter = try await engine.isDiscovered(Walk.coordinate(east: centre.0, north: centre.1))
+        XCTAssertTrue(gapAfter)
+        let holes = await engine.snapshot().piecesByTile.values.flatMap { $0 }.reduce(0) { $0 + $1.polygon.holes.count }
+        XCTAssertEqual(holes, 0)
+    }
+
+    /// The same gap with its middle on a corner of four storage tiles: no single
+    /// tile's piece has it as a hole, the discovered area around it does.
+    func testGapAcrossTileBordersIsUncovered() async throws {
+        let store: any MapQuestDataStore = InMemoryDataStore()
+        let engine = DiscoveryEngine(model: CircleDiscoveryModel(radius: 50), store: store)
+        let recorder = LocationRecorder(store: store, engines: [engine])
+        let tile = TileKey(containing: Walk.origin, zoom: DiscoveryGrid.zoom)
+        let corner = WebMercator.unproject(WorldPoint(x: tile.worldRect.minX, y: tile.worldRect.minY))
+        let side = 95.0
+        let circumradius = side / 3.squareRoot()
+        for (index, angle) in [90.0, 210.0, 330.0].enumerated() {
+            let radians = angle * .pi / 180
+            let sample = Walk.sample(east: circumradius * cos(radians), north: circumradius * sin(radians), second: Double(index * 60), from: corner)
+            let outcome = try await recorder.record(sample)
+            XCTAssertTrue(outcome.isRecorded)
+        }
+        let gapBefore = try await engine.isDiscovered(Walk.coordinate(east: 1, north: 1, from: corner))
+        XCTAssertFalse(gapBefore)
+        let outcome = try await recorder.record(Walk.sample(east: 0, north: 0, second: 300, from: corner))
+        XCTAssertTrue(outcome.isRecorded, "a fix that fills a gap is stored")
+        for (east, north) in [(1.0, 1.0), (-1.0, 1.0), (1.0, -1.0), (-1.0, -1.0)] {
+            let discovered = try await engine.isDiscovered(Walk.coordinate(east: east, north: north, from: corner))
+            XCTAssertTrue(discovered)
+        }
+    }
+
+    /// Slivers of a bigger gap (a block walked around) are left to the usual
+    /// thresholds; filling a good part of one is stored.
+    func testOnlyFixesThatCloseOrFillGapsAreStored() async throws {
+        let store: any MapQuestDataStore = InMemoryDataStore()
+        let engine = DiscoveryEngine(model: CircleDiscoveryModel(radius: 50), store: store)
+        // Walk around a block: circles every 10 m on a 100 m circle leave a gap of ≈ 7,800 m².
+        for step in 0..<63 {
+            let angle = Double(step) / 63 * 2 * .pi
+            try await engine.process(Walk.sample(east: 100 * cos(angle), north: 100 * sin(angle), second: Double(step)))
+        }
+        let policy = RecordingPolicy()
+        // Half a metre further in: a sliver of new area, all of it in the gap.
+        let sliver = try await engine.evaluate(Walk.sample(east: 99.5, north: 0, second: 200))
+        let sliverFill = try await engine.gapFill(of: sliver)
+        XCTAssertFalse(policy.isSignificant(sliver))
+        XCTAssertGreaterThan(sliverFill.filledSquareMeters, 0)
+        XCTAssertEqual(sliverFill.closedGaps, 0)
+        XCTAssertFalse(policy.isSignificant(sliverFill), "a sliver of a big gap is not worth a fix: \(sliverFill)")
+        // 15 m further in: about 530 m² of the gap – 7 % of the disk, below the usual share.
+        let inside = try await engine.evaluate(Walk.sample(east: 85, north: 0, second: 210))
+        let insideFill = try await engine.gapFill(of: inside)
+        XCTAssertFalse(policy.isSignificant(inside))
+        XCTAssertTrue(policy.isSignificant(insideFill), "\(insideFill)")
+        XCTAssertEqual(insideFill.closedGaps, 0)
+    }
+
+    /// Gaps left before gaps counted are filled from the track, where the positions
+    /// that walked through them are still kept.
+    func testGapsAreFilledFromTheTrack() async throws {
+        let store = InMemoryDataStore()
+        let engine = DiscoveryEngine(model: CircleDiscoveryModel(radius: 50), store: store)
+        let side = 95.0
+        let corners = [(0.0, 0.0), (side, 0.0), (side / 2, side * 3.squareRoot() / 2)]
+        // As the old rule left it: the corners stored, the walk through the gap only in the track.
+        for (index, corner) in corners.enumerated() {
+            let sample = Walk.sample(east: corner.0, north: corner.1, second: Double(index * 60))
+            try await store.addSamples([sample])
+            try await engine.process(sample)
+        }
+        var track = Walk.line(fromEast: side / 2, north: -60, toEast: side / 2, north: 140, step: 1.4, startSecond: 600)
+        track += Walk.line(fromEast: -200, north: 300, toEast: 300, north: 300, step: 1.4, startSecond: 1_000) // far from the gap
+        let centre = Walk.coordinate(east: side / 2, north: side * 3.squareRoot() / 6)
+        let gapBefore = try await engine.isDiscovered(centre)
+        XCTAssertFalse(gapBefore)
+
+        let recorder = LocationRecorder(store: store, engines: [engine])
+        let repair = try await recorder.fillGaps(from: track.map(TrackPoint.init), reach: 50)
+        XCTAssertEqual(repair.gaps, 1)
+        XCTAssertGreaterThanOrEqual(repair.storedPositions, 1)
+        XCTAssertLessThanOrEqual(repair.storedPositions, 3)
+        let gapAfter = try await engine.isDiscovered(centre)
+        XCTAssertTrue(gapAfter)
+        let gapsLeft = try await engine.gapBounds()
+        XCTAssertEqual(gapsLeft.count, 0)
+        // Nothing far from the gap was evaluated or stored.
+        let farAway = try await engine.isDiscovered(Walk.coordinate(east: 0, north: 300))
+        XCTAssertFalse(farAway)
+        // Running it again finds nothing to do.
+        let again = try await recorder.fillGaps(from: track.map(TrackPoint.init), reach: 50)
+        XCTAssertEqual(again.gaps, 0)
+        XCTAssertEqual(again.storedPositions, 0)
+    }
+
     func testRejectsInvalidInaccurateAndOutsideFixes() async throws {
         let store: any MapQuestDataStore = InMemoryDataStore()
         let engine = DiscoveryEngine(model: CircleDiscoveryModel(radius: 50), store: store)

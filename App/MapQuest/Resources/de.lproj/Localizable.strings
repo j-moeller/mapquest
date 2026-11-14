@@ -283,3 +283,11 @@
 "Save to the Photos app" = "In der Fotos-App sichern";
 "MapQuest may not add photos to the Photos app. Allow it in the Settings app under MapQuest › Photos." = "MapQuest darf keine Fotos zur Fotos-App hinzufügen. Erlaube es in der Einstellungen-App unter MapQuest › Fotos.";
 "Every photo you take of a sight is kept in MapQuest. Switched on, it is saved to the Photos app as well, with where and when you took it." = "Jedes Foto, das du von einer Sehenswürdigkeit machst, bleibt in MapQuest. Eingeschaltet wird es auch in der Fotos-App gesichert, mit Ort und Zeit der Aufnahme.";
+
+/* AppModel.swift, SettingsView.swift: gaps in the discovered area */
+"Filling gaps from your track…" = "Lücken werden aus deiner Strecke gefüllt…";
+"No gaps in the discovered area" = "Keine Lücken im entdeckten Gebiet";
+"Gaps: {0} found, {1} positions from your track added" = "Lücken: {0} gefunden, {1} Positionen aus deiner Strecke ergänzt";
+"Could not fill gaps: {0}" = "Lücken konnten nicht gefüllt werden: {0}";
+"Fill gaps from your track" = "Lücken aus deiner Strecke füllen";
+"Black spots enclosed by discovered area are filled from the positions in your track that came close to them. This runs once by itself after an update; positions that fill gaps are now kept while recording." = "Schwarze Flecken mitten im entdeckten Gebiet werden aus den Positionen deiner Strecke gefüllt, die ihnen nahe kamen. Das geschieht nach einem Update einmal von selbst; Positionen, die Lücken füllen, werden beim Aufzeichnen jetzt behalten.";
