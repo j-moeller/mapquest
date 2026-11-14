@@ -112,11 +112,13 @@ public struct CaptureLog: Codable, Equatable, Sendable {
     }
 }
 
-/// The visiting rule: a place is reached when you have been there – when the
-/// area discovered around your positions (the radius layer, circles around
-/// them; not the line of sight) covers its position, or comes within its
-/// tolerance of it for large places. Reaching a sight discovers it (photographing
-/// it then captures it); reaching a station collects it.
+/// The reaching rule: a place is reached when the discovered area covers its
+/// position, or comes within its tolerance of it for large places. Sights are
+/// reached by seeing them – the line-of-sight layer (with the radius layer, which
+/// it equals where there is no building data), whose area includes the footprints
+/// of the buildings you saw, so a building counts once a wall or its roof was in
+/// view; stations by going there – the radius layer only. Reaching a sight
+/// discovers it (photographing it then captures it); reaching a station collects it.
 public enum PlaceCapture {
     /// When the discovered area first reached the point (the earliest first-discovery
     /// date of the pieces covering it, or within `tolerance` metres), or `nil`.
@@ -136,9 +138,32 @@ public enum PlaceCapture {
         }
         return earliest
     }
+
+    /// Whether an area (e.g. what one position sees) covers the point or comes within `tolerance` metres.
+    public static func reaches(_ point: WorldPoint, tolerance: Double, in polygons: [WorldPolygon]) -> Bool {
+        let radius = tolerance / WebMercator.metersPerUnit(atWorldY: Double(point.y))
+        return polygons.contains { $0.contains(point) || $0.distanceToBoundary(point) <= radius }
+    }
 }
 
-/// Discovering sights by going there (see `PlaceCapture`).
+/// What could be seen from one position: the area the line-of-sight model revealed
+/// there (visible ground and the footprints of the buildings seen).
+public struct LineOfSightView: Sendable {
+    public var sample: LocationSample
+    public var revealed: [WorldPolygon]
+
+    public init(sample: LocationSample, revealed: [WorldPolygon]) {
+        self.sample = sample
+        self.revealed = revealed
+    }
+
+    /// Whether the sight is in view from there.
+    public func shows(_ sight: Sight) -> Bool {
+        PlaceCapture.reaches(sight.point, tolerance: sight.captureTolerance, in: revealed)
+    }
+}
+
+/// Discovering sights by seeing them (see `PlaceCapture`).
 public enum SightCapture {
     /// When the discovered area first reached `sight`, or `nil` if it does not.
     public static func captureDate(of sight: Sight, in snapshots: [DiscoveredAreaSnapshot]) -> Date? {

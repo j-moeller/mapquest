@@ -13,6 +13,7 @@ struct SightEntryView: View {
     let sight: Sight
     @EnvironmentObject private var captures: CaptureModel
     @EnvironmentObject private var tracker: LocationTracker
+    @EnvironmentObject private var model: AppModel
     @Environment(\.dismiss) private var dismiss
 
     private var record: CaptureRecord? { captures.log.records[sight.id] }
@@ -35,7 +36,7 @@ struct SightEntryView: View {
     private var accent: Color { isRemembrance ? .remembrance : .orange }
     /// The camera (or the photo library for testing), if it can be used here and now.
     private var cameraSource: UIImagePickerController.SourceType? {
-        guard captures.canPhotograph(sight, from: tracker.currentLocation) else { return nil }
+        guard captures.canPhotograph(sight, from: tracker.currentLocation, view: model.currentView) else { return nil }
         return CameraPicker.source(allowingLibrary: captures.photosAnywhere)
     }
 
@@ -175,14 +176,14 @@ struct SightEntryView: View {
         if cameraSource != nil {
             return tr("Photograph {0} and keep the photo: it captures the sight and counts towards its achievements.", sight.name)
         }
-        if captures.canPhotograph(sight, from: tracker.currentLocation) {
+        if captures.canPhotograph(sight, from: tracker.currentLocation, view: model.currentView) {
             return tr("This device has no camera.")
         }
         if let meters = captures.distance(to: sight, from: tracker.lastLocation) {
-            return tr("Go back there to photograph it ({0} away): within about {1} of it the camera opens.",
+            return tr("Go back to photograph it ({0} away): the camera opens where you can see it, or within about {1} of it.",
                       Formatters.away(meters), Formatters.distance(sight.radius + CaptureModel.photoReach))
         }
-        return tr("Go there to photograph it: the camera opens once you are near it.")
+        return tr("Go there to photograph it: the camera opens once you can see it.")
     }
 
     // MARK: Parts
@@ -357,7 +358,7 @@ struct SightEntryView: View {
         VStack(alignment: .leading, spacing: 14) {
             Text(tr("This entry is locked."))
                 .font(.headline)
-            Text(tr("Go there to discover it: once the circles of the radius view cover the sight, it appears on your map and its entry opens here – with when it was built and by whom, who ruled Berlin then, and the history of the place. Then photograph it there to capture it."))
+            Text(tr("Go there to discover it: once you have seen it, it appears on your map and its entry opens here – with when it was built and by whom, who ruled Berlin then, and the history of the place. Then photograph it from where you can see it to capture it."))
                 .foregroundStyle(.secondary)
             if let location = tracker.lastLocation {
                 let meters = location.distance(from: CLLocation(latitude: sight.latitude, longitude: sight.longitude))

@@ -5,9 +5,9 @@ import SwiftUI
 import UIKit
 
 /// The capture component (docs/02-architecture.md, "Capture"): sights of the
-/// bundled cities are discovered once the fog of war around them is lifted (their
-/// entries unlock) and captured by photographing them there; U-Bahn and S-Bahn
-/// stations are collected by going there. It only reads the discovered area of
+/// bundled cities are discovered once you have seen them – the line of sight
+/// reaches them (their entries unlock) – and captured by photographing them from
+/// where you can see them; U-Bahn and S-Bahn stations are collected by going there. It only reads the discovered area of
 /// the selected data source and keeps its own log and photos per data source
 /// (`FileCaptureStore`), separate from the data stores.
 
@@ -114,9 +114,9 @@ final class CaptureModel: ObservableObject {
     private var sourceID: String?
     /// Only data sources that record this device's positions celebrate captures.
     private var celebrates = false
-    private var pending: [DiscoveredAreaSnapshot]?
+    private var pending: Snapshots?
     /// The area last checked (to check again after a reset).
-    private var lastSnapshots: [DiscoveredAreaSnapshot] = []
+    private var lastSnapshots: Snapshots?
     private var isEvaluating = false
     private var focusCounter = 0
     /// Lines completed by collected stations, waiting for their celebration.
@@ -206,13 +206,22 @@ final class CaptureModel: ObservableObject {
     // MARK: Inputs
 
     /// Checks the sights against the discovered area (all layers, all time) of a data source.
-    func update(sourceID: String, recordsLocations: Bool, snapshots: [DiscoveredAreaSnapshot]) {
+    /// Checks sights against what was seen (`sightSnapshots`: line of sight and radius
+    /// layers) and stations against where you went (`stationSnapshots`: radius layer).
+    func update(sourceID: String, recordsLocations: Bool, sightSnapshots: [DiscoveredAreaSnapshot],
+                stationSnapshots: [DiscoveredAreaSnapshot]) {
         if sourceID != self.sourceID {
             switchSource(to: sourceID, recordsLocations: recordsLocations)
         }
-        pending = snapshots
-        lastSnapshots = snapshots
+        pending = Snapshots(sights: sightSnapshots, stations: stationSnapshots)
+        lastSnapshots = pending
         evaluateIfIdle()
+    }
+
+    /// The areas sights and stations are checked against.
+    private struct Snapshots {
+        var sights: [DiscoveredAreaSnapshot]
+        var stations: [DiscoveredAreaSnapshot]
     }
 
     /// Forgets the captures of the selected data source and checks all sights again.
@@ -261,8 +270,8 @@ final class CaptureModel: ObservableObject {
         Task { [weak self] in
             let (added, collected) = await Task.detached(priority: .utility) { () -> ([CaptureRecord], [CaptureRecord]) in
                 var updated = base
-                let added = SightCapture.update(&updated, sights: sights, snapshots: snapshots, celebrate: celebrate)
-                let collected = StationCapture.update(&updated, stations: stationList, snapshots: snapshots)
+                let added = SightCapture.update(&updated, sights: sights, snapshots: snapshots.sights, celebrate: celebrate)
+                let collected = StationCapture.update(&updated, stations: stationList, snapshots: snapshots.stations)
                 return (added, collected)
             }.value
             guard let self else { return }
@@ -476,12 +485,23 @@ final class CaptureModel: ObservableObject {
     /// Whether a discovered sight can be photographed from here: within its extent
     /// plus `photoReach` (anywhere with the debug option). Only data sources that
     /// record this device's positions capture.
-    func canPhotograph(_ sight: Sight, from location: CLLocation?) -> Bool {
+    /// Whether the camera may open for a sight: when it is in view from where you are
+    /// (`view`: what the line of sight showed from your latest evaluated position, if
+    /// that was near here and recent), or within `photoReach` of it.
+    func canPhotograph(_ sight: Sight, from location: CLLocation?, view: LineOfSightView?) -> Bool {
         // Places of remembrance are not captured.
         guard celebrates, !sight.isPlaceOfRemembrance, log.isDiscovered(sight.id) else { return false }
         if photosAnywhere { return true }
+        if let view, let location, Self.isCurrent(view, at: location), view.shows(sight) { return true }
         guard let meters = distance(to: sight, from: location) else { return false }
         return meters <= sight.radius + Self.photoReach
+    }
+
+    /// A view counts for the camera while you are still near where it was seen from (25 m, two minutes).
+    static func isCurrent(_ view: LineOfSightView, at location: CLLocation) -> Bool {
+        guard location.horizontalAccuracy >= 0, location.timestamp.timeIntervalSince(view.sample.timestamp) < 120 else { return false }
+        let seenFrom = CLLocation(latitude: view.sample.latitude, longitude: view.sample.longitude)
+        return location.distance(from: seenFrom) <= 25
     }
 
     /// Saves the photo of a sight: it is captured (a new photo replaces an earlier

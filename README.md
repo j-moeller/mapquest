@@ -15,7 +15,7 @@ The app has four major components:
 |---|---|
 | **Location tracking** | Records the position about once per second in a compact track (≈ 6 bytes per fix); the positions that reveal new parts of the map drive the fog of war |
 | **Discovered area** | Turns stored positions into discovered-area polygons, merges adjacent areas into regions, keeps disconnected areas apart; it is a cache that can always be rebuilt from the positions |
-| **Capture** | 184 Berlin sights (all districts, the outer ones too) are discovered once you have been there (the radius view covers them) and captured when you photograph them there; 343 U-Bahn and S-Bahn stations are collected just by going there: animations, a list of all sights, badges on the map and gems in 3D; 102 achievements (eras, architects, districts, collections, stories, lines, clubs and stages). Places of remembrance (memorials, memorial sites, cemeteries) are not part of the game: never captured or celebrated, in no achievement, their entries open to all, told in a tab of their own as a short history with walks |
+| **Capture** | 184 Berlin sights (all districts, the outer ones too) are discovered once you have seen them (your line of sight reaches them) and captured when you photograph them; 343 U-Bahn and S-Bahn stations are collected just by going there: animations, a list of all sights, badges on the map and gems in 3D; 102 achievements (eras, architects, districts, collections, stories, lines, clubs and stages). Places of remembrance (memorials, memorial sites, cemeteries) are not part of the game: never captured or celebrated, in no achievement, their entries open to all, told in a tab of their own as a short history with walks |
 | **Languages** | English and German (menu › Language: System, English, Deutsch), switched at once; names keep their German original next to the English one ("Brandenburg Gate · Brandenburger Tor", "Hauptbahnhof · Central Station"); entries, history, achievements and the remembrance guide in both languages ([docs/08](docs/08-localization.md)) |
 | **Map display** | 2D: a label-free base map with a black fog (80 %, blurred map underneath) drawn into it, the discovered area cut out; finished map pieces and drawn tiles are cached (memory and disk) and the next zoom levels prepared in the background, so zooming in and out does not wait. 3D: buildings that block the view; seen buildings are revealed |
 
@@ -90,15 +90,17 @@ simulator. `Tools/screenshots/make_screenshots.sh` makes them again.
   *Radius / Line of sight*, *All time / Day / Week / Month / Year* with ‹ ›
   to step through periods and *Show today*, the map style) and *Statistics*
   (discovered area per layer, share of the current city, regions, positions,
-  cities and districts; distance, time recorded and active days of the period
-  shown; sights, stations and achievements); then *Recording*, *Data source*,
+  cities and districts; distance walked today, this week and all time;
+  distance travelled and walked, time recorded and active days of the period shown;
+  sights, stations and achievements); then *Recording*, *Data source*,
   *Discovered area*, *Building data*, *Map data*, the developer's *Debug
   settings* and deleting all data – each its own page. *Language* switches
   between the system's language, English and German.
-* **Sights**: walk up to one of 184 Berlin sights – from palaces to Berghain – until the circles of the
-  radius view cover it – and it is discovered, with an animation (tap to skip):
-  it appears on your map and unlocks its entry. **Photograph it there** (the
-  entry's *Take a photo*, within about 150 m) to **capture** it: your photo is
+* **Sights**: walk until you see one of 184 Berlin sights – from palaces to
+  Berghain; a building counts once you saw a wall or its roof – and it is
+  discovered, with an animation (tap to skip): it appears on your map and
+  unlocks its entry. **Photograph it** from where you can see it (the entry's
+  *Take a photo*, or within about 150 m) to **capture** it: your photo is
   kept in its entry and the capture counts for achievements. **Places of
   remembrance** – memorials, memorial sites and cemeteries – are not part of
   the game: nothing to capture, no achievements, no celebration (a visit

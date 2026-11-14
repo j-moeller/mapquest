@@ -79,6 +79,25 @@ final class CaptureTests: XCTestCase {
         XCTAssertNil(SightCapture.captureDate(of: field, in: [snapshot([outside])]))
     }
 
+    func testSeeingASightDiscoversIt() throws {
+        // The cathedral's point lies in its footprint, 60 m from the street: the radius
+        // layer (circles of 50 m along the street) does not reach it; the line of sight
+        // does – its area includes the footprint of the building seen.
+        let sight = Sight(id: "dom", name: "Dom", category: .church, latitude: 52.5191, longitude: 13.4010, radius: 40)
+        let seen = Date(timeIntervalSince1970: 1_000)
+        let street = piece(around: east(sight.coordinate, 110), half: 50, discovered: seen)       // reaches 60 m
+        let footprint = piece(around: sight.coordinate, half: 30, discovered: seen)              // the building seen
+        XCTAssertNil(SightCapture.captureDate(of: sight, in: [snapshot([street])]))
+        XCTAssertEqual(SightCapture.captureDate(of: sight, in: [snapshot([street]), snapshot([street, footprint])]), seen)
+
+        // What one position sees: the photo may be taken from there.
+        func polygon(_ p: DiscoveredPiece) -> WorldPolygon { p.polygon }
+        let here = LocationSample(latitude: sight.latitude, longitude: east(sight.coordinate, 110).longitude, altitude: 35,
+                                  timestamp: seen)
+        XCTAssertTrue(LineOfSightView(sample: here, revealed: [polygon(street), polygon(footprint)]).shows(sight))
+        XCTAssertFalse(LineOfSightView(sample: here, revealed: [polygon(street)]).shows(sight))
+    }
+
     func testLogUpdateCelebrationAndStore() throws {
         let sights = [
             Sight(id: "a", name: "A", category: .museum, latitude: 52.52, longitude: 13.40),

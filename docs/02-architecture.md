@@ -249,7 +249,15 @@ merged) and rebuilt in a scratch engine. Completed days are cached as layers
 building data recomputes them; the current day is recomputed when its track
 grew. Weeks, months and years are per-tile unions of their days.
 `TrackStatistics` gives distance (along the sampled path, so jitter does not
-add up), recorded time and active days, also per day.
+add up), recorded time and active days, also per day, and the distance
+**walked**: a line through the fixes where they are close together in time (at
+most 10 s apart) and space (between 0.5 and 3 m/s – walking and slow running,
+not standing, bikes, cars or trains), each point the mean of the last five fixes
+(GPS jitter evens out), thinned to points at least 5 m – or the fix's accuracy –
+apart; fixes worse than 30 m draw nothing (`TrackStatistics.walkedMeters`,
+tested with walks, standing still, rides, gaps and GPS jumps). The statistics
+page shows it for today, this week and all time (from the whole track, every
+30 s while open) and for the period shown.
 
 `HeatmapGrid` bins `WeightedPoint`s (time until the next fix, ≤ 5 s) into a
 grid, blurs it three times with a box filter (≈ Gaussian) and colours it on a
@@ -287,19 +295,25 @@ keeps its own data and photos; nothing else depends on it.
   position, extent (30–150 m; larger for open areas) and district. Bundled per city as
   `<city>-sights.json` (Berlin: docs/03-berlin-data.md); `SightCatalog`
   merges them.
-* **Visiting rule** (`PlaceCapture`, `SightCapture`, `StationCapture`): a sight is
-  discovered (a station collected) when you have been there – when the **radius layer** (the circles around your positions, all
-  time) covers its position. Large open areas count from inside: the circles
-  must reach within their extent minus 50 m (`Sight.captureTolerance`; e.g.
-  Tempelhofer Feld, 150 m → 100 m). The line of sight does not count: seeing
-  a sight from afar is not having been there. The capture date is the first
-  discovery of the covering area. Captures are kept once made (a rebuild with
-  other parameters does not take them away); deleting a data source's
-  discovered area deletes its captures. A change of the rule bumps
-  `CaptureLog.currentVersion`: logs of an older rule are discarded once and
-  the sights checked again (version 2: radius layer only; version 1 counted
-  any layer within the extent). *Debug › Reset captured sights* does the same
-  on demand.
+* **Reaching rule** (`PlaceCapture`, `SightCapture`, `StationCapture`): a sight is
+  discovered when you have **seen** it – when the **line-of-sight layer** (or
+  the radius layer; all time) covers its position. The line of sight includes
+  the footprints of the buildings whose wall or roof you saw, so a building
+  counts once it was in view, not only once you stood within 50 m of its
+  centre; at street level it reaches about 150 m, from a tower up to 2 km
+  (where there is no building data it is the radius circle). A station is
+  collected when you have **been** there – the radius layer only (circles
+  around your positions). Large open areas count from inside: the area must
+  reach within their extent minus 50 m (`Sight.captureTolerance`; e.g.
+  Tempelhofer Feld, 150 m → 100 m). The capture date is the first discovery of
+  the covering area. Captures are kept once made (a rebuild with other
+  parameters does not take them away); deleting a data source's discovered
+  area deletes its captures. A stricter rule would bump
+  `CaptureLog.currentVersion` (logs of an older rule are discarded – photos
+  included – and the sights checked again); the line of sight only adds, so
+  the switch to it (from the radius layer alone) kept the logs, and sights seen
+  on earlier walks were discovered at the next check. *Debug › Reset captured
+  sights* starts afresh on demand.
 * **Places of remembrance** (`Sight.isPlaceOfRemembrance`: the categories
   memorial and cemetery – memorials, memorial sites such as the Topographie des
   Terrors, the Stasimuseum or the Museum Karlshorst, and cemeteries; 18 in
@@ -331,8 +345,10 @@ keeps its own data and photos; nothing else depends on it.
   names its chapter (`RemembranceHeader`).
 * **Photo capture** (`PhotoCapture`): a discovered sight is captured by
   photographing it there – the entry's *Take a photo* (or *Take a photo* in the
-  discovery animation) opens the system camera only within the sight's extent
-  plus 150 m of a recent position (`CaptureModel.canPhotograph`); the camera's
+  discovery animation) opens the system camera when the sight is in view – the
+  line of sight of the latest evaluated position (`AppModel.currentView`, at most
+  two minutes old and 25 m away) shows it (`LineOfSightView.shows`) – or within
+  the sight's extent plus 150 m of a recent position (`CaptureModel.canPhotograph`); the camera's
   own *Use Photo* saves it (downscaled to 2048 px, JPEG) into
   `Captures/Photos/<data source>/<sight>.jpg`. The first photo is the capture
   (its date counts); a new photo replaces the picture and keeps that date. The

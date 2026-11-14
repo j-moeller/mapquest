@@ -140,7 +140,7 @@
 "Stations collected" = "Bahnhöfe gesammelt";
 "Achievements" = "Erfolge";
 "Sights" = "Sehenswertes";
-"A sight is discovered when you go there and captured when you take its photo there. Stations are collected by going there. Places of remembrance are not counted." = "Eine Sehenswürdigkeit ist entdeckt, wenn du hingehst, und eingefangen, wenn du sie dort fotografierst. Bahnhöfe sammelst du, indem du hingehst. Gedenkorte zählen nicht mit.";
+"A sight is discovered when you see it and captured when you photograph it. Stations are collected by going there. Places of remembrance are not counted." = "Eine Sehenswürdigkeit ist entdeckt, wenn du sie siehst, und eingefangen, wenn du sie fotografierst. Bahnhöfe sammelst du, indem du hingehst. Gedenkorte werden nicht gezählt.";
 "Working…" = "Wird bearbeitet…";
 "Status" = "Status";
 
@@ -270,3 +270,9 @@
 "Reset to defaults" = "Auf Standard zurücksetzen";
 "Delete unused cached layers" = "Ungenutzte Ebenen im Cache löschen";
 "Debug" = "Debug";
+
+/* StatisticsView.swift: walked */
+"Walked" = "Zu Fuß";
+"Today" = "Heute";
+"This week" = "Diese Woche";
+"A line through your positions where they follow each other closely in time and space, at walking pace (up to about 11 km/h). Standing still, rides and GPS jumps add nothing." = "Eine Linie durch deine Positionen, wo sie zeitlich und räumlich dicht aufeinander folgen, im Gehtempo (bis etwa 11 km/h). Stehen, Fahrten und GPS-Sprünge zählen nicht.";

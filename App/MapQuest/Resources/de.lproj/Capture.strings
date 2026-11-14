@@ -31,7 +31,7 @@
 "Done" = "Fertig";
 "{0} of {1} sights captured" = "{0} von {1} Sehenswürdigkeiten eingefangen";
 "{0} discovered · {1} of {2} stations collected" = "{0} entdeckt · {1} von {2} Bahnhöfen gesammelt";
-"A sight is discovered once you have been there – when the circles of the radius view cover it (large parks and squares: when they reach into them) – and its entry opens. Photograph it there to capture it. Stations are collected just by going there. Places of remembrance are not part of the game: they are under Remembrance." = "Sobald du an einer Sehenswürdigkeit warst, ist sie entdeckt – wenn die Kreise der Radius-Ebene sie abdecken (große Parks und Plätze: wenn sie hineinreichen) – und ihr Eintrag öffnet sich. Fotografiere sie dort, um sie einzufangen. Bahnhöfe sammelst du einfach, indem du hingehst. Gedenkorte gehören nicht zum Spiel: Du findest sie unter „Gedenken“.";
+"A sight is discovered once you have seen it – when your line of sight reaches it: a building once you saw a wall or its roof, a large park or square once you see into it – and its entry opens. Photograph it from where you can see it to capture it. Stations are collected by going there. Places of remembrance are not part of the game: they are under Remembrance." = "Eine Sehenswürdigkeit ist entdeckt, sobald du sie gesehen hast – wenn deine Sichtlinie sie erreicht: ein Gebäude, sobald du eine Wand oder sein Dach gesehen hast, einen großen Park oder Platz, sobald du hineinsiehst –, und ihr Eintrag öffnet sich. Fotografiere sie von dort, wo du sie siehst, um sie einzufangen. Bahnhöfe sammelst du, indem du hingehst. Gedenkorte sind nicht Teil des Spiels: Du findest sie unter „Gedenken“.";
 "Berlin's history in its sights, by the year they were built. Discover a sight to learn who built it, who ruled at the time, and its story. Places of remembrance stand in their year, in grey: they are not part of the game." = "Berlins Geschichte in seinen Sehenswürdigkeiten, nach dem Jahr ihrer Erbauung. Entdecke eine Sehenswürdigkeit, um ihre Geschichte zu erfahren: wer sie erbaut hat und wer damals regierte. Gedenkorte stehen in ihrem Jahr, in Grau: Sie sind nicht Teil des Spiels.";
 "{0} of {1} achievements completed" = "{0} von {1} Erfolgen abgeschlossen";
 "Complete collections, eras, districts and the works of Berlin's great architects by capturing (photographing) their sights, and the U-Bahn and S-Bahn lines by collecting their stations. Each sight's entry shows what it counts towards." = "Vervollständige Sammlungen, Epochen, Bezirke und die Werke der großen Berliner Baumeister, indem du ihre Sehenswürdigkeiten einfängst (fotografierst), und die U- und S-Bahn-Linien, indem du ihre Bahnhöfe sammelst. Der Eintrag jeder Sehenswürdigkeit zeigt, wofür sie zählt.";
@@ -63,7 +63,7 @@
 "Next up" = "Nächstes Ziel";
 "Next up: the nearest" = "Nächstes Ziel: das nächstgelegene";
 "Stations" = "Bahnhöfe";
-"A sight counts once it is captured: discovered by going there, then photographed there." = "Eine Sehenswürdigkeit zählt, sobald sie eingefangen ist: entdeckt, indem du hingehst, und dort fotografiert.";
+"A sight counts once it is captured: discovered by seeing it, then photographed." = "Eine Sehenswürdigkeit zählt, sobald sie eingefangen ist: entdeckt, indem du sie siehst, dann fotografiert.";
 "This achievement does not exist (any more)." = "Diesen Erfolg gibt es nicht (mehr).";
 "Completed {0}" = "Abgeschlossen am {0}";
 "{0} of {1} – {2} to go" = "{0} von {1} – noch {2}";
@@ -85,15 +85,15 @@
 "Take a photo" = "Foto aufnehmen";
 "Photograph {0} and keep the photo: it captures the sight and counts towards its achievements." = "Fotografiere „{0}“ und behalte das Foto: So fängst du die Sehenswürdigkeit ein, und sie zählt für ihre Erfolge.";
 "This device has no camera." = "Dieses Gerät hat keine Kamera.";
-"Go back there to photograph it ({0} away): within about {1} of it the camera opens." = "Geh für ein Foto wieder hin ({0} entfernt): Im Umkreis von etwa {1} öffnet sich die Kamera.";
-"Go there to photograph it: the camera opens once you are near it." = "Geh für ein Foto hin: Die Kamera öffnet sich, sobald du in der Nähe bist.";
+"Go back to photograph it ({0} away): the camera opens where you can see it, or within about {1} of it." = "Geh zurück, um sie zu fotografieren ({0} entfernt): Die Kamera öffnet sich, wo du sie siehst, oder im Umkreis von etwa {1}.";
+"Go there to photograph it: the camera opens once you can see it." = "Geh hin, um sie zu fotografieren: Die Kamera öffnet sich, sobald du sie siehst.";
 "Drag, pinch, turn and tilt" = "Ziehen, zoomen, drehen, neigen";
 "Undiscovered {0}" = "Unentdeckt: {0}";
 "Discovered {0}" = "Entdeckt am {0}";
 "No entry for this sight yet." = "Noch kein Eintrag zu dieser Sehenswürdigkeit.";
 "No entry for this place yet." = "Noch kein Eintrag zu diesem Ort.";
 "This entry is locked." = "Dieser Eintrag ist noch gesperrt.";
-"Go there to discover it: once the circles of the radius view cover the sight, it appears on your map and its entry opens here – with when it was built and by whom, who ruled Berlin then, and the history of the place. Then photograph it there to capture it." = "Geh hin, um diese Sehenswürdigkeit zu entdecken: Sobald die Kreise der Radius-Ebene sie abdecken, erscheint sie auf deiner Karte, und hier öffnet sich ihr Eintrag – wann und von wem sie erbaut wurde, wer damals Berlin regierte und die Geschichte des Ortes. Dann fotografiere sie dort, um sie einzufangen.";
+"Go there to discover it: once you have seen it, it appears on your map and its entry opens here – with when it was built and by whom, who ruled Berlin then, and the history of the place. Then photograph it from where you can see it to capture it." = "Geh hin, um sie zu entdecken: Sobald du sie gesehen hast, erscheint sie auf deiner Karte und ihr Eintrag öffnet sich hier – mit Baujahr und Baumeister, wer damals Berlin regierte, und der Geschichte des Ortes. Dann fotografiere sie von dort, wo du sie siehst, um sie einzufangen.";
 "History" = "Geschichte";
 "Read more" = "Weiterlesen";
 "Read the full article on Wikipedia" = "Ganzen Artikel auf Wikipedia lesen";

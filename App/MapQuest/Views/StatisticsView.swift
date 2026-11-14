@@ -7,9 +7,27 @@ import SwiftUI
 struct StatisticsView: View {
     @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var captures: CaptureModel
+    /// Walked today, this week, all time (from the whole track: computed when the page opens, then every 30 s).
+    @State private var walked: WalkedDistances?
 
     var body: some View {
         Form {
+            Section {
+                LabeledContent(tr("Today"), value: walked.map { Formatters.distance($0.today) } ?? "…")
+                LabeledContent(tr("This week"), value: walked.map { Formatters.distance($0.thisWeek) } ?? "…")
+                LabeledContent(tr("All time"), value: walked.map { Formatters.distance($0.total) } ?? "…")
+            } header: {
+                Text(tr("Walked"))
+            } footer: {
+                Text(tr("A line through your positions where they follow each other closely in time and space, at walking pace (up to about 11 km/h). Standing still, rides and GPS jumps add nothing."))
+            }
+            .task {
+                while !Task.isCancelled {
+                    if let distances = await model.walkedDistances() { walked = distances }
+                    try? await Task.sleep(nanoseconds: 30_000_000_000)
+                }
+            }
+
             Section {
                 ForEach(MapLayer.allCases) { layer in
                     let state = model.state(layer)
@@ -59,6 +77,7 @@ struct StatisticsView: View {
                         LabeledContent(tr("Area seen"), value: Formatters.area(area))
                     }
                     LabeledContent(tr("Distance travelled"), value: Formatters.distance(summary?.statistics.distanceMeters ?? 0))
+                    LabeledContent(tr("Walked"), value: Formatters.distance(summary?.statistics.walkedMeters ?? 0))
                     LabeledContent(tr("Time recorded"), value: Formatters.duration(summary?.statistics.recordedSeconds ?? 0))
                     if model.periodKind != .day {
                         LabeledContent(tr("Active days"), value: Formatters.number(summary?.statistics.activeDays ?? 0))
@@ -79,7 +98,7 @@ struct StatisticsView: View {
             } header: {
                 Text(tr("Sights"))
             } footer: {
-                Text(tr("A sight is discovered when you go there and captured when you take its photo there. Stations are collected by going there. Places of remembrance are not counted."))
+                Text(tr("A sight is discovered when you see it and captured when you photograph it. Stations are collected by going there. Places of remembrance are not counted."))
             }
 
             if hasStatus {

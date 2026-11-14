@@ -60,6 +60,13 @@ struct DataRefreshProgress: Equatable {
     var fraction: Double? { total > 0 ? Double(done) / Double(total) : nil }
 }
 
+/// The distance walked (metres).
+struct WalkedDistances: Equatable {
+    var today: Double
+    var thisWeek: Double
+    var total: Double
+}
+
 /// Explored data tiles (≈ 1.5 km squares) of the line-of-sight layer by data source.
 struct BuildingDataSummary: Equatable {
     var bundled = 0
@@ -118,6 +125,10 @@ final class AppModel: ObservableObject {
     private(set) var liveTrackSummary = TrackSummary()
     private var trackPublishedAt = Date.distantPast
     static let trackPublishInterval: TimeInterval = 10
+
+    /// What the line of sight showed from the latest evaluated position (not published:
+    /// read when deciding whether the camera may open).
+    private(set) var currentView: LineOfSightView?
 
     /// The app is in the background: the maps and time views are not updated (they
     /// catch up when it comes back) and the tracker may save power while the phone is still.
@@ -374,6 +385,7 @@ final class AppModel: ObservableObject {
         do {
             let outcome = try await recorder.record(sample)
             guard recorder === self.recorder else { return } // data source changed meanwhile
+            await updateCurrentView()
             if debug.showsEvaluation {
                 await summarizeEvaluation(of: sample, outcome: outcome)
             }
@@ -403,6 +415,32 @@ final class AppModel: ObservableObject {
             // Not an alert: with a remote data source this can happen for every fix while offline.
             lastOutcome = tr("Could not record position: {0}", error.localizedDescription)
         }
+    }
+
+    /// Keeps what the line of sight showed from the latest evaluated position.
+    private func updateCurrentView() async {
+        guard let layer = engines[.lineOfSight]?.layer,
+              let evaluation = await recorder.lastEvaluations.first(where: { $0.layer == layer }),
+              evaluation.sample.timestamp != currentView?.sample.timestamp else { return }
+        currentView = LineOfSightView(sample: evaluation.sample, revealed: evaluation.revealed)
+    }
+
+    /// The distance walked today, this week and in all, from the track (`TrackStatistics.walkedMeters`).
+    func walkedDistances() async -> WalkedDistances? {
+        try? await trackWriter.flush()
+        let store = self.store
+        guard let points = try? await store.trackPoints() else { return nil }
+        let calendar = Calendar.current
+        return await Task.detached(priority: .utility) {
+            let byDay = TrackStatistics.walkedMetersByDay(points, calendar: calendar)
+            let today = calendar.startOfDay(for: Date())
+            let week = calendar.dateInterval(of: .weekOfYear, for: Date())?.start ?? today
+            return WalkedDistances(
+                today: byDay[today] ?? 0,
+                thisWeek: byDay.filter { $0.key >= week }.values.reduce(0, +),
+                total: byDay.values.reduce(0, +)
+            )
+        }.value
     }
 
     private func layer(for id: DiscoveryLayerID) -> MapLayer? {

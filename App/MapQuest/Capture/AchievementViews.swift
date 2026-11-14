@@ -226,7 +226,7 @@ struct AchievementDetailView: View {
                     } header: {
                         Text(tr("Sights") + " · \(progress.count)/\(progress.target)")
                     } footer: {
-                        Text(tr("A sight counts once it is captured: discovered by going there, then photographed there."))
+                        Text(tr("A sight counts once it is captured: discovered by seeing it, then photographed."))
                     }
                 }
             }
