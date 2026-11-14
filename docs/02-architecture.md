@@ -312,6 +312,11 @@ keeps its own data and photos; nothing else depends on it.
   position, extent (30–150 m; larger for open areas) and district. Bundled per city as
   `<city>-sights.json` (Berlin: docs/03-berlin-data.md); `SightCatalog`
   merges them.
+* **Map icons** (`MapIconFilter`, *Menu › Map icons*, kept in the user
+  defaults): stations by system and sights by category can be hidden on the 2D
+  and 3D maps (`CaptureModel.pins`, `stationPins`); question marks have their
+  own switch, as they do not show their kind. The list shows everything, and a
+  sight or station shown on the map on request (`focus`) appears anyway.
 * **Three states of a sight**: **nearby** – you came within about 300 m
   (`SightCapture.nearbyDistance`: the radius layer ends within 300 m minus the
   circle radius of it, `updateNearby`, kept in `CaptureLog.nearby` with when):

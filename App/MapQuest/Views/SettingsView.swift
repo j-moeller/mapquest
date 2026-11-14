@@ -2,7 +2,7 @@ import CoreLocation
 import MapQuestCore
 import SwiftUI
 
-/// The menu: how the map is shown and the statistics first, then your photos,
+/// The menu: how the map is shown, which icons it shows and the statistics first, then your photos,
 /// recording and the data source, the stored data, the developer settings and deleting.
 /// Every entry opens its own page.
 struct SettingsView: View {
@@ -25,6 +25,13 @@ struct SettingsView: View {
                         page(MapViewSettingsView())
                     } label: {
                         MenuRow(title: tr("Map view"), systemImage: "map.fill", tint: .blue, detail: mapViewDetail)
+                    }
+                    NavigationLink {
+                        page(MapIconsView())
+                    } label: {
+                        MenuRow(title: tr("Map icons"), systemImage: "mappin.and.ellipse", tint: .orange,
+                                detail: captures.iconFilter.hiddenCount == 0 ? tr("All")
+                                    : tr("{0} hidden", Formatters.number(captures.iconFilter.hiddenCount)))
                     }
                     NavigationLink {
                         page(StatisticsView())

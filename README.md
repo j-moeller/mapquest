@@ -89,7 +89,9 @@ simulator. `Tools/screenshots/make_screenshots.sh` makes them again.
   change it.
 * **The menu**: *Map view* (2D map or 3D scene, fog of war or heatmap,
   *Radius / Line of sight*, *All time / Day / Week / Month / Year* with ‹ ›
-  to step through periods and *Show today*, the map style) and *Statistics*
+  to step through periods and *Show today*, the map style), *Map icons* (show
+  or hide U-Bahn and S-Bahn stations, each kind of sight, the question marks and
+  places of remembrance on both maps) and *Statistics*
   (discovered area per layer, share of the current city, regions, positions,
   cities and districts; distance walked today, this week and all time;
   distance travelled and walked, time recorded and active days of the period shown;

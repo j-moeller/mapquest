@@ -294,3 +294,15 @@
 
 /* StatisticsView.swift: sights you came near */
 "Question marks on the map" = "Fragezeichen auf der Karte";
+
+/* SettingsView.swift, MapIconsView.swift: which icons the maps show */
+"Map icons" = "Kartensymbole";
+"All" = "Alle";
+"{0} hidden" = "{0} ausgeblendet";
+"Stations" = "Bahnhöfe";
+"Question marks" = "Fragezeichen";
+"Question marks are sights you came near; they keep their kind to themselves, so they have a switch of their own." = "Fragezeichen sind Sehenswürdigkeiten, denen du nahe gekommen bist. Sie verraten nicht, welcher Art sie sind, deshalb haben sie einen eigenen Schalter.";
+"Places of remembrance" = "Gedenkorte";
+"Show all icons" = "Alle Symbole zeigen";
+"Hide all sights" = "Alle Sehenswürdigkeiten ausblenden";
+"Hidden icons are left off the 2D and 3D maps. The list of sights still shows everything, and a sight or station you show on the map from there appears anyway." = "Ausgeblendete Symbole fehlen auf der 2D- und 3D-Karte. Die Liste der Sehenswürdigkeiten zeigt weiterhin alles, und was du von dort aus auf der Karte zeigst, erscheint trotzdem.";

@@ -99,6 +99,10 @@ final class CaptureModel: ObservableObject {
     @Published private(set) var log = CaptureLog()
     @Published private(set) var celebration: Celebration?
     @Published private(set) var focus: SightFocus?
+    /// Which icons the maps show (menu › Map icons); kept across launches.
+    @Published var iconFilter = MapIconFilter.load() {
+        didSet { iconFilter.save() }
+    }
     /// Stations just collected.
     @Published private(set) var stationToast: StationToast?
     /// A place of remembrance just visited.
@@ -442,14 +446,16 @@ final class CaptureModel: ObservableObject {
 
     /// Pins for the maps: sights you came near (a question mark) or discovered, and the
     /// others too when `showingAll`. Places of remembrance are always shown (quietly):
-    /// they are not hidden as a prize.
+    /// they are not hidden as a prize. Without what `iconFilter` hides – except the
+    /// sight shown on the map on request.
     func pins(showingAll: Bool) -> [SightPin] {
         catalog.sights.compactMap { sight in
             let record = log.records[sight.id]
             let nearby = log.nearby[sight.id]
             guard record != nil || nearby != nil || showingAll || sight.isPlaceOfRemembrance else { return nil }
-            return SightPin(sight: sight, nearbySince: sight.isPlaceOfRemembrance ? nil : nearby,
-                            discoveredAt: record?.capturedAt, capturedAt: log.photos[sight.id]?.capturedAt)
+            let pin = SightPin(sight: sight, nearbySince: sight.isPlaceOfRemembrance ? nil : nearby,
+                               discoveredAt: record?.capturedAt, capturedAt: log.photos[sight.id]?.capturedAt)
+            return iconFilter.shows(pin) || focus?.placeID == sight.id ? pin : nil
         }
     }
 
@@ -460,7 +466,8 @@ final class CaptureModel: ObservableObject {
     func stationPins(showingAll: Bool) -> [StationPin] {
         stations.stations.compactMap { station in
             let record = log.stations[station.id]
-            guard record != nil || showingAll else { return nil }
+            guard record != nil || showingAll,
+                  iconFilter.shows(station) || focus?.placeID == station.id else { return nil }
             return StationPin(station: station, collectedAt: record?.capturedAt)
         }
     }
