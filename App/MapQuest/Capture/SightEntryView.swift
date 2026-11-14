@@ -262,7 +262,8 @@ struct SightEntryView: View {
                 .frame(height: 240)
                 .allowsHitTesting(false)
             HStack(alignment: .bottom, spacing: 10) {
-                SightBadge(category: sight.category, captured: capture != nil, discovered: !locked, size: 40)
+                SightBadge(category: sight.category, captured: capture != nil, discovered: !locked,
+                           nearby: locked && captures.log.isNearby(sight.id), size: 40)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(locked ? tr("Undiscovered {0}", sight.category.titleInPhrase) : sight.category.title.uppercased())
                         .font(.caption.weight(.bold))
@@ -357,6 +358,13 @@ struct SightEntryView: View {
         VStack(alignment: .leading, spacing: 14) {
             Text(tr("This entry is locked."))
                 .font(.headline)
+            if let since = captures.log.nearby[sight.id] {
+                Label(tr("You came within about {0} of it on {1}: it is marked with a question mark on your map.",
+                         Formatters.distance(SightCapture.nearbyDistance), Formatters.date(since, .long)),
+                      systemImage: "questionmark.circle.fill")
+                    .font(.subheadline)
+                    .foregroundStyle(Color.nearbySight)
+            }
             Text(tr("Go there to discover it: once the circles of the radius view cover the sight, it appears on your map and its entry opens here – with when it was built and by whom, who ruled Berlin then, and the history of the place. Then photograph it from where you can see it to capture it."))
                 .foregroundStyle(.secondary)
             if let location = tracker.lastLocation {

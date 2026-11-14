@@ -92,13 +92,14 @@ struct StatisticsView: View {
             Section {
                 LabeledContent(tr("Sights captured"), value: tr("{0} of {1}", captures.capturedCount, captures.gameSightCount))
                 LabeledContent(tr("Sights discovered"), value: tr("{0} of {1}", captures.discoveredCount, captures.gameSightCount))
+                LabeledContent(tr("Question marks on the map"), value: Formatters.number(captures.nearbyCount))
                 LabeledContent(tr("Stations collected"), value: tr("{0} of {1}", captures.collectedStationCount, captures.stations.count))
                 let progress = captures.achievementProgress
                 LabeledContent(tr("Achievements"), value: tr("{0} of {1}", progress.filter(\.isComplete).count, progress.count))
             } header: {
                 Text(tr("Sights"))
             } footer: {
-                Text(tr("A sight is discovered when you go there and captured when you photograph it. Stations are collected by going there. Places of remembrance are not counted."))
+                Text(tr("Within about 300 m a sight shows as a question mark; it is discovered when you go there and captured when you photograph it. Stations are collected by going there. Places of remembrance are not counted."))
             }
 
             if hasStatus {

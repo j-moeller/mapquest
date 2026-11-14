@@ -66,9 +66,10 @@ public struct TakenPhoto: Codable, Hashable, Identifiable, Sendable {
     }
 }
 
-/// Everything one data source has found: sights discovered by going there
-/// (`records`: their entries unlock), sights captured by photographing them
-/// there (`photos`), and stations collected by going there (`stations`).
+/// Everything one data source has found: sights you came near (`nearby`: a
+/// question mark on the map), sights discovered by going there (`records`: their
+/// entries unlock), sights captured by photographing them (`photos`), and
+/// stations collected by going there (`stations`).
 /// Visits are kept once made – rebuilding the discovered area with other
 /// parameters does not take them away – unless the rule changes
 /// (`currentVersion`): logs made under an older rule are discarded and the
@@ -78,6 +79,9 @@ public struct CaptureLog: Codable, Equatable, Sendable {
     /// sight (within `Sight.captureTolerance`).
     public static let currentVersion = 2
     public var version = CaptureLog.currentVersion
+    /// Sights you came near (within `SightCapture.nearbyDistance`), and when – a
+    /// question mark on the map until they are discovered.
+    public var nearby: [String: Date] = [:]
     /// Discovered sights.
     public var records: [String: CaptureRecord] = [:]
     /// Captured (photographed) sights.
@@ -96,14 +100,15 @@ public struct CaptureLog: Codable, Equatable, Sendable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case version, records, photos, album, stations, readEntries
+        case version, nearby, records, photos, album, stations, readEntries
     }
 
-    /// Older logs have no `readEntries`, `photos`, `album` or `stations`; without an
+    /// Older logs have no `nearby`, `readEntries`, `photos`, `album` or `stations`; without an
     /// album (one photo per sight, replaced by a new one), each sight's photo starts it.
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         version = try container.decode(Int.self, forKey: .version)
+        nearby = try container.decodeIfPresent([String: Date].self, forKey: .nearby) ?? [:]
         records = try container.decode([String: CaptureRecord].self, forKey: .records)
         photos = try container.decodeIfPresent([String: PhotoCapture].self, forKey: .photos) ?? [:]
         album = try container.decodeIfPresent([TakenPhoto].self, forKey: .album)
@@ -151,6 +156,9 @@ public struct CaptureLog: Codable, Equatable, Sendable {
 
     /// Whether you have been at the sight (its entry is unlocked).
     public func isDiscovered(_ sightID: String) -> Bool { records[sightID] != nil }
+
+    /// Whether you came near the sight but have not discovered it yet (a question mark).
+    public func isNearby(_ sightID: String) -> Bool { nearby[sightID] != nil && !isDiscovered(sightID) }
 
     /// Whether the sight has been photographed there (captured).
     public func isCaptured(_ sightID: String) -> Bool { photos[sightID] != nil }
@@ -222,8 +230,36 @@ public struct LineOfSightView: Sendable {
     }
 }
 
-/// Discovering sights by going there (see `PlaceCapture`).
+/// Discovering sights by going there (see `PlaceCapture`); before that, coming near
+/// them marks them with a question mark.
 public enum SightCapture {
+    /// How close (metres) your positions must come for a sight to be marked as nearby.
+    public static let nearbyDistance: Double = 300
+
+    /// How far from a sight the radius layer – circles of `circleRadius` around your
+    /// positions – may end for the sight to be nearby.
+    public static func nearbyTolerance(circleRadius: Double) -> Double {
+        max(0, nearbyDistance - circleRadius)
+    }
+
+    /// Marks the sights the area comes within `tolerance` metres of as nearby (when
+    /// first), unless they are discovered or marked already. Places of remembrance
+    /// are not part of the game. Returns the sights marked.
+    @discardableResult
+    public static func updateNearby(
+        _ log: inout CaptureLog, sights: [Sight], snapshots: [DiscoveredAreaSnapshot], tolerance: Double
+    ) -> [String] {
+        var marked: [String] = []
+        for sight in sights where !sight.isPlaceOfRemembrance && log.nearby[sight.id] == nil && !log.isDiscovered(sight.id) {
+            guard let date = PlaceCapture.captureDate(
+                at: sight.point, tolerance: max(tolerance, sight.captureTolerance), in: snapshots
+            ) else { continue }
+            log.nearby[sight.id] = date
+            marked.append(sight.id)
+        }
+        return marked
+    }
+
     /// When the discovered area first reached `sight`, or `nil` if it does not.
     public static func captureDate(of sight: Sight, in snapshots: [DiscoveredAreaSnapshot]) -> Date? {
         PlaceCapture.captureDate(at: sight.point, tolerance: sight.captureTolerance, in: snapshots)

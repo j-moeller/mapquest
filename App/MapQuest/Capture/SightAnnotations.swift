@@ -4,7 +4,8 @@ import UIKit
 
 /// A sight on the 2D map (above the fog, like all annotations). Captured
 /// (photographed): a golden badge with its icon; discovered: an orange badge with a
-/// camera mark (photograph it to capture it); not discovered (debug "show all"): a grey "?".
+/// camera mark (photograph it to capture it); come near (within about 300 m): a
+/// violet "?" – something to discover; otherwise (debug "show all"): a grey "?".
 /// Places of remembrance are not part of the game: always shown, smaller, in stone
 /// grey, without game states or animation.
 final class SightAnnotation: NSObject, MKAnnotation {
@@ -18,7 +19,18 @@ final class SightAnnotation: NSObject, MKAnnotation {
     init(_ pin: SightPin) {
         self.pin = pin
         coordinate = CLLocationCoordinate2D(latitude: pin.sight.latitude, longitude: pin.sight.longitude)
-        title = pin.sight.name
+        if pin.isNearby && !pin.sight.isPlaceOfRemembrance {
+            // Still a mystery: what kind of place, not which.
+            title = tr("Undiscovered {0}", pin.sight.category.titleInPhrase)
+            subtitle = tr("You were close – go nearer to uncover it")
+        } else {
+            title = pin.sight.name
+            subtitle = Self.subtitle(of: pin)
+        }
+    }
+
+    /// The state, in English after the German original ("Brandenburger Tor · Captured 12 Nov 2026") if it fits.
+    private static func subtitle(of pin: SightPin) -> String {
         let state: String
         if pin.sight.isPlaceOfRemembrance {
             state = pin.discoveredAt.map { tr("Place of remembrance – you were here on {0}", Formatters.date($0)) }
@@ -30,12 +42,10 @@ final class SightAnnotation: NSObject, MKAnnotation {
         } else {
             state = tr("Not discovered yet")
         }
-        // In English the German original first ("Brandenburger Tor · Captured 12 Nov 2026"), if it fits.
-        if let otherName = pin.sight.otherName, otherName.count + state.count + 3 <= Self.calloutWidth {
-            subtitle = otherName + " · " + state
-        } else {
-            subtitle = state
+        if let otherName = pin.sight.otherName, otherName.count + state.count + 3 <= calloutWidth {
+            return otherName + " · " + state
         }
+        return state
     }
 }
 
@@ -96,13 +106,14 @@ final class SightAnnotationView: MKAnnotationView {
         bounds = CGRect(x: 0, y: 0, width: Self.size, height: Self.size)
         layer.cornerRadius = Self.size / 2
         icon.frame = bounds
-        let captured = sight.pin.isCaptured, discovered = sight.pin.isDiscovered
-        backgroundColor = captured ? .captureGold : discovered ? .systemOrange : UIColor.systemGray.withAlphaComponent(0.75)
+        let captured = sight.pin.isCaptured, discovered = sight.pin.isDiscovered, nearby = sight.pin.isNearby
+        backgroundColor = captured ? .captureGold : discovered ? .systemOrange
+            : nearby ? .nearbySight : UIColor.systemGray.withAlphaComponent(0.75)
         let symbol = UIImage.SymbolConfiguration(pointSize: 14, weight: .bold)
         icon.image = UIImage(systemName: discovered ? sight.pin.sight.category.symbol : "questionmark", withConfiguration: symbol)
         cameraMark.isHidden = !discovered || captured
-        displayPriority = discovered ? .required : .defaultLow
-        zPriority = discovered ? .max : .defaultUnselected
+        displayPriority = discovered || nearby ? .required : .defaultLow
+        zPriority = discovered ? .max : nearby ? .defaultSelected : .defaultUnselected
     }
 }
 
@@ -116,6 +127,9 @@ final class SightAnnotationController {
     private var knownDiscovered: Set<String>?
     /// Newly discovered sights whose badge has not appeared yet.
     private var revealing: Set<String> = []
+    /// Sights you came near (question marks) known to the map, and new ones not shown yet.
+    private var knownNearby: Set<String>?
+    private var appearing: Set<String> = []
 
     func update(_ pins: [SightPin], on map: MKMapView) {
         // Places of remembrance are not revealed with an animation.
@@ -124,6 +138,11 @@ final class SightAnnotationController {
             revealing.formUnion(discovered.subtracting(knownDiscovered))
         }
         knownDiscovered = discovered
+        let nearby = Set(pins.filter(\.isNearby).map(\.id))
+        if let knownNearby {
+            appearing.formUnion(nearby.subtracting(knownNearby))
+        }
+        knownNearby = nearby
         let wanted = Dictionary(pins.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         var remove: [SightAnnotation] = []
         var add: [SightAnnotation] = []
@@ -157,7 +176,16 @@ extension SightAnnotationController {
     /// (now, or when they scroll into view): the badge springs up, rings pulse out.
     func reveal(_ views: [MKAnnotationView]) {
         for view in views {
-            guard let sight = view.annotation as? SightAnnotation, revealing.remove(sight.pin.id) != nil else { continue }
+            guard let sight = view.annotation as? SightAnnotation else { continue }
+            if appearing.remove(sight.pin.id) != nil {
+                // A new question mark: it pops up, no fanfare.
+                view.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
+                UIView.animate(withDuration: 0.6, delay: 0.1, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.6) {
+                    view.transform = .identity
+                }
+                continue
+            }
+            guard revealing.remove(sight.pin.id) != nil else { continue }
             view.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
             UIView.animate(withDuration: 0.8, delay: 0.15, usingSpringWithDamping: 0.45, initialSpringVelocity: 0.8) {
                 view.transform = .identity

@@ -312,6 +312,12 @@ keeps its own data and photos; nothing else depends on it.
   position, extent (30–150 m; larger for open areas) and district. Bundled per city as
   `<city>-sights.json` (Berlin: docs/03-berlin-data.md); `SightCatalog`
   merges them.
+* **Three states of a sight**: **nearby** – you came within about 300 m
+  (`SightCapture.nearbyDistance`: the radius layer ends within 300 m minus the
+  circle radius of it, `updateNearby`, kept in `CaptureLog.nearby` with when):
+  a violet "?" on the 2D map and in 3D, in the list and the locked entry; the
+  callout names only the kind of place ("Undiscovered church"). Then
+  **discovered** (below: its entry opens) and **captured** (photographed).
 * **Visiting rule** (`PlaceCapture`, `SightCapture`, `StationCapture`): a sight is
   discovered (a station collected) when you have been there – when the
   **radius layer** (the circles around your positions, all time) covers its

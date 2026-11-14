@@ -140,7 +140,7 @@
 "Stations collected" = "Bahnhöfe gesammelt";
 "Achievements" = "Erfolge";
 "Sights" = "Sehenswertes";
-"A sight is discovered when you go there and captured when you photograph it. Stations are collected by going there. Places of remembrance are not counted." = "Eine Sehenswürdigkeit ist entdeckt, wenn du hingehst, und eingefangen, wenn du sie fotografierst. Bahnhöfe sammelst du, indem du hingehst. Gedenkorte werden nicht gezählt.";
+"Within about 300 m a sight shows as a question mark; it is discovered when you go there and captured when you photograph it. Stations are collected by going there. Places of remembrance are not counted." = "Auf etwa 300 m zeigt ein Fragezeichen eine Sehenswürdigkeit an; entdeckt ist sie, wenn du hingehst, und eingefangen, wenn du sie fotografierst. Bahnhöfe sammelst du, indem du hingehst. Gedenkorte werden nicht gezählt.";
 "Working…" = "Wird bearbeitet…";
 "Status" = "Status";
 
@@ -291,3 +291,6 @@
 "Could not fill gaps: {0}" = "Lücken konnten nicht gefüllt werden: {0}";
 "Fill gaps from your track" = "Lücken aus deiner Strecke füllen";
 "Black spots enclosed by discovered area are filled from the positions in your track that came close to them. This runs once by itself after an update; positions that fill gaps are now kept while recording." = "Schwarze Flecken mitten im entdeckten Gebiet werden aus den Positionen deiner Strecke gefüllt, die ihnen nahe kamen. Das geschieht nach einem Update einmal von selbst; Positionen, die Lücken füllen, werden beim Aufzeichnen jetzt behalten.";
+
+/* StatisticsView.swift: sights you came near */
+"Question marks on the map" = "Fragezeichen auf der Karte";

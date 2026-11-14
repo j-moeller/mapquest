@@ -239,6 +239,47 @@ final class SightInfoTests: XCTestCase {
         XCTAssertEqual(old.stations, [:])
         XCTAssertTrue(old.readEntries.isEmpty)
         XCTAssertEqual(old.album, [])
+        XCTAssertEqual(old.nearby, [:])
+    }
+
+    /// First a question mark (you came within about 300 m), then discovered, then captured.
+    func testSightsComeNearThenDiscoveredThenCaptured() throws {
+        let date = Date(timeIntervalSince1970: 1_000)
+        let base = GeoCoordinate(latitude: 52.52, longitude: 13.40)
+        let sights = [
+            Sight(id: "near", name: "Near", category: .museum, latitude: base.latitude, longitude: east(base, 0).longitude),
+            Sight(id: "far", name: "Far", category: .museum, latitude: base.latitude, longitude: east(base, -40).longitude),
+            Sight(id: "memorial", name: "Memorial", category: .memorial, latitude: base.latitude, longitude: east(base, 10).longitude),
+        ]
+        // You walked 280 m east of "near" (320 m of "far"): circles of 50 m end 230 m from it.
+        let walk = snapshot([piece(around: east(base, 280), half: 50, discovered: date)])
+        let tolerance = SightCapture.nearbyTolerance(circleRadius: 50)
+        XCTAssertEqual(tolerance, 250)
+        var log = CaptureLog()
+        XCTAssertEqual(SightCapture.updateNearby(&log, sights: sights, snapshots: [walk], tolerance: tolerance), ["near"])
+        XCTAssertTrue(log.isNearby("near"))
+        XCTAssertEqual(log.nearby["near"], date)
+        XCTAssertFalse(log.isNearby("far"))
+        XCTAssertFalse(log.isNearby("memorial"), "places of remembrance are not part of the game")
+        XCTAssertTrue(SightCapture.update(&log, sights: sights, snapshots: [walk]).isEmpty, "near is not there")
+
+        // Going there discovers it: no longer a question mark.
+        let there = snapshot([walk.piecesByTile.values.flatMap { $0 }, [piece(around: base, half: 50, discovered: date.addingTimeInterval(60))]].flatMap { $0 })
+        XCTAssertEqual(SightCapture.update(&log, sights: Array(sights.prefix(1)), snapshots: [there]).map(\.sightID), ["near"])
+        XCTAssertFalse(log.isNearby("near"))
+        XCTAssertTrue(log.isDiscovered("near"))
+        // Discovered sights are not marked nearby again.
+        var other = log
+        other.nearby = [:]
+        XCTAssertEqual(SightCapture.updateNearby(&other, sights: sights, snapshots: [there], tolerance: tolerance), ["far"])
+
+        // Kept in the file.
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let loaded = try decoder.decode(CaptureLog.self, from: encoder.encode(log))
+        XCTAssertEqual(loaded.nearby, log.nearby)
     }
 
     func testEveryPhotoIsKept() throws {

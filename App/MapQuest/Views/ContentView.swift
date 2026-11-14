@@ -151,12 +151,13 @@ extension ContentView {
     }
 
     /// Sights and stations count where you have been: the radius layer (circles around
-    /// your positions), not what the line of sight revealed from afar. (The camera
+    /// your positions), not what the line of sight revealed from afar – within about
+    /// 300 m a sight shows as a question mark, covered it is discovered. (The camera
     /// does open where you can see a discovered sight: `CaptureModel.canPhotograph`.)
     private func updateCaptures() {
         captures.update(
             sourceID: model.profile.id, recordsLocations: model.profile.recordsLocations,
-            snapshots: [model.state(.radius).snapshot]
+            snapshots: [model.state(.radius).snapshot], circleRadius: model.circleModel.radius
         )
     }
 }

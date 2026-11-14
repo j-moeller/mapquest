@@ -4,7 +4,7 @@ import UIKit
 
 /// Sights in the 3D scene: a floating, turning gem on a thin beam above each
 /// sight (gold with its name once captured, orange with its name once
-/// discovered, a grey "?" otherwise); the building of a captured sight is drawn
+/// discovered, a violet "?" once you came near, a grey "?" otherwise); the building of a captured sight is drawn
 /// in gold by the scene. Places of remembrance: a still line and their name.
 enum SightMarkers3D {
     static let captureStyle = LoD1MeshBuilder.Style(
@@ -35,6 +35,9 @@ enum SightMarkers3D {
         } else if pin.isDiscovered {
             material.diffuse.contents = UIColor.systemOrange
             material.emission.contents = UIColor(red: 0.35, green: 0.15, blue: 0.0, alpha: 1)
+        } else if pin.isNearby {
+            material.diffuse.contents = UIColor.nearbySight
+            material.emission.contents = UIColor(red: 0.15, green: 0.1, blue: 0.35, alpha: 1)
         } else {
             material.diffuse.contents = UIColor(white: 0.78, alpha: 1)
             material.transparency = 0.7
@@ -58,7 +61,8 @@ enum SightMarkers3D {
         let beam = SCNCylinder(radius: 0.6, height: CGFloat(max(height - 10, 1)))
         let beamMaterial = SCNMaterial()
         beamMaterial.diffuse.contents = pin.isCaptured ? UIColor.captureGold.withAlphaComponent(0.45)
-            : pin.isDiscovered ? UIColor.systemOrange.withAlphaComponent(0.4) : UIColor(white: 0.8, alpha: 0.3)
+            : pin.isDiscovered ? UIColor.systemOrange.withAlphaComponent(0.4)
+            : pin.isNearby ? UIColor.nearbySight.withAlphaComponent(0.4) : UIColor(white: 0.8, alpha: 0.3)
         beamMaterial.lightingModel = .constant
         beam.materials = [beamMaterial]
         let beamNode = SCNNode(geometry: beam)

@@ -108,7 +108,7 @@ struct CaptureListView: View {
             .padding(.vertical, 4)
         } footer: {
             Text(order == .nearby
-                 ? tr("A sight is discovered once you have been there – when the circles of the radius view cover it (large parks and squares: when they reach into them) – and its entry opens. Photograph it from where you can see it to capture it. Stations are collected by going there. Places of remembrance are not part of the game: they are under Remembrance.")
+                 ? tr("Once you come within about 300 m of a sight, a question mark marks it on your map. It is discovered once you have been there – when the circles of the radius view cover it (large parks and squares: when they reach into them) – and its entry opens. Photograph it from where you can see it to capture it. Stations are collected by going there. Places of remembrance are not part of the game: they are under Remembrance.")
                  : tr("Berlin's history in its sights, by the year they were built. Discover a sight to learn who built it, who ruled at the time, and its story. Places of remembrance stand in their year, in grey: they are not part of the game."))
         }
         switch order {
@@ -164,11 +164,13 @@ struct CaptureListView: View {
     private func row(_ sight: Sight, record: CaptureRecord?, year: Int? = nil) -> some View {
         let discovered = record != nil
         let captured = captures.log.isCaptured(sight.id)
+        let nearby = captures.log.isNearby(sight.id)
         let isNew = captures.hasUnreadEntry(sight)
         let inTimeline = order == .timeline
         let yearText = year.map { String($0) }
         let state = captured ? tr("captured")
             : discovered ? (isNew ? tr("discovered, new entry, photograph it to capture it") : tr("discovered, photograph it to capture it"))
+            : nearby ? tr("nearby, go closer to uncover it")
             : tr("not discovered")
         return NavigationLink {
             SightEntryView(sight: sight)
@@ -180,7 +182,7 @@ struct CaptureListView: View {
                         .foregroundStyle(discovered ? Color.orange : Color.secondary)
                         .frame(width: 42, alignment: .leading)
                 }
-                SightBadge(category: sight.category, captured: captured, discovered: discovered, size: 34)
+                SightBadge(category: sight.category, captured: captured, discovered: discovered, nearby: nearby, size: 34)
                 VStack(alignment: .leading, spacing: 2) {
                     HStack(spacing: 6) {
                         Text(sight.name)
@@ -200,8 +202,8 @@ struct CaptureListView: View {
                         .foregroundStyle(.secondary)
                 }
                 Spacer(minLength: 4)
-                Image(systemName: captured ? "checkmark.seal.fill" : discovered ? "camera" : "lock.fill")
-                    .foregroundStyle(discovered ? Color.orange : Color.secondary)
+                Image(systemName: captured ? "checkmark.seal.fill" : discovered ? "camera" : nearby ? "questionmark.circle" : "lock.fill")
+                    .foregroundStyle(discovered ? Color.orange : nearby ? Color.nearbySight : Color.secondary)
             }
         }
         .accessibilityLabel(inTimeline && yearText != nil ? "\(yearText!), \(sight.name), \(state)" : "\(sight.name), \(state)")
@@ -320,18 +322,22 @@ struct CaptureListView: View {
             parts.append(tr("captured {0}", Formatters.date(photo.capturedAt)))
         } else if record != nil {
             parts.append(tr("photograph it to capture it"))
+        } else if captures.log.isNearby(sight.id) {
+            parts.append(tr("nearby: go closer to uncover it"))
         }
         return parts.joined(separator: " · ")
     }
 }
 
 /// A sight's category icon in a round badge: filled orange once captured
-/// (photographed), an orange ring once discovered, grey otherwise; places of
-/// remembrance always in stone grey.
+/// (photographed), an orange ring once discovered, a violet "?" once you came
+/// near, grey otherwise; places of remembrance always in stone grey.
 struct SightBadge: View {
     let category: SightCategory
     let captured: Bool
     var discovered: Bool = false
+    /// Come near, not discovered yet: a question mark.
+    var nearby: Bool = false
     var size: CGFloat = 34
 
     var body: some View {
@@ -351,7 +357,24 @@ struct SightBadge: View {
         }
     }
 
+    @ViewBuilder
     private var gameBadge: some View {
+        if nearby && !discovered && !captured {
+            ZStack {
+                Circle()
+                    .fill(Color.nearbySight)
+                Image(systemName: "questionmark")
+                    .font(.system(size: size * 0.45, weight: .bold))
+                    .foregroundStyle(Color.white)
+            }
+            .frame(width: size, height: size)
+            .accessibilityHidden(true)
+        } else {
+            stateBadge
+        }
+    }
+
+    private var stateBadge: some View {
         ZStack {
             Circle()
                 .fill(captured ? Color.orange : discovered ? Color.orange.opacity(0.15) : Color.secondary.opacity(0.18))

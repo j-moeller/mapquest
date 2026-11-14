@@ -52,12 +52,15 @@ struct SightFocus: Equatable {
 /// A sight as drawn on the maps.
 struct SightPin: Equatable, Identifiable {
     let sight: Sight
+    /// When you came near it (a question mark until discovered).
+    var nearbySince: Date? = nil
     /// When it was discovered (its entry unlocked).
     let discoveredAt: Date?
     /// When it was captured (photographed).
     let capturedAt: Date?
 
     var id: String { sight.id }
+    var isNearby: Bool { nearbySince != nil && !isDiscovered }
     var isDiscovered: Bool { discoveredAt != nil }
     var isCaptured: Bool { capturedAt != nil }
 }
@@ -117,6 +120,8 @@ final class CaptureModel: ObservableObject {
     /// Only data sources that record this device's positions celebrate captures.
     private var celebrates = false
     private var pending: [DiscoveredAreaSnapshot]?
+    /// How far the radius layer may end from a sight for it to be nearby (`SightCapture.nearbyTolerance`).
+    private var nearbyTolerance = SightCapture.nearbyTolerance(circleRadius: 50)
     /// The area last checked (to check again after a reset).
     private var lastSnapshots: [DiscoveredAreaSnapshot] = []
     private var isEvaluating = false
@@ -208,11 +213,12 @@ final class CaptureModel: ObservableObject {
     // MARK: Inputs
 
     /// Checks sights and stations against where you have been: the radius layer
-    /// (all time) of a data source.
-    func update(sourceID: String, recordsLocations: Bool, snapshots: [DiscoveredAreaSnapshot]) {
+    /// (all time) of a data source, with circles of `circleRadius` metres around your positions.
+    func update(sourceID: String, recordsLocations: Bool, snapshots: [DiscoveredAreaSnapshot], circleRadius: Double) {
         if sourceID != self.sourceID {
             switchSource(to: sourceID, recordsLocations: recordsLocations)
         }
+        nearbyTolerance = SightCapture.nearbyTolerance(circleRadius: circleRadius)
         pending = snapshots
         lastSnapshots = snapshots
         evaluateIfIdle()
@@ -270,14 +276,18 @@ final class CaptureModel: ObservableObject {
         // Once, with the radius layer loaded: undo discoveries it does not reach.
         let undoKey = Self.lineOfSightUndoneKey(sourceID)
         let undoesLineOfSight = !UserDefaults.standard.bool(forKey: undoKey) && snapshots.contains { $0.pieceCount > 0 }
+        let nearbyTolerance = self.nearbyTolerance
         Task { [weak self] in
-            let (forgotten, added, collected) = await Task.detached(priority: .utility) { () -> ([String], [CaptureRecord], [CaptureRecord]) in
+            let (forgotten, nearby, added, collected) = await Task.detached(priority: .utility) {
+                () -> ([String], [String: Date], [CaptureRecord], [CaptureRecord]) in
                 var updated = base
                 let forgotten = undoesLineOfSight
                     ? SightCapture.forgetUnreached(&updated, sights: sights, snapshots: snapshots) : []
                 let added = SightCapture.update(&updated, sights: sights, snapshots: snapshots, celebrate: celebrate)
+                let marked = SightCapture.updateNearby(&updated, sights: sights, snapshots: snapshots, tolerance: nearbyTolerance)
+                let nearby = Dictionary(uniqueKeysWithValues: marked.compactMap { id in updated.nearby[id].map { (id, $0) } })
                 let collected = StationCapture.update(&updated, stations: stationList, snapshots: snapshots)
-                return (forgotten, added, collected)
+                return (forgotten, nearby, added, collected)
             }.value
             guard let self else { return }
             self.isEvaluating = false
@@ -287,6 +297,11 @@ final class CaptureModel: ObservableObject {
                 }
                 if !forgotten.isEmpty { self.persist() }
                 UserDefaults.standard.set(true, forKey: undoKey)
+            }
+            // Sights you came near: question marks on the map.
+            if self.sourceID == sourceID, !nearby.isEmpty {
+                self.log.nearby.merge(nearby) { old, _ in old }
+                if added.isEmpty && collected.isEmpty { self.persist() }
             }
             if self.sourceID == sourceID, !added.isEmpty || !collected.isEmpty {
                 for record in added where self.log.records[record.sightID] == nil {
@@ -425,15 +440,21 @@ final class CaptureModel: ObservableObject {
         }
     }
 
-    /// Pins for the maps: discovered sights, and the others too when `showingAll`.
-    /// Places of remembrance are always shown (quietly): they are not hidden as a prize.
+    /// Pins for the maps: sights you came near (a question mark) or discovered, and the
+    /// others too when `showingAll`. Places of remembrance are always shown (quietly):
+    /// they are not hidden as a prize.
     func pins(showingAll: Bool) -> [SightPin] {
         catalog.sights.compactMap { sight in
             let record = log.records[sight.id]
-            guard record != nil || showingAll || sight.isPlaceOfRemembrance else { return nil }
-            return SightPin(sight: sight, discoveredAt: record?.capturedAt, capturedAt: log.photos[sight.id]?.capturedAt)
+            let nearby = log.nearby[sight.id]
+            guard record != nil || nearby != nil || showingAll || sight.isPlaceOfRemembrance else { return nil }
+            return SightPin(sight: sight, nearbySince: sight.isPlaceOfRemembrance ? nil : nearby,
+                            discoveredAt: record?.capturedAt, capturedAt: log.photos[sight.id]?.capturedAt)
         }
     }
+
+    /// Sights you came near but have not discovered yet (question marks on the map).
+    var nearbyCount: Int { catalog.sights.filter { log.isNearby($0.id) }.count }
 
     /// Station pins: collected stations, and the others too when `showingAll`.
     func stationPins(showingAll: Bool) -> [StationPin] {
@@ -680,9 +701,12 @@ extension SightCategory {
 extension Color {
     static let captureGold = Color(red: 1.0, green: 0.76, blue: 0.18)
     static let remembrance = Color(red: 0.42, green: 0.45, blue: 0.49)
+    /// Sights you came near: a question mark in violet.
+    static let nearbySight = Color(red: 0.45, green: 0.36, blue: 0.95)
 }
 
 extension UIColor {
     static let captureGold = UIColor(red: 1.0, green: 0.76, blue: 0.18, alpha: 1)
     static let remembrance = UIColor(red: 0.42, green: 0.45, blue: 0.49, alpha: 1)
+    static let nearbySight = UIColor(red: 0.45, green: 0.36, blue: 0.95, alpha: 1)
 }
