@@ -98,7 +98,7 @@ struct StatisticsView: View {
             } header: {
                 Text(tr("Sights"))
             } footer: {
-                Text(tr("A sight is discovered when you see it and captured when you photograph it. Stations are collected by going there. Places of remembrance are not counted."))
+                Text(tr("A sight is discovered when you go there and captured when you photograph it. Stations are collected by going there. Places of remembrance are not counted."))
             }
 
             if hasStatus {

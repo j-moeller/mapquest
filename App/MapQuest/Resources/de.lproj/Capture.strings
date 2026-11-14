@@ -31,7 +31,7 @@
 "Done" = "Fertig";
 "{0} of {1} sights captured" = "{0} von {1} Sehenswürdigkeiten eingefangen";
 "{0} discovered · {1} of {2} stations collected" = "{0} entdeckt · {1} von {2} Bahnhöfen gesammelt";
-"A sight is discovered once you have seen it – when your line of sight reaches it: a building once you saw a wall or its roof, a large park or square once you see into it – and its entry opens. Photograph it from where you can see it to capture it. Stations are collected by going there. Places of remembrance are not part of the game: they are under Remembrance." = "Eine Sehenswürdigkeit ist entdeckt, sobald du sie gesehen hast – wenn deine Sichtlinie sie erreicht: ein Gebäude, sobald du eine Wand oder sein Dach gesehen hast, einen großen Park oder Platz, sobald du hineinsiehst –, und ihr Eintrag öffnet sich. Fotografiere sie von dort, wo du sie siehst, um sie einzufangen. Bahnhöfe sammelst du, indem du hingehst. Gedenkorte sind nicht Teil des Spiels: Du findest sie unter „Gedenken“.";
+"A sight is discovered once you have been there – when the circles of the radius view cover it (large parks and squares: when they reach into them) – and its entry opens. Photograph it from where you can see it to capture it. Stations are collected by going there. Places of remembrance are not part of the game: they are under Remembrance." = "Sobald du an einer Sehenswürdigkeit warst, ist sie entdeckt – wenn die Kreise der Radius-Ebene sie abdecken (große Parks und Plätze: wenn sie hineinreichen) – und ihr Eintrag öffnet sich. Fotografiere sie von dort, wo du sie siehst, um sie einzufangen. Bahnhöfe sammelst du, indem du hingehst. Gedenkorte sind nicht Teil des Spiels: Du findest sie unter „Gedenken“.";
 "Berlin's history in its sights, by the year they were built. Discover a sight to learn who built it, who ruled at the time, and its story. Places of remembrance stand in their year, in grey: they are not part of the game." = "Berlins Geschichte in seinen Sehenswürdigkeiten, nach dem Jahr ihrer Erbauung. Entdecke eine Sehenswürdigkeit, um ihre Geschichte zu erfahren: wer sie erbaut hat und wer damals regierte. Gedenkorte stehen in ihrem Jahr, in Grau: Sie sind nicht Teil des Spiels.";
 "{0} of {1} achievements completed" = "{0} von {1} Erfolgen abgeschlossen";
 "Complete collections, eras, districts and the works of Berlin's great architects by capturing (photographing) their sights, and the U-Bahn and S-Bahn lines by collecting their stations. Each sight's entry shows what it counts towards." = "Vervollständige Sammlungen, Epochen, Bezirke und die Werke der großen Berliner Baumeister, indem du ihre Sehenswürdigkeiten einfängst (fotografierst), und die U- und S-Bahn-Linien, indem du ihre Bahnhöfe sammelst. Der Eintrag jeder Sehenswürdigkeit zeigt, wofür sie zählt.";
@@ -63,7 +63,7 @@
 "Next up" = "Nächstes Ziel";
 "Next up: the nearest" = "Nächstes Ziel: das nächstgelegene";
 "Stations" = "Bahnhöfe";
-"A sight counts once it is captured: discovered by seeing it, then photographed." = "Eine Sehenswürdigkeit zählt, sobald sie eingefangen ist: entdeckt, indem du sie siehst, dann fotografiert.";
+"A sight counts once it is captured: discovered by going there, then photographed." = "Eine Sehenswürdigkeit zählt, sobald sie eingefangen ist: entdeckt, indem du hingehst, dann fotografiert.";
 "This achievement does not exist (any more)." = "Diesen Erfolg gibt es nicht (mehr).";
 "Completed {0}" = "Abgeschlossen am {0}";
 "{0} of {1} – {2} to go" = "{0} von {1} – noch {2}";
@@ -93,7 +93,7 @@
 "No entry for this sight yet." = "Noch kein Eintrag zu dieser Sehenswürdigkeit.";
 "No entry for this place yet." = "Noch kein Eintrag zu diesem Ort.";
 "This entry is locked." = "Dieser Eintrag ist noch gesperrt.";
-"Go there to discover it: once you have seen it, it appears on your map and its entry opens here – with when it was built and by whom, who ruled Berlin then, and the history of the place. Then photograph it from where you can see it to capture it." = "Geh hin, um sie zu entdecken: Sobald du sie gesehen hast, erscheint sie auf deiner Karte und ihr Eintrag öffnet sich hier – mit Baujahr und Baumeister, wer damals Berlin regierte, und der Geschichte des Ortes. Dann fotografiere sie von dort, wo du sie siehst, um sie einzufangen.";
+"Go there to discover it: once the circles of the radius view cover the sight, it appears on your map and its entry opens here – with when it was built and by whom, who ruled Berlin then, and the history of the place. Then photograph it from where you can see it to capture it." = "Geh hin, um sie zu entdecken: Sobald die Kreise der Radius-Ebene sie abdecken, erscheint sie auf deiner Karte und ihr Eintrag öffnet sich hier – mit Baujahr und Baumeister, wer damals Berlin regierte, und der Geschichte des Ortes. Dann fotografiere sie von dort, wo du sie siehst, um sie einzufangen.";
 "History" = "Geschichte";
 "Read more" = "Weiterlesen";
 "Read the full article on Wikipedia" = "Ganzen Artikel auf Wikipedia lesen";

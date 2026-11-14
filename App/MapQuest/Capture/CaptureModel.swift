@@ -6,9 +6,10 @@ import SwiftUI
 import UIKit
 
 /// The capture component (docs/02-architecture.md, "Capture"): sights of the
-/// bundled cities are discovered once you have seen them – the line of sight
-/// reaches them (their entries unlock) – and captured by photographing them from
-/// where you can see them; U-Bahn and S-Bahn stations are collected by going there. It only reads the discovered area of
+/// bundled cities are discovered once the fog of war around them is lifted – the
+/// radius layer reaches them (their entries unlock) – and captured by
+/// photographing them from where you can see them; U-Bahn and S-Bahn stations
+/// are collected by going there. It only reads the discovered area of
 /// the selected data source and keeps its own log and photos per data source
 /// (`FileCaptureStore`), separate from the data stores.
 
@@ -115,9 +116,9 @@ final class CaptureModel: ObservableObject {
     private var sourceID: String?
     /// Only data sources that record this device's positions celebrate captures.
     private var celebrates = false
-    private var pending: Snapshots?
+    private var pending: [DiscoveredAreaSnapshot]?
     /// The area last checked (to check again after a reset).
-    private var lastSnapshots: Snapshots?
+    private var lastSnapshots: [DiscoveredAreaSnapshot] = []
     private var isEvaluating = false
     private var focusCounter = 0
     /// Lines completed by collected stations, waiting for their celebration.
@@ -206,23 +207,21 @@ final class CaptureModel: ObservableObject {
 
     // MARK: Inputs
 
-    /// Checks the sights against the discovered area (all layers, all time) of a data source.
-    /// Checks sights against what was seen (`sightSnapshots`: line of sight and radius
-    /// layers) and stations against where you went (`stationSnapshots`: radius layer).
-    func update(sourceID: String, recordsLocations: Bool, sightSnapshots: [DiscoveredAreaSnapshot],
-                stationSnapshots: [DiscoveredAreaSnapshot]) {
+    /// Checks sights and stations against where you have been: the radius layer
+    /// (all time) of a data source.
+    func update(sourceID: String, recordsLocations: Bool, snapshots: [DiscoveredAreaSnapshot]) {
         if sourceID != self.sourceID {
             switchSource(to: sourceID, recordsLocations: recordsLocations)
         }
-        pending = Snapshots(sights: sightSnapshots, stations: stationSnapshots)
-        lastSnapshots = pending
+        pending = snapshots
+        lastSnapshots = snapshots
         evaluateIfIdle()
     }
 
-    /// The areas sights and stations are checked against.
-    private struct Snapshots {
-        var sights: [DiscoveredAreaSnapshot]
-        var stations: [DiscoveredAreaSnapshot]
+    /// Set per data source once the sights discovered only by the line of sight (for a
+    /// while sights counted once seen) were undone; captured ones stay.
+    private static func lineOfSightUndoneKey(_ sourceID: String) -> String {
+        "CaptureModel.lineOfSightDiscoveriesUndone." + sourceID // not localized
     }
 
     /// Forgets the captures of the selected data source and checks all sights again.
@@ -268,15 +267,27 @@ final class CaptureModel: ObservableObject {
         let sights = catalog.sights
         let stationList = self.stations.stations
         let celebrate = celebrates
+        // Once, with the radius layer loaded: undo discoveries it does not reach.
+        let undoKey = Self.lineOfSightUndoneKey(sourceID)
+        let undoesLineOfSight = !UserDefaults.standard.bool(forKey: undoKey) && snapshots.contains { $0.pieceCount > 0 }
         Task { [weak self] in
-            let (added, collected) = await Task.detached(priority: .utility) { () -> ([CaptureRecord], [CaptureRecord]) in
+            let (forgotten, added, collected) = await Task.detached(priority: .utility) { () -> ([String], [CaptureRecord], [CaptureRecord]) in
                 var updated = base
-                let added = SightCapture.update(&updated, sights: sights, snapshots: snapshots.sights, celebrate: celebrate)
-                let collected = StationCapture.update(&updated, stations: stationList, snapshots: snapshots.stations)
-                return (added, collected)
+                let forgotten = undoesLineOfSight
+                    ? SightCapture.forgetUnreached(&updated, sights: sights, snapshots: snapshots) : []
+                let added = SightCapture.update(&updated, sights: sights, snapshots: snapshots, celebrate: celebrate)
+                let collected = StationCapture.update(&updated, stations: stationList, snapshots: snapshots)
+                return (forgotten, added, collected)
             }.value
             guard let self else { return }
             self.isEvaluating = false
+            if self.sourceID == sourceID, undoesLineOfSight {
+                for id in forgotten where !self.log.isCaptured(id) {
+                    self.log.records[id] = nil
+                }
+                if !forgotten.isEmpty { self.persist() }
+                UserDefaults.standard.set(true, forKey: undoKey)
+            }
             if self.sourceID == sourceID, !added.isEmpty || !collected.isEmpty {
                 for record in added where self.log.records[record.sightID] == nil {
                     self.log.records[record.sightID] = record

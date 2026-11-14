@@ -145,18 +145,18 @@ struct ContentView: View {
 }
 
 extension ContentView {
-    /// Changes whenever the selected data source or one of its layers changes.
+    /// Changes whenever the selected data source or its radius layer changes.
     private var captureInput: String {
-        "\(model.profile.id)|\(model.state(.radius).version)|\(model.state(.lineOfSight).version)"
+        "\(model.profile.id)|\(model.state(.radius).version)"
     }
 
-    /// Sights are discovered by seeing them: the line of sight (with the radius layer,
-    /// which it equals where there is no building data); stations by going there: the radius layer.
+    /// Sights and stations count where you have been: the radius layer (circles around
+    /// your positions), not what the line of sight revealed from afar. (The camera
+    /// does open where you can see a discovered sight: `CaptureModel.canPhotograph`.)
     private func updateCaptures() {
         captures.update(
             sourceID: model.profile.id, recordsLocations: model.profile.recordsLocations,
-            sightSnapshots: [model.state(.radius).snapshot, model.state(.lineOfSight).snapshot],
-            stationSnapshots: [model.state(.radius).snapshot]
+            snapshots: [model.state(.radius).snapshot]
         )
     }
 }

@@ -140,7 +140,7 @@
 "Stations collected" = "Bahnhöfe gesammelt";
 "Achievements" = "Erfolge";
 "Sights" = "Sehenswertes";
-"A sight is discovered when you see it and captured when you photograph it. Stations are collected by going there. Places of remembrance are not counted." = "Eine Sehenswürdigkeit ist entdeckt, wenn du sie siehst, und eingefangen, wenn du sie fotografierst. Bahnhöfe sammelst du, indem du hingehst. Gedenkorte werden nicht gezählt.";
+"A sight is discovered when you go there and captured when you photograph it. Stations are collected by going there. Places of remembrance are not counted." = "Eine Sehenswürdigkeit ist entdeckt, wenn du hingehst, und eingefangen, wenn du sie fotografierst. Bahnhöfe sammelst du, indem du hingehst. Gedenkorte werden nicht gezählt.";
 "Working…" = "Wird bearbeitet…";
 "Status" = "Status";
 

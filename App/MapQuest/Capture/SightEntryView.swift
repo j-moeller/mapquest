@@ -357,7 +357,7 @@ struct SightEntryView: View {
         VStack(alignment: .leading, spacing: 14) {
             Text(tr("This entry is locked."))
                 .font(.headline)
-            Text(tr("Go there to discover it: once you have seen it, it appears on your map and its entry opens here – with when it was built and by whom, who ruled Berlin then, and the history of the place. Then photograph it from where you can see it to capture it."))
+            Text(tr("Go there to discover it: once the circles of the radius view cover the sight, it appears on your map and its entry opens here – with when it was built and by whom, who ruled Berlin then, and the history of the place. Then photograph it from where you can see it to capture it."))
                 .foregroundStyle(.secondary)
             if let location = tracker.lastLocation {
                 let meters = location.distance(from: CLLocation(latitude: sight.latitude, longitude: sight.longitude))

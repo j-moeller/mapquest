@@ -108,7 +108,7 @@ struct CaptureListView: View {
             .padding(.vertical, 4)
         } footer: {
             Text(order == .nearby
-                 ? tr("A sight is discovered once you have seen it – when your line of sight reaches it: a building once you saw a wall or its roof, a large park or square once you see into it – and its entry opens. Photograph it from where you can see it to capture it. Stations are collected by going there. Places of remembrance are not part of the game: they are under Remembrance.")
+                 ? tr("A sight is discovered once you have been there – when the circles of the radius view cover it (large parks and squares: when they reach into them) – and its entry opens. Photograph it from where you can see it to capture it. Stations are collected by going there. Places of remembrance are not part of the game: they are under Remembrance.")
                  : tr("Berlin's history in its sights, by the year they were built. Discover a sight to learn who built it, who ruled at the time, and its story. Places of remembrance stand in their year, in grey: they are not part of the game."))
         }
         switch order {

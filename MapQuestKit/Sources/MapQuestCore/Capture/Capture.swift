@@ -172,13 +172,12 @@ public struct CaptureLog: Codable, Equatable, Sendable {
     }
 }
 
-/// The reaching rule: a place is reached when the discovered area covers its
-/// position, or comes within its tolerance of it for large places. Sights are
-/// reached by seeing them – the line-of-sight layer (with the radius layer, which
-/// it equals where there is no building data), whose area includes the footprints
-/// of the buildings you saw, so a building counts once a wall or its roof was in
-/// view; stations by going there – the radius layer only. Reaching a sight
-/// discovers it (photographing it then captures it); reaching a station collects it.
+/// The visiting rule: a place is reached when you have been there – when the
+/// area discovered around your positions (the radius layer, circles around
+/// them; not the line of sight) covers its position, or comes within its
+/// tolerance of it for large places. Reaching a sight discovers it (photographing
+/// it then captures it – from where you can see it, `LineOfSightView`); reaching
+/// a station collects it.
 public enum PlaceCapture {
     /// When the discovered area first reached the point (the earliest first-discovery
     /// date of the pieces covering it, or within `tolerance` metres), or `nil`.
@@ -223,7 +222,7 @@ public struct LineOfSightView: Sendable {
     }
 }
 
-/// Discovering sights by seeing them (see `PlaceCapture`).
+/// Discovering sights by going there (see `PlaceCapture`).
 public enum SightCapture {
     /// When the discovered area first reached `sight`, or `nil` if it does not.
     public static func captureDate(of sight: Sight, in snapshots: [DiscoveredAreaSnapshot]) -> Date? {
@@ -246,6 +245,22 @@ public enum SightCapture {
             added.append(record)
         }
         return added
+    }
+
+    /// Undoes discoveries the area does not reach, except of sights already captured
+    /// (photographed): for going back from a wider rule (the line of sight counted
+    /// for a while). Returns the sights no longer discovered.
+    @discardableResult
+    public static func forgetUnreached(
+        _ log: inout CaptureLog, sights: [Sight], snapshots: [DiscoveredAreaSnapshot]
+    ) -> [String] {
+        var forgotten: [String] = []
+        for sight in sights where log.isDiscovered(sight.id) && !log.isCaptured(sight.id) {
+            guard captureDate(of: sight, in: snapshots) == nil else { continue }
+            log.records[sight.id] = nil
+            forgotten.append(sight.id)
+        }
+        return forgotten
     }
 }
 

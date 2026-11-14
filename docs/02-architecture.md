@@ -312,25 +312,21 @@ keeps its own data and photos; nothing else depends on it.
   position, extent (30–150 m; larger for open areas) and district. Bundled per city as
   `<city>-sights.json` (Berlin: docs/03-berlin-data.md); `SightCatalog`
   merges them.
-* **Reaching rule** (`PlaceCapture`, `SightCapture`, `StationCapture`): a sight is
-  discovered when you have **seen** it – when the **line-of-sight layer** (or
-  the radius layer; all time) covers its position. The line of sight includes
-  the footprints of the buildings whose wall or roof you saw, so a building
-  counts once it was in view, not only once you stood within 50 m of its
-  centre; at street level it reaches about 150 m, from a tower up to 2 km
-  (where there is no building data it is the radius circle). A station is
-  collected when you have **been** there – the radius layer only (circles
-  around your positions). Large open areas count from inside: the area must
-  reach within their extent minus 50 m (`Sight.captureTolerance`; e.g.
-  Tempelhofer Feld, 150 m → 100 m). The capture date is the first discovery of
-  the covering area. Captures are kept once made (a rebuild with other
-  parameters does not take them away); deleting a data source's discovered
-  area deletes its captures. A stricter rule would bump
-  `CaptureLog.currentVersion` (logs of an older rule are discarded – photos
-  included – and the sights checked again); the line of sight only adds, so
-  the switch to it (from the radius layer alone) kept the logs, and sights seen
-  on earlier walks were discovered at the next check. *Debug › Reset captured
-  sights* starts afresh on demand.
+* **Visiting rule** (`PlaceCapture`, `SightCapture`, `StationCapture`): a sight is
+  discovered (a station collected) when you have been there – when the
+  **radius layer** (the circles around your positions, all time) covers its
+  position. Large open areas count from inside: the circles must reach within
+  their extent minus 50 m (`Sight.captureTolerance`; e.g. Tempelhofer Feld,
+  150 m → 100 m). The line of sight does not discover: seeing a sight from afar
+  is not having been there (for a while it did; `SightCapture.forgetUnreached`
+  undid those discoveries once per data source, except of sights already
+  photographed). It does open the camera for a discovered sight (below). The
+  capture date is the first discovery of the covering area. Captures are kept
+  once made (a rebuild with other parameters does not take them away);
+  deleting a data source's discovered area deletes its captures. A stricter
+  rule would bump `CaptureLog.currentVersion` (logs of an older rule are
+  discarded – photos included – and the sights checked again). *Debug › Reset
+  captured sights* starts afresh on demand.
 * **Places of remembrance** (`Sight.isPlaceOfRemembrance`: the categories
   memorial and cemetery – memorials, memorial sites such as the Topographie des
   Terrors, the Stasimuseum or the Museum Karlshorst, and cemeteries; 18 in

@@ -79,23 +79,43 @@ final class CaptureTests: XCTestCase {
         XCTAssertNil(SightCapture.captureDate(of: field, in: [snapshot([outside])]))
     }
 
-    func testSeeingASightDiscoversIt() throws {
+    func testSeeingASightLetsYouPhotographItOnceDiscovered() throws {
         // The cathedral's point lies in its footprint, 60 m from the street: the radius
-        // layer (circles of 50 m along the street) does not reach it; the line of sight
-        // does – its area includes the footprint of the building seen.
+        // layer (circles of 50 m along the street) does not reach it, so seeing it from
+        // the street does not discover it.
         let sight = Sight(id: "dom", name: "Dom", category: .church, latitude: 52.5191, longitude: 13.4010, radius: 40)
         let seen = Date(timeIntervalSince1970: 1_000)
         let street = piece(around: east(sight.coordinate, 110), half: 50, discovered: seen)       // reaches 60 m
         let footprint = piece(around: sight.coordinate, half: 30, discovered: seen)              // the building seen
         XCTAssertNil(SightCapture.captureDate(of: sight, in: [snapshot([street])]))
-        XCTAssertEqual(SightCapture.captureDate(of: sight, in: [snapshot([street]), snapshot([street, footprint])]), seen)
 
-        // What one position sees: the photo may be taken from there.
+        // What one position sees: once discovered, the photo may be taken from there.
         func polygon(_ p: DiscoveredPiece) -> WorldPolygon { p.polygon }
         let here = LocationSample(latitude: sight.latitude, longitude: east(sight.coordinate, 110).longitude, altitude: 35,
                                   timestamp: seen)
         XCTAssertTrue(LineOfSightView(sample: here, revealed: [polygon(street), polygon(footprint)]).shows(sight))
         XCTAssertFalse(LineOfSightView(sample: here, revealed: [polygon(street)]).shows(sight))
+    }
+
+    /// Going back from the line of sight to the radius layer: discoveries it does not
+    /// reach are undone, unless the sight was photographed.
+    func testDiscoveriesTheRadiusLayerDoesNotReachAreUndone() throws {
+        let date = Date(timeIntervalSince1970: 1_000)
+        let sights = ["near", "seen", "photographed"].enumerated().map { index, id in
+            Sight(id: id, name: id, category: .museum, latitude: 52.52 + Double(index) * 0.01, longitude: 13.40)
+        }
+        var log = CaptureLog()
+        for sight in sights {
+            log.records[sight.id] = CaptureRecord(sightID: sight.id, capturedAt: date, recordedAt: date, celebrated: true)
+        }
+        log.addPhoto(TakenPhoto(sightID: "photographed", takenAt: date, fileName: "photographed-1.jpg"))
+        let radius = snapshot([piece(around: sights[0].coordinate, half: 30, discovered: date)])
+        let forgotten = SightCapture.forgetUnreached(&log, sights: sights, snapshots: [radius])
+        XCTAssertEqual(forgotten, ["seen"])
+        XCTAssertTrue(log.isDiscovered("near"))
+        XCTAssertFalse(log.isDiscovered("seen"))
+        XCTAssertTrue(log.isDiscovered("photographed"))
+        XCTAssertTrue(log.isCaptured("photographed"))
     }
 
     func testLogUpdateCelebrationAndStore() throws {
