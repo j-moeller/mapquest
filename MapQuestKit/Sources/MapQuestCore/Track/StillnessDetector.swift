@@ -8,7 +8,9 @@ import Foundation
 /// that place switches GPS back on.
 ///
 /// Fixes count as "away" only beyond what both fixes' accuracies allow, so the
-/// jitter of poor indoor fixes, or of coarse ones, does not wake GPS.
+/// jitter of poor indoor fixes, or of Wi-Fi positions, does not wake GPS. Each
+/// accuracy counts up to `maximumAccuracyAllowance`: a cell position (hundreds of
+/// metres) that lies further away wakes GPS rather than letting a walk go unrecorded.
 public struct StillnessDetector: Sendable {
     public enum Power: Hashable, Sendable {
         case full
@@ -17,6 +19,8 @@ public struct StillnessDetector: Sendable {
 
     public var stillRadius: Double
     public var stillDuration: TimeInterval
+    /// The most a fix's accuracy may widen the "still" circle (Wi-Fi positions: ≈ 65 m).
+    public var maximumAccuracyAllowance: Double = 65
     public private(set) var power: Power = .full
     public private(set) var isInBackground = false
 
@@ -46,7 +50,8 @@ public struct StillnessDetector: Sendable {
     public mutating func update(_ coordinate: GeoCoordinate, accuracy: Double, timestamp: Date) -> Power {
         guard accuracy >= 0 else { return power }
         if let anchor {
-            let tolerance = max(stillRadius, accuracy + max(0, anchor.accuracy))
+            let allowance = min(accuracy, maximumAccuracyAllowance) + min(max(0, anchor.accuracy), maximumAccuracyAllowance)
+            let tolerance = max(stillRadius, allowance)
             if coordinate.distance(to: anchor.coordinate) <= tolerance {
                 evaluate(now: timestamp)
                 return power

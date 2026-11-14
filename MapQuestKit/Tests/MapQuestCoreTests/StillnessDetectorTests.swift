@@ -25,6 +25,18 @@ final class StillnessDetectorTests: XCTestCase {
         XCTAssertEqual(detector.update(east(200), accuracy: 65, timestamp: start + 600), .full)
     }
 
+    func testCoarseCellPositionsWakeGPSSoon() {
+        var detector = StillnessDetector()
+        detector.setInBackground(true, now: start)
+        for second in stride(from: 0, through: 200, by: 10) {
+            detector.update(home, accuracy: 5, timestamp: start + Double(second))
+        }
+        XCTAssertEqual(detector.power, .low)
+        // Only cell positioning (±1 km): 150 m away is enough to switch GPS on again,
+        // instead of waiting for a kilometre.
+        XCTAssertEqual(detector.update(east(150), accuracy: 1_000, timestamp: start + 300), .full)
+    }
+
     func testNeverLowWhileTheAppIsOpen() {
         var detector = StillnessDetector()
         for second in stride(from: 0, through: 600, by: 10) {

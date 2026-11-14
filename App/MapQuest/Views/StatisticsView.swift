@@ -31,7 +31,10 @@ struct StatisticsView: View {
                         }
                     }
                 }
-                LabeledContent(tr("Track"), value: Formatters.track(model.trackSummary))
+                // Every second while this page is open (the model publishes the count only every 10 s).
+                TimelineView(.periodic(from: .now, by: 1)) { _ in
+                    LabeledContent(tr("Track"), value: Formatters.track(model.liveTrackSummary))
+                }
                 LabeledContent(tr("Map-changing positions"), value: Formatters.number(model.sampleCount))
                 if !model.cities.isEmpty {
                     NavigationLink(tr("Cities and districts")) {

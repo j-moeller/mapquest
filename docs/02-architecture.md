@@ -218,16 +218,21 @@ per fix low and switches GPS off when it is not needed:
   with the app in the background (`StillnessDetector`, MapQuestCore, tested),
   it switches to `kCLLocationAccuracyHundredMeters` with a 40 m distance filter:
   no GPS, Wi-Fi and cell positions that arrive only after moving. A fix away
-  from that place – beyond what both fixes' accuracies allow, so indoor jitter
-  does not count – switches GPS back on. The first tens of metres after
-  leaving are recorded coarsely or not at all; that is usually known territory.
+  from that place – beyond what both fixes' accuracies allow (each counted up
+  to 65 m, so indoor and Wi-Fi jitter does not count, but a far-off cell
+  position does) – switches GPS back on. Walking and cycling, and everything
+  while the app is open, are recorded exactly as before (GPS, about one fix a
+  second); the cost is the first stretch after setting off from a place where
+  the phone lay still in the background: about 50–100 m with Wi-Fi around,
+  usually known territory.
 * **No GPS for data sources that record nothing** (another user's data, the
   demo).
 * **Views are not redrawn per fix.** The tracker publishes `lastLocation` for
   views only after 5 m or 15 s, never in the background (`currentLocation` is
   always the latest fix, for decisions such as opening the camera). The app
   model publishes the status text and the stale layers only when they change,
-  and the track's size at most every 10 s.
+  and the track's size at most every 10 s; the statistics page reads the
+  current count every second while it is open (`liveTrackSummary`).
 * **The background is quiet.** Changes of the discovered area are kept and
   published (merged) when the app comes back, so the map, the capture checks
   and the 3D scene do no work while nobody looks; the heatmap and time-span
