@@ -507,8 +507,8 @@ final class CaptureModel: ObservableObject {
     }
 
     /// Whether new photos are also saved to the Photos app (menu › Photos; on by default).
-    static let savesToPhotosKey = "CaptureModel.savesToPhotos"
-    static var savesToPhotos: Bool {
+    nonisolated static let savesToPhotosKey = "CaptureModel.savesToPhotos" // not localized
+    nonisolated static var savesToPhotos: Bool {
         UserDefaults.standard.object(forKey: savesToPhotosKey) as? Bool ?? true
     }
 
@@ -529,9 +529,12 @@ final class CaptureModel: ObservableObject {
         if let cached = thumbnails.object(forKey: key) { return cached }
         let image = await Task.detached(priority: .userInitiated) { () -> UIImage? in
             guard let source = CGImageSourceCreateWithURL(url as CFURL, nil) else { return nil }
-            let options = [kCGImageSourceCreateThumbnailFromImageAlways: true, kCGImageSourceCreateThumbnailWithTransform: true,
-                           kCGImageSourceThumbnailMaxPixelSize: maxPixels] as CFDictionary
-            return CGImageSourceCreateThumbnailAtIndex(source, 0, options).map { UIImage(cgImage: $0) }
+            let options: [CFString: Any] = [
+                kCGImageSourceCreateThumbnailFromImageAlways: true,
+                kCGImageSourceCreateThumbnailWithTransform: true,
+                kCGImageSourceThumbnailMaxPixelSize: maxPixels,
+            ]
+            return CGImageSourceCreateThumbnailAtIndex(source, 0, options as CFDictionary).map { UIImage(cgImage: $0) }
         }.value
         if let image { thumbnails.setObject(image, forKey: key) }
         return image

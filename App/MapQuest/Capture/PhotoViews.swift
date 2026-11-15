@@ -76,7 +76,7 @@ struct PhotoGalleryView: View {
     }
 
     private func label(of photo: TakenPhoto) -> String {
-        let name = captures.catalog[id: photo.sightID]?.name ?? photo.sightID
+        let name = captures.catalog[photo.sightID]?.name ?? photo.sightID
         return tr("Your photo of {0}", name) + ", " + Formatters.dateTime(photo.takenAt)
     }
 }
@@ -92,7 +92,7 @@ struct TakenPhotoDetail: View {
     @State private var image: UIImage?
     @State private var confirmDelete = false
 
-    private var sight: Sight? { captures.catalog[id: photo.sightID] }
+    private var sight: Sight? { captures.catalog[photo.sightID] }
 
     var body: some View {
         ScrollView {
