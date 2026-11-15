@@ -96,7 +96,9 @@ simulator. `Tools/screenshots/make_screenshots.sh` makes them again.
   cities and districts; distance walked today, this week and all time;
   distance travelled and walked, time recorded and active days of the period shown;
   sights, stations and achievements); then *Recording*, *Data source*,
-  *Discovered area*, *Building data*, *Map data*, the developer's *Debug
+  *Discovered area*, *Building data*, *Map data*, *Export and import* (everything
+  of a data source – positions, track, captures, photos, settings – as one ZIP
+  file, and back), the developer's *Debug
   settings* and deleting all data – each its own page. *Language* switches
   between the system's language, English and German.
 * **Sights**: come within about 300 m of one of 184 Berlin sights – from

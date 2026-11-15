@@ -107,6 +107,11 @@ struct SettingsView: View {
                     } label: {
                         MenuRow(title: tr("Map data"), systemImage: "externaldrive.fill", tint: .gray)
                     }
+                    NavigationLink {
+                        page(DataTransferView())
+                    } label: {
+                        MenuRow(title: tr("Export and import"), systemImage: "arrow.up.arrow.down.circle.fill", tint: .blue)
+                    }
                 } header: {
                     Text(tr("Data"))
                 }

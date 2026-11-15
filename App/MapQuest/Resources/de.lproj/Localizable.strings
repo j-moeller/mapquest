@@ -306,3 +306,37 @@
 "Show all icons" = "Alle Symbole zeigen";
 "Hide all sights" = "Alle Sehenswürdigkeiten ausblenden";
 "Hidden icons are left off the 2D and 3D maps. The list of sights still shows everything, and a sight or station you show on the map from there appears anyway." = "Ausgeblendete Symbole fehlen auf der 2D- und 3D-Karte. Die Liste der Sehenswürdigkeiten zeigt weiterhin alles, und was du von dort aus auf der Karte zeigst, erscheint trotzdem.";
+
+/* AppModel.swift, DataTransferView.swift: export and import */
+"Export and import" = "Export und Import";
+"Preparing the export…" = "Export wird vorbereitet…";
+"Export ready" = "Export bereit";
+"Importing “{0}”…" = "„{0}“ wird importiert…";
+"{0} (imported)" = "{0} (importiert)";
+"“{0}” imported" = "„{0}“ importiert";
+"Export" = "Export";
+"Import" = "Import";
+"Save or share the export ({0})" = "Export sichern oder teilen ({0})";
+"Create export of “{0}”" = "Export von „{0}“ erstellen";
+"One ZIP file with everything that makes up this data source: every recorded position, the positions the map is computed from, sights and stations, all photos and the settings. Save it in Files or send it to yourself; the discovered area is recomputed from it." = "Eine ZIP-Datei mit allem, was diese Datenquelle ausmacht: jede aufgezeichnete Position, die Positionen, aus denen die Karte berechnet wird, Sehenswürdigkeiten und Bahnhöfe, alle Fotos und die Einstellungen. Sichere sie in „Dateien“ oder schick sie dir selbst; das entdeckte Gebiet wird daraus neu berechnet.";
+"“{0}”, exported {1}" = "„{0}“, exportiert am {1}";
+"Replace the data of “{0}”" = "Daten von „{0}“ ersetzen";
+"Add as a new data source" = "Als neue Datenquelle hinzufügen";
+"Cancel" = "Abbrechen";
+"Import an export…" = "Export importieren…";
+"Replacing restores this data source as it was exported, settings included; what it holds now is deleted. A new data source shows the export next to your own discoveries, without recording into it." = "Ersetzen stellt diese Datenquelle so wieder her, wie sie exportiert wurde, samt Einstellungen; was sie jetzt enthält, wird gelöscht. Eine neue Datenquelle zeigt den Export neben deinen eigenen Entdeckungen, ohne in sie aufzuzeichnen.";
+"Replace everything in “{0}” with the export?" = "Alles in „{0}“ durch den Export ersetzen?";
+"Replace" = "Ersetzen";
+"Its positions, discoveries and photos are deleted and replaced. Export it first if you want to keep them." = "Ihre Positionen, Entdeckungen und Fotos werden gelöscht und ersetzt. Exportiere sie vorher, wenn du sie behalten willst.";
+"OK" = "OK";
+"{0} positions on {1} days" = "{0} Positionen an {1} Tagen";
+"{0} sights discovered, {1} captured" = "{0} Sehenswürdigkeiten entdeckt, {1} eingefangen";
+"{0} station" = "{0} Bahnhof";
+"{0} stations" = "{0} Bahnhöfe";
+"{0} photo" = "{0} Foto";
+"{0} photos" = "{0} Fotos";
+"The export could not be created: {0}" = "Der Export konnte nicht erstellt werden: {0}";
+"This file is not a MapQuest export." = "Diese Datei ist kein MapQuest-Export.";
+"This export is from a newer version of MapQuest. Update the app to import it." = "Dieser Export stammt aus einer neueren Version von MapQuest. Aktualisiere die App, um ihn zu importieren.";
+"The file could not be read: {0}" = "Die Datei konnte nicht gelesen werden: {0}";
+"The import failed: {0}" = "Der Import ist fehlgeschlagen: {0}";

@@ -939,7 +939,10 @@ final class AppModel: ObservableObject {
     }
 
     /// Set once a data source's gaps were filled from its track (`fillGapsFromTrack`).
-    private var gapsFilledKey: String { "AppModel.gapsFilledFromTrack.v1." + profile.id } // not localized
+    private var gapsFilledKey: String { Self.gapsFilledKey(for: profile.id) }
+    private static func gapsFilledKey(for sourceID: String) -> String {
+        "AppModel.gapsFilledFromTrack.v1." + sourceID // not localized
+    }
 
     /// Fills the gaps of the discovered area – fog enclosed by discovered area, which
     /// earlier versions left black although you walked through it – from the
@@ -981,6 +984,121 @@ final class AppModel: ObservableObject {
         } catch {
             if !automatically { errorMessage = tr("Could not fill gaps: {0}", error.localizedDescription) }
         }
+    }
+
+    // MARK: Export and import
+
+    /// Whether an import may replace the selected data source's data (a database on this device).
+    var canReplaceSelectedData: Bool {
+        if case .localDatabase = profile.descriptor.kind { return true }
+        return false
+    }
+
+    /// Writes everything of the selected data source – positions, track, captures,
+    /// photos and the settings – into a ZIP file for the share sheet (`DataArchive`).
+    func exportData(captures: CaptureModel) async throws -> (url: URL, manifest: DataArchive.Manifest) {
+        isBusy = true
+        defer {
+            isBusy = false
+            progress = nil
+        }
+        lastOutcome = tr("Preparing the export…")
+        await flushTrack()
+        let samples = try await store.samples(matching: .all)
+        let track = try await store.trackPoints()
+        let export = DataArchive.Export(
+            source: .init(id: profile.id, name: profile.name), app: Self.appVersion,
+            samples: samples, track: track, captureLog: captures.log(for: profile.id),
+            photoDirectory: CaptureModel.photoDirectory(for: profile.id),
+            settings: try? JSONEncoder().encode(ExportedSettings(debug: debug, mapIcons: captures.iconFilter,
+                                                                 savesToPhotos: CaptureModel.savesToPhotos))
+        )
+        let folder = FileManager.default.temporaryDirectory.appendingPathComponent("Export", isDirectory: true) // not localized: a folder
+        try? FileManager.default.removeItem(at: folder)
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        let day = Date().formatted(.iso8601.year().month().day())
+        let safeName = profile.name.map { $0.isLetter || $0.isNumber ? String($0) : "-" }.joined()
+        let url = folder.appendingPathComponent("MapQuest-\(safeName)-\(day).zip") // not localized: a file name
+        let manifest = try await Task.detached(priority: .userInitiated) {
+            try DataArchive.write(export, to: url) { fraction in
+                Task { @MainActor [weak self] in self?.progress = fraction }
+            }
+        }.value
+        lastOutcome = tr("Export ready")
+        return (url, manifest)
+    }
+
+    /// Where an import goes: over the selected data source, or into a new one.
+    enum ImportTarget {
+        case replaceSelected
+        case newDataSource
+    }
+
+    /// Restores an export: its positions, track, captures and photos replace the
+    /// selected data source's (with its settings), or become a new view-only data
+    /// source. The discovered area is then rebuilt from the positions.
+    func importData(_ reader: DataArchive.Reader, into target: ImportTarget, captures: CaptureModel) async throws {
+        guard !isBusy else { return }
+        isBusy = true
+        isRebuilding = true  // live positions wait meanwhile
+        defer {
+            isRebuilding = false
+            isBusy = false
+            progress = nil
+        }
+        let name = reader.manifest.source.name
+        lastOutcome = tr("Importing “{0}”…", name)
+        let profile: DataProfile
+        let store: any MapQuestDataStore
+        switch target {
+        case .replaceSelected:
+            guard canReplaceSelectedData else { return }
+            await flushTrack()
+            profile = self.profile
+            store = self.store
+        case .newDataSource:
+            profile = catalog.addLocalProfile(named: tr("{0} (imported)", name))
+            store = try catalog.openStore(for: profile)
+        }
+        try await DataArchive.restorePositions(from: reader, into: store) { fraction in
+            Task { @MainActor [weak self] in self?.progress = fraction * 0.8 }
+        }
+        let log = try reader.captureLog()
+        let sourceID = profile.id
+        try await Task.detached(priority: .userInitiated) {
+            try CaptureModel.restorePhotos(from: reader, sourceID: sourceID)
+        }.value
+        progress = 0.9
+        captures.adopt(log, sourceID: sourceID)
+        // Gaps are looked for again in the restored area.
+        UserDefaults.standard.removeObject(forKey: Self.gapsFilledKey(for: sourceID))
+        isRebuilding = false
+        isBusy = false
+        switch target {
+        case .replaceSelected:
+            if let data = try reader.settings(), let settings = try? JSONDecoder().decode(ExportedSettings.self, from: data) {
+                captures.iconFilter = settings.mapIcons
+                UserDefaults.standard.set(settings.savesToPhotos, forKey: CaptureModel.savesToPhotosKey)
+                for engine in engines.values { await engine.invalidateCache() }
+                await applyDebugSettings(settings.debug)
+            }
+            for engine in engines.values { await engine.invalidateCache() }
+            periodDiscovery = PeriodDiscovery(store: store)
+            periodStates = [:]
+            await reload()
+        case .newDataSource:
+            refreshProfiles()
+            await select(profile)
+        }
+        lastOutcome = tr("“{0}” imported", name)
+    }
+
+    /// "1.0 (42)", for exports.
+    private static var appVersion: String {
+        let info = Bundle.main.infoDictionary ?? [:]
+        let version = info["CFBundleShortVersionString"] as? String ?? "?"
+        let build = info["CFBundleVersion"] as? String ?? "?"
+        return "MapQuest \(version) (\(build))" // not localized
     }
 
     /// Deletes all samples and discovered area of the selected data source.

@@ -224,6 +224,32 @@ Discovered area › Fill gaps from your track*): the track still has the
 positions that walked through them, and those within the circle radius of a
 gap are replayed in order through the sampler and the same rule.
 
+### Export and import
+
+*Menu › Export and import* writes everything of the selected data source into
+one ZIP file (`DataArchive`, `ZipWriter`/`ZipReader` in MapQuestCore) and reads
+it back. The discovered area is not in it – it is a cache, rebuilt from the
+positions after an import:
+
+```
+manifest.json                format "mapquest-data", version 1, counts, photo list
+README.txt                   the layout, for people
+positions/samples.json       the key positions (IDs kept; times in seconds since 1970)
+positions/track/<day>.json   every recorded position, one file per UTC day:
+                             rows [time, latitude, longitude, altitude, hAcc, vAcc]
+captures/log.json            the capture log (near, discovered, captured, stations, photo records)
+photos/<sha256>.jpg          the photos, named by the SHA-256 of their content (stored once)
+settings.json                debug settings, map icons, saving to Photos
+```
+
+Track values keep the track's precision (0.1 s, 10⁻⁶°, 0.1 m), so a round trip
+is exact (tested). JSON is deflated where the platform has it (Apple's
+Compression framework), photos are stored as they are; the reader also takes
+ZIP files re-packed by other tools (stored or deflated, no ZIP64). An import
+either **replaces** the selected data source (a database on the device:
+positions, track, captures, photos and settings; then the layers are rebuilt
+and gaps looked for again) or becomes a **new view-only data source**.
+
 ### Energy
 
 Recording runs all day, also in the background, so the app keeps its own cost

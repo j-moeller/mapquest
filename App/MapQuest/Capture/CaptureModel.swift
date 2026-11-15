@@ -133,7 +133,7 @@ final class CaptureModel: ObservableObject {
     /// Lines completed by collected stations, waiting for their celebration.
     private var lineCelebrations: [Achievement] = []
 
-    static var directory: URL {
+    nonisolated static var directory: URL {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("MapQuest/Captures")
     }
@@ -501,7 +501,7 @@ final class CaptureModel: ObservableObject {
     static let photoReach: CLLocationDistance = 150
 
     /// The folder of a data source's capture photos.
-    static func photoDirectory(for sourceID: String) -> URL {
+    nonisolated static func photoDirectory(for sourceID: String) -> URL {
         let safe = sourceID.map { $0.isLetter || $0.isNumber || $0 == "-" || $0 == "_" ? String($0) : "_" }.joined()
         return directory.appendingPathComponent("Photos").appendingPathComponent(safe) // not localized
     }
@@ -538,6 +538,34 @@ final class CaptureModel: ObservableObject {
         }.value
         if let image { thumbnails.setObject(image, forKey: key) }
         return image
+    }
+
+    /// A data source's capture log: the selected one's from memory, others' from their file.
+    func log(for sourceID: String) -> CaptureLog? {
+        if sourceID == self.sourceID { return log }
+        return try? FileCaptureStore(directory: Self.directory, sourceID: sourceID).load()
+    }
+
+    /// Replaces a data source's photos with an export's (`DataArchive`).
+    nonisolated static func restorePhotos(from reader: DataArchive.Reader, sourceID: String) throws {
+        let folder = photoDirectory(for: sourceID)
+        try? FileManager.default.removeItem(at: folder)
+        try reader.restorePhotos(to: folder)
+    }
+
+    /// Takes over an imported capture log for a data source (after `restorePhotos`).
+    func adopt(_ imported: CaptureLog?, sourceID: String) {
+        let restored = imported ?? CaptureLog()
+        try? FileCaptureStore(directory: Self.directory, sourceID: sourceID).save(restored)
+        thumbnails.removeAllObjects()
+        guard sourceID == self.sourceID else { return }
+        log = restored
+        celebration = nil
+        remembranceNotice = nil
+        lineCelebrations = []
+        stationToast = nil
+        pending = lastSnapshots
+        evaluateIfIdle()
     }
 
     /// Deletes a photo; the sight stays captured.
