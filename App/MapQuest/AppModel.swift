@@ -112,6 +112,12 @@ final class AppModel: ObservableObject {
     @Published private(set) var debug: DebugSettings
     /// Progress (0…1) of a running rebuild.
     @Published private(set) var progress: Double?
+    /// The recording under way (record button), if any.
+    @Published private(set) var recordingSession = RecordingSession.load()
+    /// The summary of the recording just ended, until it is tapped away.
+    @Published var recordingSummary: RecordingSummary?
+    /// Whether the layers of the selected data source have been loaded once.
+    private var hasLoaded = false
     /// What the last evaluated position revealed, shown when `debug.showsEvaluation` is on.
     @Published private(set) var evaluationSummary: String?
     /// A running refresh of areas whose building data changed.
@@ -554,6 +560,8 @@ final class AppModel: ObservableObject {
             await refreshAll()
             await updateStaleLayers()
             refreshView()
+            hasLoaded = true
+            completeSessionBaseline()
             // Building data may have changed since the layers were computed (downloads,
             // a newer bundled dataset after an app update): refresh those areas.
             Task { [weak self] in await self?.checkBuildingData(fetchingMissing: self?.debug.downloadsBuildings ?? false) }
@@ -1101,6 +1109,66 @@ final class AppModel: ObservableObject {
         return "MapQuest \(version) (\(build))" // not localized
     }
 
+    // MARK: Recording sessions
+
+    /// A summary is shown for recordings at least this long.
+    static let minimumSummaryDuration: TimeInterval = 120
+
+    /// Follows the record button (and every other switch of tracking): starting
+    /// begins a session, stopping ends it with a summary.
+    func recordingChanged(isOn: Bool, captures: CaptureModel) async {
+        if isOn {
+            guard recordingSession == nil, profile.recordsLocations else { return }
+            recordingSession = RecordingSession(start: Date(), sourceID: profile.id, areaAtStart: hasLoaded ? currentAreas() : nil)
+            RecordingSession.save(recordingSession)
+        } else {
+            guard let session = recordingSession else { return }
+            recordingSession = nil
+            RecordingSession.save(nil)
+            await summarize(session, captures: captures)
+        }
+    }
+
+    /// The discovered area of every layer now (m²).
+    private func currentAreas() -> [String: Double] {
+        Dictionary(uniqueKeysWithValues: MapLayer.allCases.map { ($0.rawValue, state($0).discoveredSquareMeters) })
+    }
+
+    /// A session started before the layers were loaded takes their area once they are.
+    private func completeSessionBaseline() {
+        guard var session = recordingSession, session.areaAtStart == nil, session.sourceID == profile.id else { return }
+        session.areaAtStart = currentAreas()
+        recordingSession = session
+        RecordingSession.save(session)
+    }
+
+    private func summarize(_ session: RecordingSession, captures: CaptureModel) async {
+        let end = Date()
+        guard end.timeIntervalSince(session.start) >= Self.minimumSummaryDuration, session.sourceID == profile.id else { return }
+        await flushTrack()
+        let points = (try? await store.trackPoints(in: DateInterval(start: session.start, end: end))) ?? []
+        let walked = await Task.detached(priority: .userInitiated) { TrackStatistics.walkedMeters(points) }.value
+        let layer = selectedLayer
+        let now = state(layer).discoveredSquareMeters
+        let uncovered = max(0, now - (session.areaAtStart?[layer.rawValue] ?? now))
+        let log = captures.log
+        let during = { (date: Date) in date >= session.start && date <= end }
+        let isGame = { (id: String) in !(captures.catalog[id]?.isPlaceOfRemembrance ?? true) }
+        let found = log.records.values.filter { during($0.recordedAt) && isGame($0.sightID) }.count
+        let capturedIDs = Set(log.photos.values.filter { during($0.capturedAt) }.map(\.sightID))
+        // One photo per sight, the newest; sights captured now first.
+        let newestPerSight = Dictionary(grouping: log.album.filter { during($0.takenAt) }, by: \.sightID)
+            .compactMap { $0.value.max { $0.takenAt < $1.takenAt } }
+        let photos = newestPerSight.sorted {
+            let (a, b) = (capturedIDs.contains($0.sightID), capturedIDs.contains($1.sightID))
+            return a != b ? a : $0.takenAt > $1.takenAt
+        }
+        recordingSummary = RecordingSummary(
+            start: session.start, end: end, walkedMeters: walked, uncoveredSquareMeters: uncovered, layer: layer,
+            sightsFound: found, sightsCaptured: capturedIDs.count, photos: Array(photos.prefix(3))
+        )
+    }
+
     /// Deletes all samples and discovered area of the selected data source.
     func deleteAllData() async {
         isBusy = true
@@ -1129,4 +1197,43 @@ final class AppModel: ObservableObject {
             errorMessage = tr("Delete failed: {0}", error.localizedDescription)
         }
     }
+}
+
+/// A recording, from pressing record to stop (kept across launches).
+struct RecordingSession: Codable, Equatable {
+    var start: Date
+    var sourceID: String
+    /// The discovered area of each layer when it started (m²), once the layers were loaded.
+    var areaAtStart: [String: Double]?
+
+    private static let key = "AppModel.recordingSession" // not localized
+
+    static func load(from defaults: UserDefaults = .standard) -> RecordingSession? {
+        defaults.data(forKey: key).flatMap { try? JSONDecoder().decode(RecordingSession.self, from: $0) }
+    }
+
+    static func save(_ session: RecordingSession?, to defaults: UserDefaults = .standard) {
+        if let session, let data = try? JSONEncoder().encode(session) {
+            defaults.set(data, forKey: key)
+        } else {
+            defaults.removeObject(forKey: key)
+        }
+    }
+}
+
+/// What a recording brought, shown when it ends.
+struct RecordingSummary: Identifiable, Equatable {
+    let id = UUID()
+    var start: Date
+    var end: Date
+    var walkedMeters: Double
+    /// New discovered area of the layer shown on the map.
+    var uncoveredSquareMeters: Double
+    var layer: MapLayer
+    var sightsFound: Int
+    var sightsCaptured: Int
+    /// Up to three photos taken meanwhile, those that captured a sight first.
+    var photos: [TakenPhoto]
+
+    var duration: TimeInterval { end.timeIntervalSince(start) }
 }

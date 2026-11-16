@@ -87,6 +87,11 @@ simulator. `Tools/screenshots/make_screenshots.sh` makes them again.
   When the map shows something other than everything discovered (a heatmap,
   the line of sight, a week…), a note at the top left says so; tap it to
   change it.
+* **Record and stop**: the button at the bottom right starts recording (a red
+  record symbol) and, while recording, shows a stop square with the time so far.
+  Stopping a recording of at least two minutes shows what it brought – distance
+  walked, area uncovered (the layer on the map), sights found and captured, and
+  up to three of the photos taken – until you tap anywhere.
 * **The menu**: *Map view* (2D map or 3D scene, fog of war or heatmap,
   *Radius / Line of sight*, *All time / Day / Week / Month / Year* with ‹ ›
   to step through periods and *Show today*, the map style), *Map icons* (show

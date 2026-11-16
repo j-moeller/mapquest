@@ -98,6 +98,18 @@ struct ContentView: View {
         // Another language: the map and everything on it are built again (open sheets stay).
         .id(languages.language)
         .modifier(CaptureHooks(captures: captures))
+        // What a recording brought, when it ends; a tap anywhere closes it.
+        .overlay {
+            if let summary = model.recordingSummary {
+                RecordingSummaryView(summary: summary) { model.recordingSummary = nil }
+                    .transition(.opacity)
+            }
+        }
+        .animation(.easeInOut(duration: 0.25), value: model.recordingSummary)
+        .task { await model.recordingChanged(isOn: tracker.isTrackingEnabled, captures: captures) }
+        .onChange(of: tracker.isTrackingEnabled) { _, on in
+            Task { await model.recordingChanged(isOn: on, captures: captures) }
+        }
         // The capture component follows the discovered area of the selected data source.
         .task(id: captureInput) { updateCaptures() }
         .onChange(of: captures.focus) { _, focus in
@@ -245,33 +257,60 @@ struct BottomBar: View {
     }
 }
 
-/// Starts and pauses recording positions.
+/// Starts and stops recording: a red record dot to start; while recording, a stop
+/// square with the time recorded so far.
 struct TrackingButton: View {
     @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var tracker: LocationTracker
 
     var body: some View {
-        let on = tracker.isTrackingEnabled
-        let available = tracker.isAuthorized && model.profile.recordsLocations
+        let recordsHere = model.profile.recordsLocations
+        let on = tracker.isTrackingEnabled && recordsHere
+        let available = tracker.isAuthorized && recordsHere
         Button {
             tracker.isTrackingEnabled.toggle()
         } label: {
-            Label(title(on: on), systemImage: on ? "location.fill" : "location")
-                .font(.headline)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 10)
-                .foregroundStyle(.white)
-                .background(on ? Color.green : Color.accentColor, in: Capsule())
+            HStack(spacing: 8) {
+                if !recordsHere {
+                    Image(systemName: "eye")
+                    Text(tr("View only"))
+                } else if on {
+                    Image(systemName: "stop.fill")
+                    elapsed
+                } else {
+                    Image(systemName: "record.circle")
+                        .foregroundStyle(Color.red)
+                        .font(.title3.weight(.semibold))
+                    Text(tr("Record"))
+                }
+            }
+            .font(.headline)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 10)
+            .foregroundStyle(on ? Color.white : Color.primary)
+            .background(on ? AnyShapeStyle(Color.red) : AnyShapeStyle(Material.thickMaterial), in: Capsule())
+            .overlay {
+                if !on { Capsule().strokeBorder(Color.red.opacity(0.35), lineWidth: 1) }
+            }
         }
         .buttonStyle(.plain)
         .disabled(!available)
         .opacity(available ? 1 : 0.5)
-        .accessibilityLabel(on ? tr("Tracking is on") : tr("Start tracking"))
-        .accessibilityHint(on ? tr("Pauses recording your positions") : tr("Records your positions and lifts the fog where you go"))
+        .accessibilityLabel(on ? tr("Stop recording") : tr("Record"))
+        .accessibilityHint(on ? tr("Stops recording your positions and shows what this recording brought")
+                              : tr("Records your positions and lifts the fog where you go"))
     }
 
-    private func title(on: Bool) -> String {
-        if !model.profile.recordsLocations { return tr("View only") }
-        return on ? tr("Tracking") : tr("Start tracking")
+    /// "12:34" (or "1:02:03") since the recording started, every second.
+    private var elapsed: some View {
+        TimelineView(.periodic(from: .now, by: 1)) { context in
+            if let start = model.recordingSession?.start {
+                let seconds = max(0, context.date.timeIntervalSince(start))
+                Text(Duration.seconds(seconds).formatted(.time(pattern: seconds >= 3600 ? .hourMinuteSecond : .minuteSecond)))
+                    .monospacedDigit()
+            } else {
+                Text(tr("Stop"))
+            }
+        }
     }
 }

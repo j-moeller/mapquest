@@ -17,12 +17,8 @@
 "captures" = "Fänge";
 "{0} of {1} sights captured" = "{0} von {1} Sehenswürdigkeiten eingefangen";
 "Opens the sights and achievements" = "Öffnet Sehenswürdigkeiten und Erfolge";
-"Tracking is on" = "Aufzeichnung läuft";
-"Start tracking" = "Aufzeichnen";
-"Pauses recording your positions" = "Pausiert die Aufzeichnung deiner Positionen";
 "Records your positions and lifts the fog where you go" = "Zeichnet deine Positionen auf und lichtet den Nebel, wo du hingehst";
 "View only" = "Nur ansehen";
-"Tracking" = "Zeichnet auf";
 
 /* SettingsView.swift */
 "Map view" = "Kartenansicht";
@@ -340,3 +336,14 @@
 "This export is from a newer version of MapQuest. Update the app to import it." = "Dieser Export stammt aus einer neueren Version von MapQuest. Aktualisiere die App, um ihn zu importieren.";
 "The file could not be read: {0}" = "Die Datei konnte nicht gelesen werden: {0}";
 "The import failed: {0}" = "Der Import ist fehlgeschlagen: {0}";
+
+/* ContentView.swift, RecordingSummaryView.swift: record, stop and what a recording brought */
+"Record" = "Aufzeichnen";
+"Stop" = "Stopp";
+"Stop recording" = "Aufzeichnung beenden";
+"Stops recording your positions and shows what this recording brought" = "Beendet die Aufzeichnung deiner Positionen und zeigt, was sie gebracht hat";
+"Recording ended" = "Aufzeichnung beendet";
+"Area uncovered" = "Aufgedeckt";
+"Sights found" = "Entdeckt";
+"Tap anywhere to close" = "Tippe irgendwo, um zu schließen";
+"Closes the summary" = "Schließt die Zusammenfassung";

@@ -224,6 +224,20 @@ Discovered area › Fill gaps from your track*): the track still has the
 positions that walked through them, and those within the circle radius of a
 gap are replayed in order through the sampler and the same rule.
 
+### Recordings
+
+The record button (`TrackingButton`) switches tracking on and off. A
+`RecordingSession` (start, data source, discovered area of every layer at the
+start; kept in the user defaults, so it survives the app being closed) runs from
+record to stop; a session that starts before the layers are loaded takes their
+area once they are. Stopping one of at least two minutes on the same data source
+shows a `RecordingSummary` (`RecordingSummaryView`, a tap anywhere closes it):
+distance walked over the session's track (`TrackStatistics.walkedMeters`), the
+growth of the discovered area of the layer shown, sights discovered meanwhile
+(`CaptureRecord.recordedAt`, places of remembrance not counted), sights first
+photographed meanwhile, and up to three photos taken meanwhile – one per sight,
+those that captured a sight first.
+
 ### Export and import
 
 *Menu › Export and import* writes everything of the selected data source into
