@@ -436,20 +436,6 @@
       }
     },
     {
-      "id": "bs-district-wabe-schunter-beberbach",
-      "group": "districts",
-      "title": "Riddagshausen",
-      "symbol": "mappin.and.ellipse",
-      "description": "Capture every sight in Wabe-Schunter-Beberbach: the abbey and the east.",
-      "de": {
-        "title": "Wabe-Schunter-Beberbach",
-        "description": "Fang alle Sehenswürdigkeiten in Wabe-Schunter-Beberbach ein: das Kloster und der Osten."
-      },
-      "rule": {
-        "district": "Wabe-Schunter-Beberbach"
-      }
-    },
-    {
       "id": "bs-district-braunschweig-sued",
       "group": "districts",
       "title": "The South",
@@ -461,20 +447,6 @@
       },
       "rule": {
         "district": "Braunschweig-Süd"
-      }
-    },
-    {
-      "id": "bs-district-westliches-ringgebiet",
-      "group": "districts",
-      "title": "Western Ring",
-      "symbol": "mappin.and.ellipse",
-      "description": "Capture every sight in Westliches Ringgebiet: the west of the ring.",
-      "de": {
-        "title": "Westliches Ringgebiet",
-        "description": "Fang alle Sehenswürdigkeiten in Westliches Ringgebiet ein: der Westen des Rings."
-      },
-      "rule": {
-        "district": "Westliches Ringgebiet"
       }
     },
     {

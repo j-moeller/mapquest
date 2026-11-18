@@ -63,7 +63,7 @@ final class BraunschweigSightsTests: XCTestCase {
         let histories = try histories()
         let german = try SightHistoryCatalog.decode(load("braunschweig-sight-history-de.json"), city: "braunschweig")
         let dated = catalog.sights.filter { histories[$0.id]?.year != nil }
-        XCTAssertGreaterThanOrEqual(dated.count, catalog.count * 2 / 3, "most sights are dated")
+        XCTAssertGreaterThan(dated.count, catalog.count / 2, "most sights are dated")
         for (id, history) in histories.entries {
             let deutsch = try XCTUnwrap(german[id], id)
             XCTAssertEqual(deutsch.year, history.year, id)

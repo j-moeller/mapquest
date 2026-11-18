@@ -540,7 +540,7 @@ keeps its own data and photos; nothing else depends on it.
 ## Achievements
 
 Goals made of sights (`MapQuestCore/Capture/Achievement.swift`,
-`<city>-achievements.json`; Berlin has 102, Braunschweig 30; each city's are
+`<city>-achievements.json`; Berlin has 102, Braunschweig 33; each city's are
 resolved against its own sights only – `AchievementBook.merged` of one book per
 city – so Berlin's churches never include Braunschweig's). Each has a group, title,
 description, SF Symbol and a **rule** that picks its sights from the catalog
