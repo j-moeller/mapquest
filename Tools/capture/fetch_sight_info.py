@@ -58,21 +58,23 @@ def api(host: str, **params) -> dict:
     cached = CACHE / (hashlib.sha1(url.encode()).hexdigest() + ".json") if CACHE else None
     if cached and cached.exists():
         return json.loads(cached.read_text(encoding="utf-8"))
-    for attempt in range(10):
+    for attempt in range(20):
         time.sleep(1.5)
         request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
         try:
             with urllib.request.urlopen(request, timeout=60) as response:
                 data = json.loads(response.read())
         except urllib.error.HTTPError as error:
-            if error.code in (429, 503) and attempt < 9:
+            if error.code in (429, 503) and attempt < 19:
                 wait = int(error.headers.get("Retry-After") or 0) or 15 * (attempt + 1)
                 print(f"  {error.code}, waiting {wait} s", file=sys.stderr, flush=True)
                 time.sleep(wait)
                 continue
             raise
         if data.get("error", {}).get("code") == "maxlag":
-            time.sleep(5)
+            # Wikidata's replicas lag behind at times: wait longer each time.
+            print(f"  maxlag, waiting {10 * (attempt + 1)} s", file=sys.stderr, flush=True)
+            time.sleep(10 * (attempt + 1))
             continue
         if cached:
             cached.write_text(json.dumps(data), encoding="utf-8")
