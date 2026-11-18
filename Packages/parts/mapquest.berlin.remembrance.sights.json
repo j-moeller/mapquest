@@ -1,0 +1,2387 @@
+{
+ "format": "mapquest-sights",
+ "formatVersion": 1,
+ "id": "mapquest.berlin.remembrance",
+ "version": "2026.11.18",
+ "title": {
+  "en": "Berlin remembers",
+  "de": "Berlin erinnert"
+ },
+ "summary": {
+  "en": "Berlin's memorials, memorial sites and cemeteries as a short history in chapters, with walks. Outside the game.",
+  "de": "Berlins Gedenkstätten, Mahnmale und Friedhöfe als kurze Geschichte in Kapiteln, mit Spaziergängen. Außerhalb des Spiels."
+ },
+ "publisher": "MapQuest",
+ "license": "Texts: Wikipedia (CC BY-SA 4.0); photos: Wikimedia Commons (licence per photo); facts: Wikidata (CC0), hand-checked; positions: OpenStreetMap (ODbL 1.0); achievements, chronicles and remembrance texts: MapQuest",
+ "language": "de",
+ "region": {
+  "id": "berlin",
+  "name": {
+   "en": "Berlin"
+  },
+  "bounds": {
+   "south": 52.3382,
+   "west": 13.0884,
+   "north": 52.6755,
+   "east": 13.7611
+  }
+ },
+ "chronicles": [
+  {
+   "division": {
+    "sectors": {
+     "east": {
+      "de": "Ost-Berlin",
+      "en": "East Berlin"
+     },
+     "west": {
+      "de": "West-Berlin",
+      "en": "West Berlin"
+     }
+    },
+    "title": {
+     "de": "Während der Teilung Berlins",
+     "en": "While Berlin was divided"
+    },
+    "until": 1990
+   },
+   "eras": [
+    {
+     "id": "slavic",
+     "name": {
+      "de": "Slawisches Land",
+      "en": "Slavic lands"
+     },
+     "start": "700-01",
+     "summary": {
+      "de": "Vor Brandenburg: Slawische Stämme – die Heveller bei Spandau, die Sprewanen bei Köpenick – beherrschen das Land an Havel und Spree, bis Albrecht der Bär 1157 Jaxa von Köpenick besiegt und Brandenburg einnimmt.",
+      "en": "Before Brandenburg: Slavic tribes – the Hevelli at Spandau, the Sprevane at Köpenick – hold the land on the Havel and Spree, until Albert the Bear defeats Jaxa of Köpenick and takes Brandenburg in 1157."
+     },
+     "years": {
+      "de": "bis 1157",
+      "en": "until 1157"
+     }
+    },
+    {
+     "id": "margraviate",
+     "monarchy": true,
+     "name": {
+      "de": "Mark Brandenburg",
+      "en": "Margraviate of Brandenburg"
+     },
+     "start": "1157-06",
+     "summary": {
+      "de": "Berlin und Cölln, 1244 und 1237 erstmals erwähnt, wachsen unter den Markgrafen von Brandenburg zur Doppelstadt der Kaufleute an der Spree heran.",
+      "en": "Berlin and Cölln, first recorded in 1244 and 1237, grow up as twin trading towns on the Spree under the margraves of Brandenburg."
+     },
+     "years": {
+      "en": "1157–1415"
+     }
+    },
+    {
+     "id": "electorate",
+     "monarchy": true,
+     "name": {
+      "de": "Kurfürstentum Brandenburg",
+      "en": "Electorate of Brandenburg"
+     },
+     "start": "1415-04",
+     "summary": {
+      "de": "Die Hohenzollern herrschen über Brandenburg. Berlin-Cölln wird ihre Residenz, 1539 evangelisch und nach dem Dreißigjährigen Krieg zur Festung ausgebaut.",
+      "en": "The Hohenzollern rule Brandenburg. Berlin-Cölln becomes their residence, turns Protestant in 1539 and is fortified after the Thirty Years' War."
+     },
+     "years": {
+      "en": "1415–1701"
+     }
+    },
+    {
+     "id": "prussia",
+     "monarchy": true,
+     "name": {
+      "de": "Königreich Preußen",
+      "en": "Kingdom of Prussia"
+     },
+     "start": "1701-01",
+     "summary": {
+      "de": "Berlin ist königliche Residenz- und Hauptstadt: Barock und Rokoko unter den ersten Königen, nach den napoleonischen Kriegen der Klassizismus – Schinkels Stadt.",
+      "en": "Berlin is the royal capital: Baroque and Rococo under the first kings, then Neoclassicism, Schinkel's city, after the Napoleonic Wars."
+     },
+     "years": {
+      "en": "1701–1871"
+     }
+    },
+    {
+     "id": "empire",
+     "monarchy": true,
+     "name": {
+      "de": "Deutsches Kaiserreich",
+      "en": "German Empire"
+     },
+     "start": "1871-01",
+     "summary": {
+      "de": "Als Hauptstadt des neuen Deutschen Reiches wächst Berlin zur Millionenstadt, geprägt von Historismus und Jugendstil.",
+      "en": "Capital of the new German Empire, Berlin grows into a city of millions, shaped by Historicism and Art Nouveau."
+     },
+     "years": {
+      "en": "1871–1918"
+     }
+    },
+    {
+     "id": "weimar",
+     "name": {
+      "de": "Weimarer Republik",
+      "en": "Weimar Republic"
+     },
+     "start": "1918-11",
+     "summary": {
+      "de": "Demokratie nach der Revolution von 1918. 1920 entsteht Groß-Berlin: die Goldenen Zwanziger und die Siedlungen der Moderne.",
+      "en": "Democracy after the revolution of 1918. Greater Berlin is formed in 1920: the Golden Twenties and modernist housing estates."
+     },
+     "years": {
+      "en": "1918–1933"
+     }
+    },
+    {
+     "id": "nazi",
+     "name": {
+      "de": "Zeit des Nationalsozialismus",
+      "en": "Nazi Germany"
+     },
+     "start": "1933-01",
+     "summary": {
+      "de": "Diktatur, Verfolgung und Holocaust; monumentale Bauten für das Regime. Der Krieg lässt die Stadt in Trümmern zurück.",
+      "en": "Dictatorship, persecution and the Holocaust; monumental buildings for the regime. The war leaves the city in ruins."
+     },
+     "years": {
+      "en": "1933–1945"
+     }
+    },
+    {
+     "id": "occupation",
+     "name": {
+      "de": "Alliierte Besatzung",
+      "en": "Allied occupation"
+     },
+     "start": "1945-05",
+     "summary": {
+      "de": "Die vier Alliierten teilen die Stadt in Sektoren. Sowjetische Ehrenmale entstehen; die Luftbrücke von 1948–1949 überwindet die Berlin-Blockade.",
+      "en": "The four Allies divide the city into sectors. Soviet war memorials rise; the Berlin Blockade is broken by the Airlift of 1948–1949."
+     },
+     "years": {
+      "en": "1945–1949"
+     }
+    },
+    {
+     "id": "divided",
+     "name": {
+      "de": "Geteiltes Berlin",
+      "en": "Divided Berlin"
+     },
+     "start": "1949-10",
+     "summary": {
+      "de": "Die Stadt ist geteilt in Ost-Berlin, die Hauptstadt der DDR, und West-Berlin; die Mauer steht von 1961 bis 1989.",
+      "en": "The city is split into East Berlin, capital of the GDR, and West Berlin; the Wall stands from 1961 to 1989."
+     },
+     "years": {
+      "en": "1949–1990"
+     }
+    },
+    {
+     "id": "east",
+     "name": {
+      "de": "Ost-Berlin (DDR)",
+      "en": "East Berlin (GDR)"
+     },
+     "sector": "east",
+     "start": "1949-10",
+     "summary": {
+      "de": "Hauptstadt der DDR unter der SED. Ab 1961 riegelt die Mauer die Stadt ab; Sozialistischer Klassizismus, dann Moderne und Plattenbausiedlungen.",
+      "en": "Capital of the GDR under the SED. The Wall seals the city off from 1961; Socialist Classicism, then modernism and prefabricated estates."
+     },
+     "years": {
+      "en": "1949–1990"
+     }
+    },
+    {
+     "id": "west",
+     "name": {
+      "de": "West-Berlin",
+      "en": "West Berlin"
+     },
+     "sector": "west",
+     "start": "1949-10",
+     "summary": {
+      "de": "Eine westliche Enklave, an die Bundesrepublik gebunden und unter dem Schutz der Alliierten. Ab 1961 eingemauert; Interbau und Kulturforum.",
+      "en": "A Western enclave tied to the Federal Republic under Allied protection. Walled in from 1961; Interbau and the Kulturforum."
+     },
+     "years": {
+      "en": "1949–1990"
+     }
+    },
+    {
+     "id": "reunified",
+     "name": {
+      "de": "Wiedervereinigtes Deutschland",
+      "en": "Reunified Germany"
+     },
+     "start": "1990-10",
+     "summary": {
+      "de": "1989 fällt die Mauer, 1990 wird Deutschland wiedervereinigt. Berlin ist wieder Hauptstadt und ab 1999 Regierungssitz.",
+      "en": "The Wall falls in 1989 and Germany reunites in 1990. Berlin is the capital again and the seat of government from 1999."
+     },
+     "years": {
+      "de": "seit 1990",
+      "en": "since 1990"
+     }
+    }
+   ],
+   "id": "berlin",
+   "name": {
+    "en": "Berlin"
+   },
+   "rulers": [
+    {
+     "era": "slavic",
+     "name": "Slawische Fürsten",
+     "names": {
+      "en": "Slavic princes"
+     },
+     "reign": {
+      "de": "bis 1157",
+      "en": "until 1157"
+     },
+     "start": "700-01",
+     "title": {
+      "de": "Stämme der Heveller und Sprewanen",
+      "en": "Hevelli and Sprevane tribes"
+     }
+    },
+    {
+     "era": "margraviate",
+     "name": "Askanische Markgrafen",
+     "names": {
+      "en": "Ascanian margraves"
+     },
+     "reign": {
+      "en": "1157–1320"
+     },
+     "start": "1157-06",
+     "title": {
+      "de": "Markgrafen von Brandenburg",
+      "en": "Margraves of Brandenburg"
+     }
+    },
+    {
+     "era": "margraviate",
+     "name": "Wittelsbacher Markgrafen",
+     "names": {
+      "en": "Wittelsbach margraves"
+     },
+     "reign": {
+      "en": "1323–1373"
+     },
+     "start": "1323-04",
+     "title": {
+      "de": "Markgrafen von Brandenburg",
+      "en": "Margraves of Brandenburg"
+     }
+    },
+    {
+     "era": "margraviate",
+     "name": "Luxemburger Markgrafen",
+     "names": {
+      "en": "Luxembourg margraves"
+     },
+     "reign": {
+      "en": "1373–1415"
+     },
+     "start": "1373-08",
+     "title": {
+      "de": "Markgrafen von Brandenburg",
+      "en": "Margraves of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Friedrich I.",
+     "names": {
+      "en": "Frederick I"
+     },
+     "reign": {
+      "en": "1415–1440"
+     },
+     "start": "1415-04",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Friedrich II. „Eisenzahn“",
+     "names": {
+      "en": "Frederick II “Irontooth”"
+     },
+     "reign": {
+      "en": "1440–1470"
+     },
+     "start": "1440-09",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Albrecht Achilles",
+     "names": {
+      "en": "Albert Achilles"
+     },
+     "reign": {
+      "en": "1470–1486"
+     },
+     "start": "1470-04",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Johann Cicero",
+     "names": {
+      "en": "John Cicero"
+     },
+     "reign": {
+      "en": "1486–1499"
+     },
+     "start": "1486-03",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Joachim I. Nestor",
+     "names": {
+      "en": "Joachim I Nestor"
+     },
+     "reign": {
+      "en": "1499–1535"
+     },
+     "start": "1499-01",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Joachim II. Hector",
+     "names": {
+      "en": "Joachim II Hector"
+     },
+     "reign": {
+      "en": "1535–1571"
+     },
+     "start": "1535-07",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Johann Georg",
+     "names": {
+      "en": "John George"
+     },
+     "reign": {
+      "en": "1571–1598"
+     },
+     "start": "1571-01",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Joachim Friedrich",
+     "names": {
+      "en": "Joachim Frederick"
+     },
+     "reign": {
+      "en": "1598–1608"
+     },
+     "start": "1598-01",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Johann Sigismund",
+     "names": {
+      "en": "John Sigismund"
+     },
+     "reign": {
+      "en": "1608–1619"
+     },
+     "start": "1608-07",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Georg Wilhelm",
+     "names": {
+      "en": "George William"
+     },
+     "reign": {
+      "en": "1619–1640"
+     },
+     "start": "1619-12",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Friedrich Wilhelm, der Große Kurfürst",
+     "names": {
+      "en": "Frederick William, the Great Elector"
+     },
+     "reign": {
+      "en": "1640–1688"
+     },
+     "start": "1640-12",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Friedrich III.",
+     "names": {
+      "en": "Frederick III"
+     },
+     "reign": {
+      "en": "1688–1701"
+     },
+     "start": "1688-05",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "prussia",
+     "name": "Friedrich I.",
+     "names": {
+      "en": "Frederick I"
+     },
+     "reign": {
+      "en": "1701–1713"
+     },
+     "start": "1701-01",
+     "title": {
+      "de": "König in Preußen",
+      "en": "King in Prussia"
+     }
+    },
+    {
+     "era": "prussia",
+     "name": "Friedrich Wilhelm I.",
+     "names": {
+      "en": "Frederick William I"
+     },
+     "reign": {
+      "en": "1713–1740"
+     },
+     "start": "1713-02",
+     "title": {
+      "de": "König in Preußen",
+      "en": "King in Prussia"
+     }
+    },
+    {
+     "era": "prussia",
+     "name": "Friedrich II., der Große",
+     "names": {
+      "en": "Frederick II, the Great"
+     },
+     "reign": {
+      "en": "1740–1786"
+     },
+     "start": "1740-05",
+     "title": {
+      "de": "König von Preußen",
+      "en": "King of Prussia"
+     }
+    },
+    {
+     "era": "prussia",
+     "name": "Friedrich Wilhelm II.",
+     "names": {
+      "en": "Frederick William II"
+     },
+     "reign": {
+      "en": "1786–1797"
+     },
+     "start": "1786-08",
+     "title": {
+      "de": "König von Preußen",
+      "en": "King of Prussia"
+     }
+    },
+    {
+     "era": "prussia",
+     "name": "Friedrich Wilhelm III.",
+     "names": {
+      "en": "Frederick William III"
+     },
+     "reign": {
+      "en": "1797–1840"
+     },
+     "start": "1797-11",
+     "title": {
+      "de": "König von Preußen",
+      "en": "King of Prussia"
+     }
+    },
+    {
+     "era": "prussia",
+     "name": "Friedrich Wilhelm IV.",
+     "names": {
+      "en": "Frederick William IV"
+     },
+     "reign": {
+      "en": "1840–1861"
+     },
+     "start": "1840-06",
+     "title": {
+      "de": "König von Preußen",
+      "en": "King of Prussia"
+     }
+    },
+    {
+     "era": "prussia",
+     "name": "Wilhelm I.",
+     "names": {
+      "en": "William I"
+     },
+     "reign": {
+      "en": "1861–1888"
+     },
+     "start": "1861-01",
+     "title": {
+      "de": "König von Preußen",
+      "en": "King of Prussia"
+     }
+    },
+    {
+     "era": "empire",
+     "name": "Wilhelm I.",
+     "names": {
+      "en": "William I"
+     },
+     "reign": {
+      "en": "1871–1888"
+     },
+     "start": "1871-01",
+     "title": {
+      "de": "Deutscher Kaiser und König von Preußen",
+      "en": "German Emperor and King of Prussia"
+     }
+    },
+    {
+     "era": "empire",
+     "name": "Friedrich III.",
+     "names": {
+      "en": "Frederick III"
+     },
+     "reign": {
+      "en": "1888"
+     },
+     "start": "1888-03",
+     "title": {
+      "de": "Deutscher Kaiser und König von Preußen",
+      "en": "German Emperor and King of Prussia"
+     }
+    },
+    {
+     "era": "empire",
+     "name": "Wilhelm II.",
+     "names": {
+      "en": "Wilhelm II"
+     },
+     "reign": {
+      "en": "1888–1918"
+     },
+     "start": "1888-06",
+     "title": {
+      "de": "Deutscher Kaiser und König von Preußen",
+      "en": "German Emperor and King of Prussia"
+     }
+    },
+    {
+     "era": "weimar",
+     "name": "Friedrich Ebert",
+     "reign": {
+      "en": "1918–1925"
+     },
+     "start": "1918-11",
+     "title": {
+      "de": "Reichspräsident",
+      "en": "Reich President"
+     }
+    },
+    {
+     "era": "weimar",
+     "name": "Paul von Hindenburg",
+     "reign": {
+      "en": "1925–1934"
+     },
+     "start": "1925-05",
+     "title": {
+      "de": "Reichspräsident",
+      "en": "Reich President"
+     }
+    },
+    {
+     "era": "nazi",
+     "name": "Adolf Hitler",
+     "reign": {
+      "en": "1933–1945"
+     },
+     "start": "1933-01",
+     "title": {
+      "de": "Reichskanzler und Diktator",
+      "en": "Reich Chancellor and dictator"
+     }
+    },
+    {
+     "era": "occupation",
+     "name": "Alliierte Kommandantur",
+     "names": {
+      "en": "Allied Kommandatura"
+     },
+     "reign": {
+      "en": "1945–1949"
+     },
+     "start": "1945-05",
+     "title": {
+      "de": "Viermächteverwaltung der Stadt (USA, Großbritannien, Frankreich, Sowjetunion)",
+      "en": "Four-power city government (US, UK, France, Soviet Union)"
+     }
+    },
+    {
+     "era": "east",
+     "name": "Walter Ulbricht",
+     "reign": {
+      "en": "1949–1971"
+     },
+     "start": "1949-10",
+     "title": {
+      "de": "Erster Sekretär des ZK der SED",
+      "en": "First Secretary of the SED"
+     }
+    },
+    {
+     "era": "east",
+     "name": "Erich Honecker",
+     "reign": {
+      "en": "1971–1989"
+     },
+     "start": "1971-05",
+     "title": {
+      "de": "Generalsekretär des ZK der SED",
+      "en": "General Secretary of the SED"
+     }
+    },
+    {
+     "era": "east",
+     "name": "Egon Krenz",
+     "reign": {
+      "en": "1989"
+     },
+     "start": "1989-10",
+     "title": {
+      "de": "Generalsekretär des ZK der SED",
+      "en": "General Secretary of the SED"
+     }
+    },
+    {
+     "era": "east",
+     "name": "Hans Modrow",
+     "reign": {
+      "en": "1989–1990"
+     },
+     "start": "1989-12",
+     "title": {
+      "de": "Vorsitzender des Ministerrats der DDR",
+      "en": "Chairman of the GDR Council of Ministers"
+     }
+    },
+    {
+     "era": "east",
+     "name": "Lothar de Maizière",
+     "reign": {
+      "en": "1990"
+     },
+     "start": "1990-04",
+     "title": {
+      "de": "Ministerpräsident der DDR",
+      "en": "Prime Minister of the GDR"
+     }
+    },
+    {
+     "era": "west",
+     "name": "Konrad Adenauer",
+     "reign": {
+      "en": "1949–1963"
+     },
+     "start": "1949-09",
+     "title": {
+      "de": "Bundeskanzler",
+      "en": "Federal Chancellor"
+     }
+    },
+    {
+     "era": "west",
+     "name": "Ludwig Erhard",
+     "reign": {
+      "en": "1963–1966"
+     },
+     "start": "1963-10",
+     "title": {
+      "de": "Bundeskanzler",
+      "en": "Federal Chancellor"
+     }
+    },
+    {
+     "era": "west",
+     "name": "Kurt Georg Kiesinger",
+     "reign": {
+      "en": "1966–1969"
+     },
+     "start": "1966-12",
+     "title": {
+      "de": "Bundeskanzler",
+      "en": "Federal Chancellor"
+     }
+    },
+    {
+     "era": "west",
+     "name": "Willy Brandt",
+     "reign": {
+      "en": "1969–1974"
+     },
+     "start": "1969-10",
+     "title": {
+      "de": "Bundeskanzler",
+      "en": "Federal Chancellor"
+     }
+    },
+    {
+     "era": "west",
+     "name": "Helmut Schmidt",
+     "reign": {
+      "en": "1974–1982"
+     },
+     "start": "1974-05",
+     "title": {
+      "de": "Bundeskanzler",
+      "en": "Federal Chancellor"
+     }
+    },
+    {
+     "era": "west",
+     "name": "Helmut Kohl",
+     "reign": {
+      "en": "1982–1998"
+     },
+     "start": "1982-10",
+     "title": {
+      "de": "Bundeskanzler",
+      "en": "Federal Chancellor"
+     }
+    },
+    {
+     "era": "reunified",
+     "name": "Helmut Kohl",
+     "reign": {
+      "en": "1982–1998"
+     },
+     "start": "1990-10",
+     "title": {
+      "de": "Bundeskanzler",
+      "en": "Federal Chancellor"
+     }
+    },
+    {
+     "era": "reunified",
+     "name": "Gerhard Schröder",
+     "reign": {
+      "en": "1998–2005"
+     },
+     "start": "1998-10",
+     "title": {
+      "de": "Bundeskanzler",
+      "en": "Federal Chancellor"
+     }
+    },
+    {
+     "era": "reunified",
+     "name": "Angela Merkel",
+     "reign": {
+      "en": "2005–2021"
+     },
+     "start": "2005-11",
+     "title": {
+      "de": "Bundeskanzlerin",
+      "en": "Federal Chancellor"
+     }
+    },
+    {
+     "era": "reunified",
+     "name": "Olaf Scholz",
+     "reign": {
+      "en": "2021–2025"
+     },
+     "start": "2021-12",
+     "title": {
+      "de": "Bundeskanzler",
+      "en": "Federal Chancellor"
+     }
+    },
+    {
+     "era": "reunified",
+     "name": "Friedrich Merz",
+     "reign": {
+      "de": "seit 2025",
+      "en": "since 2025"
+     },
+     "start": "2025-05",
+     "title": {
+      "de": "Bundeskanzler",
+      "en": "Federal Chancellor"
+     }
+    }
+   ]
+  }
+ ],
+ "sights": [
+  {
+   "id": "neue-wache",
+   "name": "Neue Wache",
+   "category": "memorial",
+   "latitude": 52.517905,
+   "longitude": 13.395537,
+   "radius": 30,
+   "district": "Mitte",
+   "wikidata": "Q152341",
+   "entry": {
+    "en": {
+     "title": "Neue Wache",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Neue_Wache",
+     "text": "The Neue Wache (lit. 'New Watchhouse') is a listed building on Unter den Linden boulevard in the historic centre of Berlin, Germany. Erected from 1816 to 1818 according to plans by Karl Friedrich Schinkel as a guardhouse for the Royal Palace and a memorial to the Liberation Wars, it is considered a major work of Prussian Neoclassical architecture. A Victoria pedimental sculpture by Johann Gottfried Schadow and five General statues by Christian Daniel Rauch, referring to the Warrior statues on Schlossbrücke, also belong to the ensemble. Since 1931, it has held Germany's Tomb of the Unknown Soldier and national memorial for the First World War. Following German Reunification, the site has also been, since 1993, the Central Memorial of the Federal Republic of Germany to the Victims of War and Tyranny.\n\nNeue Wache is famous for its changing of the guard ceremony, which went unchanged throughout the 20th century despite radical changes to the German political system. Neue Wache, though, no longer has a regular honor guard except during special events. The modern changing of the guard lacks the goose step once continued by the East German Army, but is otherwise nearly identical to the old ceremony.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/150419_Neue_Wache_Berlin-Mitte_HDR.jpg/960px-150419_Neue_Wache_Berlin-Mitte_HDR.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:150419_Neue_Wache_Berlin-Mitte_HDR.jpg",
+      "artist": "Ansgar Koreng",
+      "license": "CC BY 3.0 de",
+      "licenseURL": "https://creativecommons.org/licenses/by/3.0/de/deed.en"
+     }
+    },
+    "de": {
+     "title": "Neue Wache",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Neue_Wache",
+     "text": "Die Neue Wache ist ein Baudenkmal an der Prachtstraße Unter den Linden 4 im Berliner Ortsteil Mitte und Teil des Forum Fridericianum. Errichtet 1816–1818 von Karl Friedrich Schinkel im Stil des Klassizismus als Wachgebäude für das Königliche Palais, wandelte sie sich 1931 zur Gedenkstätte. Im Zweiten Weltkrieg ausgebrannt, wurde die Neue Wache 1951–1957 wiederaufgebaut. Seit 1993 beheimatet sie die Zentrale Gedenkstätte der Bundesrepublik Deutschland für die Opfer von Krieg und Gewaltherrschaft.\n\nÜber eine Wiederaufstellung der Denkmäler der preußischen Befreiungskämpfer Friedrich Wilhelm Bülow von Dennewitz und Gerhard von Scharnhorst, die programmatisch bis 1950 neben der Neuen Wache standen, wird immer wieder diskutiert.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/150419_Neue_Wache_Berlin-Mitte_HDR.jpg/960px-150419_Neue_Wache_Berlin-Mitte_HDR.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:150419_Neue_Wache_Berlin-Mitte_HDR.jpg",
+      "artist": "Ansgar Koreng",
+      "license": "CC BY 3.0 de",
+      "licenseURL": "https://creativecommons.org/licenses/by/3.0/de/deed.en"
+     }
+    }
+   },
+   "facts": {
+    "year": 1816,
+    "sector": "east",
+    "wikidata": "https://www.wikidata.org/wiki/Q152341",
+    "localized": {
+     "en": {
+      "built": "1816–1818",
+      "opened": "1818",
+      "styles": [
+       "Neoclassicism"
+      ],
+      "architects": [
+       "Karl Friedrich Schinkel",
+       "Heinrich Tessenow (memorial, 1931)"
+      ],
+      "commissionedBy": [
+       "Frederick William III"
+      ],
+      "history": "King Frederick William III of Prussia ordered the construction of the Neue Wache as a guardhouse for the Königliches Palais (Royal Palace), his palace across the road, to replace the old Artillery Guardhouse. He commissioned Schinkel, the leading exponent of Neoclassical architecture, to design the building: this was Schinkel's first major commission in Berlin. The Neue Wache was inaugurated on 18 September 1818 by the Prussian 1st Guards Grenadiers on occasion of the official visit of Tsar Alexander I of Russia.\n\nLocated between the Zeughaus and the Humboldt University, the plain building is characterised by four massive corner risalits and a portico of Doric columns, of the original Greek form, without bases. Schinkel wrote of his design: \"The plan of this completely exposed building, free on all sides, is approximately the shape of a Roman castrum, thus the four sturdier corner towers and the inner courtyard.\" The statuary in the tympanum is intended as a memorial to Prussia's role in the Napoleonic Wars, whose final stage is known in Germany as the Wars of Liberation. It shows Nike, the goddess of victory, deciding a battle. The triglyphs and guttae of the Doric order are omitted. The Jewish architect Salomo Sachs (1772–1855) describes in his autobiography that his architectural designs for the Neue Wache, submitted in 1806 for the Academy Exhibition in Berlin, served as the basis for Schinkel's executed plans."
+     },
+     "de": {
+      "built": "1816–1818",
+      "opened": "1818",
+      "styles": [
+       "Klassizismus"
+      ],
+      "architects": [
+       "Karl Friedrich Schinkel",
+       "Heinrich Tessenow (Gedenkstätte, 1931)"
+      ],
+      "commissionedBy": [
+       "Friedrich Wilhelm III."
+      ],
+      "history": "Die von 1816 bis 1818 im Auftrag Friedrich Wilhelms III. nach Plänen von Karl Friedrich Schinkel errichtete Haupt- und Königswache zählt zu den Hauptwerken des deutschen Klassizismus. Sie diente als Wachgebäude für das schräg gegenüberliegende Königliche Palais und zugleich als Gedenkstätte für die Gefallenen der Befreiungskriege gegen Napoleon. In Schinkels Pläne flossen frühere Entwürfe von Heinrich Gentz und – nach eigenen Angaben – Salomo Sachs ein, die aufgrund der Napoleonischen Kriege nicht zur Ausführung gekommen waren.\n\nDas Gebäudeinnere bestand ursprünglich aus dem Vorzimmer, der Wachstube, der Offizierstube, dem Arrestzimmer und mehreren Nebenzimmern um einen Innenhof. Die fünfachsige Hauptfassade unter dem dorischen Säulenportikus zu den Linden gliederte sich in ein mittiges Portal und jeweils zwei seitliche Fenster.\n\nDie Veränderung der Alten Wache, Kanonierwache, Schloss- oder auch Königswache war seit 1803/04 ein bevorzugtes Umgestaltungsthema des Königs. Dafür wurden Preisaufgaben für die Akademieausstellungen in Berlin formuliert. Zur Umsetzung erging die Aufgabe an das Kollegium des Oberhofbauamts und die Königlich Preussische Akademie der Künste. Zum Beispiel fragte Heinrich Gentz am 6. Mai 1805 bei Schinkel an, ob er ihm bei der Ausgestaltung der Fronten seines „Verschönerungsprojekt der Gegend zwischen den Linden und dem königlichen Schloss“ behilflich sein könnte und Schinkel half ihm, da Gentz die vorgegebene Planungsaufgabe der Akademie der Künste bis zum 25. Mai 1805 dort vorlegen musste. Im Zeitraum zwischen 1786 und 1816 standen Entwürfe und architektonische Modellbauten nach antiken Vorlagen im Vordergrund."
+     }
+    }
+   }
+  },
+  {
+   "id": "holocaust-mahnmal",
+   "name": "Denkmal für die ermordeten Juden Europas",
+   "names": {
+    "en": "Memorial to the Murdered Jews of Europe"
+   },
+   "category": "memorial",
+   "latitude": 52.513874,
+   "longitude": 13.378735,
+   "radius": 60,
+   "district": "Mitte",
+   "wikidata": "Q160700",
+   "entry": {
+    "en": {
+     "title": "Memorial to the Murdered Jews of Europe",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Memorial_to_the_Murdered_Jews_of_Europe",
+     "text": "The Memorial to the Murdered Jews of Europe (German: Denkmal für die ermordeten Juden Europas), also known as the Holocaust Memorial (German: Holocaust-Mahnmal), is a memorial in Berlin to the Jewish victims of the Holocaust committed by Nazi Germany, designed by architect Peter Eisenman and Buro Happold. It consists of a 1.9-hectare (4.7-acre) site covered with 2,711 concrete slabs or \"stelae\", arranged in a grid pattern on a sloping field. The original plan was to place nearly 4,000 slabs, but after the recalculation, the number of slabs that could legally fit into the designated areas was 2,711. The stelae are 2.38 m (7 ft 9+1⁄2 in) long, 0.95 m (3 ft 1+1⁄2 in) wide and vary in height from 0.2 to 4.7 metres (8 in to 15 ft 5 in). They are organized in rows, 54 of them going north–south, and 87 heading east–west at right angles but set slightly askew. An attached underground \"Place of Information\" (German: Ort der Information) holds the names of approximately 3 million Jewish Holocaust victims, obtained from the Israeli museum Yad Vashem.\n\nBuilding began on 1 April 2003, and was finished on 15 December 2004. It was inaugurated on 10 May 2005, 60 years after the end of World War II in Europe, and opened to the public two days later. It is located one block south of the Brandenburg Gate, in the Mitte neighbourhood. The cost of construction was approximately €25 million.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/Memorial_to_the_Murdered_Jews_of_Europeabove.jpg/960px-Memorial_to_the_Murdered_Jews_of_Europeabove.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Memorial_to_the_Murdered_Jews_of_Europeabove.jpg",
+      "artist": "Alexander Blum",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    },
+    "de": {
+     "title": "Denkmal für die ermordeten Juden Europas",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Denkmal_f%C3%BCr_die_ermordeten_Juden_Europas",
+     "text": "Das Denkmal für die ermordeten Juden Europas, kurz Holocaust-Mahnmal, in der historischen Mitte Berlins erinnert an die rund sechs Millionen Juden, die unter der Herrschaft Adolf Hitlers und der Nationalsozialisten ermordet wurden.\n\nDas von Peter Eisenman entworfene Mahnmal besteht aus ursprünglich 2711 quaderförmigen Beton-Stelen. Es wurde zwischen 2003 und Frühjahr 2005 auf einer 19.000 m² großen Fläche südlich des Brandenburger Tors errichtet. Am 10. Mai 2005 feierlich eingeweiht, ist es seit dem 12. Mai 2005 öffentlich zugänglich. Im ersten Jahr kamen über 3,5 Millionen Besucher.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/Memorial_to_the_Murdered_Jews_of_Europeabove.jpg/960px-Memorial_to_the_Murdered_Jews_of_Europeabove.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Memorial_to_the_Murdered_Jews_of_Europeabove.jpg",
+      "artist": "Alexander Blum",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 2003,
+    "sector": "east",
+    "wikidata": "https://www.wikidata.org/wiki/Q160700",
+    "localized": {
+     "en": {
+      "built": "2003–2005",
+      "opened": "2005",
+      "styles": [
+       "Contemporary"
+      ],
+      "architects": [
+       "Peter Eisenman"
+      ],
+      "commissionedBy": [
+       "German Bundestag"
+      ],
+      "history": "The debates over the existence and form of such a memorial extend back to the late 1980s, when a small group of private West German citizens, led by television journalist Lea Rosh and historian Eberhard Jäckel, first began pressing for West Germany to honor the six million Jews murdered in the Holocaust. Rosh soon emerged as the driving force behind the memorial. In 1989, she founded a group to support its construction and to collect donations. With growing support, the Bundestag (the German federal parliament) passed a resolution in favour of the project. On 25 June 1999, the Bundestag decided to build the memorial designed by Peter Eisenman. A federal foundation (Foundation for the Memorial to the Murdered Jews of Europe (Stiftung Denkmal für die ermordeten Juden Europas) was consequently founded to run it.\n\nIn April 1994 a competition for the memorial's design was announced in Germany's major newspapers. Twelve artists were specifically invited to submit a design and given 50,000 DM (€25,000) to do so. The winning proposal was to be selected by a jury consisting of representatives from the fields of art, architecture, urban design, history, politics and administration, including Frank Schirrmacher, co-editor of the Frankfurter Allgemeine Zeitung. The deadline for the proposals was 28 October. On 11 May, an information colloquium took place in Berlin, where people interested in submitting a design could receive some more information about the nature of the memorial to be designed. Ignatz Bubis, the president of the Central Council of Jews in Germany, and Wolfgang Nagel, the construction senator of Berlin, spoke at the event."
+     },
+     "de": {
+      "built": "2003–2005",
+      "opened": "2005",
+      "styles": [
+       "Zeitgenössische Architektur"
+      ],
+      "architects": [
+       "Peter Eisenman"
+      ],
+      "commissionedBy": [
+       "Deutscher Bundestag"
+      ],
+      "history": "Im Jahr 1988 regte die Publizistin Lea Rosh den Bau des Denkmals an. Ein Förderkreis wurde gegründet, und der Vorschlag fand zunehmend Unterstützung, auch in Form von Spenden.\n\nIm Mai 1994 wurde ein Wettbewerb ausgeschrieben, getragen vom Land Berlin, der Bundesrepublik Deutschland und dem Förderkreis, bei dem 528 Arbeiten eingereicht wurden. Die Jury unter Vorsitz von Walter Jens traf keine eindeutige Entscheidung, sondern vergab zwei erste Preise an die Entwürfe von Simon Ungers und eine Künstlergruppe um Christine Jackob-Marks. Die Vertreter des Landes, des Bundes und des Förderkreises favorisierten schließlich den Entwurf von Jackob-Marks: eine 20.000 m² große schiefe Betonebene mit eingemeißelten Namen der Opfer. Bundeskanzler Helmut Kohl lehnte den Entwurf jedoch im Juni 1995 ab.\n\nIm Juli 1997 wurden erneut Entwürfe von 25 Architekten und Bildhauern zu dem Projekt eingeholt, das nicht den Charakter einer zentralen Gedenkstätte erhalten sollte. In der Aufgabenbeschreibung dazu hieß es: „Das Denkmal kann und soll nicht die Aufgabe einer Gedenkstätte wahrnehmen, sondern soll die vorhandenen Gedenkstätten an historischen Orten der NS-Verbrechen ergänzen und ihnen zusätzliche öffentliche Aufmerksamkeit verschaffen. Gegenüber der Informations- und Dokumentationsaufgabe einer Gedenkstätte richten sich das Denkmal und der Ort der Erinnerung an die kontemplative und emotionale Empfänglichkeit des Besuchers.“"
+     }
+    }
+   }
+  },
+  {
+   "id": "mauer-gedenkstaette",
+   "name": "Gedenkstätte Berliner Mauer",
+   "names": {
+    "en": "Berlin Wall Memorial"
+   },
+   "category": "memorial",
+   "latitude": 52.535301,
+   "longitude": 13.389555,
+   "radius": 60,
+   "district": "Mitte",
+   "wikidata": "Q95517",
+   "entry": {
+    "en": {
+     "title": "Gedenkstätte Berliner Mauer",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Gedenkst%C3%A4tte_Berliner_Mauer",
+     "text": "The Gedenkstätte Berliner Mauer (Berlin Wall Memorial) commemorates the division of Berlin by the Berlin Wall and the deaths that occurred there. The monument was created in 1998 by the Federal Republic of Germany and the Federal State of Berlin. It is located on Bernauer Straße at the corner of Ackerstraße and includes a Chapel of Reconciliation, the Berlin Wall Documentation Centre, a 60-metre (200 ft) section of the former border, a window of remembrance and a visitor center.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/77/Berlin%2C_Bernauer_Stra%C3%9Fe%2C_%C3%9Cberblick_2014-07.jpg/960px-Berlin%2C_Bernauer_Stra%C3%9Fe%2C_%C3%9Cberblick_2014-07.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Berlin,_Bernauer_Stra%C3%9Fe,_%C3%9Cberblick_2014-07.jpg",
+      "artist": "HerrAdams",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    },
+    "de": {
+     "title": "Gedenkstätte Berliner Mauer",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Gedenkst%C3%A4tte_Berliner_Mauer",
+     "text": "Als Gedenkstätte Berliner Mauer wird primär das Gelände an der südöstlichen Seite der Bernauer Straße zwischen der Gartenstraße und der Schwedter Straße, auf dem sich die Berliner Mauer und der Todesstreifen dahinter befanden, bezeichnet. Damit wird an die Teilung Berlins durch die Mauer und an die Todesopfer an ihr erinnert. Auf diesem etwa 1,4 Kilometer langen Geländestreifen wurden ein 70 Meter langes originales Stück der Grenzanlagen 1998 von der Bundesrepublik Deutschland und dem Land Berlin wieder errichtet (Mauerteile stammen von anderen Abschnitten) und später erweitert und die Kapelle der Versöhnung und das Fenster des Gedenkens errichtet. Zur Gedenkstätte Berliner Mauer gehören aber auch das Besucherzentrum und das Dokumentationszentrum Berliner Mauer auf der anderen Straßenseite (Ecke Garten- bzw. Ackerstraße) und eine Ausstellung im benachbarten S-Bahnhof Nordbahnhof.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/77/Berlin%2C_Bernauer_Stra%C3%9Fe%2C_%C3%9Cberblick_2014-07.jpg/960px-Berlin%2C_Bernauer_Stra%C3%9Fe%2C_%C3%9Cberblick_2014-07.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Berlin,_Bernauer_Stra%C3%9Fe,_%C3%9Cberblick_2014-07.jpg",
+      "artist": "HerrAdams",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1961,
+    "sector": "east",
+    "wikidata": "https://www.wikidata.org/wiki/Q95517",
+    "localized": {
+     "en": {
+      "built": "the Wall 1961, memorial 1998–2014",
+      "opened": "1998 (memorial)",
+      "architects": [
+       "Kohlhoff & Kohlhoff (memorial, 1998)"
+      ],
+      "commissionedBy": [
+       "GDR (the Wall)",
+       "Federal Republic and Berlin (memorial)"
+      ],
+      "history": "The idea of a memorial was suggested by the Deutsches Historisches Museum (German Historical Museum) on behalf of the federal government of Berlin, and architects Kohlhoff & Kohlhoff were commissioned to design it. The cost of the competition and completion was 2.2 million Marks. The federal government took over the construction costs, while the state covers the maintenance costs. On 11 September 2008 the Berlin House of Representatives approved the opening of the memorial on the anniversary of the day that the Berlin Wall fell.\n\nBy 2013, an extension was to be completed. Original relics of the border were to be shown, with missing parts marked in steel on the ground. The memorial was to be divided into four areas:\n\nAt the corner of Gartenstraße and Bernauer Straße, a visitor centre was opened. The outdoor area of the memorial west of Berlin Nordbahnhof was transformed into an Erinnerungslandschaft (memorial landscape). In 2006 there were over 220,000 visitors to the documentation centre, which is part of the memorial. Part of the memorial is located on Ackerstraße."
+     },
+     "de": {
+      "built": "die Mauer 1961, Gedenkstätte 1998–2014",
+      "opened": "1998 (Gedenkstätte)",
+      "architects": [
+       "Kohlhoff & Kohlhoff (Denkmal, 1998)"
+      ],
+      "commissionedBy": [
+       "DDR (Mauer)",
+       "Bundesrepublik und Land Berlin (Gedenkstätte)"
+      ],
+      "history": "Die Gedenkstätte geht auf einen 1994 vom Deutschen Historischen Museum im Auftrag der Bundesregierung durchgeführten Ideenwettbewerb zurück. Die Architekten Kohlhoff & Kohlhoff setzten sich durch. Die Kosten für den Wettbewerb und Bau beliefen sich auf 2,2 Millionen Mark (kaufkraftbereinigt in heutiger Währung: rund Millionen Euro). Der Bund übernahm die Baukosten während das Land für die Unterhaltungskosten zuständig ist.\n\nAm 11. September 2008 beschloss das Abgeordnetenhaus von Berlin, zum Jahrestag des Falls der Berliner Mauer am 9. November 2008 die Gedenkstätte Berliner Mauer und die Erinnerungsstätte Notaufnahmelager Marienfelde in der landeseigenen Stiftung Berliner Mauer zusammenzufassen.\n\nIm Laufe der folgenden Jahre wurde das Gelände der Gedenkstätte entlang der Bernauer Straße erweitert. Die Außenausstellung im Grenzstreifen wurde in Teilabschnitten eröffnet und in eine Erinnerungslandschaft umgestaltet. Dabei wurden originale Relikte der Grenzanlagen als archäologische Fenster freigelegt oder durch Nachzeichnungen aus Stahl am Boden markiert. Der Verlauf der Mauer wurde durch Stäbe rostenden Stahls nachgestaltet. Der Standort eines Grenzbeobachtungsturms an der Strelitzer Straße wurde durch vier Stahlelemente in Originalhöhe markiert. Die Außenausstellung der Gedenkstätte schildert die Geschichte anhand der Ereignisse in der Bernauer Straße und gliedert sich in vier Themengebiete:"
+     }
+    }
+   }
+  },
+  {
+   "id": "ehrenmal-tiergarten",
+   "name": "Sowjetisches Ehrenmal Tiergarten",
+   "names": {
+    "en": "Soviet War Memorial (Tiergarten)"
+   },
+   "category": "memorial",
+   "latitude": 52.516694,
+   "longitude": 13.371917,
+   "radius": 30,
+   "district": "Mitte",
+   "wikidata": "Q32660126",
+   "entry": {
+    "en": {
+     "title": "Soviet War Memorial (Tiergarten)",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Soviet_War_Memorial_(Tiergarten)",
+     "text": "The Soviet War Memorial (German: Sowjetisches Kriegerdenkmal) is one of several war memorials in Berlin, the capital city of Germany, erected by the Soviet Union to commemorate its war dead, particularly the 80,000 soldiers of the Soviet Armed Forces who died during the Battle of Berlin in April and May 1945.\n\nThe memorial is located in the Großer Tiergarten, a large public park to the west of the city centre, on the north side of the east–west Straße des 17. Juni (17 June Street) in the Tiergarten locality.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/SowjetischesEhrenmalBerlin1983.jpg/960px-SowjetischesEhrenmalBerlin1983.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:SowjetischesEhrenmalBerlin1983.jpg",
+      "artist": "Master Sergeant Don Sutherland",
+      "license": "Public domain",
+      "licenseURL": null
+     }
+    },
+    "de": {
+     "title": "Sowjetisches Ehrenmal (Tiergarten)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Sowjetisches_Ehrenmal_(Tiergarten)",
+     "text": "Das Sowjetische Ehrenmal im Tiergarten ist eines von mehreren Kriegsdenkmälern in der deutschen Hauptstadt Berlin, die von der Sowjetunion zum Gedenken an ihre Kriegstoten errichtet wurden, insbesondere an die Soldaten der sowjetischen Streitkräfte, die während der Schlacht um Berlin im April und Mai 1945 gefallen sind. Das Ehrenmal wurde 1945 im Großen Tiergarten erbaut, im Berliner Ortsteil Tiergarten (Bezirk Mitte) an der Straße des 17. Juni.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/SowjetischesEhrenmalBerlin1983.jpg/960px-SowjetischesEhrenmalBerlin1983.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:SowjetischesEhrenmalBerlin1983.jpg",
+      "artist": "Master Sergeant Don Sutherland",
+      "license": "Public domain",
+      "licenseURL": null
+     }
+    }
+   },
+   "facts": {
+    "year": 1945,
+    "sector": "west",
+    "wikidata": "https://www.wikidata.org/wiki/Q32660126",
+    "localized": {
+     "en": {
+      "built": "1945",
+      "opened": "1945",
+      "styles": [
+       "Socialist Classicism"
+      ],
+      "architects": [
+       "Mikhail Gorvits",
+       "Lev Kerbel (sculptor)",
+       "Vladimir Tsigal (sculptor)"
+      ],
+      "commissionedBy": [
+       "Soviet Army"
+      ]
+     },
+     "de": {
+      "built": "1945",
+      "opened": "1945",
+      "styles": [
+       "Sozialistischer Klassizismus"
+      ],
+      "architects": [
+       "Mikhail Gorvits",
+       "Lev Kerbel (Bildhauer)",
+       "Vladimir Tsigal (Bildhauer)"
+      ],
+      "commissionedBy": [
+       "Sowjetarmee"
+      ],
+      "history": "Das Ehrenmal lag auf dem Territorium des Britischen Sektors von Berlin. Der Viermächtestatus Berlins erlaubte jedoch die Bewachung durch sowjetische Soldaten. Nach dem Bau der Berliner Mauer im Jahr 1961 wurde es durch die britische Besatzungsmacht abgeriegelt und gesichert.\n\n1970 schoss der West-Berliner Hilfspfleger Ekkehard Weil auf einen am Ehrenmal aufgestellten sowjetischen Wachsoldaten, der bei dem Anschlag von zwei Kugeln getroffen wurde und überlebte. Der Attentäter hatte die Tat für den 7. November, den 53. Jahrestag der Oktoberrevolution, geplant, und zuvor mit roter Farbe Parolen in den Tiergarten gemalt. Weil verübte später weitere rechtsterroristische Anschläge.\n\nIn einer Sitzung des 7. Deutschen Bundestages bezeichnete der Abgeordnete Lorenz Niegel (CSU) das Denkmal im November 1975 als „demütigendes Siegerdenkmal im freien Teil der Stadt Berlin“.\n\nBis zum 22. Dezember 1990 waren Ehrenwachen der Sowjetarmee am Ehrenmal stationiert. Danach wurde die Anlage an die Stadt Berlin übergeben.\n\nDas wiedervereinigte Deutschland verpflichtete sich mit dem bilateralen Abkommen vom 16. Dezember 1992 zwischen der Regierung der Bundesrepublik Deutschland und der Regierung der Russischen Föderation über Kriegsgräberfürsorge völkerrechtlich zum dauerhaften Schutz des Ehrenmals.\n\nUmfangreiche Instandsetzungen fanden Mitte der 1990er Jahre und 2014 im Vorfeld des 70. Jahrestages des Kriegsendes statt. Unter anderem wurden die Bronzeskulptur des Rotarmisten neu verankert, die Geschütze und Panzer grundsaniert sowie die Inschriften und Embleme neu vergoldet."
+     }
+    }
+   }
+  },
+  {
+   "id": "topographie",
+   "name": "Topographie des Terrors",
+   "names": {
+    "en": "Topography of Terror"
+   },
+   "category": "memorial",
+   "latitude": 52.506214,
+   "longitude": 13.384153,
+   "radius": 40,
+   "district": "Friedrichshain-Kreuzberg",
+   "wikidata": "Q819081",
+   "entry": {
+    "en": {
+     "title": "Topography of Terror",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Topography_of_Terror",
+     "text": "The Topography of Terror (German: Topographie des Terrors) is an outdoor and indoor history museum in Berlin, Germany. It is located on Niederkirchnerstrasse, formerly Prinz-Albrecht-Strasse, on the site of buildings which during the Nazi regime from 1933 to 1945 were the SS Reich Security Main Office, the headquarters of the SiPo, SD, Einsatzgruppen, and Gestapo.\n\nThe buildings that housed the Gestapo and SS headquarters were largely destroyed by Allied bombing during early 1945 and the ruins demolished after the war. The boundary between the American and Soviet zones of occupation in Berlin ran along the Prinz-Albrecht-Strasse, so the street soon became a fortified boundary, and the Berlin Wall ran along the south side of the street, renamed Niederkirchnerstrasse, from 1961 to 1989. The wall here was never demolished. The section adjacent to the Topography of Terror site is the longest extant segment of the outer wall, as the longer East Side Gallery section in Friedrichshain was part of the inner wall, not visible from West Berlin.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Dokumentationszentrum_Topographie_des_Terrors.jpg/960px-Dokumentationszentrum_Topographie_des_Terrors.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Dokumentationszentrum_Topographie_des_Terrors.jpg",
+      "artist": "Josef Streichholz",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    },
+    "de": {
+     "title": "Topographie des Terrors",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Topographie_des_Terrors",
+     "text": "Die Topographie des Terrors ist ein seit 1987 bestehendes Projekt in Berlin-Kreuzberg zur Dokumentation und Aufarbeitung des Terrors im nationalsozialistischen Deutschland. Dazu gehören eine Dauerausstellung und Sonderausstellungen im Dokumentationszentrum, das im Jahr 2010 eröffnet wurde, sowie eine schon zuvor eingerichtete Freiluftausstellung und ein Geländerundgang mit Erläuterungen zur Geschichte des historischen Orts.\n\nDie Einrichtung wird von der 1992 gegründeten Stiftung Topographie des Terrors betreut, einer seit 1995 selbständigen Stiftung, die vom Land Berlin und der Bundesrepublik Deutschland gemeinsam getragen wird.\n\nDie Topographie des Terrors zählt zu den Museen in Berlin. Nach dem Verständnis der Betreiber soll sie jedoch kein Museum und auch keine Gedenkstätte sein, sondern ein Ort der Information und der Auseinandersetzung mit den Verbrechen des NS-Staates.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Dokumentationszentrum_Topographie_des_Terrors.jpg/960px-Dokumentationszentrum_Topographie_des_Terrors.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Dokumentationszentrum_Topographie_des_Terrors.jpg",
+      "artist": "Josef Streichholz",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1987,
+    "sector": "west",
+    "wikidata": "https://www.wikidata.org/wiki/Q819081",
+    "localized": {
+     "en": {
+      "built": "exhibition from 1987, building 2007–2010",
+      "opened": "2010",
+      "styles": [
+       "Contemporary"
+      ],
+      "architects": [
+       "Ursula Wilms",
+       "Heinz W. Hallmann (landscape)"
+      ],
+      "commissionedBy": [
+       "Federal Government and Berlin"
+      ],
+      "history": "After the demolition of the ruins in the 1950s, the area was used as a bumper car site and a dumping ground for rubble from the renovation of Kreuzberg. The plans for a memorial site on the former site of the Gestapo goes back to 1978, when Berlin architecture critic Dieter Hoffmann-Axthelm was one of the first to note, in essays and surveys, the significance of the former site of the Gestapo, SD and RSHA headquarters.\n\nThe first exhibition on the site's history was created for the 750th anniversary of Berlin in 1987. The research continued after it, leading to a documentation centre that collected some more evidence for the terror of the National Socialists in Germany. In 1992, a foundation was created for the construction and maintenance of the centre with an associated permanent exhibition. The managing director is Rabbi Andreas Nachama.\n\nA tender in 1993 to design the museum complex was won by the Pritzker Prize-winning Swiss architect Peter Zumthor. Based on the temporary exhibition building, his design was likened to the skeleton of a barracks, allowing light through the glazed gaps in the concrete beams. Although critically acclaimed, the structure proved expensive to build and when the original contractor became insolvent in the middle of construction, no other contractor willing to continue the project for the fixed fee could be found. With the city of Berlin unwilling to pay an additional three to five million Euros for a reduced design and funding from the federal government delayed until more progress was achieved, the site was left with just the concrete stairwells of the design. Having spent 13.9 million Euros already, these were demolished, despite the protests of Zumthor and other architects, in 2004."
+     },
+     "de": {
+      "built": "Ausstellung ab 1987, Neubau 2007–2010",
+      "opened": "2010",
+      "styles": [
+       "Zeitgenössische Architektur"
+      ],
+      "architects": [
+       "Ursula Wilms",
+       "Heinz W. Hallmann (Landschaft)"
+      ],
+      "commissionedBy": [
+       "Bund und Land Berlin"
+      ],
+      "history": "Nach dem Abriss der schwer beschädigten Gebäude in den 1950er Jahren wurde das Gelände unter anderem anderthalb Jahrzehnte als Auto-Fahrübungsgelände (Betreiber: „Straps-Harry“) und als Schutthalde der Kreuzberger Flächensanierung genutzt.\n\nDie Pläne, auf dem Gelände des ehemaligen Sitzes der Gestapo eine Gedenkstätte zu errichten, reichen zurück bis ins Jahr 1978. Der Berliner Architekturkritiker Dieter Hoffmann-Axthelm wies in diesem Jahr in Aufsätzen und Gutachten als einer der Ersten auf die Bedeutung des ehemaligen Geländes der Gestapo-, SD- und RSHA-Zentralen hin.\n\nDie erste Ausstellung zur Topographie des Terrors entstand zur 750-Jahr-Feier Berlins im Jahr 1987 und wurde anschließend fortgeführt. Die Vorarbeiten zur Ausrichtung der Ausstellung mündeten in die Forderung, ein Dokumentationszentrum zu schaffen, das den Terror der Nationalsozialisten in Deutschland weiter erforschen und dokumentieren sollte.\n\nIn der Folge wurde 1992 die Stiftung Topographie des Terrors gegründet. Von 1994 bis 2019 wurde die Stiftung von dem Historiker und Rabbiner Andreas Nachama geleitet, der schon die Ausstellung im Jahr 1987 betreut hatte. Das wichtigste Projekt der Stiftung war zu Beginn der Bau des Dokumentationszentrums mit angegliederter Dauerausstellung im Freien."
+     }
+    }
+   }
+  },
+  {
+   "id": "wannsee-konferenz",
+   "name": "Haus der Wannsee-Konferenz",
+   "names": {
+    "en": "House of the Wannsee Conference"
+   },
+   "category": "memorial",
+   "latitude": 52.432922,
+   "longitude": 13.165601,
+   "radius": 40,
+   "district": "Steglitz-Zehlendorf",
+   "wikidata": "Q152120",
+   "entry": {
+    "en": {
+     "title": "Wannsee Conference",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Wannsee_Conference",
+     "text": "The Wannsee Conference was a meeting of senior government officials of Nazi Germany and Schutzstaffel (SS) leaders, held in the Berlin suburb of Wannsee on 20 January 1942. The purpose of the conference, called by the director of the Reich Security Main Office SS-Obergruppenführer Reinhard Heydrich, was to ensure the co-operation of administrative leaders of various government departments in the implementation of the Final Solution to the Jewish Question, whereby most of the Jews of German-occupied Europe would be deported to occupied Poland and murdered. Conference participants included representatives from several government ministries, including state secretaries from the Foreign Office, the justice, interior, and state ministries, and representatives from the SS. In the course of the meeting, Heydrich outlined how European Jews would be rounded up and sent to extermination camps in the General Government (the occupied part of Poland), where they would be murdered in the Holocaust.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7f/Haus_der_Wannsee-Konferenz_02-2014.jpg/960px-Haus_der_Wannsee-Konferenz_02-2014.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Haus_der_Wannsee-Konferenz_02-2014.jpg",
+      "artist": "A.Savin",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    },
+    "de": {
+     "title": "Wannseekonferenz",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Wannseekonferenz",
+     "text": "Die Wannseekonferenz war eine geheime Besprechung am 20. Januar 1942 in einer Villa am Großen Wannsee in Berlin. Fünfzehn hochrangige Vertreter von nationalsozialistischer Reichsregierung und SS-Behörden kamen zusammen, um den begonnenen Holocaust an den Juden im Detail zu organisieren und die Zusammenarbeit der beteiligten Instanzen zu koordinieren. Den Vorsitz führte Reinhard Heydrich – Chef der Sicherheitspolizei (SiPo) und des Sicherheitsdienstes des Reichsführers SS (SD).\n\nEntgegen verbreiteter Meinung war es nicht Hauptzweck der Konferenz, den Holocaust zu beschließen – diese Entscheidung war mit den seit dem Angriff auf die Sowjetunion im Juni 1941 stattfindenden Massenmorden dort faktisch schon gefallen –, sondern die Deportation der gesamten jüdischen Bevölkerung Europas zur Vernichtung in den Osten zu organisieren und zu koordinieren. Die Teilnehmer legten den zeitlichen Ablauf für die weiteren Massentötungen fest, erweiterten die Opfergruppen zunehmend und einigten sich auf eine Zusammenarbeit unter Leitung des Reichssicherheitshauptamts (RSHA), das SS-Obergruppenführer Heydrich ebenfalls führte.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7f/Haus_der_Wannsee-Konferenz_02-2014.jpg/960px-Haus_der_Wannsee-Konferenz_02-2014.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Haus_der_Wannsee-Konferenz_02-2014.jpg",
+      "artist": "A.Savin",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1914,
+    "sector": "west",
+    "wikidata": "https://www.wikidata.org/wiki/Q152120",
+    "localized": {
+     "en": {
+      "built": "1914–1915",
+      "opened": "1992 (memorial)",
+      "architects": [
+       "Paul Baumgarten"
+      ],
+      "commissionedBy": [
+       "Ernst Marlier"
+      ],
+      "history": "Legalized discrimination against Jews in Germany began immediately after the Nazi seizure of power in January 1933. The ideology of Nazism brought together elements of antisemitism, racial hygiene, and eugenics and combined them with pan-Germanism and territorial expansionism with the goal of obtaining more Lebensraum (living space) for the Germanic people. Nazi Germany attempted to obtain this new territory by invading Poland and the Soviet Union, intending to deport or exterminate the Jews and Slavs living there, who were viewed as being inferior to the Aryan master race.\n\nDiscrimination against Jews, long-standing but extra-legal throughout much of Europe at the time, was codified in Germany immediately after the Nazi seizure of power on 30 January 1933. The Law for the Restoration of the Professional Civil Service, passed on 7 April of that year, excluded most Jews from the legal profession and the civil service. Similar legislation soon deprived other Jews of the right to practise their professions. Violence and economic pressure were used by the regime to force Jews to leave the country. Jewish businesses were denied access to markets, forbidden to advertise in newspapers, and deprived of access to government contracts. Citizens were harassed and subjected to violent attacks and boycotts of their businesses."
+     },
+     "de": {
+      "built": "1914–1915",
+      "opened": "1992 (Gedenkstätte)",
+      "architects": [
+       "Paul Baumgarten"
+      ],
+      "commissionedBy": [
+       "Ernst Marlier"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "luftbrueckendenkmal",
+   "name": "Luftbrückendenkmal",
+   "names": {
+    "en": "Berlin Airlift Memorial"
+   },
+   "category": "memorial",
+   "latitude": 52.4846,
+   "longitude": 13.3866,
+   "radius": 40,
+   "district": "Tempelhof-Schöneberg",
+   "wikidata": "Q878229",
+   "entry": {
+    "en": {
+     "title": "Luftbrückendenkmal",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Luftbr%C3%BCckendenkmal",
+     "text": "Als Luftbrückendenkmal werden die nach Plänen von Eduard Ludwig (1906–1960) gestalteten, an die Berliner Luftbrücke mit ihren Opfern erinnernden Skulpturen in Berlin, Frankfurt am Main und Celle bezeichnet. Im Berliner Volksmund sind auch die Bezeichnungen Hungerharke und Hungerkralle präsent. Zur zeitlich ersten Berliner Skulptur korrespondierende Duplikate wurden im Jahr 1985 an der damaligen Rhein-Main Air Base auf dem Gelände des Frankfurter Flughafens sowie – in etwas kleinerer Ausführung – bei der ehemaligen Royal-Air-Force-Station Celle bei Hannover (seit dem 21. Jahrhundert: Heeresflugplatz Celle) geschaffen.",
+     "image": null
+    },
+    "de": {
+     "title": "Luftbrückendenkmal",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Luftbr%C3%BCckendenkmal",
+     "text": "Als Luftbrückendenkmal werden die nach Plänen von Eduard Ludwig (1906–1960) gestalteten, an die Berliner Luftbrücke mit ihren Opfern erinnernden Skulpturen in Berlin, Frankfurt am Main und Celle bezeichnet. Im Berliner Volksmund sind auch die Bezeichnungen Hungerharke und Hungerkralle präsent. Zur zeitlich ersten Berliner Skulptur korrespondierende Duplikate wurden im Jahr 1985 an der damaligen Rhein-Main Air Base auf dem Gelände des Frankfurter Flughafens sowie – in etwas kleinerer Ausführung – bei der ehemaligen Royal-Air-Force-Station Celle bei Hannover (seit dem 21. Jahrhundert: Heeresflugplatz Celle) geschaffen.",
+     "image": null
+    }
+   },
+   "facts": {
+    "year": 1951,
+    "sector": "west",
+    "wikidata": "https://www.wikidata.org/wiki/Q878229",
+    "localized": {
+     "en": {
+      "built": "1951",
+      "opened": "1951",
+      "styles": [
+       "Modernism"
+      ],
+      "architects": [
+       "Eduard Ludwig"
+      ],
+      "commissionedBy": [
+       "West Berlin (Ernst Reuter)"
+      ]
+     },
+     "de": {
+      "built": "1951",
+      "opened": "1951",
+      "styles": [
+       "Moderne"
+      ],
+      "architects": [
+       "Eduard Ludwig"
+      ],
+      "commissionedBy": [
+       "West-Berlin (Ernst Reuter)"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "ehrenmal-treptow",
+   "name": "Sowjetisches Ehrenmal Treptow",
+   "names": {
+    "en": "Soviet War Memorial (Treptower Park)"
+   },
+   "category": "memorial",
+   "latitude": 52.487664,
+   "longitude": 13.46882,
+   "radius": 80,
+   "district": "Treptow-Köpenick",
+   "wikidata": "Q48441",
+   "entry": {
+    "en": {
+     "title": "Soviet War Memorial (Treptower Park)",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Soviet_War_Memorial_(Treptower_Park)",
+     "text": "The Soviet War Memorial (German: Sowjetisches Ehrenmal) is a war memorial and military cemetery in Berlin's Treptower Park. It was built to the design of the Soviet architect Yakov Belopolsky to commemorate 7,000 of the 80,000 Red Army soldiers who fell in the Battle of Berlin in April–May 1945. It opened four years after the end of World War II in Europe, on 8 May 1949. The Memorial served as the central war memorial of East Germany.\n\nThe monument is one of three Soviet memorials built in Berlin after the end of the war. The other two memorials are the Tiergarten memorial, built in 1945 in the Tiergarten district of what later became West Berlin, and the Schönholzer Heide Memorial in Berlin's Pankow district.\n\nTogether with the Rear-front Memorial in Magnitogorsk and The Motherland Calls in Volgograd, the monument is a part of a triptych.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Sowjetisches_Ehrendenkmal_Klemm_Russischer_Soldat.jpg/960px-Sowjetisches_Ehrendenkmal_Klemm_Russischer_Soldat.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Sowjetisches_Ehrendenkmal_Klemm_Russischer_Soldat.jpg",
+      "artist": "Toniklemm",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    },
+    "de": {
+     "title": "Sowjetisches Ehrenmal im Treptower Park",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Sowjetisches_Ehrenmal_im_Treptower_Park",
+     "text": "Das Sowjetische Ehrenmal im Treptower Park (auch Treptower Ehrenmal) ist eine Gedenkstätte und zugleich Soldatenfriedhof im Treptower Park in Berlin. Die im Mai 1949 fertiggestellte Anlage wurde auf Weisung der Sowjetischen Militäradministration in Deutschland errichtet, um die im Zweiten Weltkrieg gefallenen Soldaten der Roten Armee zu ehren. Über 7000 der in der Schlacht um Berlin gefallenen Soldaten sind hier bestattet. Die zum Monument gehörende Kolossalstatue ist mit Hügel und Sockel insgesamt 30 Meter hoch.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Sowjetisches_Ehrendenkmal_Klemm_Russischer_Soldat.jpg/960px-Sowjetisches_Ehrendenkmal_Klemm_Russischer_Soldat.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Sowjetisches_Ehrendenkmal_Klemm_Russischer_Soldat.jpg",
+      "artist": "Toniklemm",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1946,
+    "sector": "east",
+    "wikidata": "https://www.wikidata.org/wiki/Q48441",
+    "localized": {
+     "en": {
+      "built": "1946–1949",
+      "opened": "1949",
+      "styles": [
+       "Socialist Classicism"
+      ],
+      "architects": [
+       "Yakov Belopolsky",
+       "Yevgeny Vuchetich (sculptor)"
+      ],
+      "commissionedBy": [
+       "Soviet Military Administration"
+      ],
+      "history": "At the conclusion of World War II, three Soviet war memorials were built in the city of Berlin to commemorate Soviet deaths in World War II, especially the 80,000 that died during the Battle of Berlin. The memorials also serve as cemeteries for those killed.\n\nA competition was announced shortly after the end of the war for the design of the park. The competition attracted 33 entries, with the eventual design a hybrid of the submissions of the architect Yakov Belopolski, sculptor Yevgeny Vuchetich, painter Alexander A. Gorpenko and engineer Sarra S. Walerius. The sculptures, reliefs, and flame bowls with a 2.5 m diameter were cast at the Kunstgießerei in 1948. The memorial itself was built in Treptower Park on land previously occupied by a sports field. The memorial was completed in 1949. For over three years, some 1,200 workers, 200 stonemasons, and 90 sculptors worked on the complex.\n\nIt was rumored that the remains of the Reich Chancellery had been used for the construction of the memorial, but this was not the case.\n\nAround the time of the fall of the Berlin Wall, unknown persons vandalized parts of the memorial with anti-Soviet graffiti. The Spartakist-Arbeiterpartei Deutschlands claimed that the vandals were right-wing extremists and arranged a demonstration on 3 January 1990, which the PDS supported; 250,000 East German citizens participated. Through the demonstrations, the newly formed party stayed true to the communist roots of its founding party, and attempted to gain political influence."
+     },
+     "de": {
+      "built": "1946–1949",
+      "opened": "1949",
+      "styles": [
+       "Sozialistischer Klassizismus"
+      ],
+      "architects": [
+       "Yakov Belopolsky",
+       "Yevgeny Vuchetich (Bildhauer)"
+      ],
+      "commissionedBy": [
+       "Sowjetische Militäradministration"
+      ],
+      "history": "Zur Gestaltung der Gedenkstätte in Berlin-Treptow wurde von der sowjetischen Kommandantur ein Wettbewerb ausgelobt, zu dem 33 Entwürfe eingingen. Ab Juni 1946 wurde der von einem sowjetischen Schöpferkollektiv stammende Vorschlag umgesetzt, dem der Architekt Jakow B. Belopolski, der Bildhauer Jewgeni Wutschetitsch, der Maler Alexander A. Gorpenko und die Ingenieurin Sarra S. Walerius vorstanden. Außer Skulpturen, u. a. von Lew Kerbel, und Reliefs kamen auch Flammenschalen mit 2,50 m Durchmesser zur Ausführung, die 1948 von der Kunstgießerei Lauchhammer hergestellt wurden. Zudem wurde das Können der Gießerei Sperlich aus Birkholzaue für den Aufbau der Monumentalplastik genutzt. Die Gedenkstätte entstand an der Stelle einer großen Spiel- und Sportwiese im Bereich des anlässlich der Berliner Gewerbeausstellung von 1896 entstandenen „Neuen Sees“. Sie wurde im Mai 1949 vollendet.\n\nDie deutsche Bundesregierung hat die Anlage bis 2004 für mehr als elf Millionen Euro sanieren lassen. Dabei wurden auch die vergoldeten Zitate von Josef Stalin restauriert. Im Oktober 2003 wurde die Statue des Rotarmisten in einer Werkstatt auf Rügen restauriert. Anschließend wurde sie mit einem Schiff nach Berlin zurückgebracht und steht seit dem 4. Mai 2004 wieder auf ihrem Sockel."
+     }
+    }
+   }
+  },
+  {
+   "id": "stasimuseum",
+   "name": "Stasimuseum",
+   "category": "memorial",
+   "latitude": 52.514507,
+   "longitude": 13.487483,
+   "radius": 40,
+   "district": "Lichtenberg",
+   "wikidata": "Q570472",
+   "entry": {
+    "en": {
+     "title": "Stasimuseum",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Stasimuseum",
+     "text": "The Stasimuseum (also known in German as the Forschungs- und Gedenkstätte Normannenstraße) is a research and memorial centre concerning the political system of the former East Germany. It is located in the Lichtenberg locality of Berlin, in the former headquarters of the Stasi (officially the Ministerium für Staatssicherheit), on Ruschestraße, near Frankfurter Allee and U-Bahn station Magdalenenstraße.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/14/Haus1-Ehemalige-Stasi-Zentrale.jpg/960px-Haus1-Ehemalige-Stasi-Zentrale.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Haus1-Ehemalige-Stasi-Zentrale.jpg",
+      "artist": "DieNormativität",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    },
+    "de": {
+     "title": "Stasimuseum",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Stasimuseum",
+     "text": "Das Stasimuseum (Forschungs- und Gedenkstätte Normannenstraße) ist eine von einem Verein getragene Einrichtung in Berlin zur Information über die Tätigkeit der Staatssicherheit, über Widerstandsbewegungen und Opposition in der DDR und über Aspekte des politischen Systems der DDR.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/14/Haus1-Ehemalige-Stasi-Zentrale.jpg/960px-Haus1-Ehemalige-Stasi-Zentrale.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Haus1-Ehemalige-Stasi-Zentrale.jpg",
+      "artist": "DieNormativität",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1960,
+    "sector": "east",
+    "wikidata": "https://www.wikidata.org/wiki/Q570472",
+    "localized": {
+     "en": {
+      "built": "1960–1961 (Stasi headquarters, House 1)",
+      "opened": "1990 (museum)",
+      "commissionedBy": [
+       "Ministry for State Security"
+      ],
+      "history": "The centrepiece of the exhibition is the office and working quarters of the former Minister of State Security – i.e. head of the Stasi – Erich Mielke. The museum is operated by the Antistalinistische Aktion Berlin-Normannenstraße (ASTAK), which was founded by civil rights activists in Berlin in 1990. It aims to foster the development of the museum as a \"centre for the collection, preservation, documentation, rehabilitation and exhibition of evidence and research materials relating to East Germany\".\n\nIn 2010 the German government announced its intention to take over the Stasimuseum, which led to a three-way dispute between ASTAK, local government in Lichtenberg, and the German national government over the future of the site. ASTAK subsequently announced that Building 1 of the Stasi headquarters, the museum's original location, would be reconstructed and renovated, and the museum would be temporarily moved to Building 22."
+     },
+     "de": {
+      "built": "1960–1961 (Stasi-Zentrale, Haus 1)",
+      "opened": "1990 (Museum)",
+      "commissionedBy": [
+       "Ministerium für Staatssicherheit"
+      ],
+      "history": "Am 15. Januar 1990 wurde die Zentrale des MfS in Berlin besetzt. Vorausgegangen waren ähnliche Besetzungen von Stasi-Niederlassungen in anderen DDR-Städten, so Erfurt und Leipzig bereits im Dezember 1989. Die Besetzungen sollten die systematische Aktenvernichtung durch das MfS verhindern, die seit dem Herbst 1989 im Zuge der friedlichen Revolution nach dem Mauer­fall am 9. November 1989 lief – wenngleich durch genehmigte und ungenehmigte Vernichtungen dennoch vieles verloren ging. Durch den „Sturm“ auf die Stasi-Zentrale in der Normannenstraße konnten etliche Dokumente gerettet werden, die für die Aufarbeitung von SED-Diktatur und juristischer Verfolgung von Stasi-Verbrechen große Bedeutung hatten. Die ASTAK eröffnete am 7. November 1990 die „Forschungs- und Gedenkstätte Normannenstraße“ mit der Ausstellung Wider den Schlaf der Vernunft. Seitdem ist das Haus 1 als Museum für die Öffentlichkeit zugänglich."
+     }
+    }
+   }
+  },
+  {
+   "id": "hohenschoenhausen",
+   "name": "Gedenkstätte Berlin-Hohenschönhausen",
+   "names": {
+    "en": "Berlin-Hohenschönhausen Memorial"
+   },
+   "category": "memorial",
+   "latitude": 52.541706,
+   "longitude": 13.50136,
+   "radius": 40,
+   "district": "Lichtenberg",
+   "wikidata": "Q390508",
+   "entry": {
+    "en": {
+     "title": "Berlin-Hohenschönhausen Memorial",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Berlin-Hohensch%C3%B6nhausen_Memorial",
+     "text": "The Berlin-Hohenschönhausen Memorial (German: Gedenkstätte Berlin-Hohenschönhausen) is a museum and memorial located in Lichtenberg district, Berlin in the locality of Alt-Hohenschönhausen, part of the former borough of Hohenschönhausen. It was opened in 1994 on the site of the main political prison of the former East German Communist Ministry of State Security, the Stasi.\n\nUnlike many other government and military institutions in East Germany, Hohenschönhausen prison was not stormed by demonstrators after the fall of the Berlin Wall, allowing prison authorities to destroy evidence of the prison's functions and history. Because of this, today's knowledge of the functioning of the prison comes mainly from eyewitness accounts and documents sourced from other East German institutions.\n\nThe prison was depicted in the 2006 film The Lives of Others, in 2017 TV series The Same Sky, in 2018 Amazon Prime series Deutschland 86, and in the 2020 series The Defeated. It is a member organisation of the Platform of European Memory and Conscience.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7f/Gedenkstaette_Berlin-Hohenschoenhausen_Genslerstra%C3%9Fe.jpg/960px-Gedenkstaette_Berlin-Hohenschoenhausen_Genslerstra%C3%9Fe.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Gedenkstaette_Berlin-Hohenschoenhausen_Genslerstra%C3%9Fe.jpg",
+      "artist": "Tohma (talk)",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    },
+    "de": {
+     "title": "Gedenkstätte Berlin-Hohenschönhausen",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Gedenkst%C3%A4tte_Berlin-Hohensch%C3%B6nhausen",
+     "text": "Die Gedenkstätte Berlin-Hohenschönhausen ist eine Stiftung öffentlichen Rechts zur Auseinandersetzung mit den Formen und Folgen politischer Verfolgung und Unterdrückung in der kommunistischen Diktatur. Sie befindet sich auf dem Gelände der ehemaligen zentralen Untersuchungshaftanstalt des Ministeriums für Staatssicherheit der DDR in Berlin-Alt-Hohenschönhausen im Bezirk Lichtenberg. Dort wurden vor allem politische Gefangene, darunter fast alle bekannten DDR-Oppositionellen, inhaftiert und physisch und psychisch gefoltert. Die Gedenkstätte ist Mitglied der Platform of European Memory and Conscience.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7f/Gedenkstaette_Berlin-Hohenschoenhausen_Genslerstra%C3%9Fe.jpg/960px-Gedenkstaette_Berlin-Hohenschoenhausen_Genslerstra%C3%9Fe.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Gedenkstaette_Berlin-Hohenschoenhausen_Genslerstra%C3%9Fe.jpg",
+      "artist": "Tohma (talk)",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1945,
+    "sector": "east",
+    "wikidata": "https://www.wikidata.org/wiki/Q390508",
+    "localized": {
+     "en": {
+      "built": "Soviet camp 1945, Stasi prison 1951–1989",
+      "opened": "1994 (memorial)",
+      "commissionedBy": [
+       "Soviet NKVD",
+       "Ministry for State Security (from 1951)"
+      ],
+      "history": "The Hohenschönhausen area was largely industrial prior to World War II. The area later occupied by the main building housed a factory manufacturing supplies for the soup kitchens of the National Socialist People's Welfare organization. That red-brick building was completed in 1939.\n\nIn June 1945, at the conclusion of World War II, the Soviet NKVD took over the Hohenschönhausen area of Lichtenberg and transformed it into a detention and transit camp, called Special Camp No. 3. The camp served as both a prison and transfer point. Over 20,000 people passed through Special Camp No. 3 on their way to other Soviet camps, including Heinrich George, who was brought to the Special Camp No. 7 in Sachsenhausen in 1946 where he died shortly afterwards.\n\nLiving conditions in the camp were deplorable, with death from malnutrition, disease, or common cold. Although official statistics list 886 deaths at the camp between July 1945 and October 1946, independent estimates put the toll as high as 3,000. Bodies were disposed of in local bomb craters.\n\nThe camp was closed and prisoners relocated to other camps in October 1946. After the closing of Special Camp No. 3, the Hohenschönhausen compound served as a Soviet prison during the winter of 1946–1947. The former cafeteria was converted to the underground prison area (\"submarine\") by prison labour."
+     },
+     "de": {
+      "built": "sowjetisches Speziallager 1945, Stasi-Gefängnis 1951–1989",
+      "opened": "1994 (Gedenkstätte)",
+      "commissionedBy": [
+       "Sowjetisches NKWD",
+       "Ministerium für Staatssicherheit (ab 1951)"
+      ],
+      "history": "Eine 1945 in einem Sperrgebiet des sowjetischen NKWD eingerichtete Haftstätte wurde 1946 zur zentralen Untersuchungshaftanstalt der sowjetischen Geheimpolizei in Deutschland. Die Besatzungsmacht übergab 1951 das Sperrgebiet an die DDR, dessen Ministerium für Staatssicherheit dort bis 1989 sein „zentrales Untersuchungsgefängnis“ betrieb.\n\nAuf damaligen Stadtplänen war die Haftanstalt nicht verzeichnet. Während der friedlichen Revolution in der DDR übernahm im Januar 1990 das Ministerium des Innern das Untersuchungsgefängnis. Es wurde Ende November 1990 im Zuge der Wiedervereinigung Deutschlands geschlossen. Im Jahr 1992 kamen die Gefängnisgebäude unter Denkmalschutz. Die Gedenkstätte nahm 1994 auf dem Gefängnisgelände ihren Betrieb auf.\n\nDas Gelände der späteren Haftanstalt Hohenschönhausen gehörte bis 1938 dem Maschinenfabrikanten Richard Heike. Die Nationalsozialistische Volkswohlfahrt errichtete auf dem Grundstück einen zweistöckigen Backsteinbau, der eine Großküche beherbergte. In der Nähe der Großküche befand sich während des Zweiten Weltkriegs ein Barackenlager für Kriegsgefangene und Zwangsarbeiter.\n\nIm Mai 1945 richtete das sowjetische NKWD auf dem Gelände der Großküche ein Speziallager ein, die Nr. 3 von zehn Lagern in der Sowjetischen Besatzungszone."
+     }
+    }
+   }
+  },
+  {
+   "id": "russischer-friedhof-tegel",
+   "name": "Russischer Friedhof Tegel",
+   "names": {
+    "en": "Russian Orthodox Cemetery Tegel"
+   },
+   "category": "cemetery",
+   "latitude": 52.57767,
+   "longitude": 13.30067,
+   "radius": 60,
+   "district": "Reinickendorf",
+   "wikidata": "Q320354",
+   "entry": {
+    "en": {
+     "title": "Berlin-Tegel Russian Orthodox Cemetery",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Berlin-Tegel_Russian_Orthodox_Cemetery",
+     "text": "The Berlin-Tegel Russian Orthodox Cemetery (German: Russischer Friedhof Berlin-Tegel) is the only Russian Orthodox burial ground in Berlin. It is located on Witte street in the Tegel locality of the Reinickendorf borough. It is owned and operated by the Brotherhood of St. Prince Vladimir (Bratstvo).",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/Russfriedhoftegel06.jpg/960px-Russfriedhoftegel06.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Russfriedhoftegel06.jpg",
+      "artist": "A.Savin",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    },
+    "de": {
+     "title": "Russischer Friedhof (Berlin-Tegel)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Russischer_Friedhof_(Berlin-Tegel)",
+     "text": "Der Russische Friedhof in der Wittestraße 37 in Berlin-Tegel (Bezirk Reinickendorf) ist der einzige zivile russisch-orthodoxe Begräbnisplatz in Berlin. Er wurde 1893 gegründet und wurde später für zahlreiche Exilrussen in Deutschland, darunter auch viele bekannte Adelige, zur letzten Ruhestätte. Er ist Eigentum der Bruderschaft des heiligen Fürsten Wladimir.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/Russfriedhoftegel06.jpg/960px-Russfriedhoftegel06.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Russfriedhoftegel06.jpg",
+      "artist": "A.Savin",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1892,
+    "sector": "west",
+    "wikidata": "https://www.wikidata.org/wiki/Q320354",
+    "localized": {
+     "en": {
+      "built": "1892–1894",
+      "opened": "1894",
+      "styles": [
+       "Russian Revival"
+      ],
+      "architects": [
+       "Albert Blohm"
+      ],
+      "commissionedBy": [
+       "Brotherhood of St. Prince Vladimir"
+      ]
+     },
+     "de": {
+      "built": "1892–1894",
+      "opened": "1894",
+      "styles": [
+       "Neorussischer Stil"
+      ],
+      "architects": [
+       "Albert Blohm"
+      ],
+      "commissionedBy": [
+       "Bruderschaft des heiligen Fürsten Wladimir"
+      ],
+      "history": "Im 17. und frühen 18. Jahrhundert, besonders nach der Eröffnung der russischen Gesandtschaft im Jahre 1706, war die russische Gemeinde in Berlin bereits so zahlreich, dass sich die Frage nach einer orthodoxen Kapelle stellte. Vorerst dienten Räume in privaten Anwesen als Gottesdienststätten. Im Jahre 1718, als Graf Alexander Golowkin (andere Schreibweise Aleksandr Gavrilovč Golovkin) Botschafter Russlands in Preußen wurde, eröffnete direkt in der Botschaft eine ständige Kapelle. Diese Kapelle zog um, wenn die Botschaft umzog, und sie wurde während des Siebenjährigen Krieges und im Jahre 1812, als Preußen mit Napoleon koalierte, evakuiert. In der Botschaftskapelle in der Straße Unter den Linden wurden so von 1837 bis 1922 Gottesdienste abgehalten.\n\nZur Anlage eines eigenen Friedhofes ergriff der Vorsteher der Botschaftskapelle, Erzpriester Alexei Malzew, 1890 zusammen mit der Bruderschaft des heiligen Fürsten Wladimir die Initiative. Diese wohltätige Bruderschaft, die auf Unterstützung von Kaiser Alexander III., von Großfürst Wladimir Alexandrowitsch sowie der jeweiligen Botschafter zählen konnte und zu deren Ehrenmitgliedern einflussreiche Personen wie Nikolai von Japan, Theophan Goworow, Johannes von Kronstadt, Großfürstin Jelisaweta Fjodorowna und Großfürst Pawel Alexandrowitsch gehörten, erwarb im Oktober 1892 das über 18.000 m² große Grundstück für den Preis von 28.000 Mark. Bis dahin wurden orthodoxe Christen vorwiegend auf bestehenden, meist protestantischen Berliner Friedhöfen bestattet. Auch wollte die Gemeinde auf dem erworbenen Grundstück ein neues Gotteshaus bauen."
+     }
+    }
+   }
+  },
+  {
+   "id": "gedenkstaette-ploetzensee",
+   "name": "Gedenkstätte Plötzensee",
+   "names": {
+    "en": "Plötzensee Memorial"
+   },
+   "category": "memorial",
+   "latitude": 52.540867,
+   "longitude": 13.322816,
+   "radius": 40,
+   "district": "Charlottenburg-Wilmersdorf",
+   "wikidata": "Q694274",
+   "entry": {
+    "en": {
+     "title": "Gedenkstätte Plötzensee",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Gedenkst%C3%A4tte_Pl%C3%B6tzensee",
+     "text": "Die Gedenkstätte Plötzensee erinnert an die Opfer des Nationalsozialismus im Strafgefängnis Berlin-Plötzensee. Sie befindet sich in der ehemaligen Hinrichtungsstätte am Rande der heutigen Justizvollzugsanstalt Plötzensee in der Berliner Ortslage Plötzensee des Ortsteils Charlottenburg-Nord (Bezirk Charlottenburg-Wilmersdorf) und wurde 1952 vom Land Berlin eingeweiht.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d6/JVA_und_Gedenkstaette_Ploetzensee_04-2015_img4.jpg/960px-JVA_und_Gedenkstaette_Ploetzensee_04-2015_img4.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:JVA_und_Gedenkstaette_Ploetzensee_04-2015_img4.jpg",
+      "artist": "A.Savin",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    },
+    "de": {
+     "title": "Gedenkstätte Plötzensee",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Gedenkst%C3%A4tte_Pl%C3%B6tzensee",
+     "text": "Die Gedenkstätte Plötzensee erinnert an die Opfer des Nationalsozialismus im Strafgefängnis Berlin-Plötzensee. Sie befindet sich in der ehemaligen Hinrichtungsstätte am Rande der heutigen Justizvollzugsanstalt Plötzensee in der Berliner Ortslage Plötzensee des Ortsteils Charlottenburg-Nord (Bezirk Charlottenburg-Wilmersdorf) und wurde 1952 vom Land Berlin eingeweiht.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d6/JVA_und_Gedenkstaette_Ploetzensee_04-2015_img4.jpg/960px-JVA_und_Gedenkstaette_Ploetzensee_04-2015_img4.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:JVA_und_Gedenkstaette_Ploetzensee_04-2015_img4.jpg",
+      "artist": "A.Savin",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1952,
+    "sector": "west",
+    "wikidata": "https://www.wikidata.org/wiki/Q694274",
+    "localized": {
+     "en": {
+      "built": "prison 1868–1879, memorial 1952",
+      "opened": "1952",
+      "architects": [
+       "Bruno Grimmek"
+      ],
+      "commissionedBy": [
+       "West Berlin"
+      ],
+      "history": "Das Gefängnis Plötzensee wurde von 1868 bis 1879 auf einem Gelände des Gutsbezirks Plötzensee errichtet, das sich im Eigentum des königlichen Forstfiskus’ befand. Mit der Bildung der Gemeinde Groß-Berlin 1920 wurde das Areal dem damaligen Berliner Bezirk Charlottenburg zugeordnet.\n\nIn der Zeit des Nationalsozialismus wurden im Strafgefängnis nicht nur Freiheitsstrafen vollzogen, sondern es diente (zusammen mit der Strafanstalt Brandenburg-Görden) auch als „zentrale Hinrichtungsstätte für den Vollstreckungsbezirk IV“. Hinrichtungen in Plötzensee erfolgten zunächst mit dem Handbeil auf dem Gefängnishof, mit Einführung der Guillotine wurde eine gemauerte frühere Arbeitsbaracke am Rande des Gefängnisareals für den Vollzug der Todesstrafe adaptiert. Besonders die vom Berliner Kammergericht und die vom 1934 errichteten „Volksgerichtshof“ zum Tode Verurteilten wurden hier hingerichtet; verantwortlicher Scharfrichter war von 1942 bis 1945 Wilhelm Röttger.\n\nPlötzensee wurde außerdem als Untersuchungshaftanstalt des „Volksgerichtshofs“ und anderer politischer Sondergerichte genutzt. Während des Zweiten Weltkriegs wurden in Plötzensee zudem zahlreiche ausländische Zwangsarbeiter inhaftiert; fast die Hälfte der in Plötzensee Hingerichteten stammte nicht aus Deutschland.\n\nIn der Zeit des Nationalsozialismus wurden im Gefängnis Plötzensee weit über 2800 Todesurteile vollstreckt, unter anderem an Mitgliedern der „Roten Kapelle“, Teilnehmern des gescheiterten Umsturzversuchs vom 20. Juli 1944 und an Mitgliedern des „Kreisauer Kreises“. Darunter waren auch über 300 Frauen, die zur Hinrichtung aus dem Frauengefängnis Barnimstraße nach Plötzensee überführt wurden, und etwa 100 Kriegsdienstverweigerer aus den Reihen der Zeugen Jehovas."
+     },
+     "de": {
+      "built": "Gefängnis 1868–1879, Gedenkstätte 1952",
+      "opened": "1952",
+      "architects": [
+       "Bruno Grimmek"
+      ],
+      "commissionedBy": [
+       "West-Berlin"
+      ],
+      "history": "Das Gefängnis Plötzensee wurde von 1868 bis 1879 auf einem Gelände des Gutsbezirks Plötzensee errichtet, das sich im Eigentum des königlichen Forstfiskus’ befand. Mit der Bildung der Gemeinde Groß-Berlin 1920 wurde das Areal dem damaligen Berliner Bezirk Charlottenburg zugeordnet.\n\nIn der Zeit des Nationalsozialismus wurden im Strafgefängnis nicht nur Freiheitsstrafen vollzogen, sondern es diente (zusammen mit der Strafanstalt Brandenburg-Görden) auch als „zentrale Hinrichtungsstätte für den Vollstreckungsbezirk IV“. Hinrichtungen in Plötzensee erfolgten zunächst mit dem Handbeil auf dem Gefängnishof, mit Einführung der Guillotine wurde eine gemauerte frühere Arbeitsbaracke am Rande des Gefängnisareals für den Vollzug der Todesstrafe adaptiert. Besonders die vom Berliner Kammergericht und die vom 1934 errichteten „Volksgerichtshof“ zum Tode Verurteilten wurden hier hingerichtet; verantwortlicher Scharfrichter war von 1942 bis 1945 Wilhelm Röttger.\n\nPlötzensee wurde außerdem als Untersuchungshaftanstalt des „Volksgerichtshofs“ und anderer politischer Sondergerichte genutzt. Während des Zweiten Weltkriegs wurden in Plötzensee zudem zahlreiche ausländische Zwangsarbeiter inhaftiert; fast die Hälfte der in Plötzensee Hingerichteten stammte nicht aus Deutschland.\n\nIn der Zeit des Nationalsozialismus wurden im Gefängnis Plötzensee weit über 2800 Todesurteile vollstreckt, unter anderem an Mitgliedern der „Roten Kapelle“, Teilnehmern des gescheiterten Umsturzversuchs vom 20. Juli 1944 und an Mitgliedern des „Kreisauer Kreises“. Darunter waren auch über 300 Frauen, die zur Hinrichtung aus dem Frauengefängnis Barnimstraße nach Plötzensee überführt wurden, und etwa 100 Kriegsdienstverweigerer aus den Reihen der Zeugen Jehovas."
+     }
+    }
+   }
+  },
+  {
+   "id": "dorotheenstaedtischer-friedhof",
+   "name": "Dorotheenstädtischer Friedhof",
+   "names": {
+    "en": "Dorotheenstadt Cemetery"
+   },
+   "category": "cemetery",
+   "latitude": 52.528411,
+   "longitude": 13.383704,
+   "radius": 60,
+   "district": "Mitte",
+   "wikidata": "Q564922",
+   "entry": {
+    "en": {
+     "title": "Dorotheenstadt Cemetery",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Dorotheenstadt_Cemetery",
+     "text": "The Dorotheenstadt Cemetery, officially the Cemetery of the Dorotheenstadt and Friedrichswerder Parishes, is a landmarked Protestant burial ground located in the Berlin district of Mitte which dates to the late 18th century. The entrance to the 1.7-hectare (4.2-acre) plot is at 126 Chaussee Straße (next door to the Brecht House, where Bertolt Brecht and Helene Weigel spent their last years, at 125 Chaussee Straße). It is also directly adjacent to the French cemetery (also known as the cemetery of the Huguenots), established in 1780, and is sometimes confused with it.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/Dorotheenst_Friedhof_1.jpg/960px-Dorotheenst_Friedhof_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Dorotheenst_Friedhof_1.jpg",
+      "artist": "Eisenacher",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    },
+    "de": {
+     "title": "Friedhof der Dorotheenstädtischen und Friedrichswerderschen Gemeinden",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Friedhof_der_Dorotheenst%C3%A4dtischen_und_Friedrichswerderschen_Gemeinden",
+     "text": "Der Friedhof der Dorotheenstädtischen und Friedrichswerderschen Gemeinden (kurz: Dorotheenstädtischer Friedhof) liegt im Berliner Ortsteil Mitte des gleichnamigen Bezirks. Seine Fläche beträgt rund 1,7 Hektar. Der Zugang befindet sich in der Chausseestraße 126. Zahlreiche bedeutende und prominente Persönlichkeiten haben hier ihre letzte Ruhestätte gefunden. Durch die Gestaltung seiner Grabmäler ist der Friedhof auch ein wichtiges Zeugnis für die Berliner Grabmalkunst, besonders des 19. Jahrhunderts. Die Anlage steht vollständig unter Denkmalschutz.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/Dorotheenst_Friedhof_1.jpg/960px-Dorotheenst_Friedhof_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Dorotheenst_Friedhof_1.jpg",
+      "artist": "Eisenacher",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1762,
+    "sector": "east",
+    "wikidata": "https://www.wikidata.org/wiki/Q564922",
+    "localized": {
+     "en": {
+      "built": "1762",
+      "commissionedBy": [
+       "Frederick II (gave the land)",
+       "Dorotheenstadt and Friedrichswerder parishes"
+      ],
+      "history": "In the second half of the 18th century, Berlin's population was growing and there was insufficient land for cemeteries because of pressure to build on vacant land and fear of epidemics. Prussian King Frederick II, \"the Great\", donated land outside the Oranienburg Gate of the Berlin Customs Wall for this purpose; 4 cemeteries were established, of which the French cemetery and the Dorotheenstadt Cemetery survive. The Dorotheenstadt Cemetery was established jointly by the two (Protestant) parishes in the early 1760s; burials began in 1770.\n\nAlthough initially mostly the lower classes were buried in the Dorotheenstadt Cemetery, because of its proximity to Berlin University (founded 1810, since 1949 Humboldt University) and several scholarly academies (sciences, arts, architecture, singing), many prominent figures who worked and in many cases lived in Dorotheenstadt and Friedrichswerder have found their last resting place here.\n\nAs the social standing of those buried in the cemetery rose, numerous famous 19th-century artists and architects designed grave markers. For example, Johann Gottfried Schadow designed monuments for his second wife and himself. An 1822 statuette of Schadow by his student Heinrich Kaehler was placed on Schadow's grave in 1851. In 1975, a 1909 marble replica of Schadow's 1821 statue of Martin Luther for the marketplace in Wittenberg was placed at the end of the main axis of the cemetery. (It had previously been in the nearby Dorotheenstadt church, which was destroyed in World War II.) The bust of the industrialist August Borsig was created by Christian Daniel Rauch."
+     },
+     "de": {
+      "built": "1762",
+      "commissionedBy": [
+       "Friedrich II. (schenkte das Gelände)",
+       "Kirchengemeinden Dorotheenstadt und Friedrichswerder"
+      ],
+      "history": "In der zweiten Hälfte des 18. Jahrhunderts fehlte es in Berlin an ausreichendem Platz für Bestattungen. Die Einwohnerzahl wuchs, noch ungenutzte Flächen waren als Bauland gefragt. Überdies befürchtete die Stadtverwaltung, das Wohnen in unmittelbarer Nachbarschaft von Gräbern könnte den Ausbruch von Epidemien unterstützen. Daher stellte König Friedrich II., genannt Friedrich der Große, außerhalb der Zoll- und Akzisemauer geeignetes Gelände zur Verfügung, vor dem Oranienburger Tor entstanden mehrere Friedhöfe. Der Charité-Friedhof bestand dort bis 1856, der St. Hedwigs-Friedhof bis 1902. Der Französische Friedhof, 1780 für die Berliner Hugenotten unmittelbar neben dem Dorotheenstädtischen Friedhof angelegt, ist bis heute erhalten.\n\nDer Dorotheenstädtische Friedhof selbst wurde 1762 gegründet, seit 1770 gab es dort Bestattungen. Dorothea, die zweite Frau des Großen Kurfürsten, hatte einst der nahe gelegenen Dorotheenstadt ihren Namen gegeben. Wie die Dorotheenstädtische Kirche wurde nun auch der zu dieser gehörige Friedhof indirekt nach ihr benannt. Zunächst war er hauptsächlich ein Begräbnisplatz einfacher, oft mittelloser Bürger. Allmählich änderte sich dieser Charakter. Auf dem Gebiet der beiden zugehörigen Kirchengemeinden, Dorotheenstadt und Friedrichswerder, lagen Institutionen wie die Akademie der Künste, die Singakademie, die Bauakademie, die Akademie der Wissenschaften und die Berliner Universität. Viele der dort Beschäftigten wohnten auch in diesem Stadtviertel. Die gesellschaftliche Bedeutung derjenigen, die auf dem Dorotheenstädtischen Friedhof bestattet wurden, nahm zu, es entstanden zunehmend aufwändig und künstlerisch anspruchsvoll gestaltete Grabmäler."
+     }
+    }
+   }
+  },
+  {
+   "id": "museum-karlshorst",
+   "name": "Museum Berlin-Karlshorst",
+   "category": "memorial",
+   "latitude": 52.486145,
+   "longitude": 13.539845,
+   "radius": 50,
+   "district": "Lichtenberg",
+   "wikidata": "Q536614",
+   "entry": {
+    "en": {
+     "title": "Museum Berlin-Karlshorst",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Museum_Berlin-Karlshorst",
+     "text": "The Museum Berlin-Karlshorst, previously named German-Russian Museum Berlin-Karlshorst (Deutsch-Russisches Museum Berlin-Karlshorst) is dedicated to German-Soviet and German-Russian relations with a focus on the German-Soviet war of 1941–1945.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a0/Museum_Karlshorst_Mai_2022.jpg/960px-Museum_Karlshorst_Mai_2022.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Museum_Karlshorst_Mai_2022.jpg",
+      "artist": "Thm72",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    },
+    "de": {
+     "title": "Museum Berlin-Karlshorst",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Museum_Berlin-Karlshorst",
+     "text": "Das Museum Berlin-Karlshorst ist ein Museum und Baudenkmal in der Zwieseler Straße 4 im Berliner Ortsteil Karlshorst. Dort wurde am 8. Mai 1945 die bedingungslose Kapitulation der Wehrmacht ratifiziert und der Zweite Weltkrieg in Europa beendet. Mittelpunkt des Museums ist der Saal des Offizierskasinos, in dem die Unterzeichnung stattfand. Als einziges Museum in Deutschland wird mit einer ständigen Ausstellung an den Vernichtungskrieg gegen die Sowjetunion erinnert, der als Deutsch-Sowjetischer Krieg 1941–1945 in die Geschichte einging. In der ehemaligen Sowjetunion bzw. deren Nachfolgestaaten ist dieser als „Großer Vaterländischer Krieg“ bekannt. Die gesamte Anlage wurde ab 1936 als Festungspionierschule errichtet und diente während und nach der Schlacht um Berlin als Hauptquartier der Roten Armee.\n\nDas Museum ist von Dienstag bis Sonntag von 10 bis 18 Uhr geöffnet. Der Eintritt ist frei.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a0/Museum_Karlshorst_Mai_2022.jpg/960px-Museum_Karlshorst_Mai_2022.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Museum_Karlshorst_Mai_2022.jpg",
+      "artist": "Thm72",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1936,
+    "sector": "east",
+    "wikidata": "https://www.wikidata.org/wiki/Q536614",
+    "localized": {
+     "en": {
+      "built": "from 1936 (fortress engineers' school)",
+      "opened": "1995 (museum, a Soviet one from 1967)",
+      "commissionedBy": [
+       "Wehrmacht"
+      ]
+     },
+     "de": {
+      "built": "ab 1936 (Festungspionierschule)",
+      "opened": "1995 (Museum, zuvor ab 1967 ein sowjetisches)",
+      "commissionedBy": [
+       "Wehrmacht"
+      ],
+      "history": "Am 7. Mai 1945 unterzeichnete im Obersten Hauptquartier der Alliierten Expeditionsstreitkräfte in Reims der hierfür von Karl Dönitz autorisierte Generaloberst Alfred Jodl eine Urkunde über die bedingungslose Kapitulation der Wehrmacht. Diese trat am 8. Mai um 23:01 Uhr MEZ in Kraft. Da diese militärische Kapitulation lediglich von Jodl, nicht aber von den Oberbefehlshabern der einzelnen Teilstreitkräfte der deutschen Wehrmacht unterzeichnet worden war, wurde vereinbart, ein zweites Dokument dieser Kapitulation von Vertretern des Oberkommandos der Wehrmacht (OKW) sowie den Oberbefehlshabern von Heer, Luftwaffe und Kriegsmarine gegenzeichnen zu lassen.\n\nDaraufhin unterzeichneten am 8. Mai 1945 kurz vor null Uhr Generalfeldmarschall Wilhelm Keitel für das Oberkommando der Wehrmacht und das Heer, Generaladmiral Hans-Georg von Friedeburg für die Kriegsmarine und Generaloberst Hans-Jürgen Stumpff für die Luftwaffe im Offizierskasino, im großen Speisesaal der Heerespionierschule der Wehrmacht in Berlin-Karlshorst, die ratifizierende Kapitulationsurkunde, die am 9. Mai nach null Uhr in Kraft trat. Für das sowjetische Oberkommando unterschrieben Marschall Georgi Schukow sowie für das SHAEF Marschall Arthur Tedder. Als Zeugen gaben der französische General Jean-Marie de Lattre de Tassigny sowie US-General Carl Spaatz ihre Unterschriften."
+     }
+    }
+   }
+  },
+  {
+   "id": "gedenkstaette-sozialisten",
+   "name": "Gedenkstätte der Sozialisten",
+   "names": {
+    "en": "Memorial to the Socialists"
+   },
+   "category": "cemetery",
+   "latitude": 52.514921,
+   "longitude": 13.511227,
+   "radius": 50,
+   "district": "Lichtenberg",
+   "wikidata": "Q1497554",
+   "entry": {
+    "en": {
+     "title": "Gedenkstätte der Sozialisten",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Gedenkst%C3%A4tte_der_Sozialisten",
+     "text": "Die Gedenkstätte der Sozialisten ist eine Grab- und Gedenkstätte innerhalb des Zentralfriedhofs Friedrichsfelde in Berlin. Die 1951 offiziell eingeweihte Anlage diente zusammen mit der angrenzenden Gräberanlage Pergolenweg zu Zeiten der DDR als Ehrenfriedhof für Personen, die sich um die sozialistische Idee verdient gemacht hatten. Sie schließt an die Tradition des Friedhofs Friedrichsfelde als Begräbnisstätte der Arbeiterbewegung an, die im späten 19. Jahrhundert begann.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/88/B-Friedrichsfelde_Zentralfriedhof_03-2015_img01_Gedenkstaette.jpg/960px-B-Friedrichsfelde_Zentralfriedhof_03-2015_img01_Gedenkstaette.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:B-Friedrichsfelde_Zentralfriedhof_03-2015_img01_Gedenkstaette.jpg",
+      "artist": "A.Savin",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    },
+    "de": {
+     "title": "Gedenkstätte der Sozialisten",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Gedenkst%C3%A4tte_der_Sozialisten",
+     "text": "Die Gedenkstätte der Sozialisten ist eine Grab- und Gedenkstätte innerhalb des Zentralfriedhofs Friedrichsfelde in Berlin. Die 1951 offiziell eingeweihte Anlage diente zusammen mit der angrenzenden Gräberanlage Pergolenweg zu Zeiten der DDR als Ehrenfriedhof für Personen, die sich um die sozialistische Idee verdient gemacht hatten. Sie schließt an die Tradition des Friedhofs Friedrichsfelde als Begräbnisstätte der Arbeiterbewegung an, die im späten 19. Jahrhundert begann.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/88/B-Friedrichsfelde_Zentralfriedhof_03-2015_img01_Gedenkstaette.jpg/960px-B-Friedrichsfelde_Zentralfriedhof_03-2015_img01_Gedenkstaette.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:B-Friedrichsfelde_Zentralfriedhof_03-2015_img01_Gedenkstaette.jpg",
+      "artist": "A.Savin",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1951,
+    "sector": "east",
+    "wikidata": "https://www.wikidata.org/wiki/Q1497554",
+    "localized": {
+     "en": {
+      "built": "cemetery 1881, memorial 1951",
+      "opened": "1951",
+      "architects": [
+       "Reinhold Lingner (landscape)"
+      ],
+      "commissionedBy": [
+       "SED (GDR)"
+      ]
+     },
+     "de": {
+      "built": "Friedhof 1881, Gedenkstätte 1951",
+      "opened": "1951",
+      "architects": [
+       "Reinhold Lingner (Landschaft)"
+      ],
+      "commissionedBy": [
+       "SED (DDR)"
+      ],
+      "history": "Als der Zentralfriedhof Friedrichsfelde 1881 eröffnet wurde, waren hier erstmals für Berlin auch Armenbegräbnisse möglich, weil die Stadt die Kosten übernahm. Im August 1900 wurde der Central-Friedhof Friedrichsfelde in ganz Deutschland bekannt, als der SPD-Gründer Wilhelm Liebknecht hier beerdigt wurde. Bei seiner Beisetzung bildeten rund 150.000 Personen einen Trauerzug von Charlottenburg nach Friedrichsfelde. Weil später auch Paul Singer, Ignaz Auer, Emma Ihrer und weitere Sozialdemokraten dort bestattet wurden, erhielt der Friedhof bald den Beinamen Sozialistenfriedhof. Die unmittelbar am Haupteingang eingerichtete Grabstätte der meisten dieser Personen befand sich auf einem leichten Hügel, der umgangssprachlich bei den politischen Anhängern auch Feldherrnhügel genannt wurde.\n\nDer Berliner Magistrat hatte die Beisetzung aller 33 Opfer des Spartakusaufstandes (5. bis 12. Januar 1919), darunter der getötete KPD-Gründer Karl Liebknecht, auf dem Friedhof der Märzgefallenen nicht genehmigt, weswegen am 25. Januar 1919 nach einer Massendemonstration durch die Berliner Innenstadt und einer Großkundgebung auf dem Zentralfriedhof Friedrichsfelde die Getöteten in einem Massengrab beigesetzt wurden. Einige Tage später bettete man weitere inzwischen identifizierte tote Revolutionäre hier zur Ruhe, darunter Leo Jogiches. Dieser war ein Freund der ebenfalls getöteten Rosa Luxemburg, deren Leiche zunächst nicht auffindbar war. Eine am 31. Mai 1919 aus dem Landwehrkanal geborgene Frauenleiche wurde am 5. Juni als diejenige Luxemburgs identifiziert und am 12. Juni 1919 im Gräberfeld der Toten des Spartakusaufstandes beigesetzt. Die Berliner Arbeiterschaft erschien dazu zahlreich zu einem Trauerzug durch die östlichen Berliner Bezirke."
+     }
+    }
+   }
+  },
+  {
+   "id": "zwangslager-marzahn",
+   "name": "Gedenkstein Zwangslager Marzahn",
+   "names": {
+    "en": "Memorial Stone at the Marzahn Forced Camp"
+   },
+   "category": "memorial",
+   "latitude": 52.5485,
+   "longitude": 13.5415,
+   "radius": 80,
+   "district": "Marzahn-Hellersdorf",
+   "wikidata": "Q204423",
+   "entry": {
+    "en": {
+     "title": "Berlin-Marzahn concentration camp",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Berlin-Marzahn_concentration_camp",
+     "text": "Berlin-Marzahn Rastplatz was a Zigeunerlager (\"Gypsy camp\") set up for Romani people in the Berlin suburb of Marzahn by Nazi authorities.\n\nThe Nazis used the Nuremberg Laws related to social misfits, vagabonds, and criminals as a means to intimidate and arrest Romani and Sinti Romani in Germany. At 4 a.m. on 16 July 1936, prior to the opening of the 1936 Berlin Olympics, police arrested 600 Romani in Greater Berlin and forcibly relocated them via 130 caravans to Marzahn, an open field in eastern Berlin sandwiched between a cemetery and a sewage dump.\n\nUpon arrival the men and women were separated and taken for medical inspection. From there, prisoners were either deemed fit to work or unfit. Those that were deemed unfit were sent to execution. Later, the prison would be surrounded by barbed wire and prisoners were subject to forced labour in armament plants. The camp also led to involuntary sterilization and loss of citizenship to the Romani prisoners as they were classified as aliens (non-Aryans).\n\nEventually, the men from Marzahn would be sent to Sachsenhausen concentration camp (in 1938), and women and children were sent to Auschwitz (in 1943).",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bb/Sintistein_20100613_Petra_Rosenberg.jpg/960px-Sintistein_20100613_Petra_Rosenberg.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Sintistein_20100613_Petra_Rosenberg.jpg",
+      "artist": "MarsmanRom",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    },
+    "de": {
+     "title": "Zwangslager Berlin-Marzahn",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Zwangslager_Berlin-Marzahn",
+     "text": "Euphemistisch als Berlin-Marzahn Rastplatz bezeichnete das NS-Regime ein Zwangslager, in das zwischen 1936 und 1943 ca. 1200 „Zigeuner“ in Berlin-Marzahn eingewiesen wurden. Die erste Verhaftungswelle mit ca. 600 Männern, Frauen und Kindern fand am 16. Juli 1936 statt. Eine verbreitete Bezeichnung lautete Zigeunerrastplatz Marzahn. Das Lager diente der „Konzentration“, d. h. der räumlich leichteren Kontrolle sowie der Selektion nach rasseideologischen Kriterien, der Ausbeutung durch Zwangsarbeit und der Vorbereitung der Deportation in Konzentrationslager und in das Vernichtungslager Auschwitz-Birkenau.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bb/Sintistein_20100613_Petra_Rosenberg.jpg/960px-Sintistein_20100613_Petra_Rosenberg.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Sintistein_20100613_Petra_Rosenberg.jpg",
+      "artist": "MarsmanRom",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1936,
+    "sector": "east",
+    "wikidata": "https://www.wikidata.org/wiki/Q204423",
+    "localized": {
+     "en": {
+      "built": "camp 1936–1945, memorial stone 1986",
+      "architects": [
+       "Jürgen Raue (memorial stone)"
+      ],
+      "commissionedBy": [
+       "Berlin police (camp)"
+      ]
+     },
+     "de": {
+      "built": "Lager 1936–1945, Gedenkstein 1986",
+      "architects": [
+       "Jürgen Raue (Gedenkstein)"
+      ],
+      "commissionedBy": [
+       "Berliner Polizei (Lager)"
+      ],
+      "history": "Spätestens im Jahr 1934 entwickelte das Wohlfahrtsamt Berlin zusammen mit der Polizei einen Plan zur Internierung von als „Zigeuner“ bezeichneten Menschen in einem von der Polizei zu beaufsichtigenden Lager. Ab Jahreswechsel 1935/36 unterstützte auch das „Rassenpolitische Amt“ und die NSDAP den Plan. In Berlin-Wedding war der Bezirksbürgermeister Rudolf Suthoff-Groß die treibende Kraft, um „Zigeuner“ aus ihren selbst gewählten Quartieren und dem öffentlichen Raum zu vertreiben.\n\nDie Vorbereitung der Olympischen Sommerspiele 1936 beschleunigte den Plan. Der Reichsinnenminister Wilhelm Frick empfahl (mit seinem Runderlass zur „Bekämpfung der Zigeunerplage“ vom 6. Juni 1936), „von Zeit zu Zeit bezirksweise oder für ganze Landesteile Razzien auf Zigeuner zu veranstalten“, und erteilte im weiteren Verlauf dem Berliner Polizeipräsidenten von Helldorff den Auftrag, einen „Landesfahndungstag nach Zigeunern“ durchzuführen. Alle jene, die von den Behörden als „Zigeuner“ betrachtet wurden, gleich, ob in üblichen Wohnungen oder im Wohnwagen lebend, waren festzunehmen und in einem Lager außerhalb der Reichshauptstadt zu internieren. Eine Rechtsgrundlage gab es dafür nicht. Über 600 Menschen wurden in einer Großaktion am 16. Juli 1936 auf Rastplätzen, in Mietwohnungen und Häusern festgenommen. Versehentlich festgenommene Menschen, die nicht unter die NS-Definition von „Zigeunern“ fielen, wurden kurz darauf wieder freigelassen. 1938 waren 852 Menschen interniert. Die Gesamtzahl der Internierten lässt sich für den Zeitraum 1936–1945 auf 1200 schätzen, nur 304 Menschen konnten namentlich identifiziert werden, da die Aufzeichnungen weitgehend fehlen."
+     }
+    }
+   }
+  },
+  {
+   "id": "juedischer-friedhof-weissensee",
+   "name": "Jüdischer Friedhof Weißensee",
+   "names": {
+    "en": "Weißensee Jewish Cemetery"
+   },
+   "category": "cemetery",
+   "latitude": 52.544722,
+   "longitude": 13.458333,
+   "radius": 80,
+   "district": "Pankow",
+   "wikidata": "Q675174",
+   "entry": {
+    "en": {
+     "title": "Weißensee cemetery",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Wei%C3%9Fensee_cemetery",
+     "text": "The Weißensee Cemetery (German: Jüdischer Friedhof Berlin-Weißensee) is a Jewish cemetery located in the neighborhood of Weißensee in Berlin, Germany. It is the second largest Jewish cemetery in Europe. The cemetery covers approximately 42 ha (100 acres) and contains approximately 115,000 graves. It was dedicated in 1880.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/97/2010-04-18_673_J%C3%BCdischer_Friedhof_-_fec_AMA.B.JPG/960px-2010-04-18_673_J%C3%BCdischer_Friedhof_-_fec_AMA.B.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:2010-04-18_673_J%C3%BCdischer_Friedhof_-_fec_AMA.B.JPG",
+      "artist": "Angela M. Arnold, Berlin",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    },
+    "de": {
+     "title": "Jüdischer Friedhof Berlin-Weißensee",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/J%C3%BCdischer_Friedhof_Berlin-Wei%C3%9Fensee",
+     "text": "Der Jüdische Friedhof Berlin-Weißensee (früher auch Israelitischer Friedhof) ist ein 1880 angelegter Begräbnisplatz der Jüdischen Gemeinde zu Berlin. Er ist mit rund 42 Hektar (etwa 1,0 km lang und 0,5 km breit) der flächenmäßig größte erhaltene jüdische Friedhof Europas mit fast 116.000 Grabstellen. Seit den 1970er Jahren steht er unter Denkmalschutz.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/97/2010-04-18_673_J%C3%BCdischer_Friedhof_-_fec_AMA.B.JPG/960px-2010-04-18_673_J%C3%BCdischer_Friedhof_-_fec_AMA.B.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:2010-04-18_673_J%C3%BCdischer_Friedhof_-_fec_AMA.B.JPG",
+      "artist": "Angela M. Arnold, Berlin",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1880,
+    "sector": "east",
+    "wikidata": "https://www.wikidata.org/wiki/Q675174",
+    "localized": {
+     "en": {
+      "built": "1880",
+      "opened": "1880",
+      "architects": [
+       "Hugo Licht"
+      ],
+      "commissionedBy": [
+       "Jewish Community of Berlin"
+      ]
+     },
+     "de": {
+      "built": "1880",
+      "opened": "1880",
+      "architects": [
+       "Hugo Licht"
+      ],
+      "commissionedBy": [
+       "Jüdische Gemeinde zu Berlin"
+      ],
+      "history": "In der zweiten Hälfte des 19. Jahrhunderts zeichnete sich aufgrund des starken Wachstums der jüdischen Gemeinde ab, dass der Friedhof in der Schönhauser Allee, den die Berliner Jüdische Gemeinde seit 1827 nutzte, bald voll belegt sein würde. Die Gemeinde erwarb deshalb ein 42 ha großes Gelände im damaligen Berliner Vorort Weißensee. Da die Ergebnisse eines 1878 ausgeschriebenen Architekturwettbewerbs keine zufriedenstellenden Ergebnisse brachten, mussten diese mehrfach überarbeitet werden, bevor schließlich Hugo Lichts Entwurf für den Bau der Anlage den Zuschlag erhielt. Der Entwurf beinhaltete einen Lageplan des gesamten Geländes, eine Trauerhalle, ein Leichenhaus, ein Bürogebäude und die Ummauerung samt Einfahrtstor. Der Bau erfolgte 1879/80. Am 9. September 1880 wurde der Friedhof feierlich eingeweiht. Als Erster wurde am 22. September 1880 Louis Grünbaum auf dem Friedhof beerdigt."
+     }
+    }
+   }
+  },
+  {
+   "id": "ehrenmal-schoenholzer-heide",
+   "name": "Sowjetisches Ehrenmal Schönholzer Heide",
+   "names": {
+    "en": "Soviet War Memorial (Schönholzer Heide)"
+   },
+   "category": "memorial",
+   "latitude": 52.581667,
+   "longitude": 13.3725,
+   "radius": 60,
+   "district": "Pankow",
+   "wikidata": "Q49745",
+   "entry": {
+    "en": {
+     "title": "Soviet War Memorial (Schönholzer Heide)",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Soviet_War_Memorial_(Sch%C3%B6nholzer_Heide)",
+     "text": "The Soviet War Memorial in Schönholzer Heide (Sowjetisches Ehrenmal in der Schönholzer Heide) in Pankow, Berlin was erected between May 1947 and November 1949, and covers an area of 30,000 square metres (7.4 acres). The memorial contains the largest Soviet cemetery in Berlin, which is also the largest Russian cemetery in Europe outside of Russia.\n\nThe monument is one of three Soviet memorials built in Berlin after the end of the war. The other two memorials are the Tiergarten memorial, built in 1945 in the Tiergarten district of what later became West Berlin, and the Soviet War Memorial (Treptower Park).\n\nSchönholzer Heide was a popular recreation area in the 19th century. During the Second World War the area was turned into a work camp. After the war, the northwestern part of the area was used to build the third-largest Soviet war memorial in Berlin, together with the memorials in Treptower Park and Tiergarten.\n\nA group of Soviet architects consisting of K. Solovyov, M. Belaventsev, V. Korolyov, and the sculptor Ivan Pershudchev designed the cemetery, where 13,200 of the 80,000 Soviet soldiers that had fallen during the Battle of Berlin would be buried. On a wall around the memorial are 100 bronze tablets with names, ranks, and birth dates of soldiers that were able to be identified. This group constitutes about one-fifth of the fallen soldiers.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/70/Berlin_-_Sowjetisches_Ehrenmal_%28Sch%C3%B6nholzer_Heide%29_-_2015.jpg/960px-Berlin_-_Sowjetisches_Ehrenmal_%28Sch%C3%B6nholzer_Heide%29_-_2015.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Berlin_-_Sowjetisches_Ehrenmal_(Sch%C3%B6nholzer_Heide)_-_2015.jpg",
+      "artist": "Avda",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    },
+    "de": {
+     "title": "Sowjetisches Ehrenmal (Schönholzer Heide)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Sowjetisches_Ehrenmal_(Sch%C3%B6nholzer_Heide)",
+     "text": "Das Sowjetische Ehrenmal in der Schönholzer Heide in Berlin-Pankow wurde von Mai 1947 bis November 1949 errichtet und hat eine Fläche von 27.500 m². Die Schönholzer Heide, im 19. Jahrhundert ein beliebtes Ausflugsziel, war während des Zweiten Weltkriegs Standort eines großen Zwangsarbeiterlagers. Nach dem Krieg entstand hier im nordwestlichen Teil des Parks zusammen mit den Ehrenmalen im Tiergarten und im Treptower Park das dritte sowjetische Ehrenmal in Berlin. Ein weiteres befindet sich in Berlin-Buch im Bucher Schlosspark.\n\nDas Ehrenmal ist eine Gedenkstätte und ein Soldatenfriedhof der sowjetischen Kriegsgräberstätten, auf welchem 13.200 der etwa 80.000 in der Endphase (Schlacht um Berlin) im März/April 1945 gefallenen Soldaten der Roten Armee beigesetzt wurden.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/70/Berlin_-_Sowjetisches_Ehrenmal_%28Sch%C3%B6nholzer_Heide%29_-_2015.jpg/960px-Berlin_-_Sowjetisches_Ehrenmal_%28Sch%C3%B6nholzer_Heide%29_-_2015.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Berlin_-_Sowjetisches_Ehrenmal_(Sch%C3%B6nholzer_Heide)_-_2015.jpg",
+      "artist": "Avda",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1947,
+    "sector": "east",
+    "wikidata": "https://www.wikidata.org/wiki/Q49745",
+    "localized": {
+     "en": {
+      "built": "1947–1949",
+      "opened": "1949",
+      "styles": [
+       "Socialist Classicism"
+      ],
+      "commissionedBy": [
+       "Soviet Military Administration"
+      ]
+     },
+     "de": {
+      "built": "1947–1949",
+      "opened": "1949",
+      "styles": [
+       "Sozialistischer Klassizismus"
+      ],
+      "commissionedBy": [
+       "Sowjetische Militäradministration"
+      ],
+      "history": "Eine sowjetische Architektengruppe, bestehend aus Konstantin A. Solowjow, M. D. Belawenzew, W. D. Koroljow und dem Bildhauer Iwan G. Perschudtschew, entwarf die gesamte Anlage des Ehrenmals. Auf einer Mauer rund um das Ehrenmal sind auf 100 Bronzetafeln die Namen, Dienstgrade und Geburtsjahre von einem Fünftel der Opfer, die identifiziert werden konnten, angebracht.\n\nBeidseits entlang der Hauptachse, an deren Ende sich ein 33,5 m hoher Obelisk aus Syenit erhebt, liegen acht Grabkammern, in denen jeweils 1182 Rotarmisten bestattet wurden. Unter der Ehrenhalle des Obelisken befindet sich eine Gruft, in der zwei sowjetische Oberste bestattet wurden. An sowjetische Opfer der Konzentrationslager erinnert ein Gedenkstein hinter dem Obelisken. Dass in diesem Ehrenmal auch sowjetischen Kriegsgefangenen gedacht wird, ist eine Besonderheit, denn unter Josef Stalin wurden Kriegsgefangene pauschal als potentielle Kollaborateure gesehen.\n\nVor dem Obelisken befindet sich das Hauptdenkmal, eine Statue der russischen „Mutter Heimat“, welche um ihren gefallenen Sohn trauert. Am Sockel des Obelisken, der aus schwarzen Porphyrquadern gefertigt ist, sind 42 Bronzetafeln mit Namen von gefallenen Offizieren angebracht. Zur Anlage gehört auch ein großflächiges Zitat von Josef Stalin.\n\n1977 edierte die Deutsche Post eine von Joachim Rieß gestaltete Briefmarke mit der Abbildung des Ehrenmals."
+     }
+    }
+   }
+  }
+ ],
+ "remembrance": {
+  "chapters": [
+   {
+    "id": "holocaust",
+    "title": {
+     "en": "The murder of Europe's Jews",
+     "de": "Der Mord an den Juden Europas"
+    },
+    "years": {
+     "en": "1933–1945"
+    },
+    "text": {
+     "en": "From 1933 the Nazi regime deprived Germany's Jews of their rights, their livelihoods and their homes. From October 1941 it deported Berlin's Jews to ghettos and extermination camps. Six million Jews of Europe were murdered.",
+     "de": "Ab 1933 nahm das NS-Regime den Juden in Deutschland ihre Rechte, ihre Existenzgrundlage und ihre Wohnungen. Ab Oktober 1941 deportierte es die Berliner Juden in Ghettos und Vernichtungslager. Sechs Millionen Juden Europas wurden ermordet."
+    },
+    "places": [
+     {
+      "sight": "wannsee-konferenz",
+      "remembers": {
+       "en": "On 20 January 1942, senior officials of the regime met in this villa to coordinate the deportation and murder of Europe's Jews.",
+       "de": "Am 20. Januar 1942 kamen in dieser Villa hohe Beamte des Regimes zusammen, um die Deportation und Ermordung der Juden Europas zu koordinieren."
+      }
+     },
+     {
+      "sight": "holocaust-mahnmal",
+      "remembers": {
+       "en": "The Memorial to the Murdered Jews of Europe: a field of 2,711 concrete stelae, with an information centre beneath it.",
+       "de": "Das Denkmal für die ermordeten Juden Europas: ein Feld aus 2.711 Betonstelen, darunter der Ort der Information."
+      }
+     },
+     {
+      "sight": "juedischer-friedhof-weissensee",
+      "remembers": {
+       "en": "One of Europe's largest Jewish cemeteries, in use since 1880, with the graves of many who were persecuted and a memorial to the murdered.",
+       "de": "Einer der größten jüdischen Friedhöfe Europas, belegt seit 1880, mit den Gräbern vieler Verfolgter und einem Gedenkort für die Ermordeten."
+      }
+     }
+    ]
+   },
+   {
+    "id": "terror",
+    "title": {
+     "en": "Terror and resistance",
+     "de": "Terror und Widerstand"
+    },
+    "years": {
+     "en": "1933–1945"
+    },
+    "text": {
+     "en": "The regime persecuted its opponents and everyone it declared not to belong: communists and social democrats, Sinti and Roma, homosexuals, Jehovah's Witnesses, people with disabilities. Its secret police and the SS ran their terror from Berlin; thousands who resisted were killed.",
+     "de": "Das Regime verfolgte seine Gegner und alle, die es für nicht zugehörig erklärte: Kommunisten und Sozialdemokraten, Sinti und Roma, Homosexuelle, Zeugen Jehovas, Menschen mit Behinderungen. Seine Geheimpolizei und die SS lenkten den Terror von Berlin aus; Tausende, die Widerstand leisteten, wurden getötet."
+    },
+    "places": [
+     {
+      "sight": "topographie",
+      "remembers": {
+       "en": "On the site of the headquarters of the Gestapo, the SS and the Reich Security Main Office: a documentation centre on the institutions of terror.",
+       "de": "Auf dem Gelände der Zentralen von Gestapo, SS und Reichssicherheitshauptamt: ein Dokumentationszentrum über die Institutionen des Terrors."
+      }
+     },
+     {
+      "sight": "gedenkstaette-ploetzensee",
+      "remembers": {
+       "en": "In the execution shed of Plötzensee prison nearly 3,000 people were killed, many of them for resisting – among them men of the plot of 20 July 1944.",
+       "de": "Im Hinrichtungsschuppen des Gefängnisses Plötzensee wurden fast 3.000 Menschen getötet, viele von ihnen wegen ihres Widerstands – unter ihnen Männer des 20. Juli 1944."
+      }
+     },
+     {
+      "sight": "zwangslager-marzahn",
+      "remembers": {
+       "en": "In July 1936, before the Olympics, the Berlin police forced Sinti and Roma into a camp here; most of them were later deported to Auschwitz.",
+       "de": "Im Juli 1936, vor den Olympischen Spielen, zwang die Berliner Polizei Sinti und Roma in ein Lager an diesem Ort; die meisten von ihnen wurden später nach Auschwitz deportiert."
+      }
+     }
+    ]
+   },
+   {
+    "id": "war",
+    "title": {
+     "en": "War and its dead",
+     "de": "Der Krieg und seine Toten"
+    },
+    "years": {
+     "en": "1939–1945"
+    },
+    "text": {
+     "en": "The war Germany began in 1939 cost the lives of more than 60 million people, about 27 million of them in the Soviet Union. It ended in Berlin with the unconditional surrender of the Wehrmacht on 8 May 1945.",
+     "de": "Der Krieg, den Deutschland 1939 begann, kostete mehr als 60 Millionen Menschen das Leben, etwa 27 Millionen von ihnen in der Sowjetunion. Er endete in Berlin mit der bedingungslosen Kapitulation der Wehrmacht am 8. Mai 1945."
+    },
+    "places": [
+     {
+      "sight": "neue-wache",
+      "remembers": {
+       "en": "The Central Memorial of the Federal Republic of Germany to the Victims of War and Tyranny, with Käthe Kollwitz's Mother with her Dead Son.",
+       "de": "Die Zentrale Gedenkstätte der Bundesrepublik Deutschland für die Opfer von Krieg und Gewaltherrschaft, mit Käthe Kollwitz’ „Mutter mit totem Sohn“."
+      }
+     },
+     {
+      "sight": "museum-karlshorst",
+      "remembers": {
+       "en": "Here the Wehrmacht's unconditional surrender was signed on the night of 8 May 1945; today a museum of the German war of annihilation against the Soviet Union.",
+       "de": "Hier wurde in der Nacht vom 8. auf den 9. Mai 1945 die bedingungslose Kapitulation der Wehrmacht unterzeichnet; heute ein Museum über den deutschen Vernichtungskrieg gegen die Sowjetunion."
+      }
+     },
+     {
+      "sight": "ehrenmal-tiergarten",
+      "remembers": {
+       "en": "A Soviet war memorial built in 1945, with the graves of some 2,000 soldiers of the Red Army who fell in the Battle of Berlin.",
+       "de": "Ein 1945 errichtetes sowjetisches Ehrenmal mit den Gräbern von rund 2.000 Soldaten der Roten Armee, die in der Schlacht um Berlin fielen."
+      }
+     },
+     {
+      "sight": "ehrenmal-treptow",
+      "remembers": {
+       "en": "The largest of Berlin's Soviet war memorials, completed in 1949, and the cemetery of about 7,000 soldiers of the Red Army.",
+       "de": "Das größte der sowjetischen Ehrenmale Berlins, 1949 vollendet, und der Friedhof von etwa 7.000 Soldaten der Roten Armee."
+      }
+     },
+     {
+      "sight": "ehrenmal-schoenholzer-heide",
+      "remembers": {
+       "en": "The Soviet memorial with the largest cemetery: more than 13,000 soldiers of the Red Army are buried here.",
+       "de": "Das sowjetische Ehrenmal mit dem größten Friedhof: Mehr als 13.000 Soldaten der Roten Armee sind hier begraben."
+      }
+     }
+    ]
+   },
+   {
+    "id": "division",
+    "title": {
+     "en": "Division and dictatorship",
+     "de": "Teilung und Diktatur"
+    },
+    "years": {
+     "en": "1945–1990"
+    },
+    "text": {
+     "en": "After the war the city was divided. In 1948 the Soviet Union blockaded West Berlin; from 1961 the GDR walled it in. At least 140 people were killed at the Wall in Berlin, and the GDR's secret police persecuted everyone it took for an enemy.",
+     "de": "Nach dem Krieg wurde die Stadt geteilt. 1948 blockierte die Sowjetunion West-Berlin; ab 1961 mauerte die DDR es ein. Mindestens 140 Menschen wurden an der Mauer in Berlin getötet, und die Geheimpolizei der DDR verfolgte alle, die sie für Feinde hielt."
+    },
+    "places": [
+     {
+      "sight": "luftbrueckendenkmal",
+      "remembers": {
+       "en": "The memorial to the Berlin Airlift of 1948–1949 and to those who lost their lives flying supplies into the blockaded city.",
+       "de": "Das Denkmal für die Berliner Luftbrücke 1948–1949 und für die Menschen, die beim Versorgen der blockierten Stadt aus der Luft ums Leben kamen."
+      }
+     },
+     {
+      "sight": "mauer-gedenkstaette",
+      "remembers": {
+       "en": "On Bernauer Straße, where the Wall cut through the street: the central memorial to the division of Germany and to the victims of the Wall.",
+       "de": "An der Bernauer Straße, wo die Mauer mitten durch die Straße verlief: die zentrale Gedenkstätte an die deutsche Teilung und an die Opfer der Mauer."
+      }
+     },
+     {
+      "sight": "hohenschoenhausen",
+      "remembers": {
+       "en": "A Soviet special camp from 1945, then the central remand prison of the Stasi, where political prisoners were held and interrogated until 1989.",
+       "de": "Ab 1945 ein sowjetisches Speziallager, dann die zentrale Untersuchungshaftanstalt der Stasi, in der bis 1989 politische Gefangene festgehalten und verhört wurden."
+      }
+     },
+     {
+      "sight": "stasimuseum",
+      "remembers": {
+       "en": "The headquarters of the Ministry for State Security, with the office of its minister Erich Mielke; citizens occupied it in January 1990.",
+       "de": "Die Zentrale des Ministeriums für Staatssicherheit mit dem Dienstsitz seines Ministers Erich Mielke; im Januar 1990 besetzten Bürgerinnen und Bürger das Gelände."
+      }
+     }
+    ]
+   },
+   {
+    "id": "rest",
+    "title": {
+     "en": "Places of rest",
+     "de": "Orte der Ruhe"
+    },
+    "years": {
+     "en": "since 1762",
+     "de": "seit 1762"
+    },
+    "text": {
+     "en": "Cemeteries keep the memory of the people buried in them.",
+     "de": "Friedhöfe bewahren die Erinnerung an die Menschen, die dort begraben sind."
+    },
+    "places": [
+     {
+      "sight": "dorotheenstaedtischer-friedhof",
+      "remembers": {
+       "en": "The graves of Fichte, Hegel, Schinkel, Brecht and many other writers, artists and scholars.",
+       "de": "Die Gräber von Fichte, Hegel, Schinkel, Brecht und vielen weiteren Schriftstellern, Künstlern und Gelehrten."
+      }
+     },
+     {
+      "sight": "russischer-friedhof-tegel",
+      "remembers": {
+       "en": "Berlin's only Russian Orthodox cemetery, consecrated in 1894, with the Church of Saints Constantine and Helena.",
+       "de": "Berlins einziger russisch-orthodoxer Friedhof, 1894 geweiht, mit der Kirche der heiligen Konstantin und Helena."
+      }
+     },
+     {
+      "sight": "gedenkstaette-sozialisten",
+      "remembers": {
+       "en": "In the Friedrichsfelde cemetery, a memorial of 1951 to Rosa Luxemburg, Karl Liebknecht and other socialists, which the GDR made a place of state ceremony.",
+       "de": "Auf dem Friedhof Friedrichsfelde eine Gedenkstätte von 1951 für Rosa Luxemburg, Karl Liebknecht und andere Sozialisten, die die DDR zum Ort staatlicher Feiern machte."
+      }
+     }
+    ]
+   }
+  ],
+  "tours": [
+   {
+    "id": "centre",
+    "title": {
+     "en": "A walk through the centre",
+     "de": "Ein Weg durch die Mitte"
+    },
+    "text": {
+     "en": "From Unter den Linden through the edge of the Tiergarten to the site of the Gestapo headquarters: war and tyranny, the end of the war, the murdered Jews of Europe, the perpetrators.",
+     "de": "Von Unter den Linden am Rand des Tiergartens entlang zum Gelände der Gestapo-Zentrale: Krieg und Gewaltherrschaft, das Ende des Krieges, die ermordeten Juden Europas, die Täter."
+    },
+    "stops": [
+     "neue-wache",
+     "ehrenmal-tiergarten",
+     "holocaust-mahnmal",
+     "topographie"
+    ]
+   },
+   {
+    "id": "lichtenberg",
+    "title": {
+     "en": "The Stasi in Lichtenberg",
+     "de": "Die Stasi in Lichtenberg"
+    },
+    "text": {
+     "en": "The headquarters of the GDR's secret police and its central remand prison.",
+     "de": "Die Zentrale der Geheimpolizei der DDR und ihre zentrale Untersuchungshaftanstalt."
+    },
+    "stops": [
+     "stasimuseum",
+     "hohenschoenhausen"
+    ]
+   }
+  ]
+ }
+}

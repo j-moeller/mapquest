@@ -4,6 +4,12 @@ import Foundation
 public enum AchievementGroup: String, Codable, CaseIterable, Sendable {
     case milestones, collections, stories, lines, eras, styles, architects, districts
 
+    /// Groups this app does not know (from newer packages) are stories.
+    public init(from decoder: Decoder) throws {
+        let raw = try decoder.singleValueContainer().decode(String.self)
+        self = AchievementGroup(rawValue: raw) ?? .stories
+    }
+
     public var title: String {
         let title: LocalizedString
         switch self {
@@ -84,8 +90,8 @@ public struct AchievementRule: Codable, Hashable, Sendable {
         categories != nil || era != nil || architect != nil || commissionedBy != nil || styles != nil || district != nil
     }
 
-    func matches(_ sight: Sight, history: SightHistory?) -> Bool {
-        if let categories, !categories.contains(sight.category) { return false }
+    func matches(_ sight: Sight, history: SightHistory?, categories hierarchy: CategoryHierarchy = .core) -> Bool {
+        if let categories, !hierarchy.matches(sight.category, any: categories) { return false }
         if let district, sight.district != district { return false }
         if let era, history?.context?.era.id != era { return false }
         if let architect, !(history?.architects ?? []).contains(where: { Self.name($0) == architect }) { return false }
@@ -105,58 +111,47 @@ public struct AchievementRule: Codable, Hashable, Sendable {
 /// an era or by an architect, every sight of a district, a themed walk, or a
 /// number of captures.
 public struct Achievement: Codable, Hashable, Identifiable, Sendable {
-    /// Title and description in another language.
-    public struct Translation: Codable, Hashable, Sendable {
-        public var title: String
-        public var description: String
-
-        public init(title: String, description: String) {
-            self.title = title
-            self.description = description
-        }
-    }
-
+    /// Unique across all packages (the same ID is the same achievement).
     public var id: String
     public var group: AchievementGroup
-    public var englishTitle: String
-    public var englishDescription: String
-    /// German title and description.
-    public var de: Translation?
+    public var titles: LocalizedText
+    public var descriptions: LocalizedText
     /// An SF Symbol.
     public var symbol: String
     public var rule: AchievementRule
+    /// The package it comes from (set when packages are resolved).
+    public var package: String?
 
     enum CodingKeys: String, CodingKey {
-        case id, group, englishTitle = "title", englishDescription = "description", de, symbol, rule
+        case id, group, titles = "title", descriptions = "description", symbol, rule
     }
 
-    public init(id: String, group: AchievementGroup, title: String, description: String, de: Translation? = nil,
-                symbol: String, rule: AchievementRule) {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        group = try container.decodeIfPresent(AchievementGroup.self, forKey: .group) ?? .stories
+        titles = try container.decode(LocalizedText.self, forKey: .titles)
+        descriptions = try container.decodeIfPresent(LocalizedText.self, forKey: .descriptions) ?? LocalizedText([:])
+        symbol = try container.decodeIfPresent(String.self, forKey: .symbol) ?? "star.fill"
+        rule = try container.decode(AchievementRule.self, forKey: .rule)
+    }
+
+    public init(id: String, group: AchievementGroup, title: LocalizedText, description: LocalizedText,
+                symbol: String, rule: AchievementRule, package: String? = nil) {
         self.id = id
         self.group = group
-        self.englishTitle = title
-        self.englishDescription = description
-        self.de = de
+        self.titles = title
+        self.descriptions = description
         self.symbol = symbol
         self.rule = rule
+        self.package = package
     }
 
     /// The title in the app's language.
-    public var title: String {
-        Localization.language == .de ? de?.title ?? englishTitle : englishTitle
-    }
+    public var title: String { titles() }
 
     /// The description in the app's language.
-    public var description: String {
-        Localization.language == .de ? de?.description ?? englishDescription : englishDescription
-    }
-
-    /// Reads `{"achievements": [{id, group, title, description, de: {title, description}, symbol, rule}]}`
-    /// (`<city>-achievements.json`; English, with the German translation).
-    public static func decodeList(_ data: Data) throws -> [Achievement] {
-        struct Document: Decodable { var achievements: [Achievement] }
-        return try JSONDecoder().decode(Document.self, from: data).achievements
-    }
+    public var description: String { descriptions() }
 }
 
 /// How far an achievement is: its places, those captured, and when it was completed.
@@ -203,8 +198,9 @@ public struct AchievementBook: Sendable {
         self.skipped = skipped
     }
 
+    /// Resolves achievements against the sights they may pick (a package's scope).
     public init(achievements: [Achievement], catalog: SightCatalog, histories: SightHistoryCatalog,
-                stations: StationCatalog = StationCatalog()) {
+                stations: StationCatalog = StationCatalog(), categories: CategoryHierarchy = .core) {
         // Places of remembrance are not part of the game: no achievement asks for them,
         // whatever its rule (`Sight.isPlaceOfRemembrance`).
         // Oldest first, then by name: the order the sights of an achievement are listed in.
@@ -251,7 +247,7 @@ public struct AchievementBook: Sendable {
             if let listed = rule.sights {
                 picked = Set(listed)
             } else if rule.hasFilters {
-                picked = Set(ordered.filter { rule.matches($0, history: histories[$0.id]) }.map(\.id))
+                picked = Set(ordered.filter { rule.matches($0, history: histories[$0.id], categories: categories) }.map(\.id))
             } else {
                 picked = []
             }

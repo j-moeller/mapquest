@@ -58,7 +58,8 @@ final class LocalizationTests: XCTestCase {
     }
 
     func testHistoryInBothLanguages() throws {
-        let context = try XCTUnwrap(BerlinHistory.context(in: 1789))
+        let berlin = try TestPackages.chronicle("berlin")
+        let context = try XCTUnwrap(berlin.context(in: 1789))
         XCTAssertEqual(context.era.name, "Kingdom of Prussia")
         XCTAssertEqual(context.ruler?.name, "Frederick William II")
         XCTAssertEqual(context.ruler?.otherName, "Friedrich Wilhelm II.")
@@ -67,10 +68,10 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(context.ruler?.name, "Friedrich Wilhelm II.")
         XCTAssertNil(context.ruler?.otherName)
         XCTAssertEqual(context.ruler?.title, "König von Preußen")
-        XCTAssertEqual(BerlinHistory.context(in: 2010)?.ruler?.title, "Bundeskanzlerin")
+        XCTAssertEqual(berlin.context(in: 2010)?.ruler?.title, "Bundeskanzlerin")
         XCTAssertEqual(SightHistory(year: 1788, built: "1788–1791").builtPhrase, "Erbaut 1788–1791")
         XCTAssertEqual(AchievementGroup.architects.title, "Baumeister")
-        for era in BerlinHistory.eras {
+        for era in berlin.eras {
             Localization.language = .en
             let english = (era.name, era.summary)
             Localization.language = .de

@@ -24,12 +24,41 @@ public struct SightInfo: Codable, Hashable, Sendable {
     public var text: String
     public var image: SightPhoto?
 
+    public init(title: String, language: String, url: URL, text: String, image: SightPhoto? = nil) {
+        self.title = title
+        self.language = language
+        self.url = url
+        self.text = text
+        self.image = image
+    }
+
+    enum CodingKeys: String, CodingKey { case title, language, url, text, image }
+
+    /// In a package `language` may be left out where it is the entry's own language.
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        title = try c.decode(String.self, forKey: .title)
+        language = try c.decodeIfPresent(String.self, forKey: .language) ?? ""
+        url = try c.decode(URL.self, forKey: .url)
+        text = try c.decode(String.self, forKey: .text)
+        image = try c.decodeIfPresent(SightPhoto.self, forKey: .image)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var c = encoder.container(keyedBy: CodingKeys.self)
+        try c.encode(title, forKey: .title)
+        if !language.isEmpty { try c.encode(language, forKey: .language) }
+        try c.encode(url, forKey: .url)
+        try c.encode(text, forKey: .text)
+        try c.encodeIfPresent(image, forKey: .image)
+    }
+
     public var paragraphs: [String] {
         text.components(separatedBy: "\n\n").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty }
     }
 }
 
-/// The entries of the sights of one or more cities (`<city>-sight-info.json`).
+/// The entries of the sights in one language (`SightLibrary.infos`).
 public struct SightInfoCatalog: Sendable {
     public private(set) var entries: [String: SightInfo]
 
@@ -37,7 +66,7 @@ public struct SightInfoCatalog: Sendable {
         self.entries = entries
     }
 
-    /// Reads `{"license": …, "entries": {"<sight id>": {title, language, url, text, image}}}`.
+    /// Reads `{"license": …, "entries": {"<sight id>": {title, language, url, text, image}}}` (the build tools' files).
     public static func decode(_ data: Data) throws -> SightInfoCatalog {
         struct Document: Decodable { var entries: [String: SightInfo] }
         return SightInfoCatalog(entries: try JSONDecoder().decode(Document.self, from: data).entries)

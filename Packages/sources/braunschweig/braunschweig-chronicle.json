@@ -1,0 +1,749 @@
+{
+  "eras" : [
+    {
+      "id" : "bs-early",
+      "monarchy" : true,
+      "name" : {
+        "de" : "Frühes Braunschweig",
+        "en" : "Early Brunswick"
+      },
+      "start" : "800-01",
+      "summary" : {
+        "de" : "An einer Furt der Oker wächst unter den Grafen aus dem Geschlecht der Brunonen eine Siedlung heran; erstmals erwähnt wird sie 1031 bei der Weihe von St. Magni. Ihr Erbe geht an Lothar von Süpplingenburg und durch Heirat an die Welfen.",
+        "en" : "A settlement at a ford of the Oker grows into a town under the Brunonen counts; it is first recorded when St. Magni is consecrated in 1031. Their inheritance passes to Lothair of Supplinburg and, by marriage, to the Welfs."
+      },
+      "years" : {
+        "de" : "bis 1142",
+        "en" : "until 1142"
+      }
+    },
+    {
+      "id" : "bs-welf",
+      "monarchy" : true,
+      "name" : {
+        "de" : "Residenz Heinrichs des Löwen",
+        "en" : "Henry the Lion's residence"
+      },
+      "start" : "1142-05",
+      "summary" : {
+        "de" : "Herzog Heinrich der Löwe macht Braunschweig zum Mittelpunkt seiner Macht: die Burg Dankwarderode, der bronzene Löwe von 1166 und der Dom. Er gründet neue Weichbilde; sein Sohn Otto IV., der einzige Kaiser aus dem Haus der Welfen, ist im Dom bestattet.",
+        "en" : "Duke Henry the Lion makes Brunswick the centre of his power: the castle of Dankwarderode, the bronze lion of 1166 and the cathedral. He founds new boroughs; his son Otto IV, the only Welf emperor, is buried in the cathedral."
+      },
+      "years" : {
+        "en" : "1142–1235"
+      }
+    },
+    {
+      "id" : "bs-hanse",
+      "monarchy" : true,
+      "name" : {
+        "de" : "Hansestadt",
+        "en" : "Hanseatic town"
+      },
+      "start" : "1235-08",
+      "summary" : {
+        "de" : "1235 entsteht das Herzogtum Braunschweig-Lüneburg. Die Stadt – fünf Weichbilde unter einem Rat – regiert sich selbst, gehört zu den führenden Städten der Hanse und wird 1528 evangelisch, bis Herzog Rudolf August sie 1671 zur Unterwerfung zwingt.",
+        "en" : "In 1235 the Duchy of Brunswick-Lüneburg is created. The town – five boroughs under one council – governs itself, is one of the leading towns of the Hanseatic League and turns Protestant in 1528, until Duke Rudolph Augustus forces it to submit in 1671."
+      },
+      "years" : {
+        "en" : "1235–1671"
+      }
+    },
+    {
+      "id" : "bs-residence",
+      "monarchy" : true,
+      "name" : {
+        "de" : "Herzogliche Residenzstadt",
+        "en" : "Ducal residence"
+      },
+      "start" : "1671-06",
+      "summary" : {
+        "de" : "Braunschweig gehört zum Fürstentum Braunschweig-Wolfenbüttel; ab 1753 residieren die Herzöge hier. Aufklärung und Barock: das Collegium Carolinum (1745), eines der ersten öffentlichen Museen (1754), Lessing.",
+        "en" : "Brunswick belongs to the Principality of Brunswick-Wolfenbüttel; from 1753 the dukes reside here. Enlightenment and Baroque: the Collegium Carolinum (1745), one of the first public museums (1754), Lessing."
+      },
+      "years" : {
+        "en" : "1671–1806"
+      }
+    },
+    {
+      "id" : "bs-french",
+      "monarchy" : true,
+      "name" : {
+        "de" : "Napoleonische Herrschaft",
+        "en" : "Napoleonic rule"
+      },
+      "start" : "1806-11",
+      "summary" : {
+        "de" : "Nach der Niederlage des Herzogs bei Jena und Auerstedt wird Braunschweig Teil des Königreichs Westphalen unter Napoleons Bruder Jérôme und Hauptstadt des Departements der Oker.",
+        "en" : "After the duke's defeat at Jena and Auerstedt, Brunswick becomes part of the Kingdom of Westphalia under Napoleon's brother Jérôme, capital of the Department of the Oker."
+      },
+      "years" : {
+        "en" : "1806–1813"
+      }
+    },
+    {
+      "id" : "bs-duchy",
+      "monarchy" : true,
+      "name" : {
+        "de" : "Herzogtum Braunschweig",
+        "en" : "Duchy of Brunswick"
+      },
+      "start" : "1813-11",
+      "summary" : {
+        "de" : "Das Herzogtum wird wiederhergestellt. 1830 vertreiben die Bürger Herzog Karl II. und brennen sein Schloss nieder; es folgt Ottmers Neubau. Die erste Staatseisenbahn Deutschlands (1838) und die Industrie machen Braunschweig zur Stadt der Fabriken und Ingenieure.",
+        "en" : "The duchy is restored. In 1830 the citizens drive out Duke Charles II and burn his palace; Ottmer's new one follows. Germany's first state railway (1838) and industry make Brunswick a city of factories and engineers."
+      },
+      "years" : {
+        "en" : "1813–1918"
+      }
+    },
+    {
+      "id" : "bs-free-state",
+      "name" : {
+        "de" : "Freistaat Braunschweig",
+        "en" : "Free State of Brunswick"
+      },
+      "start" : "1918-11",
+      "summary" : {
+        "de" : "Nach der Novemberrevolution 1918 dankt der Herzog ab, aus dem Herzogtum wird eine Republik. Ab 1930 regiert die NSDAP mit; 1932 ernennt die Landesregierung Hitler zum Beamten und verschafft ihm so die deutsche Staatsbürgerschaft.",
+        "en" : "After the revolution of November 1918 the duke abdicates and the duchy becomes a republic. From 1930 the NSDAP shares power; in 1932 the state government makes Hitler a civil servant, which gives him German citizenship."
+      },
+      "years" : {
+        "en" : "1918–1933"
+      }
+    },
+    {
+      "id" : "bs-nazi",
+      "name" : {
+        "de" : "Zeit des Nationalsozialismus",
+        "en" : "Nazi Germany"
+      },
+      "start" : "1933-01",
+      "summary" : {
+        "de" : "Ab 1933 Diktatur und Terror; die SS betreibt im Schloss eine Junkerschule. Juden werden verfolgt, deportiert und ermordet; Zwangsarbeiter und KZ-Häftlinge arbeiten in der Rüstungsindustrie. Am 15. Oktober 1944 zerstört ein Feuersturm die mittelalterliche Innenstadt.",
+        "en" : "Dictatorship and terror from 1933; the SS runs an officer school in the palace. Jews are persecuted, deported and murdered; forced labourers and concentration camp prisoners work in the arms factories. On 15 October 1944 a firestorm destroys the medieval centre."
+      },
+      "years" : {
+        "en" : "1933–1945"
+      }
+    },
+    {
+      "id" : "bs-occupation",
+      "name" : {
+        "de" : "Alliierte Besatzung",
+        "en" : "Allied occupation"
+      },
+      "start" : "1945-04",
+      "summary" : {
+        "de" : "Amerikanische Truppen besetzen die Stadt im April 1945; danach gehört sie zur britischen Zone. Das Land Braunschweig besteht noch anderthalb Jahre.",
+        "en" : "American troops take the city in April 1945; it then lies in the British zone. The State of Brunswick is restored for a year and a half."
+      },
+      "years" : {
+        "en" : "1945–1946"
+      }
+    },
+    {
+      "id" : "bs-lower-saxony",
+      "name" : {
+        "de" : "Niedersachsen",
+        "en" : "Lower Saxony"
+      },
+      "start" : "1946-11",
+      "summary" : {
+        "de" : "Im November 1946 wird Braunschweig Teil des neuen Landes Niedersachsen. Die Stadt wird wieder aufgebaut – modern, mit fünf „Traditionsinseln“ um die alten Bauten – und ist heute ein Zentrum der Forschung.",
+        "en" : "In November 1946 Brunswick becomes part of the new state of Lower Saxony. The city is rebuilt – modern, with five “traditional islands” around the old buildings – and is a centre of research today."
+      },
+      "years" : {
+        "de" : "seit 1946",
+        "en" : "since 1946"
+      }
+    }
+  ],
+  "id" : "braunschweig",
+  "name" : {
+    "en" : "Braunschweig"
+  },
+  "rulers" : [
+    {
+      "era" : "bs-early",
+      "name" : "Brunonen",
+      "reign" : {
+        "de" : "bis 1117",
+        "en" : "until 1117"
+      },
+      "start" : "800-01",
+      "title" : {
+        "de" : "Grafen in Sachsen",
+        "en" : "Counts in Saxony"
+      }
+    },
+    {
+      "era" : "bs-early",
+      "name" : "Lothar von Süpplingenburg",
+      "names" : {
+        "en" : "Lothair of Supplinburg"
+      },
+      "reign" : {
+        "en" : "1117–1137"
+      },
+      "start" : "1117-01",
+      "title" : {
+        "de" : "Herzog von Sachsen, ab 1133 Kaiser",
+        "en" : "Duke of Saxony, from 1133 Holy Roman Emperor"
+      }
+    },
+    {
+      "era" : "bs-early",
+      "name" : "Heinrich der Stolze",
+      "names" : {
+        "en" : "Henry the Proud"
+      },
+      "reign" : {
+        "en" : "1137–1139"
+      },
+      "start" : "1137-12",
+      "title" : {
+        "de" : "Herzog von Bayern und Sachsen",
+        "en" : "Duke of Bavaria and Saxony"
+      }
+    },
+    {
+      "era" : "bs-early",
+      "name" : "Heinrich der Löwe",
+      "names" : {
+        "en" : "Henry the Lion"
+      },
+      "reign" : {
+        "en" : "1139–1195"
+      },
+      "start" : "1139-10",
+      "title" : {
+        "de" : "Herzog von Sachsen und Bayern",
+        "en" : "Duke of Saxony and Bavaria"
+      }
+    },
+    {
+      "era" : "bs-welf",
+      "name" : "Heinrich der Löwe",
+      "names" : {
+        "en" : "Henry the Lion"
+      },
+      "reign" : {
+        "en" : "1139–1195"
+      },
+      "start" : "1142-05",
+      "title" : {
+        "de" : "Herzog von Sachsen und Bayern",
+        "en" : "Duke of Saxony and Bavaria"
+      }
+    },
+    {
+      "era" : "bs-welf",
+      "name" : "Söhne Heinrichs des Löwen",
+      "names" : {
+        "en" : "Henry the Lion's sons"
+      },
+      "reign" : {
+        "en" : "1195–1202"
+      },
+      "start" : "1195-08",
+      "title" : {
+        "de" : "Welfische Erben",
+        "en" : "Welf heirs"
+      }
+    },
+    {
+      "era" : "bs-welf",
+      "name" : "Otto IV.",
+      "names" : {
+        "en" : "Otto IV"
+      },
+      "reign" : {
+        "en" : "1202–1218"
+      },
+      "start" : "1202-05",
+      "title" : {
+        "de" : "Welfe, römisch-deutscher Kaiser",
+        "en" : "Welf, Holy Roman Emperor"
+      }
+    },
+    {
+      "era" : "bs-welf",
+      "name" : "Heinrich von Braunschweig",
+      "names" : {
+        "en" : "Henry of Brunswick"
+      },
+      "reign" : {
+        "en" : "1218–1227"
+      },
+      "start" : "1218-06",
+      "title" : {
+        "de" : "Pfalzgraf bei Rhein",
+        "en" : "Count Palatine of the Rhine"
+      }
+    },
+    {
+      "era" : "bs-welf",
+      "name" : "Otto das Kind",
+      "names" : {
+        "en" : "Otto the Child"
+      },
+      "reign" : {
+        "en" : "1227–1252"
+      },
+      "start" : "1227-07",
+      "title" : {
+        "de" : "Herr von Braunschweig, ab 1235 Herzog",
+        "en" : "Lord of Brunswick, from 1235 its duke"
+      }
+    },
+    {
+      "era" : "bs-hanse",
+      "name" : "Otto das Kind",
+      "names" : {
+        "en" : "Otto the Child"
+      },
+      "reign" : {
+        "en" : "1227–1252"
+      },
+      "start" : "1235-08",
+      "title" : {
+        "de" : "Herzog von Braunschweig-Lüneburg",
+        "en" : "Duke of Brunswick-Lüneburg"
+      }
+    },
+    {
+      "era" : "bs-hanse",
+      "name" : "Albrecht I.",
+      "names" : {
+        "en" : "Albert I"
+      },
+      "reign" : {
+        "en" : "1252–1279"
+      },
+      "start" : "1252-07",
+      "title" : {
+        "de" : "Herzog von Braunschweig-Lüneburg",
+        "en" : "Duke of Brunswick-Lüneburg"
+      }
+    },
+    {
+      "era" : "bs-hanse",
+      "name" : "Welfische Herzöge",
+      "names" : {
+        "en" : "Welf dukes"
+      },
+      "reign" : {
+        "en" : "1279–1671"
+      },
+      "start" : "1279-08",
+      "title" : {
+        "de" : "Gemeinsame Landesherren; die Stadt regiert sich durch ihren Rat",
+        "en" : "Joint overlords; the town governs itself through its council"
+      }
+    },
+    {
+      "era" : "bs-residence",
+      "name" : "Rudolf August",
+      "names" : {
+        "en" : "Rudolph Augustus"
+      },
+      "reign" : {
+        "en" : "1666–1704"
+      },
+      "start" : "1671-06",
+      "title" : {
+        "de" : "Herzog von Braunschweig-Wolfenbüttel",
+        "en" : "Duke of Brunswick-Wolfenbüttel"
+      }
+    },
+    {
+      "era" : "bs-residence",
+      "name" : "Anton Ulrich",
+      "reign" : {
+        "en" : "1704–1714"
+      },
+      "start" : "1704-02",
+      "title" : {
+        "de" : "Herzog von Braunschweig-Wolfenbüttel",
+        "en" : "Duke of Brunswick-Wolfenbüttel"
+      }
+    },
+    {
+      "era" : "bs-residence",
+      "name" : "August Wilhelm",
+      "names" : {
+        "en" : "Augustus William"
+      },
+      "reign" : {
+        "en" : "1714–1731"
+      },
+      "start" : "1714-04",
+      "title" : {
+        "de" : "Herzog von Braunschweig-Wolfenbüttel",
+        "en" : "Duke of Brunswick-Wolfenbüttel"
+      }
+    },
+    {
+      "era" : "bs-residence",
+      "name" : "Ludwig Rudolf",
+      "names" : {
+        "en" : "Louis Rudolph"
+      },
+      "reign" : {
+        "en" : "1731–1735"
+      },
+      "start" : "1731-04",
+      "title" : {
+        "de" : "Herzog von Braunschweig-Wolfenbüttel",
+        "en" : "Duke of Brunswick-Wolfenbüttel"
+      }
+    },
+    {
+      "era" : "bs-residence",
+      "name" : "Ferdinand Albrecht II.",
+      "names" : {
+        "en" : "Ferdinand Albert II"
+      },
+      "reign" : {
+        "en" : "1735"
+      },
+      "start" : "1735-03",
+      "title" : {
+        "de" : "Herzog von Braunschweig-Wolfenbüttel",
+        "en" : "Duke of Brunswick-Wolfenbüttel"
+      }
+    },
+    {
+      "era" : "bs-residence",
+      "name" : "Karl I.",
+      "names" : {
+        "en" : "Charles I"
+      },
+      "reign" : {
+        "en" : "1735–1780"
+      },
+      "start" : "1735-09",
+      "title" : {
+        "de" : "Herzog von Braunschweig-Wolfenbüttel",
+        "en" : "Duke of Brunswick-Wolfenbüttel"
+      }
+    },
+    {
+      "era" : "bs-residence",
+      "name" : "Karl Wilhelm Ferdinand",
+      "names" : {
+        "en" : "Charles William Ferdinand"
+      },
+      "reign" : {
+        "en" : "1780–1806"
+      },
+      "start" : "1780-04",
+      "title" : {
+        "de" : "Herzog von Braunschweig-Wolfenbüttel",
+        "en" : "Duke of Brunswick-Wolfenbüttel"
+      }
+    },
+    {
+      "era" : "bs-french",
+      "name" : "Jérôme Bonaparte",
+      "reign" : {
+        "en" : "1807–1813"
+      },
+      "start" : "1806-11",
+      "title" : {
+        "de" : "König von Westphalen",
+        "en" : "King of Westphalia"
+      }
+    },
+    {
+      "era" : "bs-duchy",
+      "name" : "Friedrich Wilhelm, der Schwarze Herzog",
+      "names" : {
+        "en" : "Frederick William, the Black Duke"
+      },
+      "reign" : {
+        "en" : "1813–1815"
+      },
+      "start" : "1813-11",
+      "title" : {
+        "de" : "Herzog von Braunschweig",
+        "en" : "Duke of Brunswick"
+      }
+    },
+    {
+      "era" : "bs-duchy",
+      "name" : "Karl II.",
+      "names" : {
+        "en" : "Charles II"
+      },
+      "reign" : {
+        "en" : "1815–1830"
+      },
+      "start" : "1815-07",
+      "title" : {
+        "de" : "Herzog von Braunschweig",
+        "en" : "Duke of Brunswick"
+      }
+    },
+    {
+      "era" : "bs-duchy",
+      "name" : "Wilhelm",
+      "names" : {
+        "en" : "William"
+      },
+      "reign" : {
+        "en" : "1830–1884"
+      },
+      "start" : "1830-09",
+      "title" : {
+        "de" : "Herzog von Braunschweig",
+        "en" : "Duke of Brunswick"
+      }
+    },
+    {
+      "era" : "bs-duchy",
+      "name" : "Albrecht von Preußen",
+      "names" : {
+        "en" : "Albert of Prussia"
+      },
+      "reign" : {
+        "en" : "1885–1906"
+      },
+      "start" : "1885-10",
+      "title" : {
+        "de" : "Regent des Herzogtums",
+        "en" : "Regent of the duchy"
+      }
+    },
+    {
+      "era" : "bs-duchy",
+      "name" : "Johann Albrecht zu Mecklenburg",
+      "names" : {
+        "en" : "John Albert of Mecklenburg"
+      },
+      "reign" : {
+        "en" : "1907–1913"
+      },
+      "start" : "1907-06",
+      "title" : {
+        "de" : "Regent des Herzogtums",
+        "en" : "Regent of the duchy"
+      }
+    },
+    {
+      "era" : "bs-duchy",
+      "name" : "Ernst August",
+      "names" : {
+        "en" : "Ernest Augustus"
+      },
+      "reign" : {
+        "en" : "1913–1918"
+      },
+      "start" : "1913-11",
+      "title" : {
+        "de" : "Herzog von Braunschweig",
+        "en" : "Duke of Brunswick"
+      }
+    },
+    {
+      "era" : "bs-free-state",
+      "name" : "Ministerpräsidenten des Freistaats",
+      "names" : {
+        "en" : "Minister-presidents of the Free State"
+      },
+      "reign" : {
+        "en" : "1918–1933"
+      },
+      "start" : "1918-11",
+      "title" : {
+        "de" : "Chefs der Landesregierung",
+        "en" : "Heads of the state government"
+      }
+    },
+    {
+      "era" : "bs-nazi",
+      "name" : "Dietrich Klagges",
+      "reign" : {
+        "en" : "1933–1945"
+      },
+      "start" : "1933-05",
+      "title" : {
+        "de" : "Ministerpräsident des Landes Braunschweig (NSDAP)",
+        "en" : "Minister-President of Brunswick (NSDAP)"
+      }
+    },
+    {
+      "era" : "bs-occupation",
+      "name" : "Britische Militärregierung",
+      "names" : {
+        "en" : "British military government"
+      },
+      "reign" : {
+        "en" : "1945–1946"
+      },
+      "start" : "1945-05",
+      "title" : {
+        "de" : "Besatzungsmacht",
+        "en" : "Occupying power"
+      }
+    },
+    {
+      "era" : "bs-lower-saxony",
+      "name" : "Hinrich Wilhelm Kopf",
+      "reign" : {
+        "en" : "1946–1955"
+      },
+      "start" : "1946-11",
+      "title" : {
+        "de" : "Ministerpräsident von Niedersachsen",
+        "en" : "Minister-President of Lower Saxony"
+      }
+    },
+    {
+      "era" : "bs-lower-saxony",
+      "name" : "Heinrich Hellwege",
+      "reign" : {
+        "en" : "1955–1959"
+      },
+      "start" : "1955-06",
+      "title" : {
+        "de" : "Ministerpräsident von Niedersachsen",
+        "en" : "Minister-President of Lower Saxony"
+      }
+    },
+    {
+      "era" : "bs-lower-saxony",
+      "name" : "Hinrich Wilhelm Kopf",
+      "reign" : {
+        "en" : "1959–1961"
+      },
+      "start" : "1959-05",
+      "title" : {
+        "de" : "Ministerpräsident von Niedersachsen",
+        "en" : "Minister-President of Lower Saxony"
+      }
+    },
+    {
+      "era" : "bs-lower-saxony",
+      "name" : "Georg Diederichs",
+      "reign" : {
+        "en" : "1961–1970"
+      },
+      "start" : "1961-12",
+      "title" : {
+        "de" : "Ministerpräsident von Niedersachsen",
+        "en" : "Minister-President of Lower Saxony"
+      }
+    },
+    {
+      "era" : "bs-lower-saxony",
+      "name" : "Alfred Kubel",
+      "reign" : {
+        "en" : "1970–1976"
+      },
+      "start" : "1970-07",
+      "title" : {
+        "de" : "Ministerpräsident von Niedersachsen",
+        "en" : "Minister-President of Lower Saxony"
+      }
+    },
+    {
+      "era" : "bs-lower-saxony",
+      "name" : "Ernst Albrecht",
+      "reign" : {
+        "en" : "1976–1990"
+      },
+      "start" : "1976-02",
+      "title" : {
+        "de" : "Ministerpräsident von Niedersachsen",
+        "en" : "Minister-President of Lower Saxony"
+      }
+    },
+    {
+      "era" : "bs-lower-saxony",
+      "name" : "Gerhard Schröder",
+      "reign" : {
+        "en" : "1990–1998"
+      },
+      "start" : "1990-06",
+      "title" : {
+        "de" : "Ministerpräsident von Niedersachsen",
+        "en" : "Minister-President of Lower Saxony"
+      }
+    },
+    {
+      "era" : "bs-lower-saxony",
+      "name" : "Gerhard Glogowski",
+      "reign" : {
+        "en" : "1998–1999"
+      },
+      "start" : "1998-10",
+      "title" : {
+        "de" : "Ministerpräsident von Niedersachsen",
+        "en" : "Minister-President of Lower Saxony"
+      }
+    },
+    {
+      "era" : "bs-lower-saxony",
+      "name" : "Sigmar Gabriel",
+      "reign" : {
+        "en" : "1999–2003"
+      },
+      "start" : "1999-12",
+      "title" : {
+        "de" : "Ministerpräsident von Niedersachsen",
+        "en" : "Minister-President of Lower Saxony"
+      }
+    },
+    {
+      "era" : "bs-lower-saxony",
+      "name" : "Christian Wulff",
+      "reign" : {
+        "en" : "2003–2010"
+      },
+      "start" : "2003-03",
+      "title" : {
+        "de" : "Ministerpräsident von Niedersachsen",
+        "en" : "Minister-President of Lower Saxony"
+      }
+    },
+    {
+      "era" : "bs-lower-saxony",
+      "name" : "David McAllister",
+      "reign" : {
+        "en" : "2010–2013"
+      },
+      "start" : "2010-07",
+      "title" : {
+        "de" : "Ministerpräsident von Niedersachsen",
+        "en" : "Minister-President of Lower Saxony"
+      }
+    },
+    {
+      "era" : "bs-lower-saxony",
+      "name" : "Stephan Weil",
+      "reign" : {
+        "en" : "2013–2025"
+      },
+      "start" : "2013-02",
+      "title" : {
+        "de" : "Ministerpräsident von Niedersachsen",
+        "en" : "Minister-President of Lower Saxony"
+      }
+    },
+    {
+      "era" : "bs-lower-saxony",
+      "name" : "Olaf Lies",
+      "reign" : {
+        "de" : "seit 2025",
+        "en" : "since 2025"
+      },
+      "start" : "2025-05",
+      "title" : {
+        "de" : "Ministerpräsident von Niedersachsen",
+        "en" : "Minister-President of Lower Saxony"
+      }
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+ "format": "mapquest-sights",
+ "formatVersion": 1,
+ "id": "example.berlin.fountain-walk",
+ "version": "1.0.0",
+ "title": {"en": "Fountain walk through Mitte", "de": "Brunnenspaziergang durch Mitte"},
+ "summary": {"en": "An example of a third-party package: three fountains of Berlin's Mitte as one achievement. It names the fountains under its own IDs; the app recognises them as the Berlin package's (by Wikidata item or sameAs) and counts them once.",
+             "de": "Ein Beispiel für ein Paket eines anderen Anbieters: drei Brunnen in Berlin-Mitte als ein Erfolg. Es nennt die Brunnen unter eigenen IDs; die App erkennt sie als die des Berlin-Pakets (am Wikidata-Objekt oder an sameAs) und zählt sie einmal."},
+ "publisher": "Example Publisher",
+ "license": "CC0 1.0",
+ "language": "de",
+ "region": {"id": "berlin", "name": {"en": "Berlin"}},
+ "categories": [
+  {"id": "monumental-fountain", "title": {"en": "Monumental fountain", "de": "Monumentalbrunnen"}, "parent": "fountain", "symbol": "drop.circle.fill"}
+ ],
+ "sights": [
+  {"id": "example.neptune", "name": "Neptunbrunnen", "names": {"en": "Neptune Fountain"}, "category": "monumental-fountain",
+   "latitude": 52.519596, "longitude": 13.406845, "radius": 40, "district": "Mitte", "wikidata": "Q650657"},
+  {"id": "example.spindler", "name": "Spindlerbrunnen", "names": {"en": "Spindler Fountain"}, "category": "fountain",
+   "latitude": 52.5119, "longitude": 13.4011, "district": "Mitte", "sameAs": ["spindlerbrunnen"]},
+  {"id": "example.friendship", "name": "Brunnen der Völkerfreundschaft", "names": {"en": "Fountain of International Friendship"},
+   "category": "monumental-fountain", "latitude": 52.522, "longitude": 13.4128, "district": "Mitte", "wikidata": "Q992755"}
+ ],
+ "achievements": [
+  {"id": "example.fountain-walk", "group": "stories", "symbol": "drop.fill",
+   "title": {"en": "Fountains of Mitte", "de": "Brunnen in Mitte"},
+   "description": {"en": "Neptune at the Rotes Rathaus, the Spindler fountain and the fountain on Alexanderplatz: three fountains within a short walk.",
+                   "de": "Neptun am Roten Rathaus, der Spindlerbrunnen und der Brunnen am Alexanderplatz: drei Brunnen, nur einen kurzen Spaziergang voneinander entfernt."},
+   "rule": {"sights": ["example.neptune", "example.spindler", "example.friendship"]}}
+ ]
+}

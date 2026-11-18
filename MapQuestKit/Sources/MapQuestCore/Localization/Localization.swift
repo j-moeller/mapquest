@@ -135,38 +135,46 @@ public struct LocalizedString: Hashable, Sendable {
     public var text: String { self() }
 }
 
-/// A place's or person's name in German (the original) and, where English uses
-/// another, in English. In English the English name comes first and the German
-/// original second ("Brandenburg Gate · Brandenburger Tor", "Frederick the Great ·
-/// Friedrich der Große") – unless the German name is the one used in English too and
-/// the English one only explains it ("Hauptbahnhof · Central Station").
+/// A place's or person's name in its original language and, where other languages
+/// use another, in those. In another language the translated name comes first and
+/// the original second ("Brandenburg Gate · Brandenburger Tor", "Frederick the Great ·
+/// Friedrich der Große") – unless the original is the one used in that language too
+/// and the translation only explains it (`localFirst`: "Hauptbahnhof · Central Station").
 public struct BilingualName: Hashable, Sendable {
-    public var german: String
-    public var english: String?
-    /// In English, the German name first and the English one as an explanation.
-    public var germanFirst: Bool
+    /// The original name ("Brandenburger Tor").
+    public var local: String
+    /// Its language code ("de").
+    public var localLanguage: String
+    /// Names in other languages, where they differ ("en": "Brandenburg Gate").
+    public var translations: [String: String]
+    /// In other languages, the original first and the translation as an explanation.
+    public var localFirst: Bool
 
+    public init(local: String, language: String, translations: [String: String] = [:], localFirst: Bool = false) {
+        self.local = local
+        localLanguage = language
+        self.translations = translations.filter { !$0.value.isEmpty && $0.value != local && $0.key != language }
+        self.localFirst = localFirst
+    }
+
+    /// A German original with an English name.
     public init(german: String, english: String? = nil, germanFirst: Bool = false) {
-        self.german = german
-        self.english = english
-        self.germanFirst = germanFirst
+        self.init(local: german, language: "de", translations: english.map { ["en": $0] } ?? [:], localFirst: germanFirst)
     }
 
-    private var hasEnglish: Bool {
-        guard let english else { return false }
-        return !english.isEmpty && english != german
-    }
+    public var german: String { local }
+    public var english: String? { translations["en"] }
 
     /// The name to show in a language.
     public func primary(_ language: Language = Localization.language) -> String {
-        guard language == .en, hasEnglish, !germanFirst, let english else { return german }
-        return english
+        guard language.rawValue != localLanguage, !localFirst, let translated = translations[language.rawValue] else { return local }
+        return translated
     }
 
-    /// The other name, shown next to it where there is room (English only).
+    /// The other name, shown next to it where there is room (in languages other than the original's).
     public func secondary(_ language: Language = Localization.language) -> String? {
-        guard language == .en, hasEnglish, let english else { return nil }
-        return germanFirst ? english : german
+        guard language.rawValue != localLanguage, let translated = translations[language.rawValue] else { return nil }
+        return localFirst ? translated : local
     }
 
     /// "Brandenburg Gate (Brandenburger Tor)", or the one name.

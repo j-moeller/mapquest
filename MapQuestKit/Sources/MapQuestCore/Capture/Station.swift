@@ -33,7 +33,34 @@ public struct Station: Codable, Hashable, Identifiable, Sendable {
     public var district: String?
 
     enum CodingKeys: String, CodingKey {
-        case id, name, englishName = "nameEn", system, lines, latitude, longitude, radius, district
+        case id, name, names, system, lines, latitude, longitude, radius, district
+    }
+
+    /// Package JSON: `name` as on the signs, `names` explanations by language (`{"en": "Central Station"}`).
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.decode(String.self, forKey: .id)
+        name = try c.decode(String.self, forKey: .name)
+        englishName = try c.decodeIfPresent([String: String].self, forKey: .names)?["en"]
+        system = try c.decode(TransitSystem.self, forKey: .system)
+        lines = try c.decodeIfPresent([String].self, forKey: .lines) ?? []
+        latitude = try c.decode(Double.self, forKey: .latitude)
+        longitude = try c.decode(Double.self, forKey: .longitude)
+        radius = try c.decodeIfPresent(Double.self, forKey: .radius) ?? 80
+        district = try c.decodeIfPresent(String.self, forKey: .district)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var c = encoder.container(keyedBy: CodingKeys.self)
+        try c.encode(id, forKey: .id)
+        try c.encode(name, forKey: .name)
+        if let englishName { try c.encode(["en": englishName], forKey: .names) }
+        try c.encode(system, forKey: .system)
+        try c.encode(lines, forKey: .lines)
+        try c.encode(latitude, forKey: .latitude)
+        try c.encode(longitude, forKey: .longitude)
+        try c.encode(radius, forKey: .radius)
+        try c.encodeIfPresent(district, forKey: .district)
     }
 
     public init(id: String, name: String, englishName: String? = nil, system: TransitSystem, lines: [String],

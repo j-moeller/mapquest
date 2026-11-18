@@ -5,17 +5,13 @@ import XCTest
 /// The Berlin data in German: every English text has its German counterpart, with
 /// the same facts (IDs, years, sectors, places, stops).
 final class GermanDataTests: XCTestCase {
-    private func load(_ name: String) throws -> Data {
-        try Data(contentsOf: BraunschweigDataTests.root.appendingPathComponent("Berlin/\(name)"))
-    }
-
     override func tearDown() {
         Localization.language = .en
         super.tearDown()
     }
 
     func testSightNames() throws {
-        let sights = try SightCatalog.decode(load("berlin-sights.json")).sights
+        let sights = try TestPackages.berlin().catalog.sights
         let english = sights.filter { $0.englishName != nil }
         XCTAssertGreaterThan(english.count, 100)
         for sight in english {
@@ -27,15 +23,15 @@ final class GermanDataTests: XCTestCase {
         XCTAssertEqual(gate.otherName, "Brandenburger Tor")
         let square = try XCTUnwrap(sights.first { $0.id == "alexanderplatz" })
         XCTAssertNil(square.otherName, "German names used in English stay alone")
-        let stations = try StationCatalog.decode(load("berlin-stations.json"))
+        let stations = try TestPackages.berlin().stations
         let main = try XCTUnwrap(stations["s:hauptbahnhof"])
         XCTAssertEqual(main.names.primary(.en), "Hauptbahnhof", "station names stay German first")
         XCTAssertEqual(main.otherName, "Central Station")
     }
 
     func testEntriesInGerman() throws {
-        let english = try SightInfoCatalog.decode(load("berlin-sight-info.json"))
-        let german = try SightInfoCatalog.decode(load("berlin-sight-info-de.json"))
+        let english = try TestPackages.berlin().infos(.en)
+        let german = try TestPackages.berlin().infos(.de)
         XCTAssertEqual(Set(german.entries.keys), Set(english.entries.keys))
         XCTAssertGreaterThan(german.entries.values.filter { $0.language == "de" }.count, 170)
         for (id, entry) in german.entries {
@@ -45,8 +41,8 @@ final class GermanDataTests: XCTestCase {
     }
 
     func testHistoryInGerman() throws {
-        let english = try SightHistoryCatalog.decode(load("berlin-sight-history.json"))
-        let german = try SightHistoryCatalog.decode(load("berlin-sight-history-de.json"))
+        let english = try TestPackages.berlin().histories(.en)
+        let german = try TestPackages.berlin().histories(.de)
         XCTAssertEqual(Set(german.entries.keys), Set(english.entries.keys))
         let englishWords = #"\b(rebuilt|built|laid out|named|founded|since|from|until|moved|extended|renovated|the|of|and|c\.)\b"#
         for (id, facts) in german.entries {
@@ -68,23 +64,25 @@ final class GermanDataTests: XCTestCase {
     }
 
     func testAchievementsInGerman() throws {
-        let achievements = try Achievement.decodeList(load("berlin-achievements.json"))
-        let untranslated = achievements.filter { $0.de == nil }.map(\.id)
+        let achievements = try TestPackages.berlin().packages.flatMap { $0.achievements ?? [] }
+        // A title the same in both languages is given once (`LocalizedText` falls back to English).
+        let untranslated = achievements.filter { $0.descriptions.text(in: "de") == nil }.map(\.id)
         XCTAssertTrue(untranslated.isEmpty, "no German: \(untranslated)")
         for achievement in achievements {
-            guard let de = achievement.de else { continue }
-            XCTAssertFalse(de.title.isEmpty, achievement.id)
-            XCTAssertGreaterThan(de.description.count, 15, achievement.id)
-            XCTAssertNotEqual(de.description, achievement.englishDescription, achievement.id)
+            guard let description = achievement.descriptions.text(in: "de") else { continue }
+            XCTAssertFalse(achievement.titles(.de).isEmpty, achievement.id)
+            XCTAssertGreaterThan(description.count, 15, achievement.id)
+            XCTAssertNotEqual(description, achievement.descriptions.text(in: "en"), achievement.id)
         }
         Localization.language = .de
         let first = try XCTUnwrap(achievements.first { $0.id == "first-capture" })
-        XCTAssertEqual(first.title, first.de?.title)
+        XCTAssertEqual(first.title, first.titles.text(in: "de"))
+        XCTAssertEqual(try XCTUnwrap(achievements.first { $0.id == "all-sights" }).title, "Ich bin ein Berliner")
     }
 
     func testRemembranceInGerman() throws {
-        let english = try RemembranceGuide.decode(load("berlin-remembrance.json"))
-        let german = try RemembranceGuide.decode(load("berlin-remembrance-de.json"))
+        let english = try TestPackages.berlin().remembrance(.en)
+        let german = try TestPackages.berlin().remembrance(.de)
         XCTAssertEqual(german.chapters.map(\.id), english.chapters.map(\.id))
         for (de, en) in zip(german.chapters, english.chapters) {
             XCTAssertEqual(de.places.map(\.sight), en.places.map(\.sight), de.id)

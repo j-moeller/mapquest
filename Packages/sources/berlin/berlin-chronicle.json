@@ -1,0 +1,850 @@
+{
+  "division" : {
+    "sectors" : {
+      "east" : {
+        "de" : "Ost-Berlin",
+        "en" : "East Berlin"
+      },
+      "west" : {
+        "de" : "West-Berlin",
+        "en" : "West Berlin"
+      }
+    },
+    "title" : {
+      "de" : "Während der Teilung Berlins",
+      "en" : "While Berlin was divided"
+    },
+    "until" : 1990
+  },
+  "eras" : [
+    {
+      "id" : "slavic",
+      "name" : {
+        "de" : "Slawisches Land",
+        "en" : "Slavic lands"
+      },
+      "start" : "700-01",
+      "summary" : {
+        "de" : "Vor Brandenburg: Slawische Stämme – die Heveller bei Spandau, die Sprewanen bei Köpenick – beherrschen das Land an Havel und Spree, bis Albrecht der Bär 1157 Jaxa von Köpenick besiegt und Brandenburg einnimmt.",
+        "en" : "Before Brandenburg: Slavic tribes – the Hevelli at Spandau, the Sprevane at Köpenick – hold the land on the Havel and Spree, until Albert the Bear defeats Jaxa of Köpenick and takes Brandenburg in 1157."
+      },
+      "years" : {
+        "de" : "bis 1157",
+        "en" : "until 1157"
+      }
+    },
+    {
+      "id" : "margraviate",
+      "monarchy" : true,
+      "name" : {
+        "de" : "Mark Brandenburg",
+        "en" : "Margraviate of Brandenburg"
+      },
+      "start" : "1157-06",
+      "summary" : {
+        "de" : "Berlin und Cölln, 1244 und 1237 erstmals erwähnt, wachsen unter den Markgrafen von Brandenburg zur Doppelstadt der Kaufleute an der Spree heran.",
+        "en" : "Berlin and Cölln, first recorded in 1244 and 1237, grow up as twin trading towns on the Spree under the margraves of Brandenburg."
+      },
+      "years" : {
+        "en" : "1157–1415"
+      }
+    },
+    {
+      "id" : "electorate",
+      "monarchy" : true,
+      "name" : {
+        "de" : "Kurfürstentum Brandenburg",
+        "en" : "Electorate of Brandenburg"
+      },
+      "start" : "1415-04",
+      "summary" : {
+        "de" : "Die Hohenzollern herrschen über Brandenburg. Berlin-Cölln wird ihre Residenz, 1539 evangelisch und nach dem Dreißigjährigen Krieg zur Festung ausgebaut.",
+        "en" : "The Hohenzollern rule Brandenburg. Berlin-Cölln becomes their residence, turns Protestant in 1539 and is fortified after the Thirty Years' War."
+      },
+      "years" : {
+        "en" : "1415–1701"
+      }
+    },
+    {
+      "id" : "prussia",
+      "monarchy" : true,
+      "name" : {
+        "de" : "Königreich Preußen",
+        "en" : "Kingdom of Prussia"
+      },
+      "start" : "1701-01",
+      "summary" : {
+        "de" : "Berlin ist königliche Residenz- und Hauptstadt: Barock und Rokoko unter den ersten Königen, nach den napoleonischen Kriegen der Klassizismus – Schinkels Stadt.",
+        "en" : "Berlin is the royal capital: Baroque and Rococo under the first kings, then Neoclassicism, Schinkel's city, after the Napoleonic Wars."
+      },
+      "years" : {
+        "en" : "1701–1871"
+      }
+    },
+    {
+      "id" : "empire",
+      "monarchy" : true,
+      "name" : {
+        "de" : "Deutsches Kaiserreich",
+        "en" : "German Empire"
+      },
+      "start" : "1871-01",
+      "summary" : {
+        "de" : "Als Hauptstadt des neuen Deutschen Reiches wächst Berlin zur Millionenstadt, geprägt von Historismus und Jugendstil.",
+        "en" : "Capital of the new German Empire, Berlin grows into a city of millions, shaped by Historicism and Art Nouveau."
+      },
+      "years" : {
+        "en" : "1871–1918"
+      }
+    },
+    {
+      "id" : "weimar",
+      "name" : {
+        "de" : "Weimarer Republik",
+        "en" : "Weimar Republic"
+      },
+      "start" : "1918-11",
+      "summary" : {
+        "de" : "Demokratie nach der Revolution von 1918. 1920 entsteht Groß-Berlin: die Goldenen Zwanziger und die Siedlungen der Moderne.",
+        "en" : "Democracy after the revolution of 1918. Greater Berlin is formed in 1920: the Golden Twenties and modernist housing estates."
+      },
+      "years" : {
+        "en" : "1918–1933"
+      }
+    },
+    {
+      "id" : "nazi",
+      "name" : {
+        "de" : "Zeit des Nationalsozialismus",
+        "en" : "Nazi Germany"
+      },
+      "start" : "1933-01",
+      "summary" : {
+        "de" : "Diktatur, Verfolgung und Holocaust; monumentale Bauten für das Regime. Der Krieg lässt die Stadt in Trümmern zurück.",
+        "en" : "Dictatorship, persecution and the Holocaust; monumental buildings for the regime. The war leaves the city in ruins."
+      },
+      "years" : {
+        "en" : "1933–1945"
+      }
+    },
+    {
+      "id" : "occupation",
+      "name" : {
+        "de" : "Alliierte Besatzung",
+        "en" : "Allied occupation"
+      },
+      "start" : "1945-05",
+      "summary" : {
+        "de" : "Die vier Alliierten teilen die Stadt in Sektoren. Sowjetische Ehrenmale entstehen; die Luftbrücke von 1948–1949 überwindet die Berlin-Blockade.",
+        "en" : "The four Allies divide the city into sectors. Soviet war memorials rise; the Berlin Blockade is broken by the Airlift of 1948–1949."
+      },
+      "years" : {
+        "en" : "1945–1949"
+      }
+    },
+    {
+      "id" : "divided",
+      "name" : {
+        "de" : "Geteiltes Berlin",
+        "en" : "Divided Berlin"
+      },
+      "start" : "1949-10",
+      "summary" : {
+        "de" : "Die Stadt ist geteilt in Ost-Berlin, die Hauptstadt der DDR, und West-Berlin; die Mauer steht von 1961 bis 1989.",
+        "en" : "The city is split into East Berlin, capital of the GDR, and West Berlin; the Wall stands from 1961 to 1989."
+      },
+      "years" : {
+        "en" : "1949–1990"
+      }
+    },
+    {
+      "id" : "east",
+      "name" : {
+        "de" : "Ost-Berlin (DDR)",
+        "en" : "East Berlin (GDR)"
+      },
+      "sector" : "east",
+      "start" : "1949-10",
+      "summary" : {
+        "de" : "Hauptstadt der DDR unter der SED. Ab 1961 riegelt die Mauer die Stadt ab; Sozialistischer Klassizismus, dann Moderne und Plattenbausiedlungen.",
+        "en" : "Capital of the GDR under the SED. The Wall seals the city off from 1961; Socialist Classicism, then modernism and prefabricated estates."
+      },
+      "years" : {
+        "en" : "1949–1990"
+      }
+    },
+    {
+      "id" : "west",
+      "name" : {
+        "de" : "West-Berlin",
+        "en" : "West Berlin"
+      },
+      "sector" : "west",
+      "start" : "1949-10",
+      "summary" : {
+        "de" : "Eine westliche Enklave, an die Bundesrepublik gebunden und unter dem Schutz der Alliierten. Ab 1961 eingemauert; Interbau und Kulturforum.",
+        "en" : "A Western enclave tied to the Federal Republic under Allied protection. Walled in from 1961; Interbau and the Kulturforum."
+      },
+      "years" : {
+        "en" : "1949–1990"
+      }
+    },
+    {
+      "id" : "reunified",
+      "name" : {
+        "de" : "Wiedervereinigtes Deutschland",
+        "en" : "Reunified Germany"
+      },
+      "start" : "1990-10",
+      "summary" : {
+        "de" : "1989 fällt die Mauer, 1990 wird Deutschland wiedervereinigt. Berlin ist wieder Hauptstadt und ab 1999 Regierungssitz.",
+        "en" : "The Wall falls in 1989 and Germany reunites in 1990. Berlin is the capital again and the seat of government from 1999."
+      },
+      "years" : {
+        "de" : "seit 1990",
+        "en" : "since 1990"
+      }
+    }
+  ],
+  "id" : "berlin",
+  "name" : {
+    "en" : "Berlin"
+  },
+  "rulers" : [
+    {
+      "era" : "slavic",
+      "name" : "Slawische Fürsten",
+      "names" : {
+        "en" : "Slavic princes"
+      },
+      "reign" : {
+        "de" : "bis 1157",
+        "en" : "until 1157"
+      },
+      "start" : "700-01",
+      "title" : {
+        "de" : "Stämme der Heveller und Sprewanen",
+        "en" : "Hevelli and Sprevane tribes"
+      }
+    },
+    {
+      "era" : "margraviate",
+      "name" : "Askanische Markgrafen",
+      "names" : {
+        "en" : "Ascanian margraves"
+      },
+      "reign" : {
+        "en" : "1157–1320"
+      },
+      "start" : "1157-06",
+      "title" : {
+        "de" : "Markgrafen von Brandenburg",
+        "en" : "Margraves of Brandenburg"
+      }
+    },
+    {
+      "era" : "margraviate",
+      "name" : "Wittelsbacher Markgrafen",
+      "names" : {
+        "en" : "Wittelsbach margraves"
+      },
+      "reign" : {
+        "en" : "1323–1373"
+      },
+      "start" : "1323-04",
+      "title" : {
+        "de" : "Markgrafen von Brandenburg",
+        "en" : "Margraves of Brandenburg"
+      }
+    },
+    {
+      "era" : "margraviate",
+      "name" : "Luxemburger Markgrafen",
+      "names" : {
+        "en" : "Luxembourg margraves"
+      },
+      "reign" : {
+        "en" : "1373–1415"
+      },
+      "start" : "1373-08",
+      "title" : {
+        "de" : "Markgrafen von Brandenburg",
+        "en" : "Margraves of Brandenburg"
+      }
+    },
+    {
+      "era" : "electorate",
+      "name" : "Friedrich I.",
+      "names" : {
+        "en" : "Frederick I"
+      },
+      "reign" : {
+        "en" : "1415–1440"
+      },
+      "start" : "1415-04",
+      "title" : {
+        "de" : "Kurfürst von Brandenburg",
+        "en" : "Elector of Brandenburg"
+      }
+    },
+    {
+      "era" : "electorate",
+      "name" : "Friedrich II. „Eisenzahn“",
+      "names" : {
+        "en" : "Frederick II “Irontooth”"
+      },
+      "reign" : {
+        "en" : "1440–1470"
+      },
+      "start" : "1440-09",
+      "title" : {
+        "de" : "Kurfürst von Brandenburg",
+        "en" : "Elector of Brandenburg"
+      }
+    },
+    {
+      "era" : "electorate",
+      "name" : "Albrecht Achilles",
+      "names" : {
+        "en" : "Albert Achilles"
+      },
+      "reign" : {
+        "en" : "1470–1486"
+      },
+      "start" : "1470-04",
+      "title" : {
+        "de" : "Kurfürst von Brandenburg",
+        "en" : "Elector of Brandenburg"
+      }
+    },
+    {
+      "era" : "electorate",
+      "name" : "Johann Cicero",
+      "names" : {
+        "en" : "John Cicero"
+      },
+      "reign" : {
+        "en" : "1486–1499"
+      },
+      "start" : "1486-03",
+      "title" : {
+        "de" : "Kurfürst von Brandenburg",
+        "en" : "Elector of Brandenburg"
+      }
+    },
+    {
+      "era" : "electorate",
+      "name" : "Joachim I. Nestor",
+      "names" : {
+        "en" : "Joachim I Nestor"
+      },
+      "reign" : {
+        "en" : "1499–1535"
+      },
+      "start" : "1499-01",
+      "title" : {
+        "de" : "Kurfürst von Brandenburg",
+        "en" : "Elector of Brandenburg"
+      }
+    },
+    {
+      "era" : "electorate",
+      "name" : "Joachim II. Hector",
+      "names" : {
+        "en" : "Joachim II Hector"
+      },
+      "reign" : {
+        "en" : "1535–1571"
+      },
+      "start" : "1535-07",
+      "title" : {
+        "de" : "Kurfürst von Brandenburg",
+        "en" : "Elector of Brandenburg"
+      }
+    },
+    {
+      "era" : "electorate",
+      "name" : "Johann Georg",
+      "names" : {
+        "en" : "John George"
+      },
+      "reign" : {
+        "en" : "1571–1598"
+      },
+      "start" : "1571-01",
+      "title" : {
+        "de" : "Kurfürst von Brandenburg",
+        "en" : "Elector of Brandenburg"
+      }
+    },
+    {
+      "era" : "electorate",
+      "name" : "Joachim Friedrich",
+      "names" : {
+        "en" : "Joachim Frederick"
+      },
+      "reign" : {
+        "en" : "1598–1608"
+      },
+      "start" : "1598-01",
+      "title" : {
+        "de" : "Kurfürst von Brandenburg",
+        "en" : "Elector of Brandenburg"
+      }
+    },
+    {
+      "era" : "electorate",
+      "name" : "Johann Sigismund",
+      "names" : {
+        "en" : "John Sigismund"
+      },
+      "reign" : {
+        "en" : "1608–1619"
+      },
+      "start" : "1608-07",
+      "title" : {
+        "de" : "Kurfürst von Brandenburg",
+        "en" : "Elector of Brandenburg"
+      }
+    },
+    {
+      "era" : "electorate",
+      "name" : "Georg Wilhelm",
+      "names" : {
+        "en" : "George William"
+      },
+      "reign" : {
+        "en" : "1619–1640"
+      },
+      "start" : "1619-12",
+      "title" : {
+        "de" : "Kurfürst von Brandenburg",
+        "en" : "Elector of Brandenburg"
+      }
+    },
+    {
+      "era" : "electorate",
+      "name" : "Friedrich Wilhelm, der Große Kurfürst",
+      "names" : {
+        "en" : "Frederick William, the Great Elector"
+      },
+      "reign" : {
+        "en" : "1640–1688"
+      },
+      "start" : "1640-12",
+      "title" : {
+        "de" : "Kurfürst von Brandenburg",
+        "en" : "Elector of Brandenburg"
+      }
+    },
+    {
+      "era" : "electorate",
+      "name" : "Friedrich III.",
+      "names" : {
+        "en" : "Frederick III"
+      },
+      "reign" : {
+        "en" : "1688–1701"
+      },
+      "start" : "1688-05",
+      "title" : {
+        "de" : "Kurfürst von Brandenburg",
+        "en" : "Elector of Brandenburg"
+      }
+    },
+    {
+      "era" : "prussia",
+      "name" : "Friedrich I.",
+      "names" : {
+        "en" : "Frederick I"
+      },
+      "reign" : {
+        "en" : "1701–1713"
+      },
+      "start" : "1701-01",
+      "title" : {
+        "de" : "König in Preußen",
+        "en" : "King in Prussia"
+      }
+    },
+    {
+      "era" : "prussia",
+      "name" : "Friedrich Wilhelm I.",
+      "names" : {
+        "en" : "Frederick William I"
+      },
+      "reign" : {
+        "en" : "1713–1740"
+      },
+      "start" : "1713-02",
+      "title" : {
+        "de" : "König in Preußen",
+        "en" : "King in Prussia"
+      }
+    },
+    {
+      "era" : "prussia",
+      "name" : "Friedrich II., der Große",
+      "names" : {
+        "en" : "Frederick II, the Great"
+      },
+      "reign" : {
+        "en" : "1740–1786"
+      },
+      "start" : "1740-05",
+      "title" : {
+        "de" : "König von Preußen",
+        "en" : "King of Prussia"
+      }
+    },
+    {
+      "era" : "prussia",
+      "name" : "Friedrich Wilhelm II.",
+      "names" : {
+        "en" : "Frederick William II"
+      },
+      "reign" : {
+        "en" : "1786–1797"
+      },
+      "start" : "1786-08",
+      "title" : {
+        "de" : "König von Preußen",
+        "en" : "King of Prussia"
+      }
+    },
+    {
+      "era" : "prussia",
+      "name" : "Friedrich Wilhelm III.",
+      "names" : {
+        "en" : "Frederick William III"
+      },
+      "reign" : {
+        "en" : "1797–1840"
+      },
+      "start" : "1797-11",
+      "title" : {
+        "de" : "König von Preußen",
+        "en" : "King of Prussia"
+      }
+    },
+    {
+      "era" : "prussia",
+      "name" : "Friedrich Wilhelm IV.",
+      "names" : {
+        "en" : "Frederick William IV"
+      },
+      "reign" : {
+        "en" : "1840–1861"
+      },
+      "start" : "1840-06",
+      "title" : {
+        "de" : "König von Preußen",
+        "en" : "King of Prussia"
+      }
+    },
+    {
+      "era" : "prussia",
+      "name" : "Wilhelm I.",
+      "names" : {
+        "en" : "William I"
+      },
+      "reign" : {
+        "en" : "1861–1888"
+      },
+      "start" : "1861-01",
+      "title" : {
+        "de" : "König von Preußen",
+        "en" : "King of Prussia"
+      }
+    },
+    {
+      "era" : "empire",
+      "name" : "Wilhelm I.",
+      "names" : {
+        "en" : "William I"
+      },
+      "reign" : {
+        "en" : "1871–1888"
+      },
+      "start" : "1871-01",
+      "title" : {
+        "de" : "Deutscher Kaiser und König von Preußen",
+        "en" : "German Emperor and King of Prussia"
+      }
+    },
+    {
+      "era" : "empire",
+      "name" : "Friedrich III.",
+      "names" : {
+        "en" : "Frederick III"
+      },
+      "reign" : {
+        "en" : "1888"
+      },
+      "start" : "1888-03",
+      "title" : {
+        "de" : "Deutscher Kaiser und König von Preußen",
+        "en" : "German Emperor and King of Prussia"
+      }
+    },
+    {
+      "era" : "empire",
+      "name" : "Wilhelm II.",
+      "names" : {
+        "en" : "Wilhelm II"
+      },
+      "reign" : {
+        "en" : "1888–1918"
+      },
+      "start" : "1888-06",
+      "title" : {
+        "de" : "Deutscher Kaiser und König von Preußen",
+        "en" : "German Emperor and King of Prussia"
+      }
+    },
+    {
+      "era" : "weimar",
+      "name" : "Friedrich Ebert",
+      "reign" : {
+        "en" : "1918–1925"
+      },
+      "start" : "1918-11",
+      "title" : {
+        "de" : "Reichspräsident",
+        "en" : "Reich President"
+      }
+    },
+    {
+      "era" : "weimar",
+      "name" : "Paul von Hindenburg",
+      "reign" : {
+        "en" : "1925–1934"
+      },
+      "start" : "1925-05",
+      "title" : {
+        "de" : "Reichspräsident",
+        "en" : "Reich President"
+      }
+    },
+    {
+      "era" : "nazi",
+      "name" : "Adolf Hitler",
+      "reign" : {
+        "en" : "1933–1945"
+      },
+      "start" : "1933-01",
+      "title" : {
+        "de" : "Reichskanzler und Diktator",
+        "en" : "Reich Chancellor and dictator"
+      }
+    },
+    {
+      "era" : "occupation",
+      "name" : "Alliierte Kommandantur",
+      "names" : {
+        "en" : "Allied Kommandatura"
+      },
+      "reign" : {
+        "en" : "1945–1949"
+      },
+      "start" : "1945-05",
+      "title" : {
+        "de" : "Viermächteverwaltung der Stadt (USA, Großbritannien, Frankreich, Sowjetunion)",
+        "en" : "Four-power city government (US, UK, France, Soviet Union)"
+      }
+    },
+    {
+      "era" : "east",
+      "name" : "Walter Ulbricht",
+      "reign" : {
+        "en" : "1949–1971"
+      },
+      "start" : "1949-10",
+      "title" : {
+        "de" : "Erster Sekretär des ZK der SED",
+        "en" : "First Secretary of the SED"
+      }
+    },
+    {
+      "era" : "east",
+      "name" : "Erich Honecker",
+      "reign" : {
+        "en" : "1971–1989"
+      },
+      "start" : "1971-05",
+      "title" : {
+        "de" : "Generalsekretär des ZK der SED",
+        "en" : "General Secretary of the SED"
+      }
+    },
+    {
+      "era" : "east",
+      "name" : "Egon Krenz",
+      "reign" : {
+        "en" : "1989"
+      },
+      "start" : "1989-10",
+      "title" : {
+        "de" : "Generalsekretär des ZK der SED",
+        "en" : "General Secretary of the SED"
+      }
+    },
+    {
+      "era" : "east",
+      "name" : "Hans Modrow",
+      "reign" : {
+        "en" : "1989–1990"
+      },
+      "start" : "1989-12",
+      "title" : {
+        "de" : "Vorsitzender des Ministerrats der DDR",
+        "en" : "Chairman of the GDR Council of Ministers"
+      }
+    },
+    {
+      "era" : "east",
+      "name" : "Lothar de Maizière",
+      "reign" : {
+        "en" : "1990"
+      },
+      "start" : "1990-04",
+      "title" : {
+        "de" : "Ministerpräsident der DDR",
+        "en" : "Prime Minister of the GDR"
+      }
+    },
+    {
+      "era" : "west",
+      "name" : "Konrad Adenauer",
+      "reign" : {
+        "en" : "1949–1963"
+      },
+      "start" : "1949-09",
+      "title" : {
+        "de" : "Bundeskanzler",
+        "en" : "Federal Chancellor"
+      }
+    },
+    {
+      "era" : "west",
+      "name" : "Ludwig Erhard",
+      "reign" : {
+        "en" : "1963–1966"
+      },
+      "start" : "1963-10",
+      "title" : {
+        "de" : "Bundeskanzler",
+        "en" : "Federal Chancellor"
+      }
+    },
+    {
+      "era" : "west",
+      "name" : "Kurt Georg Kiesinger",
+      "reign" : {
+        "en" : "1966–1969"
+      },
+      "start" : "1966-12",
+      "title" : {
+        "de" : "Bundeskanzler",
+        "en" : "Federal Chancellor"
+      }
+    },
+    {
+      "era" : "west",
+      "name" : "Willy Brandt",
+      "reign" : {
+        "en" : "1969–1974"
+      },
+      "start" : "1969-10",
+      "title" : {
+        "de" : "Bundeskanzler",
+        "en" : "Federal Chancellor"
+      }
+    },
+    {
+      "era" : "west",
+      "name" : "Helmut Schmidt",
+      "reign" : {
+        "en" : "1974–1982"
+      },
+      "start" : "1974-05",
+      "title" : {
+        "de" : "Bundeskanzler",
+        "en" : "Federal Chancellor"
+      }
+    },
+    {
+      "era" : "west",
+      "name" : "Helmut Kohl",
+      "reign" : {
+        "en" : "1982–1998"
+      },
+      "start" : "1982-10",
+      "title" : {
+        "de" : "Bundeskanzler",
+        "en" : "Federal Chancellor"
+      }
+    },
+    {
+      "era" : "reunified",
+      "name" : "Helmut Kohl",
+      "reign" : {
+        "en" : "1982–1998"
+      },
+      "start" : "1990-10",
+      "title" : {
+        "de" : "Bundeskanzler",
+        "en" : "Federal Chancellor"
+      }
+    },
+    {
+      "era" : "reunified",
+      "name" : "Gerhard Schröder",
+      "reign" : {
+        "en" : "1998–2005"
+      },
+      "start" : "1998-10",
+      "title" : {
+        "de" : "Bundeskanzler",
+        "en" : "Federal Chancellor"
+      }
+    },
+    {
+      "era" : "reunified",
+      "name" : "Angela Merkel",
+      "reign" : {
+        "en" : "2005–2021"
+      },
+      "start" : "2005-11",
+      "title" : {
+        "de" : "Bundeskanzlerin",
+        "en" : "Federal Chancellor"
+      }
+    },
+    {
+      "era" : "reunified",
+      "name" : "Olaf Scholz",
+      "reign" : {
+        "en" : "2021–2025"
+      },
+      "start" : "2021-12",
+      "title" : {
+        "de" : "Bundeskanzler",
+        "en" : "Federal Chancellor"
+      }
+    },
+    {
+      "era" : "reunified",
+      "name" : "Friedrich Merz",
+      "reign" : {
+        "de" : "seit 2025",
+        "en" : "since 2025"
+      },
+      "start" : "2025-05",
+      "title" : {
+        "de" : "Bundeskanzler",
+        "en" : "Federal Chancellor"
+      }
+    }
+  ]
+}

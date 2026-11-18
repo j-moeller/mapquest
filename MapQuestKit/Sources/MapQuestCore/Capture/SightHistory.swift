@@ -1,21 +1,9 @@
 import Foundation
 
-/// Which part of the city a sight lay in while Berlin was divided (1949–1990).
-public enum BerlinSector: String, Codable, Hashable, Sendable {
-    case east, west
-
-    public var title: String {
-        switch self {
-        case .east: return LocalizedString("East Berlin", de: "Ost-Berlin")()
-        case .west: return LocalizedString("West Berlin", de: "West-Berlin")()
-        }
-    }
-}
-
 /// A sight's historical facts, unlocked with its entry: when it was built and
 /// opened, its architectural style, who designed and who commissioned it, and the
 /// history of the place. The era and the ruler at the time follow from `year`
-/// and the city's history (`CityHistory`: Berlin's, Braunschweig's).
+/// and the place's `Chronicle` (from its sight package).
 public struct SightHistory: Codable, Hashable, Sendable {
     /// The year it was built, laid out or founded – the year its era and ruler are taken from.
     public var year: Int?
@@ -31,16 +19,16 @@ public struct SightHistory: Codable, Hashable, Sendable {
     public var commissionedBy: [String]
     /// The history of the place (Wikipedia, CC BY-SA 4.0): paragraphs separated by blank lines.
     public var history: String?
-    /// Where it lay while the city was divided.
-    public var sector: BerlinSector?
+    /// Which part of a divided place it lay in (`Chronicle.Division`: Berlin's "east", "west").
+    public var sector: String?
     /// The Wikidata item the facts were checked against.
     public var wikidata: URL?
-    /// The city whose history it belongs to (set by `SightHistoryCatalog.decode`; Berlin without one).
-    public var city: String?
+    /// The eras and rulers its year is read in (set when its package is resolved).
+    public var chronicle: Chronicle?
 
     public init(year: Int? = nil, built: String? = nil, opened: String? = nil, styles: [String] = [],
                 architects: [String] = [], commissionedBy: [String] = [], history: String? = nil,
-                sector: BerlinSector? = nil, wikidata: URL? = nil) {
+                sector: String? = nil, wikidata: URL? = nil, chronicle: Chronicle? = nil) {
         self.year = year
         self.built = built
         self.opened = opened
@@ -50,6 +38,7 @@ public struct SightHistory: Codable, Hashable, Sendable {
         self.history = history
         self.sector = sector
         self.wikidata = wikidata
+        self.chronicle = chronicle
     }
 
     enum CodingKeys: String, CodingKey {
@@ -65,7 +54,7 @@ public struct SightHistory: Codable, Hashable, Sendable {
         architects = try container.decodeIfPresent([String].self, forKey: .architects) ?? []
         commissionedBy = try container.decodeIfPresent([String].self, forKey: .commissionedBy) ?? []
         history = try container.decodeIfPresent(String.self, forKey: .history)
-        sector = try container.decodeIfPresent(BerlinSector.self, forKey: .sector)
+        sector = try container.decodeIfPresent(String.self, forKey: .sector)
         wikidata = try container.decodeIfPresent(URL.self, forKey: .wikidata)
     }
 
@@ -75,9 +64,10 @@ public struct SightHistory: Codable, Hashable, Sendable {
             .filter { !$0.isEmpty }
     }
 
-    /// The era and the ruler when it was built, in its city's history.
+    /// The era and the ruler when it was built, in its chronicle.
     public var context: HistoricalContext? {
-        year.flatMap { CityHistory.of(city: city).context(in: $0, sector: sector) }
+        guard let year, let chronicle else { return nil }
+        return chronicle.context(in: year, sector: sector)
     }
 
     /// `built` as a phrase: "Built 1788–1791", "Laid out from 1741" ("Erbaut 1788–1791",
@@ -96,10 +86,12 @@ public struct SightHistory: Codable, Hashable, Sendable {
         return parts.isEmpty ? nil : parts.joined(separator: " · ")
     }
 
-    /// Where it lay during the division, if it existed then.
-    public var sectorDuringDivision: BerlinSector? {
-        guard let year, year < 1990 else { return nil }
-        return sector
+    /// While its place was divided: what that time is called and the part it lay in
+    /// ("While Berlin was divided", "East Berlin"), if it existed then.
+    public var division: (title: String, sector: String)? {
+        guard let year, let sector, let division = chronicle?.division, year < division.until,
+              let name = division.sectors[sector] else { return nil }
+        return (division.title(), name())
     }
 }
 
@@ -111,14 +103,12 @@ public struct SightHistoryCatalog: Sendable {
         self.entries = entries
     }
 
-    /// Reads `{"license": …, "entries": {"<sight id>": {year, built, opened, styles, …}}}`;
-    /// `city`: whose history the entries belong to (Berlin's without one).
-    public static func decode(_ data: Data, city: String? = nil) throws -> SightHistoryCatalog {
+    /// Reads `{"license": …, "entries": {"<sight id>": {year, built, opened, styles, …}}}`
+    /// (the build tools' files), each entry read in `chronicle`.
+    public static func decode(_ data: Data, chronicle: Chronicle? = nil) throws -> SightHistoryCatalog {
         struct Document: Decodable { var entries: [String: SightHistory] }
         var entries = try JSONDecoder().decode(Document.self, from: data).entries
-        if let city {
-            for id in entries.keys { entries[id]?.city = city }
-        }
+        for id in entries.keys { entries[id]?.chronicle = chronicle }
         return SightHistoryCatalog(entries: entries)
     }
 

@@ -1,0 +1,1857 @@
+{
+ "format": "mapquest-sights",
+ "formatVersion": 1,
+ "id": "mapquest.berlin.churches",
+ "version": "2026.11.18",
+ "title": {
+  "en": "Berlin churches",
+  "de": "Berliner Kirchen"
+ },
+ "summary": {
+  "en": "Berlin's churches – from the medieval town churches to the cathedral – with their history and an achievement for all of them.",
+  "de": "Berlins Kirchen – von den mittelalterlichen Stadtkirchen bis zum Dom – mit ihrer Geschichte und einem Erfolg für alle."
+ },
+ "publisher": "MapQuest",
+ "license": "Texts: Wikipedia (CC BY-SA 4.0); photos: Wikimedia Commons (licence per photo); facts: Wikidata (CC0), hand-checked; positions: OpenStreetMap (ODbL 1.0); achievements, chronicles and remembrance texts: MapQuest",
+ "language": "de",
+ "region": {
+  "id": "berlin",
+  "name": {
+   "en": "Berlin"
+  },
+  "bounds": {
+   "south": 52.3382,
+   "west": 13.0884,
+   "north": 52.6755,
+   "east": 13.7611
+  }
+ },
+ "chronicles": [
+  {
+   "division": {
+    "sectors": {
+     "east": {
+      "de": "Ost-Berlin",
+      "en": "East Berlin"
+     },
+     "west": {
+      "de": "West-Berlin",
+      "en": "West Berlin"
+     }
+    },
+    "title": {
+     "de": "Während der Teilung Berlins",
+     "en": "While Berlin was divided"
+    },
+    "until": 1990
+   },
+   "eras": [
+    {
+     "id": "slavic",
+     "name": {
+      "de": "Slawisches Land",
+      "en": "Slavic lands"
+     },
+     "start": "700-01",
+     "summary": {
+      "de": "Vor Brandenburg: Slawische Stämme – die Heveller bei Spandau, die Sprewanen bei Köpenick – beherrschen das Land an Havel und Spree, bis Albrecht der Bär 1157 Jaxa von Köpenick besiegt und Brandenburg einnimmt.",
+      "en": "Before Brandenburg: Slavic tribes – the Hevelli at Spandau, the Sprevane at Köpenick – hold the land on the Havel and Spree, until Albert the Bear defeats Jaxa of Köpenick and takes Brandenburg in 1157."
+     },
+     "years": {
+      "de": "bis 1157",
+      "en": "until 1157"
+     }
+    },
+    {
+     "id": "margraviate",
+     "monarchy": true,
+     "name": {
+      "de": "Mark Brandenburg",
+      "en": "Margraviate of Brandenburg"
+     },
+     "start": "1157-06",
+     "summary": {
+      "de": "Berlin und Cölln, 1244 und 1237 erstmals erwähnt, wachsen unter den Markgrafen von Brandenburg zur Doppelstadt der Kaufleute an der Spree heran.",
+      "en": "Berlin and Cölln, first recorded in 1244 and 1237, grow up as twin trading towns on the Spree under the margraves of Brandenburg."
+     },
+     "years": {
+      "en": "1157–1415"
+     }
+    },
+    {
+     "id": "electorate",
+     "monarchy": true,
+     "name": {
+      "de": "Kurfürstentum Brandenburg",
+      "en": "Electorate of Brandenburg"
+     },
+     "start": "1415-04",
+     "summary": {
+      "de": "Die Hohenzollern herrschen über Brandenburg. Berlin-Cölln wird ihre Residenz, 1539 evangelisch und nach dem Dreißigjährigen Krieg zur Festung ausgebaut.",
+      "en": "The Hohenzollern rule Brandenburg. Berlin-Cölln becomes their residence, turns Protestant in 1539 and is fortified after the Thirty Years' War."
+     },
+     "years": {
+      "en": "1415–1701"
+     }
+    },
+    {
+     "id": "prussia",
+     "monarchy": true,
+     "name": {
+      "de": "Königreich Preußen",
+      "en": "Kingdom of Prussia"
+     },
+     "start": "1701-01",
+     "summary": {
+      "de": "Berlin ist königliche Residenz- und Hauptstadt: Barock und Rokoko unter den ersten Königen, nach den napoleonischen Kriegen der Klassizismus – Schinkels Stadt.",
+      "en": "Berlin is the royal capital: Baroque and Rococo under the first kings, then Neoclassicism, Schinkel's city, after the Napoleonic Wars."
+     },
+     "years": {
+      "en": "1701–1871"
+     }
+    },
+    {
+     "id": "empire",
+     "monarchy": true,
+     "name": {
+      "de": "Deutsches Kaiserreich",
+      "en": "German Empire"
+     },
+     "start": "1871-01",
+     "summary": {
+      "de": "Als Hauptstadt des neuen Deutschen Reiches wächst Berlin zur Millionenstadt, geprägt von Historismus und Jugendstil.",
+      "en": "Capital of the new German Empire, Berlin grows into a city of millions, shaped by Historicism and Art Nouveau."
+     },
+     "years": {
+      "en": "1871–1918"
+     }
+    },
+    {
+     "id": "weimar",
+     "name": {
+      "de": "Weimarer Republik",
+      "en": "Weimar Republic"
+     },
+     "start": "1918-11",
+     "summary": {
+      "de": "Demokratie nach der Revolution von 1918. 1920 entsteht Groß-Berlin: die Goldenen Zwanziger und die Siedlungen der Moderne.",
+      "en": "Democracy after the revolution of 1918. Greater Berlin is formed in 1920: the Golden Twenties and modernist housing estates."
+     },
+     "years": {
+      "en": "1918–1933"
+     }
+    },
+    {
+     "id": "nazi",
+     "name": {
+      "de": "Zeit des Nationalsozialismus",
+      "en": "Nazi Germany"
+     },
+     "start": "1933-01",
+     "summary": {
+      "de": "Diktatur, Verfolgung und Holocaust; monumentale Bauten für das Regime. Der Krieg lässt die Stadt in Trümmern zurück.",
+      "en": "Dictatorship, persecution and the Holocaust; monumental buildings for the regime. The war leaves the city in ruins."
+     },
+     "years": {
+      "en": "1933–1945"
+     }
+    },
+    {
+     "id": "occupation",
+     "name": {
+      "de": "Alliierte Besatzung",
+      "en": "Allied occupation"
+     },
+     "start": "1945-05",
+     "summary": {
+      "de": "Die vier Alliierten teilen die Stadt in Sektoren. Sowjetische Ehrenmale entstehen; die Luftbrücke von 1948–1949 überwindet die Berlin-Blockade.",
+      "en": "The four Allies divide the city into sectors. Soviet war memorials rise; the Berlin Blockade is broken by the Airlift of 1948–1949."
+     },
+     "years": {
+      "en": "1945–1949"
+     }
+    },
+    {
+     "id": "divided",
+     "name": {
+      "de": "Geteiltes Berlin",
+      "en": "Divided Berlin"
+     },
+     "start": "1949-10",
+     "summary": {
+      "de": "Die Stadt ist geteilt in Ost-Berlin, die Hauptstadt der DDR, und West-Berlin; die Mauer steht von 1961 bis 1989.",
+      "en": "The city is split into East Berlin, capital of the GDR, and West Berlin; the Wall stands from 1961 to 1989."
+     },
+     "years": {
+      "en": "1949–1990"
+     }
+    },
+    {
+     "id": "east",
+     "name": {
+      "de": "Ost-Berlin (DDR)",
+      "en": "East Berlin (GDR)"
+     },
+     "sector": "east",
+     "start": "1949-10",
+     "summary": {
+      "de": "Hauptstadt der DDR unter der SED. Ab 1961 riegelt die Mauer die Stadt ab; Sozialistischer Klassizismus, dann Moderne und Plattenbausiedlungen.",
+      "en": "Capital of the GDR under the SED. The Wall seals the city off from 1961; Socialist Classicism, then modernism and prefabricated estates."
+     },
+     "years": {
+      "en": "1949–1990"
+     }
+    },
+    {
+     "id": "west",
+     "name": {
+      "de": "West-Berlin",
+      "en": "West Berlin"
+     },
+     "sector": "west",
+     "start": "1949-10",
+     "summary": {
+      "de": "Eine westliche Enklave, an die Bundesrepublik gebunden und unter dem Schutz der Alliierten. Ab 1961 eingemauert; Interbau und Kulturforum.",
+      "en": "A Western enclave tied to the Federal Republic under Allied protection. Walled in from 1961; Interbau and the Kulturforum."
+     },
+     "years": {
+      "en": "1949–1990"
+     }
+    },
+    {
+     "id": "reunified",
+     "name": {
+      "de": "Wiedervereinigtes Deutschland",
+      "en": "Reunified Germany"
+     },
+     "start": "1990-10",
+     "summary": {
+      "de": "1989 fällt die Mauer, 1990 wird Deutschland wiedervereinigt. Berlin ist wieder Hauptstadt und ab 1999 Regierungssitz.",
+      "en": "The Wall falls in 1989 and Germany reunites in 1990. Berlin is the capital again and the seat of government from 1999."
+     },
+     "years": {
+      "de": "seit 1990",
+      "en": "since 1990"
+     }
+    }
+   ],
+   "id": "berlin",
+   "name": {
+    "en": "Berlin"
+   },
+   "rulers": [
+    {
+     "era": "slavic",
+     "name": "Slawische Fürsten",
+     "names": {
+      "en": "Slavic princes"
+     },
+     "reign": {
+      "de": "bis 1157",
+      "en": "until 1157"
+     },
+     "start": "700-01",
+     "title": {
+      "de": "Stämme der Heveller und Sprewanen",
+      "en": "Hevelli and Sprevane tribes"
+     }
+    },
+    {
+     "era": "margraviate",
+     "name": "Askanische Markgrafen",
+     "names": {
+      "en": "Ascanian margraves"
+     },
+     "reign": {
+      "en": "1157–1320"
+     },
+     "start": "1157-06",
+     "title": {
+      "de": "Markgrafen von Brandenburg",
+      "en": "Margraves of Brandenburg"
+     }
+    },
+    {
+     "era": "margraviate",
+     "name": "Wittelsbacher Markgrafen",
+     "names": {
+      "en": "Wittelsbach margraves"
+     },
+     "reign": {
+      "en": "1323–1373"
+     },
+     "start": "1323-04",
+     "title": {
+      "de": "Markgrafen von Brandenburg",
+      "en": "Margraves of Brandenburg"
+     }
+    },
+    {
+     "era": "margraviate",
+     "name": "Luxemburger Markgrafen",
+     "names": {
+      "en": "Luxembourg margraves"
+     },
+     "reign": {
+      "en": "1373–1415"
+     },
+     "start": "1373-08",
+     "title": {
+      "de": "Markgrafen von Brandenburg",
+      "en": "Margraves of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Friedrich I.",
+     "names": {
+      "en": "Frederick I"
+     },
+     "reign": {
+      "en": "1415–1440"
+     },
+     "start": "1415-04",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Friedrich II. „Eisenzahn“",
+     "names": {
+      "en": "Frederick II “Irontooth”"
+     },
+     "reign": {
+      "en": "1440–1470"
+     },
+     "start": "1440-09",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Albrecht Achilles",
+     "names": {
+      "en": "Albert Achilles"
+     },
+     "reign": {
+      "en": "1470–1486"
+     },
+     "start": "1470-04",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Johann Cicero",
+     "names": {
+      "en": "John Cicero"
+     },
+     "reign": {
+      "en": "1486–1499"
+     },
+     "start": "1486-03",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Joachim I. Nestor",
+     "names": {
+      "en": "Joachim I Nestor"
+     },
+     "reign": {
+      "en": "1499–1535"
+     },
+     "start": "1499-01",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Joachim II. Hector",
+     "names": {
+      "en": "Joachim II Hector"
+     },
+     "reign": {
+      "en": "1535–1571"
+     },
+     "start": "1535-07",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Johann Georg",
+     "names": {
+      "en": "John George"
+     },
+     "reign": {
+      "en": "1571–1598"
+     },
+     "start": "1571-01",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Joachim Friedrich",
+     "names": {
+      "en": "Joachim Frederick"
+     },
+     "reign": {
+      "en": "1598–1608"
+     },
+     "start": "1598-01",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Johann Sigismund",
+     "names": {
+      "en": "John Sigismund"
+     },
+     "reign": {
+      "en": "1608–1619"
+     },
+     "start": "1608-07",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Georg Wilhelm",
+     "names": {
+      "en": "George William"
+     },
+     "reign": {
+      "en": "1619–1640"
+     },
+     "start": "1619-12",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Friedrich Wilhelm, der Große Kurfürst",
+     "names": {
+      "en": "Frederick William, the Great Elector"
+     },
+     "reign": {
+      "en": "1640–1688"
+     },
+     "start": "1640-12",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "electorate",
+     "name": "Friedrich III.",
+     "names": {
+      "en": "Frederick III"
+     },
+     "reign": {
+      "en": "1688–1701"
+     },
+     "start": "1688-05",
+     "title": {
+      "de": "Kurfürst von Brandenburg",
+      "en": "Elector of Brandenburg"
+     }
+    },
+    {
+     "era": "prussia",
+     "name": "Friedrich I.",
+     "names": {
+      "en": "Frederick I"
+     },
+     "reign": {
+      "en": "1701–1713"
+     },
+     "start": "1701-01",
+     "title": {
+      "de": "König in Preußen",
+      "en": "King in Prussia"
+     }
+    },
+    {
+     "era": "prussia",
+     "name": "Friedrich Wilhelm I.",
+     "names": {
+      "en": "Frederick William I"
+     },
+     "reign": {
+      "en": "1713–1740"
+     },
+     "start": "1713-02",
+     "title": {
+      "de": "König in Preußen",
+      "en": "King in Prussia"
+     }
+    },
+    {
+     "era": "prussia",
+     "name": "Friedrich II., der Große",
+     "names": {
+      "en": "Frederick II, the Great"
+     },
+     "reign": {
+      "en": "1740–1786"
+     },
+     "start": "1740-05",
+     "title": {
+      "de": "König von Preußen",
+      "en": "King of Prussia"
+     }
+    },
+    {
+     "era": "prussia",
+     "name": "Friedrich Wilhelm II.",
+     "names": {
+      "en": "Frederick William II"
+     },
+     "reign": {
+      "en": "1786–1797"
+     },
+     "start": "1786-08",
+     "title": {
+      "de": "König von Preußen",
+      "en": "King of Prussia"
+     }
+    },
+    {
+     "era": "prussia",
+     "name": "Friedrich Wilhelm III.",
+     "names": {
+      "en": "Frederick William III"
+     },
+     "reign": {
+      "en": "1797–1840"
+     },
+     "start": "1797-11",
+     "title": {
+      "de": "König von Preußen",
+      "en": "King of Prussia"
+     }
+    },
+    {
+     "era": "prussia",
+     "name": "Friedrich Wilhelm IV.",
+     "names": {
+      "en": "Frederick William IV"
+     },
+     "reign": {
+      "en": "1840–1861"
+     },
+     "start": "1840-06",
+     "title": {
+      "de": "König von Preußen",
+      "en": "King of Prussia"
+     }
+    },
+    {
+     "era": "prussia",
+     "name": "Wilhelm I.",
+     "names": {
+      "en": "William I"
+     },
+     "reign": {
+      "en": "1861–1888"
+     },
+     "start": "1861-01",
+     "title": {
+      "de": "König von Preußen",
+      "en": "King of Prussia"
+     }
+    },
+    {
+     "era": "empire",
+     "name": "Wilhelm I.",
+     "names": {
+      "en": "William I"
+     },
+     "reign": {
+      "en": "1871–1888"
+     },
+     "start": "1871-01",
+     "title": {
+      "de": "Deutscher Kaiser und König von Preußen",
+      "en": "German Emperor and King of Prussia"
+     }
+    },
+    {
+     "era": "empire",
+     "name": "Friedrich III.",
+     "names": {
+      "en": "Frederick III"
+     },
+     "reign": {
+      "en": "1888"
+     },
+     "start": "1888-03",
+     "title": {
+      "de": "Deutscher Kaiser und König von Preußen",
+      "en": "German Emperor and King of Prussia"
+     }
+    },
+    {
+     "era": "empire",
+     "name": "Wilhelm II.",
+     "names": {
+      "en": "Wilhelm II"
+     },
+     "reign": {
+      "en": "1888–1918"
+     },
+     "start": "1888-06",
+     "title": {
+      "de": "Deutscher Kaiser und König von Preußen",
+      "en": "German Emperor and King of Prussia"
+     }
+    },
+    {
+     "era": "weimar",
+     "name": "Friedrich Ebert",
+     "reign": {
+      "en": "1918–1925"
+     },
+     "start": "1918-11",
+     "title": {
+      "de": "Reichspräsident",
+      "en": "Reich President"
+     }
+    },
+    {
+     "era": "weimar",
+     "name": "Paul von Hindenburg",
+     "reign": {
+      "en": "1925–1934"
+     },
+     "start": "1925-05",
+     "title": {
+      "de": "Reichspräsident",
+      "en": "Reich President"
+     }
+    },
+    {
+     "era": "nazi",
+     "name": "Adolf Hitler",
+     "reign": {
+      "en": "1933–1945"
+     },
+     "start": "1933-01",
+     "title": {
+      "de": "Reichskanzler und Diktator",
+      "en": "Reich Chancellor and dictator"
+     }
+    },
+    {
+     "era": "occupation",
+     "name": "Alliierte Kommandantur",
+     "names": {
+      "en": "Allied Kommandatura"
+     },
+     "reign": {
+      "en": "1945–1949"
+     },
+     "start": "1945-05",
+     "title": {
+      "de": "Viermächteverwaltung der Stadt (USA, Großbritannien, Frankreich, Sowjetunion)",
+      "en": "Four-power city government (US, UK, France, Soviet Union)"
+     }
+    },
+    {
+     "era": "east",
+     "name": "Walter Ulbricht",
+     "reign": {
+      "en": "1949–1971"
+     },
+     "start": "1949-10",
+     "title": {
+      "de": "Erster Sekretär des ZK der SED",
+      "en": "First Secretary of the SED"
+     }
+    },
+    {
+     "era": "east",
+     "name": "Erich Honecker",
+     "reign": {
+      "en": "1971–1989"
+     },
+     "start": "1971-05",
+     "title": {
+      "de": "Generalsekretär des ZK der SED",
+      "en": "General Secretary of the SED"
+     }
+    },
+    {
+     "era": "east",
+     "name": "Egon Krenz",
+     "reign": {
+      "en": "1989"
+     },
+     "start": "1989-10",
+     "title": {
+      "de": "Generalsekretär des ZK der SED",
+      "en": "General Secretary of the SED"
+     }
+    },
+    {
+     "era": "east",
+     "name": "Hans Modrow",
+     "reign": {
+      "en": "1989–1990"
+     },
+     "start": "1989-12",
+     "title": {
+      "de": "Vorsitzender des Ministerrats der DDR",
+      "en": "Chairman of the GDR Council of Ministers"
+     }
+    },
+    {
+     "era": "east",
+     "name": "Lothar de Maizière",
+     "reign": {
+      "en": "1990"
+     },
+     "start": "1990-04",
+     "title": {
+      "de": "Ministerpräsident der DDR",
+      "en": "Prime Minister of the GDR"
+     }
+    },
+    {
+     "era": "west",
+     "name": "Konrad Adenauer",
+     "reign": {
+      "en": "1949–1963"
+     },
+     "start": "1949-09",
+     "title": {
+      "de": "Bundeskanzler",
+      "en": "Federal Chancellor"
+     }
+    },
+    {
+     "era": "west",
+     "name": "Ludwig Erhard",
+     "reign": {
+      "en": "1963–1966"
+     },
+     "start": "1963-10",
+     "title": {
+      "de": "Bundeskanzler",
+      "en": "Federal Chancellor"
+     }
+    },
+    {
+     "era": "west",
+     "name": "Kurt Georg Kiesinger",
+     "reign": {
+      "en": "1966–1969"
+     },
+     "start": "1966-12",
+     "title": {
+      "de": "Bundeskanzler",
+      "en": "Federal Chancellor"
+     }
+    },
+    {
+     "era": "west",
+     "name": "Willy Brandt",
+     "reign": {
+      "en": "1969–1974"
+     },
+     "start": "1969-10",
+     "title": {
+      "de": "Bundeskanzler",
+      "en": "Federal Chancellor"
+     }
+    },
+    {
+     "era": "west",
+     "name": "Helmut Schmidt",
+     "reign": {
+      "en": "1974–1982"
+     },
+     "start": "1974-05",
+     "title": {
+      "de": "Bundeskanzler",
+      "en": "Federal Chancellor"
+     }
+    },
+    {
+     "era": "west",
+     "name": "Helmut Kohl",
+     "reign": {
+      "en": "1982–1998"
+     },
+     "start": "1982-10",
+     "title": {
+      "de": "Bundeskanzler",
+      "en": "Federal Chancellor"
+     }
+    },
+    {
+     "era": "reunified",
+     "name": "Helmut Kohl",
+     "reign": {
+      "en": "1982–1998"
+     },
+     "start": "1990-10",
+     "title": {
+      "de": "Bundeskanzler",
+      "en": "Federal Chancellor"
+     }
+    },
+    {
+     "era": "reunified",
+     "name": "Gerhard Schröder",
+     "reign": {
+      "en": "1998–2005"
+     },
+     "start": "1998-10",
+     "title": {
+      "de": "Bundeskanzler",
+      "en": "Federal Chancellor"
+     }
+    },
+    {
+     "era": "reunified",
+     "name": "Angela Merkel",
+     "reign": {
+      "en": "2005–2021"
+     },
+     "start": "2005-11",
+     "title": {
+      "de": "Bundeskanzlerin",
+      "en": "Federal Chancellor"
+     }
+    },
+    {
+     "era": "reunified",
+     "name": "Olaf Scholz",
+     "reign": {
+      "en": "2021–2025"
+     },
+     "start": "2021-12",
+     "title": {
+      "de": "Bundeskanzler",
+      "en": "Federal Chancellor"
+     }
+    },
+    {
+     "era": "reunified",
+     "name": "Friedrich Merz",
+     "reign": {
+      "de": "seit 2025",
+      "en": "since 2025"
+     },
+     "start": "2025-05",
+     "title": {
+      "de": "Bundeskanzler",
+      "en": "Federal Chancellor"
+     }
+    }
+   ]
+  }
+ ],
+ "sights": [
+  {
+   "id": "berliner-dom",
+   "name": "Berliner Dom",
+   "names": {
+    "en": "Berlin Cathedral"
+   },
+   "category": "church",
+   "latitude": 52.519084,
+   "longitude": 13.401094,
+   "radius": 40,
+   "district": "Mitte",
+   "wikidata": "Q154563",
+   "entry": {
+    "en": {
+     "title": "Berlin Cathedral",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Berlin_Cathedral",
+     "text": "Berlin Cathedral (German: Berliner Dom), also known as the Evangelical Supreme Parish and Collegiate Church, is a monumental German Protestant church and dynastic tomb (House of Hohenzollern) at the Lustgarten on the Museum Island in central Berlin. Having its origins as a castle chapel for the Berlin Palace, several structures have served to house the church since the 15th century. The present collegiate church was built from 1894 to 1905 by order of Emperor William II according to plans by Julius Raschdorff in Renaissance and Baroque Revival styles. The listed building is the largest Protestant church in Germany and one of the most important dynastic tombs in Europe. In addition to church services, the cathedral is used for state ceremonies, concerts and other events.\n\nSince the demolition of the Memorial Church (Denkmalskirche) section on the north side by the East German authorities in 1975, Berlin Cathedral has consisted of the large Sermon Church (Predigerkirche) in the center, and the smaller Baptismal and Matrimonial Church (Tauf- und Traukirche) on the south side and the Hohenzollern crypt (Hohenzollerngruft), which covers almost the entire basement. Damaged during the Allied bombing in World War II, the cathedral's original interior was restored by 2002. Currently there is discussion about restoring the historical exterior as well.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/Berliner_Dom_vor_Sonnenuntergang.jpg/960px-Berliner_Dom_vor_Sonnenuntergang.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Berliner_Dom_vor_Sonnenuntergang.jpg",
+      "artist": "Thomas Wolf, www.foto-tw.de",
+      "license": "CC BY-SA 3.0 de",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0/de/deed.en"
+     }
+    },
+    "de": {
+     "title": "Berliner Dom",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Berliner_Dom",
+     "text": "Der Berliner Dom (offiziell: Oberpfarr- und Domkirche zu Berlin) ist eine evangelische Kirche am Lustgarten auf der Museumsinsel in Berlin-Mitte. Der Neorenaissance­bau wurde 1894–1905 im Auftrag von Wilhelm II. nach Entwurf von Julius Raschdorff errichtet. Er ist die größte evangelische Kirche Deutschlands und eine der bedeutendsten dynastischen Grabstätten Europas. Neben Gottesdiensten wird er auch für Staatsakte, Konzerte und andere Veranstaltungen genutzt. Seit dem Abriss der nördlichen Denkmalskirche während der SED-Diktatur 1975 besteht der Berliner Dom aus der zentralen Predigtkirche, der südlichen Tauf- und Traukirche sowie der Hohenzollerngruft. Während des Zweiten Weltkriegs 1944 schwer beschädigt, wurde das Äußere bis 1984 verändert und das Innere bis 2002 originalgetreu wiederaufgebaut. Über eine Rekonstruktion der Denkmalskirche wird diskutiert.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/Berliner_Dom_vor_Sonnenuntergang.jpg/960px-Berliner_Dom_vor_Sonnenuntergang.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Berliner_Dom_vor_Sonnenuntergang.jpg",
+      "artist": "Thomas Wolf, www.foto-tw.de",
+      "license": "CC BY-SA 3.0 de",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0/de/deed.en"
+     }
+    }
+   },
+   "facts": {
+    "year": 1894,
+    "sector": "east",
+    "wikidata": "https://www.wikidata.org/wiki/Q154563",
+    "localized": {
+     "en": {
+      "built": "1894–1905",
+      "opened": "1905",
+      "styles": [
+       "Neo-Renaissance",
+       "Neo-Baroque"
+      ],
+      "architects": [
+       "Julius Carl Raschdorff"
+      ],
+      "commissionedBy": [
+       "Wilhelm II"
+      ],
+      "history": "Berlin Cathedral has a long history starting as a Catholic place of worship in the 15th century.\n\nThe history of today's Supreme Parish and Collegiate Church and its community dates back to 1451. In that year Prince-Elector Frederick II Irontooth of Brandenburg moved with his residence from Brandenburg upon Havel to Cölln (today's Fishers' Island, the southern part of Museums Island) into the newly erected City Palace, which also housed a Catholic chapel. In 1454 Frederick Irontooth, after having returned – via Rome – from his pilgrimage to Jerusalem, elevated the chapel to become a parish church, richly endowing it with relics and altars. Pope Nicholas V ordered Stephan Bodecker, then Prince-Bishop of Brandenburg, to consecrate the chapel to Erasmus of Formiae."
+     },
+     "de": {
+      "built": "1894–1905",
+      "opened": "1905",
+      "styles": [
+       "Neorenaissance",
+       "Neobarock"
+      ],
+      "architects": [
+       "Julius Carl Raschdorff"
+      ],
+      "commissionedBy": [
+       "Wilhelm II."
+      ],
+      "history": "Die Geschichte eines Doms auf der Spreeinsel reicht bis ins 15. Jahrhundert zurück. Im gerade fertiggestellten Schloss wurde 1450 die Erasmus-Kapelle als Hofkirche geweiht. Das bei ihr angesiedelte Kollegiatstift wurde 1465 von Papst Paul II. bestätigt.\n\nNachdem Joachim II. im Jahr 1535 Kurfürst geworden war, ließ er die südlich des Schlosses gelegene Dominikanerkirche zur neuen Hofkirche umbauen. Die mittelalterliche Backsteinkirche der Dominikaner im gotischen Stil wurde ausgebaut, reich ausgestattet, es wurden fürstliche Begräbnisstätten eingerichtet und ein Glockengeläut installiert. Der neue Dom wurde 1536 geweiht. Im Jahr 1539 trat Joachim II. zum lutherischen Glauben über: Aus dem katholischen Dom wurde ein evangelischer Dom. 1608 wurde auch das Domkapitel aufgelöst, der Dom wurde zur obersten Pfarrkirche Köllns.\n\nDer Übertritt des Kurfürsten Johann Sigismund und seines Hofes zum reformierten Bekenntnis am Weihnachtstag 1613 im Dom und seine folgende Umgestaltung im reformierten Sinn hatten Konflikte mit den Ständen und der lutherischen Kirche der Kurmark zur Folge. Sie entluden sich im April 1615 in Berlin und Kölln seitens der Einwohner im sogenannten Berliner Tumult mit schweren Ausschreitungen und Plünderungen der Wohnhäuser der calvinistischen Hofgeistlichen.\n\nDa die Backsteinkirche in den folgenden Jahrhunderten baufällig geworden war, ließ Friedrich II. zwischen 1747 und 1750 einen barocken Neubau am Lustgarten, dem heutigen Standort des Doms, errichten und nach der Überführung der kurfürstlichen Särge in den Neubau den alten Dom abreißen. Architekten dieses am 6. September 1750 eingeweihten Neubaus waren der aus den Niederlanden stammende Johann Boumann, der eine sehr nüchterne Konzeption des Barocks hatte, sowie Georg Wenzeslaus von Knobelsdorff."
+     }
+    }
+   }
+  },
+  {
+   "id": "marienkirche",
+   "name": "St. Marienkirche",
+   "names": {
+    "en": "St. Mary's Church"
+   },
+   "category": "church",
+   "latitude": 52.520549,
+   "longitude": 13.407177,
+   "radius": 30,
+   "district": "Mitte",
+   "wikidata": "Q679101",
+   "entry": {
+    "en": {
+     "title": "St. Mary's Church, Berlin",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/St._Mary%27s_Church,_Berlin",
+     "text": "St. Mary's Church, known in German as the Marienkirche or St.-Marien-Kirche, is a church in Berlin, Germany. It is located on Karl-Liebknecht-Straße (formerly Kaiser-Wilhelm-Straße) in central Berlin, near Alexanderplatz. The exact age of the original church site and structure is not precisely known, but it was mentioned as the site of the alleged theft by Jews of the wafers in an act of Host Desecration in 1243. As a result of these charges, a number of Jews were burnt at the stake at a place later called Judenberg. It is also mentioned in German chronicles in 1292. It is presumed to date from earlier in the 13th century.\n\nThe architecture of the building is now largely composed of comparatively modern restoration work which took place in the late 19th century and in the post-war period. The church was originally a Roman Catholic church, but has been a Lutheran Protestant church since the Reformation in 1539. While keeping this confession the parish was part of the Prussian Union of churches from 1817 to 1948, an umbrella church body combining parishes maintaining mostly the Lutheran, but also some the Calvinist and few the United Protestant confession.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/86/Marienkirche_B-Mitte_03-2014.jpg/960px-Marienkirche_B-Mitte_03-2014.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Marienkirche_B-Mitte_03-2014.jpg",
+      "artist": "A.Savin",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    },
+    "de": {
+     "title": "Marienkirche (Berlin-Mitte)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Marienkirche_(Berlin-Mitte)",
+     "text": "Die evangelische St.-Marien-Kirche (Eigenschreibweise der Kirchengemeinde St. Marienkirche; Kirchenkreis Berlin Stadtmitte) befindet sich an der Karl-Liebknecht-Straße im Park am Fernsehturm im Berliner Ortsteil Mitte, in der Nähe des Alexanderplatzes. Sie ist die älteste noch sakral genutzte städtische Pfarrkirche Berlins, eines von ursprünglich sechs mittelalterlichen Kirchengebäuden in der historischen Mitte Berlins, im ehemals dicht bebauten Marienviertel.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/86/Marienkirche_B-Mitte_03-2014.jpg/960px-Marienkirche_B-Mitte_03-2014.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Marienkirche_B-Mitte_03-2014.jpg",
+      "artist": "A.Savin",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1270,
+    "sector": "east",
+    "wikidata": "https://www.wikidata.org/wiki/Q679101",
+    "localized": {
+     "en": {
+      "built": "c. 1270–1290, rebuilt after the fire of 1380",
+      "styles": [
+       "Brick Gothic"
+      ],
+      "architects": [
+       "Carl Gotthard Langhans (spire, 1790)"
+      ]
+     },
+     "de": {
+      "built": "um 1270–1290, nach dem Brand von 1380 wiederaufgebaut",
+      "styles": [
+       "Backsteingotik"
+      ],
+      "architects": [
+       "Carl Gotthard Langhans (Turmhelm, 1790)"
+      ],
+      "history": "Am 3. Januar 1292 wurde die Kirche erstmals urkundlich als Pfarrkirche erwähnt (ecclesia St. Marie virginis, „Kirche der heiligen Jungfrau Maria“), nach Meinung von Architekturexperten entstand sie um 1270. Sie befindet sich in der Berliner Neustadt am Neuen Markt – unweit der älteren altstädtischen Pfarrkirche St. Nicolai.\n\nDie Grundmauern der Marienkirche bestehen aus Feldsteinen, über denen eine Hallenkirche aus roten Ziegeln im Stil der märkischen Backsteingotik errichtet wurde. Der 48 Meter hohe Turmhelm besitzt einen Unterbau aus Rüdersdorfer Muschelkalk. Nach Brandschäden erneuerte die Kirchengemeinde 1663–1666 den Turmaufbau nach Plänen und unter Leitung von Michael Mathias Smids im Barockstil. Die heutige Turmspitze ist das Resultat einer Überformung durch Carl Gotthard Langhans aus dem Jahr 1789 im Stil der Neogotik.\n\nEine umfassende Restaurierung und Umgestaltung des Sakralbaus erfolgte 1893–1895 durch Hermann Blankenstein. Nach der Beseitigung der Kriegsschäden des Zweiten Weltkriegs ließ die DDR 1969/1970 den Bau ein weiteres Mal im Zuge der vollendeten Neugestaltung des Alexanderplatzes und dessen Umfeldes restaurieren. Zu dieser Zeit wurden u. a. die Eingangsportale aus räumlich getriebenem Kupfer durch den Berliner Kunstschmied und Metallbildhauer Achim Kühn neu geschaffen. Das Kreuzsymbol ist in den Portalen künstlerisch eingearbeitet."
+     }
+    }
+   }
+  },
+  {
+   "id": "nikolaikirche",
+   "name": "Nikolaikirche",
+   "names": {
+    "en": "St. Nicholas' Church"
+   },
+   "category": "church",
+   "latitude": 52.516825,
+   "longitude": 13.40751,
+   "radius": 30,
+   "district": "Mitte",
+   "wikidata": "Q679052",
+   "entry": {
+    "en": {
+     "title": "St. Nicholas Church, Berlin",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/St._Nicholas_Church,_Berlin",
+     "text": "The St. Nikolai-Kirche (Nikolaikirche or St. Nicholas' Church) is the oldest church in Berlin, the capital of Germany. The church is located in the eastern part of central Berlin, the borough of Mitte. The area around the church, bounded by Spandauer Straße, Rathausstraße, the River Spree and Mühlendamm, is known as the Nikolaiviertel 'Nicholas quarter', and is an area of restored medieval buildings (in some cases recent imitations). The church was built between 1220 and 1230, and is thus, along with the Church of Our Lady at Alexanderplatz not far away, the oldest church in Berlin.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/FW_Nikolaikirche_%28Berlin%29.JPG/960px-FW_Nikolaikirche_%28Berlin%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:FW_Nikolaikirche_(Berlin).JPG",
+      "artist": "User:Freedom Wizard",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    },
+    "de": {
+     "title": "Nikolaikirche (Berlin)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Nikolaikirche_(Berlin)",
+     "text": "Die Nikolaikirche ist das älteste intakte Kirchengebäude in der historischen Mitte von Berlin und steht seit den 1980er Jahren unter Denkmalschutz. Die im Jahr 1938 entwidmete Kirche ist ein seit den späten 1990er Jahren zur Stiftung Stadtmuseum Berlin gehörendes Museum, in dem auch regelmäßig Konzerte stattfinden.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/FW_Nikolaikirche_%28Berlin%29.JPG/960px-FW_Nikolaikirche_%28Berlin%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:FW_Nikolaikirche_(Berlin).JPG",
+      "artist": "User:Freedom Wizard",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1230,
+    "sector": "east",
+    "wikidata": "https://www.wikidata.org/wiki/Q679052",
+    "localized": {
+     "en": {
+      "built": "c. 1230, hall church c. 1380–1470",
+      "styles": [
+       "Brick Gothic"
+      ],
+      "architects": [
+       "Hermann Blankenstein (towers, 1878)"
+      ],
+      "history": "Originally a Roman Catholic church, the Church of St. Nicholas adopted Lutheranism after the Reformation reached the Electorate of Brandenburg in 1539. In the 17th century, the prominent hymn-writer Paul Gerhardt was the minister of the church, and the composer Johann Crueger was musical director. The prominent Lutheran theologian Provost Philipp Jacob Spener was the minister from 1691 to 1705. From 1913 to 1923, the minister at the Church of St. Nicholas was Wilhelm Wessel, whose son Horst Wessel later became famous as a Nazi: the family lived in the nearby Jüdenstraße.\n\nOn Reformation Day in 1938 (October 31) the church building served its congregation for the last time. Then the building, the oldest structure in Berlin proper, was given up to the government, to be used as a concert hall and ecclesiastical museum. The number of parishioners had shrunk due to the ever intensifying gentrification of the inner city, as residential premises became superseded by offices and shops. The congregation later merged with that of the Church of Our Lady."
+     },
+     "de": {
+      "built": "um 1230, Hallenkirche um 1380–1470",
+      "styles": [
+       "Backsteingotik"
+      ],
+      "architects": [
+       "Hermann Blankenstein (Türme, 1878)"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "franzoesischer-dom",
+   "name": "Französischer Dom",
+   "names": {
+    "en": "French Cathedral"
+   },
+   "category": "church",
+   "latitude": 52.514376,
+   "longitude": 13.392441,
+   "radius": 30,
+   "district": "Mitte",
+   "wikidata": "Q315694",
+   "entry": {
+    "en": {
+     "title": "French Cathedral, Berlin",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/French_Cathedral,_Berlin",
+     "text": "The French (Reformed) Church of Friedrichstadt (French: Temple de la Friedrichstadt, German: Französische Friedrichstadtkirche, and commonly known as Französischer Dom, meaning 'French cathedral') is in Berlin at the Gendarmenmarkt, across from the Konzerthaus and the so-called German Cathedral. The earliest parts of the church date back to 1701, although it was subsequently expanded. After being heavily damaged during World War II, the church was rebuilt and continues to offer church services and concerts.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/57/Berlin_Franzoesicher_Dom_BW_5.jpg/960px-Berlin_Franzoesicher_Dom_BW_5.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Berlin_Franzoesicher_Dom_BW_5.jpg",
+      "artist": "Berthold Werner",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    },
+    "de": {
+     "title": "Französischer Dom",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Franz%C3%B6sischer_Dom",
+     "text": "Der Französische Dom am Gendarmenmarkt im Berliner Ortsteil Mitte ist ein Kuppelturm, der in den Jahren 1780–1785 an die Französische Friedrichstadtkirche angebaut wurde. Er wurde im Auftrag des preußischen Königs Friedrich II. von Carl von Gontard im Stil des Barock errichtet und liegt gegenüber dem Deutschen Dom. Seit 1935 beheimatet er das Hugenottenmuseum. Nach Beschädigung im Zweiten Weltkrieg wurde das Baudenkmal 1978–1983 außen originalgetreu und innen modern wiederaufgebaut.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/57/Berlin_Franzoesicher_Dom_BW_5.jpg/960px-Berlin_Franzoesicher_Dom_BW_5.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Berlin_Franzoesicher_Dom_BW_5.jpg",
+      "artist": "Berthold Werner",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1701,
+    "sector": "east",
+    "wikidata": "https://www.wikidata.org/wiki/Q315694",
+    "localized": {
+     "en": {
+      "built": "1701–1705, tower 1780–1785",
+      "opened": "1705",
+      "styles": [
+       "Baroque",
+       "Neoclassicism (tower)"
+      ],
+      "architects": [
+       "Louis Cayart",
+       "Abraham Quesnay",
+       "Carl von Gontard (tower)"
+      ],
+      "commissionedBy": [
+       "Huguenot congregation",
+       "Frederick II (tower)"
+      ],
+      "history": "Louis Cayart and Abraham Quesnay built the first parts of the French Church between 1701 and 1705 for the Huguenot (ethnic French Calvinist) community. During this time, Huguenots constituted about 25 percent of the city population. The French Church was modelled after the destroyed Huguenot temple in Charenton-Saint-Maurice, France.\n\nIn 1785, Carl von Gontard modified the church and built an adjacent domed tower, which eventually gave the church its name. Technically speaking, the tower is not part of the church, and both buildings have different proprietors. The tower was built to embellish the Gendarmenmarkt ensemble at the instigation of Frederick the Great. The Deutscher Dom, however, on the other side of Gendarmenmarkt, consists of church building and tower as an entity.\n\nIn 1817, the French Church community, like most Prussian Calvinist Reformed and Lutheran congregations joined the common umbrella organization \"Evangelical Church in Prussia\", with each congregation maintaining its former denomination or adopting the new united denomination. The community of the \"French Church of Friedrichstadt\" maintained its Calvinist denomination.\n\nNevertheless, already before the union of the Prussian Protestants the congregation underwent a certain acculturation with Lutheran traditions: in 1753, an organ was installed, competing with the Calvinist tradition of congregational singing without accompaniment. The singing of psalms was extended by hymns in 1791. The sober interior was refurbished in a more decorative but still Calvinist aniconistic style by Otto March in 1905. Today's community is part of the Evangelical Church of Berlin-Brandenburg-Silesian Upper Lusatia."
+     },
+     "de": {
+      "built": "1701–1705, Turm 1780–1785",
+      "opened": "1705",
+      "styles": [
+       "Barock",
+       "Klassizismus (Turm)"
+      ],
+      "architects": [
+       "Louis Cayart",
+       "Abraham Quesnay",
+       "Carl von Gontard (Turm)"
+      ],
+      "commissionedBy": [
+       "Hugenottengemeinde",
+       "Friedrich II. (Turm)"
+      ],
+      "history": "Beide Kirchen ließ König Friedrich II. im Zuge der 1773 begonnenen Umgestaltung des Gendarmenmarktes zu einem repräsentativen Platz durch zwei symmetrische, funktionslose Türme zugunsten der Prachtentfaltung und der städtebaulichen Wirkung ergänzen. Vorbild für die Kuppeltürme auf dem Gendarmenmarkt waren die überkuppelten Kirchen an der Piazza del Popolo in Rom, aber auch die Themse-Ansicht des Baukomplexes von Greenwich Hospital in London von Christopher Wren. Die Gestaltung der Kuppeltürme selbst steht in der Tradition des Palladianismus und rezipiert zudem die damals im Bau befindliche Kirche Sainte-Geneviève in Paris, das heutige Panthéon, von Jacques-Germain Soufflot. Baumeister des Turmes waren Carl von Gontard und Georg Christian Unger.\n\nDem Bau des Französischen Doms musste der Friedhof der Hugenottengemeinde weichen, die dafür ein unentgeltliches Nutzungsrecht für alle Zeiten für den heute der Stadt Berlin gehörenden Turm erhielt. Im 19. Jahrhundert war in diesem Turm außer den Wohnungen des Küsters und des Kirchendieners die Französische Domschule Berlin untergebracht: an der Nordseite eine Knaben-, an der Südseite eine Mädchenschule mit je sechs Klassenzimmern und der Wohnung des Vorstehers. Der in den Jahren 1929/1930 innen ausgebaute Turm beherbergte seither in der mittleren Rotunde den Erman-Saal und ab 1935, mit Unterbrechung in der Kriegszeit, das zur 250-Jahr-Feier des Edikts von Potsdam eingerichtete Hugenottenmuseum."
+     }
+    }
+   }
+  },
+  {
+   "id": "deutscher-dom",
+   "name": "Deutscher Dom",
+   "names": {
+    "en": "German Cathedral"
+   },
+   "category": "church",
+   "latitude": 52.512731,
+   "longitude": 13.392709,
+   "radius": 30,
+   "district": "Mitte",
+   "wikidata": "Q315644",
+   "entry": {
+    "en": {
+     "title": "Neue Kirche, Berlin",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Neue_Kirche,_Berlin",
+     "text": "The New Church (German: Neue Kirche; colloquially German: Deutscher Dom, meaning \"German Cathedral\"), is located in Berlin on the Gendarmenmarkt across from French Church of Friedrichstadt (French Cathedral). Its parish comprised the northern part of the then new quarter of Friedrichstadt, which until then belonged to the parish of the congregations of Jerusalem's Church. The Lutheran and Calvinist (in German Reformed Church) congregants used German as their native language, as opposed to the French-speaking Calvinist congregation of the adjacent French Church of Friedrichstadt. The congregants' native language combined with the domed tower earned the church its colloquial name Deutscher Dom. While the church physically resembles a cathedral, it is not a cathedral in the formal sense of the word, as it was never the seat of a bishop.\n\nAfter being heavily damaged during the bombing of Berlin in World War II, reconstruction was completed 1988; the church now serves as a museum.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/Berlin%2C_Deutscher_Dom_--_2013_--_4576.jpg/960px-Berlin%2C_Deutscher_Dom_--_2013_--_4576.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Berlin,_Deutscher_Dom_--_2013_--_4576.jpg",
+      "artist": "Dietmar Rabich",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    },
+    "de": {
+     "title": "Deutscher Dom",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Deutscher_Dom",
+     "text": "Der Deutsche Dom am Gendarmenmarkt im Berliner Ortsteil Mitte ist ein Kuppelturm, der in den Jahren 1780–1785 an die Neue oder Deutsche Kirche angebaut wurde. Er wurde im Auftrag Friedrichs II. von Carl von Gontard im Stil des Barock errichtet und liegt gegenüber dem Französischen Dom sowie an der Nordseite der Anton-Wilhelm-Amo-Straße. Nach Beschädigung im Zweiten Weltkrieg wurde das Baudenkmal 1983–1996 außen originalgetreu und innen modern wiederaufgebaut. Seit 2002 beheimatet der Deutsche Dom die Parlamentshistorische Ausstellung des Deutschen Bundestags.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/Berlin%2C_Deutscher_Dom_--_2013_--_4576.jpg/960px-Berlin%2C_Deutscher_Dom_--_2013_--_4576.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Berlin,_Deutscher_Dom_--_2013_--_4576.jpg",
+      "artist": "Dietmar Rabich",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1701,
+    "sector": "east",
+    "wikidata": "https://www.wikidata.org/wiki/Q315644",
+    "localized": {
+     "en": {
+      "built": "1701–1708, tower 1780–1785, rebuilt 1983–1996",
+      "opened": "1708",
+      "styles": [
+       "Baroque",
+       "Neoclassicism (tower)"
+      ],
+      "architects": [
+       "Martin Grünberg",
+       "Giovanni Simonetti",
+       "Carl von Gontard (tower)"
+      ],
+      "commissionedBy": [
+       "Frederick II (tower)"
+      ]
+     },
+     "de": {
+      "built": "1701–1708, Turm 1780–1785, Wiederaufbau 1983–1996",
+      "opened": "1708",
+      "styles": [
+       "Barock",
+       "Klassizismus (Turm)"
+      ],
+      "architects": [
+       "Martin Grünberg",
+       "Giovanni Simonetti",
+       "Carl von Gontard (Turm)"
+      ],
+      "commissionedBy": [
+       "Friedrich II. (Turm)"
+      ],
+      "history": "Die 1701–1708 von Martin Grünberg und Giovanni Simonetti auf einem Teil des Schweizer Friedhofs im Stil des Barock errichtete Neue oder Deutsche Kirche hatte einen Grundriss, der eine Weiterentwicklung desjenigen der Parochialkirche war. Bedeutende Gräber im Innern waren die von Georg Wenzeslaus von Knobelsdorffs und Antoine Pesnes.\n\nDie Kirchengemeinden benutzten zunächst ein Positiv, erst 1752 wurde die Kirche mit einer kleinen, einmanualigen Orgel von Peter Migendt ausgestattet.\n\nDen Kuppelturm errichtete 1780–1785 Carl von Gontard gleichzeitig mit dem spiegelbildlich gegenüberliegenden Turm für die Französische Friedrichstadtkirche nach einer Idee und auf Kosten König Friedrichs des Großen zur Verschönerung des Gendarmenmarktes. Die sich rechts und links neben dem Französischen Komödienhaus erhebenden Bauten sollten mit ihrem an der Aufklärung orientierten Skulpturenprogramm die religiöse Toleranz versinnbildlichen. Städtebauliches Vorbild für die symmetrisch ausgeführten Kuppeltürme der beiden Dome waren möglicherweise das Greenwich Hospital in London oder die Kirchen an der Piazza del Popolo in Rom. Die Gestaltung der palladianischen Kuppeltürme, die anfangs als Kirchenbauten geplant waren, hatte Bezug zu älteren Projekten Friedrichs I. für einen Neubau des Berliner Doms. Als am 28. Juli 1781 während der Bauarbeiten der Turm zusammenstürzte, entließ der König Gontard und betraute Georg Christian Unger mit dem Weiterbau."
+     }
+    }
+   }
+  },
+  {
+   "id": "hedwigs-kathedrale",
+   "name": "St. Hedwigs-Kathedrale",
+   "names": {
+    "en": "St. Hedwig's Cathedral"
+   },
+   "category": "church",
+   "latitude": 52.515754,
+   "longitude": 13.394845,
+   "radius": 30,
+   "district": "Mitte",
+   "wikidata": "Q170123",
+   "entry": {
+    "en": {
+     "title": "St. Hedwig's Cathedral",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/St._Hedwig%27s_Cathedral",
+     "text": "St. Hedwig's Cathedral (German: St.-Hedwigs-Kathedrale) is the Catholic cathedral of the Archdiocese of Berlin on Bebelplatz in the historic centre of Berlin. Dedicated in honor of Hedwig of Silesia, it was erected from 1747 to 1773 by order of Frederick the Great according to plans by Georg Wenzeslaus von Knobelsdorff in Baroque style. Damaged during the Allied bombing in World War II, the cathedral's interior was restored from 1952 to 1963 in post-war modernist style as part of the rebuilding of the Forum Fridericianum on Bebelplatz. The listed building was closed for renovation work from 2018 and reopened on November 24, 2024 with a modern interior design.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Berlin%2C_Mitte%2C_Bebelplatz%2C_Hedwigskathedrale_02.jpg/960px-Berlin%2C_Mitte%2C_Bebelplatz%2C_Hedwigskathedrale_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Berlin,_Mitte,_Bebelplatz,_Hedwigskathedrale_02.jpg",
+      "artist": "Beek100",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    },
+    "de": {
+     "title": "St.-Hedwigs-Kathedrale",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/St.-Hedwigs-Kathedrale",
+     "text": "Die St.-Hedwigs-Kathedrale (Eigenschreibweise Sankt Hedwigs-Kathedrale) ist eine römisch-katholische Kirche am Bebelplatz auf dem Forum Fridericianum in Berlin-Mitte. Der Rokokobau wurde 1747–1773 im Auftrag von Friedrich II. nach Entwurf von Georg Wenzeslaus von Knobelsdorff errichtet. Während des Zweiten Weltkriegs 1944 schwer beschädigt, wurde sie 1952–1963 wiederaufgebaut und 2018–2024 umgestaltet.\n\nDie St.-Hedwigs-Kathedrale ist die Bischofskirche des Erzbistums Berlin und damit die ranghöchste römisch-katholische Kirche der Stadt. Es handelt sich um einen an der Architektur des Pantheon in Rom orientierten Zentralbau. Seit der Umgestaltung ist der Innenraum charakterisiert durch eine altarzentrierte Anordnung: Im Mittelpunkt des etwa kreisförmigen Kirchenraums steht der runde Altar, um den herum sich die Gemeinde zum Gottesdienst versammelt.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Berlin%2C_Mitte%2C_Bebelplatz%2C_Hedwigskathedrale_02.jpg/960px-Berlin%2C_Mitte%2C_Bebelplatz%2C_Hedwigskathedrale_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Berlin,_Mitte,_Bebelplatz,_Hedwigskathedrale_02.jpg",
+      "artist": "Beek100",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1747,
+    "sector": "east",
+    "wikidata": "https://www.wikidata.org/wiki/Q170123",
+    "localized": {
+     "en": {
+      "built": "1747–1773",
+      "opened": "1773",
+      "styles": [
+       "Neoclassicism"
+      ],
+      "architects": [
+       "Georg Wenzeslaus von Knobelsdorff",
+       "Jean Laurent Legeay",
+       "Johann Boumann"
+      ],
+      "commissionedBy": [
+       "Frederick II"
+      ]
+     },
+     "de": {
+      "built": "1747–1773",
+      "opened": "1773",
+      "styles": [
+       "Klassizismus"
+      ],
+      "architects": [
+       "Georg Wenzeslaus von Knobelsdorff",
+       "Jean Laurent Legeay",
+       "Johann Boumann"
+      ],
+      "commissionedBy": [
+       "Friedrich II."
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "gethsemanekirche",
+   "name": "Gethsemanekirche",
+   "names": {
+    "en": "Gethsemane Church"
+   },
+   "category": "church",
+   "latitude": 52.547721,
+   "longitude": 13.416168,
+   "radius": 30,
+   "district": "Pankow",
+   "wikidata": "Q32664282",
+   "entry": {
+    "en": {
+     "title": "Gethsemane Church",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Gethsemane_Church",
+     "text": "Gethsemane Church (German: Gethsemanekirche) is one of four church buildings of the Lutheran Northern Prenzlauer Berg Evangelical Congregation (German: Evangelische Kirchengemeinde Prenzlauer Berg-Nord), within the Evangelical Church of Berlin-Brandenburg-Silesian Upper Lusatia, an umbrella organisation which includes Lutheran, Reformed, and United Protestant Calvinist congregations.\n\nGethsemane Church is the best known church in the locality of Prenzlauer Berg, in Berlin's borough of Pankow. The church was named after the Garden of Gethsemane (Old Aramaic גת שמנא, transliterated Gath Šmānê, Hebrew: גת שמנים, translit. Gath Šmānîm, lit. \"oil press\", transliteration in Greek: Γεθσημανή Gethsēmanḗ) at the foot of the Mount of Olives in Jerusalem. Christians revere the place as it was where the Twelve Apostles and Jesus of Nazareth prayed on the eve of his crucifixion.\n\nThe church and its congregation played a crucial role before and during the Wende (or peaceful revolution) in the former German Democratic Republic (East Germany) in the autumn of 1989.\n\nThe church was built between 1891 and 1893 erected following the plans of August Orth, the city's Baurat.",
+     "image": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/e/ee/2012_Gethsemanekirche_%28Berlin%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "page": "https://commons.wikimedia.org/wiki/File:2012_Gethsemanekirche_(Berlin).jpg",
+      "artist": "Chris06",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    },
+    "de": {
+     "title": "Gethsemanekirche (Berlin)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Gethsemanekirche_(Berlin)",
+     "text": "Die Gethsemanekirche ist eine evangelische Kirche im Berliner Bezirk Pankow und steht im Helmholtzkiez des Ortsteils Prenzlauer Berg. Sie wurde 1891–1893 nach Plänen von August Orth erbaut und verdankt ihre Bedeutung nicht zuletzt ihrer Rolle während der friedlichen Revolution in der DDR im Herbst 1989. Sie ist im 21. Jahrhundert eine von drei von der Evangelischen Kirchengemeinde Prenzlauer Berg Nord im Kirchenkreis Berlin Stadtmitte genutzten Kirchen sowie eine von vier Predigtstätten.",
+     "image": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/e/ee/2012_Gethsemanekirche_%28Berlin%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "page": "https://commons.wikimedia.org/wiki/File:2012_Gethsemanekirche_(Berlin).jpg",
+      "artist": "Chris06",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1891,
+    "sector": "east",
+    "wikidata": "https://www.wikidata.org/wiki/Q32664282",
+    "localized": {
+     "en": {
+      "built": "1891–1893",
+      "opened": "1893",
+      "styles": [
+       "Brick Gothic Revival"
+      ],
+      "architects": [
+       "August Orth"
+      ]
+     },
+     "de": {
+      "built": "1891–1893",
+      "opened": "1893",
+      "styles": [
+       "Backsteinneugotik"
+      ],
+      "architects": [
+       "August Orth"
+      ],
+      "history": "Das rasante Wachstum Berlins Ende des 19. Jahrhunderts erzeugte großen Bedarf nach immer neuen öffentlichen Einrichtungen für die neu anzusiedelnde Bevölkerung. Im wenig wohlhabenden Norden Berlins, von einfachen, dicht gebauten Wohnhäusern („Mietskasernen“) geprägt, bildeten die Gotteshäuser neuer Kirchengemeinden neben den zahlreich entstehenden Schulen, die einzigen städtebaulichen Dominanten. Die Gethsemanekirche erhielt, wie auch andere evangelische Kirchen, einen repräsentativen Standort auf einem Quartiersplatz, während viele Kirchen, erst recht die katholischen Kirchen mit gewöhnlichen Wohnhausgrundstücken vorliebnehmen mussten.\n\nZu den größten Grundeigentümern im Norden Berlins gehörte damals Wilhelm Griebenow, der bereits 1823 das große Teile des heutigen Ortsteils umfassende Königliche Vorwerk vor dem Schönhauser Tor erworben und durch Parzellierung und Verkauf des Geländes ein beachtliches Vermögen erwirtschaftet hatte. Seine Witwe Caroline schenkte der Gemeinde das Grundstück an der Stargarder Straße und ermöglichte damit den Bau der Gethsemanekirche. Am 20. März 1891 fand die feierliche Grundsteinlegung statt und schon zwei Jahre später, am 26. Februar 1893, konnte die Kirche eingeweiht werden. Die neue Kirchengemeinde war eine Tochtergründung der Zionsgemeinde, deren Kirche 1866–1873 ebenfalls von August Orth erbaut worden war. Den Namen Gethsemane bestimmte der zur Weihe anwesende Kaiser Wilhelm II. Die Kirche erhielt 1893 eine Orgel von Wilhelm Sauer aus Frankfurt (Oder). Sie besaß 30 Register auf zwei Manualen und dem Pedal."
+     }
+    }
+   }
+  },
+  {
+   "id": "zionskirche",
+   "name": "Zionskirche",
+   "names": {
+    "en": "Zion Church"
+   },
+   "category": "church",
+   "latitude": 52.534648,
+   "longitude": 13.403733,
+   "radius": 30,
+   "district": "Mitte",
+   "wikidata": "Q205391",
+   "entry": {
+    "en": {
+     "title": "Zionskirche (Berlin)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Zionskirche_(Berlin)",
+     "text": "Die Zionskirche ist eine evangelische Kirche in der Rosenthaler Vorstadt im Berliner Ortsteil Mitte des gleichnamigen Bezirks. Sie gehört zur Evangelischen Kirchengemeinde am Weinberg im Kirchenkreis Berlin Stadtmitte.\n\nSie wurde 1873 im damaligen Norden der Stadt als Kirche einer Tochtergemeinde der St.-Elisabeth-Gemeinde eingeweiht. Der Architekt des vom preußischen König und späteren Deutschen Kaiser Wilhelm I. als Votivkirche gestifteten Baus ist August Orth. Bedeutung erlangte die Kirche unter anderem als Wirkungsstätte von Dietrich Bonhoeffer, der hier als Pastor tätig war. Kurz vor dem Ende der DDR war die Zionskirche ein Zentrum der Opposition mit Kirche von unten und der Samisdat-Zeitschrift Umweltblätter.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Zionskirche%2C_Berlin-Mitte%2C_151108%2C_ako.jpg/960px-Zionskirche%2C_Berlin-Mitte%2C_151108%2C_ako.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Zionskirche,_Berlin-Mitte,_151108,_ako.jpg",
+      "artist": "Ansgar Koreng",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    },
+    "de": {
+     "title": "Zionskirche (Berlin)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Zionskirche_(Berlin)",
+     "text": "Die Zionskirche ist eine evangelische Kirche in der Rosenthaler Vorstadt im Berliner Ortsteil Mitte des gleichnamigen Bezirks. Sie gehört zur Evangelischen Kirchengemeinde am Weinberg im Kirchenkreis Berlin Stadtmitte.\n\nSie wurde 1873 im damaligen Norden der Stadt als Kirche einer Tochtergemeinde der St.-Elisabeth-Gemeinde eingeweiht. Der Architekt des vom preußischen König und späteren Deutschen Kaiser Wilhelm I. als Votivkirche gestifteten Baus ist August Orth. Bedeutung erlangte die Kirche unter anderem als Wirkungsstätte von Dietrich Bonhoeffer, der hier als Pastor tätig war. Kurz vor dem Ende der DDR war die Zionskirche ein Zentrum der Opposition mit Kirche von unten und der Samisdat-Zeitschrift Umweltblätter.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Zionskirche%2C_Berlin-Mitte%2C_151108%2C_ako.jpg/960px-Zionskirche%2C_Berlin-Mitte%2C_151108%2C_ako.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Zionskirche,_Berlin-Mitte,_151108,_ako.jpg",
+      "artist": "Ansgar Koreng",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1866,
+    "sector": "east",
+    "wikidata": "https://www.wikidata.org/wiki/Q205391",
+    "localized": {
+     "en": {
+      "built": "1866–1873",
+      "opened": "1873",
+      "styles": [
+       "Neo-Romanesque"
+      ],
+      "architects": [
+       "August Orth"
+      ],
+      "commissionedBy": [
+       "William I"
+      ],
+      "history": "Aus Dankbarkeit, einem Attentat in Baden-Baden entgangen zu sein, stiftete im Jahr 1861 der damalige König und spätere Kaiser Wilhelm I. 10.000 Reichstaler für den Bau einer Kirche in dem damals noch zur St.-Elisabeth-Gemeinde gehörenden, aber im Zuge des Baus des Wilhelminischen Rings schon dicht besiedelten Gebiet. Nach einigen Auseinandersetzungen zwischen dem Berliner Konsistorium und dem Magistrat von Berlin konnte 1866 mit dem Bau begonnen werden. Wegen Geldmangels ruhten die Bauarbeiten ab Ende 1868, doch eine weitere Stiftung des Königs ermöglichte 1872 die Fertigstellung der Bauarbeiten. Die Kirche ist im Stil der Neoromanik errichtet, als Backstein-Terrakotta-Bau im Stil des Berliner Historismus mit gelben Blendsteinen aus der Cement- und Tonwarenfabrik Hermsdorf. Sie hatte 1424 Sitzplätze, 562 davon auf der Empore. Die Baukosten (ohne Grundstück und Bauleitung) lagen bei 373.364 Mark (kaufkraftbereinigt in heutiger Währung: rund Millionen Euro). Zur Ausstattung gehörte auch eine Orgel von Wilhelm Sauer mit 30 Registern auf zwei Manualen und Pedal.\n\nAm 2. März 1873 wurde die Zionskirche in Gegenwart des Kaisers durch Generalsuperintendent Bruno Brückner feierlich eingeweiht. Die ersten Jahrzehnte der Kirchengemeinde waren von heftigen Konflikten zwischen dem konservativen Pfarrer Julius Kraft und dem liberal dominierten Gemeindekirchenrat („Kampf in Zion“) bestimmt.\n\nVon 1894 bis 1901 war der Theologe Justus Julius August Jacobi Hauptpfarrer an der Kirche."
+     },
+     "de": {
+      "built": "1866–1873",
+      "opened": "1873",
+      "styles": [
+       "Neoromanik"
+      ],
+      "architects": [
+       "August Orth"
+      ],
+      "commissionedBy": [
+       "Wilhelm I."
+      ],
+      "history": "Aus Dankbarkeit, einem Attentat in Baden-Baden entgangen zu sein, stiftete im Jahr 1861 der damalige König und spätere Kaiser Wilhelm I. 10.000 Reichstaler für den Bau einer Kirche in dem damals noch zur St.-Elisabeth-Gemeinde gehörenden, aber im Zuge des Baus des Wilhelminischen Rings schon dicht besiedelten Gebiet. Nach einigen Auseinandersetzungen zwischen dem Berliner Konsistorium und dem Magistrat von Berlin konnte 1866 mit dem Bau begonnen werden. Wegen Geldmangels ruhten die Bauarbeiten ab Ende 1868, doch eine weitere Stiftung des Königs ermöglichte 1872 die Fertigstellung der Bauarbeiten. Die Kirche ist im Stil der Neoromanik errichtet, als Backstein-Terrakotta-Bau im Stil des Berliner Historismus mit gelben Blendsteinen aus der Cement- und Tonwarenfabrik Hermsdorf. Sie hatte 1424 Sitzplätze, 562 davon auf der Empore. Die Baukosten (ohne Grundstück und Bauleitung) lagen bei 373.364 Mark (kaufkraftbereinigt in heutiger Währung: rund Millionen Euro). Zur Ausstattung gehörte auch eine Orgel von Wilhelm Sauer mit 30 Registern auf zwei Manualen und Pedal.\n\nAm 2. März 1873 wurde die Zionskirche in Gegenwart des Kaisers durch Generalsuperintendent Bruno Brückner feierlich eingeweiht. Die ersten Jahrzehnte der Kirchengemeinde waren von heftigen Konflikten zwischen dem konservativen Pfarrer Julius Kraft und dem liberal dominierten Gemeindekirchenrat („Kampf in Zion“) bestimmt.\n\nVon 1894 bis 1901 war der Theologe Justus Julius August Jacobi Hauptpfarrer an der Kirche."
+     }
+    }
+   }
+  },
+  {
+   "id": "gedaechtniskirche",
+   "name": "Kaiser-Wilhelm-Gedächtniskirche",
+   "names": {
+    "en": "Kaiser Wilhelm Memorial Church"
+   },
+   "category": "church",
+   "latitude": 52.504895,
+   "longitude": 13.334613,
+   "radius": 40,
+   "district": "Charlottenburg-Wilmersdorf",
+   "wikidata": "Q153951",
+   "entry": {
+    "en": {
+     "title": "Kaiser Wilhelm Memorial Church",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Kaiser_Wilhelm_Memorial_Church",
+     "text": "The Kaiser Wilhelm Memorial Church (German: Kaiser-Wilhelm-Gedächtniskirche), mostly known simply as the Memorial Church is a Protestant church affiliated with the Evangelical Church in Berlin, Brandenburg and Silesian Upper Lusatia, a regional body of the Protestant Church in Germany. It is located in the Bikini-Berlin building complex on the Kurfürstendamm in the centre of the Breitscheidplatz.\n\nThe original church on the site was built in the 1890s. It was badly damaged in a bombing raid in 1943. The present building, which consists of a church with an attached foyer and a separate belfry with an attached chapel, was built between 1959 and 1963. The damaged spire of the old church has been retained and its ground floor has been made into a memorial hall.\n\nThe Memorial Church today is a famous landmark of western Berlin, and is nicknamed by Berliners \"der hohle Zahn\", meaning \"the hollow tooth\".",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Ged%C3%A4chtniskirche1.JPG/960px-Ged%C3%A4chtniskirche1.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Ged%C3%A4chtniskirche1.JPG",
+      "artist": "nl:User:GerardM",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "http://creativecommons.org/licenses/by-sa/3.0/"
+     }
+    },
+    "de": {
+     "title": "Kaiser-Wilhelm-Gedächtniskirche",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Kaiser-Wilhelm-Ged%C3%A4chtniskirche",
+     "text": "Die evangelische Kaiser-Wilhelm-Gedächtniskirche (im Berliner Volksmund Hohler Zahn genannt) ist ein Baudenkmal auf dem Breitscheidplatz im Berliner Ortsteil Charlottenburg. Sie wurde im Auftrag von Kaiser Wilhelm II. zum Gedenken an seinen Großvater Kaiser Wilhelm I. in den Jahren 1891–1895 von Franz Schwechten im Stil der Neoromanik erbaut. Ihr Kirchturm war mit 113 Metern der damals höchste der Stadt Charlottenburg.\n\nWährend des Zweiten Weltkriegs wurde die Gedächtniskirche 1943 schwer beschädigt. Nach einem Streit um den Wiederaufbau folgte die Einigung auf den Abriss des Kirchenschiffs, den Erhalt der Turmruine als Mahnmal gegen den Krieg und auf den Neubau eines vierteiligen Bauensembles. Dieses wurde 1959–1963 von Egon Eiermann im Stil der Moderne erbaut und besteht aus dem Kirchenschiff, dem Kirchturm, der Kapelle und dem Foyer.\n\nDie Kaiser-Wilhelm-Gedächtniskirche gehört zu den bekanntesten Wahrzeichen des Berliner Westens und den beliebtesten Sehenswürdigkeiten der deutschen Hauptstadt. In der Turmruine befindet sich seit 1987 eine Gedenkhalle.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Ged%C3%A4chtniskirche1.JPG/960px-Ged%C3%A4chtniskirche1.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Ged%C3%A4chtniskirche1.JPG",
+      "artist": "nl:User:GerardM",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "http://creativecommons.org/licenses/by-sa/3.0/"
+     }
+    }
+   },
+   "facts": {
+    "year": 1891,
+    "sector": "west",
+    "wikidata": "https://www.wikidata.org/wiki/Q153951",
+    "localized": {
+     "en": {
+      "built": "1891–1895, new church 1959–1963",
+      "opened": "1895",
+      "styles": [
+       "Neo-Romanesque",
+       "Modernism (1961)"
+      ],
+      "architects": [
+       "Franz Schwechten",
+       "Egon Eiermann (new church, 1963)"
+      ],
+      "commissionedBy": [
+       "Wilhelm II"
+      ]
+     },
+     "de": {
+      "built": "1891–1895, Neubau 1959–1963",
+      "opened": "1895",
+      "styles": [
+       "Neoromanik",
+       "Moderne (1961)"
+      ],
+      "architects": [
+       "Franz Schwechten",
+       "Egon Eiermann (Neubau, 1963)"
+      ],
+      "commissionedBy": [
+       "Wilhelm II."
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "nikolaikirche-spandau",
+   "name": "St.-Nikolai-Kirche Spandau",
+   "names": {
+    "en": "St. Nicholas' Church Spandau"
+   },
+   "category": "church",
+   "latitude": 52.538361,
+   "longitude": 13.205341,
+   "radius": 30,
+   "district": "Spandau",
+   "wikidata": "Q2316617",
+   "entry": {
+    "en": {
+     "title": "St. Nikolai (Spandau)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/St._Nikolai_(Spandau)",
+     "text": "St. Nikolai im Berliner Ortsteil Spandau ist eine dreischiffige gotische Hallenkirche. Erbaut wurde sie im 14. Jahrhundert an der Stelle einer um 1240 als „ecclesia forensis“ (Marktkirche) erstmals urkundlich erwähnten Vorgängerkirche.\n\nDie Kirche liegt am Reformationsplatz 1 in der Spandauer Altstadt und ist heute die Pfarrkirche der evangelischen Kirchengemeinde St. Nikolai Berlin-Spandau. Die Gemeinde gehört zum Kirchenkreis Spandau des Sprengels Berlin der Evangelischen Kirche Berlin-Brandenburg-schlesische Oberlausitz.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/48/Spandau_Nikolaikirche_Turm.jpg/960px-Spandau_Nikolaikirche_Turm.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Spandau_Nikolaikirche_Turm.jpg",
+      "artist": "PetrusSilesius",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    },
+    "de": {
+     "title": "St. Nikolai (Spandau)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/St._Nikolai_(Spandau)",
+     "text": "St. Nikolai im Berliner Ortsteil Spandau ist eine dreischiffige gotische Hallenkirche. Erbaut wurde sie im 14. Jahrhundert an der Stelle einer um 1240 als „ecclesia forensis“ (Marktkirche) erstmals urkundlich erwähnten Vorgängerkirche.\n\nDie Kirche liegt am Reformationsplatz 1 in der Spandauer Altstadt und ist heute die Pfarrkirche der evangelischen Kirchengemeinde St. Nikolai Berlin-Spandau. Die Gemeinde gehört zum Kirchenkreis Spandau des Sprengels Berlin der Evangelischen Kirche Berlin-Brandenburg-schlesische Oberlausitz.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/48/Spandau_Nikolaikirche_Turm.jpg/960px-Spandau_Nikolaikirche_Turm.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Spandau_Nikolaikirche_Turm.jpg",
+      "artist": "PetrusSilesius",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1370,
+    "sector": "west",
+    "wikidata": "https://www.wikidata.org/wiki/Q2316617",
+    "localized": {
+     "en": {
+      "built": "in the 14th century (first church c. 1240)",
+      "styles": [
+       "Brick Gothic"
+      ],
+      "history": "Die St.-Nikolai-Kirche ist eines der bedeutendsten Bauwerke der Spandauer Altstadt. Sie war die mittelalterliche Pfarrkirche von „Spandow“ mit dem Patrozinium des heiligen Bischofs Nikolaus von Myra, des Schutzpatrons der Seefahrer, reisenden Händler und Kinder. Nikolaus-Patrozinien finden sich im Mittelalter häufig bei Gotteshäusern in Hafenstädten und Kaufmannsvierteln.\n\nDas Kirchenpatronat über St. Nikolai, das Recht zur Besetzung von Pfarrstellen mit einem Priester, war von den askanischen Markgrafen Johann I. von Brandenburg und Otto III. dem Frommen dem 1239 von ihnen gegründeten Benediktinerinnenkloster Spandau übertragen worden. Die Bürgerschaft der Stadt Spandau hatte es 1240 abgelehnt, das Kirchenpatronat über St. Nicolai gegen Zahlung einer Entschädigung selbst zu übernehmen, so dass die Pfarrkirche bis zur Reformation in der Abhängigkeit von den Benediktinerinnen blieb. Die Pfarrer waren somit bis zu dessen Enteignung und Schließung Angestellte des Klosters. Spandau gehörte zum Bistum Brandenburg; das Benediktinerinnenkloster bildete darin mit 82 abhängigen Dörfern ein Unterzentrum (sedes, „Sitz“) im östlichen Teil des Bistums."
+     },
+     "de": {
+      "built": "im 14. Jahrhundert (erste Kirche um 1240)",
+      "styles": [
+       "Backsteingotik"
+      ],
+      "history": "Die St.-Nikolai-Kirche ist eines der bedeutendsten Bauwerke der Spandauer Altstadt. Sie war die mittelalterliche Pfarrkirche von „Spandow“ mit dem Patrozinium des heiligen Bischofs Nikolaus von Myra, des Schutzpatrons der Seefahrer, reisenden Händler und Kinder. Nikolaus-Patrozinien finden sich im Mittelalter häufig bei Gotteshäusern in Hafenstädten und Kaufmannsvierteln.\n\nDas Kirchenpatronat über St. Nikolai, das Recht zur Besetzung von Pfarrstellen mit einem Priester, war von den askanischen Markgrafen Johann I. von Brandenburg und Otto III. dem Frommen dem 1239 von ihnen gegründeten Benediktinerinnenkloster Spandau übertragen worden. Die Bürgerschaft der Stadt Spandau hatte es 1240 abgelehnt, das Kirchenpatronat über St. Nicolai gegen Zahlung einer Entschädigung selbst zu übernehmen, so dass die Pfarrkirche bis zur Reformation in der Abhängigkeit von den Benediktinerinnen blieb. Die Pfarrer waren somit bis zu dessen Enteignung und Schließung Angestellte des Klosters. Spandau gehörte zum Bistum Brandenburg; das Benediktinerinnenkloster bildete darin mit 82 abhängigen Dörfern ein Unterzentrum (sedes, „Sitz“) im östlichen Teil des Bistums."
+     }
+    }
+   }
+  },
+  {
+   "id": "nikolskoe",
+   "name": "Kirche St. Peter und Paul",
+   "names": {
+    "en": "Church of Sts. Peter and Paul"
+   },
+   "category": "church",
+   "latitude": 52.423288,
+   "longitude": 13.1187,
+   "radius": 60,
+   "district": "Steglitz-Zehlendorf",
+   "wikidata": "Q428320",
+   "entry": {
+    "en": {
+     "title": "Ss. Peter and Paul, Wannsee",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Ss._Peter_and_Paul,_Wannsee",
+     "text": "Ss. Peter and Paul Church on Nikolskoë is a Protestant church in the Volkspark Glienecke in Berlin, Germany. It is currently administered by the Evangelical Church of Berlin-Brandenburg-Silesian Upper Lusatia. The church is part of the UNESCO World Heritage Site Palaces and Parks of Potsdam and Berlin.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/61/StPeterPaul_ca_1850.jpg/960px-StPeterPaul_ca_1850.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:StPeterPaul_ca_1850.jpg",
+      "artist": "František Xaver Sandmann",
+      "license": "Public domain",
+      "licenseURL": null
+     }
+    },
+    "de": {
+     "title": "St. Peter und Paul (Berlin-Wannsee)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/St._Peter_und_Paul_(Berlin-Wannsee)",
+     "text": "St. Peter und Paul auf Nikolskoe (russ.: Никольское/Nikolskoje) ist eine evangelische Kirche nördlich des Glienicker Parks von Berlin am Rand der Stolper Berge.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/61/StPeterPaul_ca_1850.jpg/960px-StPeterPaul_ca_1850.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:StPeterPaul_ca_1850.jpg",
+      "artist": "František Xaver Sandmann",
+      "license": "Public domain",
+      "licenseURL": null
+     }
+    }
+   },
+   "facts": {
+    "year": 1834,
+    "sector": "west",
+    "wikidata": "https://www.wikidata.org/wiki/Q428320",
+    "localized": {
+     "en": {
+      "built": "1834–1837",
+      "opened": "1837",
+      "styles": [
+       "Russian Revival"
+      ],
+      "architects": [
+       "Friedrich August Stüler",
+       "Albert Dietrich Schadow"
+      ],
+      "commissionedBy": [
+       "Frederick William III"
+      ],
+      "history": "King Friedrich Wilhelm III had the church built for the residents of Klein-Glienicke and Pfaueninsel on a bluff on the Havel near the Pfaueninsel and the Nikolskoë Blockhouse. It was designed by the architects Friedrich August Stüler and Albert Dietrich Schadow. Friedrich Wilhelm selected the Russian style to commemorate the marriage of his daughter Charlotte to the later Tsar Nicholas I of Russia. The king visited them at St. Petersburg in 1818 and for a return visit a year later had a Russian-style blockhouse built in the park at Glienicke, naming it Nikolskoë. In 1832, the king then ordered the construction of the nearby church which took place from 1834 to 1837.\n\nUntil 1961, when the Berlin Wall cut the parish into three separate parts, Ss. Peter and Paul Church was part of the Evangelical Congregation of Neubabelsberg, then comprising a parish in Potsdam-Babelsberg, Klein-Glienicke (divided between Berlin and Potsdam), Nikolskoë and Potsdam-Sacrow with the further chapel in Klein-Glienicke and the Church of the Redeemer, Sacrow.\n\nOn December 22, 1941, the official German Evangelical Church called for suited actions by all Protestant church bodies to withhold baptised non-Aryans from all spheres of Protestant church life. Many German Christian-dominated congregations followed suit. However, the Evangelical Congregation of Neubabelsberg handed in a list of signatures in protest against the exclusion of the stigmatised Protestants of Jewish descent."
+     },
+     "de": {
+      "built": "1834–1837",
+      "opened": "1837",
+      "styles": [
+       "Neorussischer Stil"
+      ],
+      "architects": [
+       "Friedrich August Stüler",
+       "Albert Dietrich Schadow"
+      ],
+      "commissionedBy": [
+       "Friedrich Wilhelm III."
+      ],
+      "history": "Der Name Nikolskoe kommt vom russischen Wort Никольское/Nikolskoje, wörtlich ‚das Nikolai Gehörende‘, wobei das dazugehörende sächliche Substantiv im russischen Sprachgebrauch zur Vereinfachung weggelassen wird.\n\nDas Kirchengebäude soll mit seinem Zwiebelturm an russisch-orthodoxe Kirchen erinnern, ist im Übrigen aber typisch protestantisch und hat nicht die Struktur orthodoxer Kirchenbauten wie der Alexander-Newski-Gedächtniskirche im benachbarten Potsdam.\n\nKönig Friedrich Wilhelm III. ließ sie auf Anregung seiner Tochter, der Zarin Alexandra Fjodorowna, Ehefrau von Nikolaus I., für die Bewohner Klein Glienickes und der Pfaueninsel weitab von Klein Glienicke, an einem Steilufer der Havel, nahe der Pfaueninsel und dem Blockhaus Nikolskoe durch die Architekten Friedrich August Stüler und Albert Dietrich Schadow errichten. Eine Entwurfsskizze von 1833 belegt die Mitarbeit von Karl Friedrich Schinkel an der Planung der Kirche. Er entwarf Teile der Schauseite und fügte die von Auftraggeber König Friedrich Wilhelm III. geforderten russischen Motive dazu.\n\nAm 13. August 1837 wurde die Kirche eingeweiht. Die Entwürfe wurden im Architektonischen Album veröffentlicht – auch eine Variante ohne den russischen Zwiebelturm.\n\nDie Kirche gehört zum Evangelischen Kirchenkreis Teltow-Zehlendorf in der Evangelischen Kirche Berlin-Brandenburg-schlesische Oberlausitz, hat aber keine Kirchengemeinde."
+     }
+    }
+   }
+  },
+  {
+   "id": "alte-nazarethkirche",
+   "name": "Alte Nazarethkirche",
+   "names": {
+    "en": "Old Nazareth Church"
+   },
+   "category": "church",
+   "latitude": 52.546936,
+   "longitude": 13.359508,
+   "radius": 30,
+   "district": "Mitte",
+   "wikidata": "Q320323",
+   "entry": {
+    "en": {
+     "title": "Alte Nazarethkirche",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Alte_Nazarethkirche",
+     "text": "Die Alte Nazarethkirche ist eine von Karl Friedrich Schinkel entworfene Kirche im Ortsteil Wedding des Berliner Bezirks Mitte. Sie gehört zu den vier Schinkelschen Vorstadtkirchen, die alle einen ähnlichen Bauplan haben. Sie trägt ihren Namen nach Nazareth, dem Heimatort Jesu.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Berlin-wedding_nazareth-kirche_20050415_453_part.jpg/960px-Berlin-wedding_nazareth-kirche_20050415_453_part.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Berlin-wedding_nazareth-kirche_20050415_453_part.jpg",
+      "artist": "Georg Slickers",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "http://creativecommons.org/licenses/by-sa/3.0/"
+     }
+    },
+    "de": {
+     "title": "Alte Nazarethkirche",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Alte_Nazarethkirche",
+     "text": "Die Alte Nazarethkirche ist eine von Karl Friedrich Schinkel entworfene Kirche im Ortsteil Wedding des Berliner Bezirks Mitte. Sie gehört zu den vier Schinkelschen Vorstadtkirchen, die alle einen ähnlichen Bauplan haben. Sie trägt ihren Namen nach Nazareth, dem Heimatort Jesu.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Berlin-wedding_nazareth-kirche_20050415_453_part.jpg/960px-Berlin-wedding_nazareth-kirche_20050415_453_part.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Berlin-wedding_nazareth-kirche_20050415_453_part.jpg",
+      "artist": "Georg Slickers",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "http://creativecommons.org/licenses/by-sa/3.0/"
+     }
+    }
+   },
+   "facts": {
+    "year": 1832,
+    "sector": "west",
+    "wikidata": "https://www.wikidata.org/wiki/Q320323",
+    "localized": {
+     "en": {
+      "built": "1832–1835",
+      "opened": "1835",
+      "styles": [
+       "Rundbogenstil"
+      ],
+      "architects": [
+       "Karl Friedrich Schinkel"
+      ],
+      "commissionedBy": [
+       "Frederick William III"
+      ],
+      "history": "Von 1832 bis 1835 wurde die Kirche am Leopoldplatz errichtet und am 5. Juli 1835 eingeweiht. Schinkel wählte einen Ziegelbau im für ihn typischen Rundbogenstil, der Motive oberitalienischer Romanik aufnimmt. Die Struktur der ursprünglichen Innenraumgliederung zeichnet sich bereits am Äußeren dieses kubisch-strengen Gebäudes ab. Die Fassade deutet auf eine Zweistöckigkeit, wobei die großen, oberen Rundbogenfenster die Lage der ehemaligen Emporen anzeigen. Die Eckräume weisen ganz kleine Fenster auf.\n\nDurch Friedrich August Stüler sollte die Kirche später – ähnlich wie bei der fast baugleichen Johanniskirche in Moabit – um ein Pfarrhaus, einen Glockenturm und einen verbindenden Arkadengang ergänzt werden. Diese Planungen wurden hier jedoch nicht ausgeführt, sodass sich die Kirche im Äußeren fast unverändert erhalten hat. Nachdem sie für die Gemeinde zu klein geworden und die Neue Nazarethkirche erbaut worden war, fanden hier keine Gottesdienste mehr statt. Sie diente fortan vornehmlich für diakonische und katechetische Arbeit. 1906 wurde in Höhe der Emporen eine Zwischendecke in den hohen Innenraum eingezogen. In diesem Zusammenhang erhielt das Erdgeschoss zur besseren Belichtung weitere Rundbogenfenster, wodurch die unteren Fenster jetzt eine durchgehende Reihung aufweisen. Außerdem wurde ein Apsisumgang errichtet, um dort Nebenräume unterbringen zu können.\n\nZwischen 1972 und 1974 wurde eine Kindertagesstätte im Erdgeschoss eingebaut. Von 1977 bis 1980 wurde der Saal im Obergeschoss – Schinkelsaal genannt –restauriert, der auch wieder für Gottesdienste genutzt wird."
+     },
+     "de": {
+      "built": "1832–1835",
+      "opened": "1835",
+      "styles": [
+       "Rundbogenstil"
+      ],
+      "architects": [
+       "Karl Friedrich Schinkel"
+      ],
+      "commissionedBy": [
+       "Friedrich Wilhelm III."
+      ],
+      "history": "Von 1832 bis 1835 wurde die Kirche am Leopoldplatz errichtet und am 5. Juli 1835 eingeweiht. Schinkel wählte einen Ziegelbau im für ihn typischen Rundbogenstil, der Motive oberitalienischer Romanik aufnimmt. Die Struktur der ursprünglichen Innenraumgliederung zeichnet sich bereits am Äußeren dieses kubisch-strengen Gebäudes ab. Die Fassade deutet auf eine Zweistöckigkeit, wobei die großen, oberen Rundbogenfenster die Lage der ehemaligen Emporen anzeigen. Die Eckräume weisen ganz kleine Fenster auf.\n\nDurch Friedrich August Stüler sollte die Kirche später – ähnlich wie bei der fast baugleichen Johanniskirche in Moabit – um ein Pfarrhaus, einen Glockenturm und einen verbindenden Arkadengang ergänzt werden. Diese Planungen wurden hier jedoch nicht ausgeführt, sodass sich die Kirche im Äußeren fast unverändert erhalten hat. Nachdem sie für die Gemeinde zu klein geworden und die Neue Nazarethkirche erbaut worden war, fanden hier keine Gottesdienste mehr statt. Sie diente fortan vornehmlich für diakonische und katechetische Arbeit. 1906 wurde in Höhe der Emporen eine Zwischendecke in den hohen Innenraum eingezogen. In diesem Zusammenhang erhielt das Erdgeschoss zur besseren Belichtung weitere Rundbogenfenster, wodurch die unteren Fenster jetzt eine durchgehende Reihung aufweisen. Außerdem wurde ein Apsisumgang errichtet, um dort Nebenräume unterbringen zu können.\n\nZwischen 1972 und 1974 wurde eine Kindertagesstätte im Erdgeschoss eingebaut. Von 1977 bis 1980 wurde der Saal im Obergeschoss – Schinkelsaal genannt –restauriert, der auch wieder für Gottesdienste genutzt wird."
+     }
+    }
+   }
+  },
+  {
+   "id": "schlosskirche-buch",
+   "name": "Schlosskirche Buch",
+   "names": {
+    "en": "Buch Palace Church"
+   },
+   "category": "church",
+   "latitude": 52.6354,
+   "longitude": 13.4986,
+   "radius": 30,
+   "district": "Pankow",
+   "wikidata": "Q2244590",
+   "entry": {
+    "en": {
+     "title": "Schlosskirche Buch",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Schlosskirche_Buch",
+     "text": "Die Schlosskirche Buch befindet sich im gleichnamigen Ortsteil von Berlin. Der Architekt Friedrich Wilhelm Diterichs errichtete sie am Standort des Vorgängerbaus, der 1731 abgebrochen wurde, zwischen 1731 und 1736 zeitgleich mit dem Umbau des Schlosses Buch im Stil des Barock für den neuen Besitzer von Buch, Adam Otto von Viereck. Nach dem Landbuch Karls IV. (1375) hatte das Straßendorf Buch 40 Hufen, davon vier Pfarrhufen. Über das Aussehen des Vorgängerbaus ist nichts bekannt.",
+     "image": null
+    },
+    "de": {
+     "title": "Schlosskirche Buch",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Schlosskirche_Buch",
+     "text": "Die Schlosskirche Buch befindet sich im gleichnamigen Ortsteil von Berlin. Der Architekt Friedrich Wilhelm Diterichs errichtete sie am Standort des Vorgängerbaus, der 1731 abgebrochen wurde, zwischen 1731 und 1736 zeitgleich mit dem Umbau des Schlosses Buch im Stil des Barock für den neuen Besitzer von Buch, Adam Otto von Viereck. Nach dem Landbuch Karls IV. (1375) hatte das Straßendorf Buch 40 Hufen, davon vier Pfarrhufen. Über das Aussehen des Vorgängerbaus ist nichts bekannt.",
+     "image": null
+    }
+   },
+   "facts": {
+    "year": 1731,
+    "sector": "east",
+    "wikidata": "https://www.wikidata.org/wiki/Q2244590",
+    "localized": {
+     "en": {
+      "built": "1731–1736",
+      "styles": [
+       "Baroque"
+      ],
+      "architects": [
+       "Friedrich Wilhelm Diterichs"
+      ],
+      "commissionedBy": [
+       "Adam Otto von Viereck"
+      ]
+     },
+     "de": {
+      "built": "1731–1736",
+      "styles": [
+       "Barock"
+      ],
+      "architects": [
+       "Friedrich Wilhelm Diterichs"
+      ],
+      "commissionedBy": [
+       "Adam Otto von Viereck"
+      ]
+     }
+    }
+   }
+  }
+ ],
+ "achievements": [
+  {
+   "id": "churches",
+   "group": "collections",
+   "symbol": "bell.fill",
+   "title": {
+    "en": "Bells of Berlin",
+    "de": "Glocken von Berlin"
+   },
+   "description": {
+    "en": "Visit every church, from the medieval Nikolaikirche to the Kaiser Wilhelm Memorial Church.",
+    "de": "Besuche jede Kirche, von der mittelalterlichen Nikolaikirche bis zur Kaiser-Wilhelm-Gedächtniskirche."
+   },
+   "rule": {
+    "categories": [
+     "church"
+    ]
+   }
+  }
+ ]
+}

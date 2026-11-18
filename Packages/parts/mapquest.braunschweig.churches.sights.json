@@ -1,0 +1,1471 @@
+{
+ "format": "mapquest-sights",
+ "formatVersion": 1,
+ "id": "mapquest.braunschweig.churches",
+ "version": "2026.11.18",
+ "title": {
+  "en": "Braunschweig churches",
+  "de": "Braunschweiger Kirchen"
+ },
+ "summary": {
+  "en": "Henry the Lion's cathedral, the town churches of the five boroughs and Riddagshausen abbey.",
+  "de": "Der Dom Heinrichs des Löwen, die Stadtkirchen der fünf Weichbilde und das Kloster Riddagshausen."
+ },
+ "publisher": "MapQuest",
+ "license": "Texts: Wikipedia (CC BY-SA 4.0); photos: Wikimedia Commons (licence per photo); facts: Wikidata (CC0), hand-checked; positions: OpenStreetMap (ODbL 1.0); achievements, chronicles and remembrance texts: MapQuest",
+ "language": "de",
+ "region": {
+  "id": "braunschweig",
+  "name": {
+   "en": "Braunschweig"
+  },
+  "bounds": {
+   "south": 52.1868,
+   "west": 10.4124,
+   "north": 52.3576,
+   "east": 10.6432
+  }
+ },
+ "chronicles": [
+  {
+   "eras": [
+    {
+     "id": "bs-early",
+     "monarchy": true,
+     "name": {
+      "de": "Frühes Braunschweig",
+      "en": "Early Brunswick"
+     },
+     "start": "800-01",
+     "summary": {
+      "de": "An einer Furt der Oker wächst unter den Grafen aus dem Geschlecht der Brunonen eine Siedlung heran; erstmals erwähnt wird sie 1031 bei der Weihe von St. Magni. Ihr Erbe geht an Lothar von Süpplingenburg und durch Heirat an die Welfen.",
+      "en": "A settlement at a ford of the Oker grows into a town under the Brunonen counts; it is first recorded when St. Magni is consecrated in 1031. Their inheritance passes to Lothair of Supplinburg and, by marriage, to the Welfs."
+     },
+     "years": {
+      "de": "bis 1142",
+      "en": "until 1142"
+     }
+    },
+    {
+     "id": "bs-welf",
+     "monarchy": true,
+     "name": {
+      "de": "Residenz Heinrichs des Löwen",
+      "en": "Henry the Lion's residence"
+     },
+     "start": "1142-05",
+     "summary": {
+      "de": "Herzog Heinrich der Löwe macht Braunschweig zum Mittelpunkt seiner Macht: die Burg Dankwarderode, der bronzene Löwe von 1166 und der Dom. Er gründet neue Weichbilde; sein Sohn Otto IV., der einzige Kaiser aus dem Haus der Welfen, ist im Dom bestattet.",
+      "en": "Duke Henry the Lion makes Brunswick the centre of his power: the castle of Dankwarderode, the bronze lion of 1166 and the cathedral. He founds new boroughs; his son Otto IV, the only Welf emperor, is buried in the cathedral."
+     },
+     "years": {
+      "en": "1142–1235"
+     }
+    },
+    {
+     "id": "bs-hanse",
+     "monarchy": true,
+     "name": {
+      "de": "Hansestadt",
+      "en": "Hanseatic town"
+     },
+     "start": "1235-08",
+     "summary": {
+      "de": "1235 entsteht das Herzogtum Braunschweig-Lüneburg. Die Stadt – fünf Weichbilde unter einem Rat – regiert sich selbst, gehört zu den führenden Städten der Hanse und wird 1528 evangelisch, bis Herzog Rudolf August sie 1671 zur Unterwerfung zwingt.",
+      "en": "In 1235 the Duchy of Brunswick-Lüneburg is created. The town – five boroughs under one council – governs itself, is one of the leading towns of the Hanseatic League and turns Protestant in 1528, until Duke Rudolph Augustus forces it to submit in 1671."
+     },
+     "years": {
+      "en": "1235–1671"
+     }
+    },
+    {
+     "id": "bs-residence",
+     "monarchy": true,
+     "name": {
+      "de": "Herzogliche Residenzstadt",
+      "en": "Ducal residence"
+     },
+     "start": "1671-06",
+     "summary": {
+      "de": "Braunschweig gehört zum Fürstentum Braunschweig-Wolfenbüttel; ab 1753 residieren die Herzöge hier. Aufklärung und Barock: das Collegium Carolinum (1745), eines der ersten öffentlichen Museen (1754), Lessing.",
+      "en": "Brunswick belongs to the Principality of Brunswick-Wolfenbüttel; from 1753 the dukes reside here. Enlightenment and Baroque: the Collegium Carolinum (1745), one of the first public museums (1754), Lessing."
+     },
+     "years": {
+      "en": "1671–1806"
+     }
+    },
+    {
+     "id": "bs-french",
+     "monarchy": true,
+     "name": {
+      "de": "Napoleonische Herrschaft",
+      "en": "Napoleonic rule"
+     },
+     "start": "1806-11",
+     "summary": {
+      "de": "Nach der Niederlage des Herzogs bei Jena und Auerstedt wird Braunschweig Teil des Königreichs Westphalen unter Napoleons Bruder Jérôme und Hauptstadt des Departements der Oker.",
+      "en": "After the duke's defeat at Jena and Auerstedt, Brunswick becomes part of the Kingdom of Westphalia under Napoleon's brother Jérôme, capital of the Department of the Oker."
+     },
+     "years": {
+      "en": "1806–1813"
+     }
+    },
+    {
+     "id": "bs-duchy",
+     "monarchy": true,
+     "name": {
+      "de": "Herzogtum Braunschweig",
+      "en": "Duchy of Brunswick"
+     },
+     "start": "1813-11",
+     "summary": {
+      "de": "Das Herzogtum wird wiederhergestellt. 1830 vertreiben die Bürger Herzog Karl II. und brennen sein Schloss nieder; es folgt Ottmers Neubau. Die erste Staatseisenbahn Deutschlands (1838) und die Industrie machen Braunschweig zur Stadt der Fabriken und Ingenieure.",
+      "en": "The duchy is restored. In 1830 the citizens drive out Duke Charles II and burn his palace; Ottmer's new one follows. Germany's first state railway (1838) and industry make Brunswick a city of factories and engineers."
+     },
+     "years": {
+      "en": "1813–1918"
+     }
+    },
+    {
+     "id": "bs-free-state",
+     "name": {
+      "de": "Freistaat Braunschweig",
+      "en": "Free State of Brunswick"
+     },
+     "start": "1918-11",
+     "summary": {
+      "de": "Nach der Novemberrevolution 1918 dankt der Herzog ab, aus dem Herzogtum wird eine Republik. Ab 1930 regiert die NSDAP mit; 1932 ernennt die Landesregierung Hitler zum Beamten und verschafft ihm so die deutsche Staatsbürgerschaft.",
+      "en": "After the revolution of November 1918 the duke abdicates and the duchy becomes a republic. From 1930 the NSDAP shares power; in 1932 the state government makes Hitler a civil servant, which gives him German citizenship."
+     },
+     "years": {
+      "en": "1918–1933"
+     }
+    },
+    {
+     "id": "bs-nazi",
+     "name": {
+      "de": "Zeit des Nationalsozialismus",
+      "en": "Nazi Germany"
+     },
+     "start": "1933-01",
+     "summary": {
+      "de": "Ab 1933 Diktatur und Terror; die SS betreibt im Schloss eine Junkerschule. Juden werden verfolgt, deportiert und ermordet; Zwangsarbeiter und KZ-Häftlinge arbeiten in der Rüstungsindustrie. Am 15. Oktober 1944 zerstört ein Feuersturm die mittelalterliche Innenstadt.",
+      "en": "Dictatorship and terror from 1933; the SS runs an officer school in the palace. Jews are persecuted, deported and murdered; forced labourers and concentration camp prisoners work in the arms factories. On 15 October 1944 a firestorm destroys the medieval centre."
+     },
+     "years": {
+      "en": "1933–1945"
+     }
+    },
+    {
+     "id": "bs-occupation",
+     "name": {
+      "de": "Alliierte Besatzung",
+      "en": "Allied occupation"
+     },
+     "start": "1945-04",
+     "summary": {
+      "de": "Amerikanische Truppen besetzen die Stadt im April 1945; danach gehört sie zur britischen Zone. Das Land Braunschweig besteht noch anderthalb Jahre.",
+      "en": "American troops take the city in April 1945; it then lies in the British zone. The State of Brunswick is restored for a year and a half."
+     },
+     "years": {
+      "en": "1945–1946"
+     }
+    },
+    {
+     "id": "bs-lower-saxony",
+     "name": {
+      "de": "Niedersachsen",
+      "en": "Lower Saxony"
+     },
+     "start": "1946-11",
+     "summary": {
+      "de": "Im November 1946 wird Braunschweig Teil des neuen Landes Niedersachsen. Die Stadt wird wieder aufgebaut – modern, mit fünf „Traditionsinseln“ um die alten Bauten – und ist heute ein Zentrum der Forschung.",
+      "en": "In November 1946 Brunswick becomes part of the new state of Lower Saxony. The city is rebuilt – modern, with five “traditional islands” around the old buildings – and is a centre of research today."
+     },
+     "years": {
+      "de": "seit 1946",
+      "en": "since 1946"
+     }
+    }
+   ],
+   "id": "braunschweig",
+   "name": {
+    "en": "Braunschweig"
+   },
+   "rulers": [
+    {
+     "era": "bs-early",
+     "name": "Brunonen",
+     "reign": {
+      "de": "bis 1117",
+      "en": "until 1117"
+     },
+     "start": "800-01",
+     "title": {
+      "de": "Grafen in Sachsen",
+      "en": "Counts in Saxony"
+     }
+    },
+    {
+     "era": "bs-early",
+     "name": "Lothar von Süpplingenburg",
+     "names": {
+      "en": "Lothair of Supplinburg"
+     },
+     "reign": {
+      "en": "1117–1137"
+     },
+     "start": "1117-01",
+     "title": {
+      "de": "Herzog von Sachsen, ab 1133 Kaiser",
+      "en": "Duke of Saxony, from 1133 Holy Roman Emperor"
+     }
+    },
+    {
+     "era": "bs-early",
+     "name": "Heinrich der Stolze",
+     "names": {
+      "en": "Henry the Proud"
+     },
+     "reign": {
+      "en": "1137–1139"
+     },
+     "start": "1137-12",
+     "title": {
+      "de": "Herzog von Bayern und Sachsen",
+      "en": "Duke of Bavaria and Saxony"
+     }
+    },
+    {
+     "era": "bs-early",
+     "name": "Heinrich der Löwe",
+     "names": {
+      "en": "Henry the Lion"
+     },
+     "reign": {
+      "en": "1139–1195"
+     },
+     "start": "1139-10",
+     "title": {
+      "de": "Herzog von Sachsen und Bayern",
+      "en": "Duke of Saxony and Bavaria"
+     }
+    },
+    {
+     "era": "bs-welf",
+     "name": "Heinrich der Löwe",
+     "names": {
+      "en": "Henry the Lion"
+     },
+     "reign": {
+      "en": "1139–1195"
+     },
+     "start": "1142-05",
+     "title": {
+      "de": "Herzog von Sachsen und Bayern",
+      "en": "Duke of Saxony and Bavaria"
+     }
+    },
+    {
+     "era": "bs-welf",
+     "name": "Söhne Heinrichs des Löwen",
+     "names": {
+      "en": "Henry the Lion's sons"
+     },
+     "reign": {
+      "en": "1195–1202"
+     },
+     "start": "1195-08",
+     "title": {
+      "de": "Welfische Erben",
+      "en": "Welf heirs"
+     }
+    },
+    {
+     "era": "bs-welf",
+     "name": "Otto IV.",
+     "names": {
+      "en": "Otto IV"
+     },
+     "reign": {
+      "en": "1202–1218"
+     },
+     "start": "1202-05",
+     "title": {
+      "de": "Welfe, römisch-deutscher Kaiser",
+      "en": "Welf, Holy Roman Emperor"
+     }
+    },
+    {
+     "era": "bs-welf",
+     "name": "Heinrich von Braunschweig",
+     "names": {
+      "en": "Henry of Brunswick"
+     },
+     "reign": {
+      "en": "1218–1227"
+     },
+     "start": "1218-06",
+     "title": {
+      "de": "Pfalzgraf bei Rhein",
+      "en": "Count Palatine of the Rhine"
+     }
+    },
+    {
+     "era": "bs-welf",
+     "name": "Otto das Kind",
+     "names": {
+      "en": "Otto the Child"
+     },
+     "reign": {
+      "en": "1227–1252"
+     },
+     "start": "1227-07",
+     "title": {
+      "de": "Herr von Braunschweig, ab 1235 Herzog",
+      "en": "Lord of Brunswick, from 1235 its duke"
+     }
+    },
+    {
+     "era": "bs-hanse",
+     "name": "Otto das Kind",
+     "names": {
+      "en": "Otto the Child"
+     },
+     "reign": {
+      "en": "1227–1252"
+     },
+     "start": "1235-08",
+     "title": {
+      "de": "Herzog von Braunschweig-Lüneburg",
+      "en": "Duke of Brunswick-Lüneburg"
+     }
+    },
+    {
+     "era": "bs-hanse",
+     "name": "Albrecht I.",
+     "names": {
+      "en": "Albert I"
+     },
+     "reign": {
+      "en": "1252–1279"
+     },
+     "start": "1252-07",
+     "title": {
+      "de": "Herzog von Braunschweig-Lüneburg",
+      "en": "Duke of Brunswick-Lüneburg"
+     }
+    },
+    {
+     "era": "bs-hanse",
+     "name": "Welfische Herzöge",
+     "names": {
+      "en": "Welf dukes"
+     },
+     "reign": {
+      "en": "1279–1671"
+     },
+     "start": "1279-08",
+     "title": {
+      "de": "Gemeinsame Landesherren; die Stadt regiert sich durch ihren Rat",
+      "en": "Joint overlords; the town governs itself through its council"
+     }
+    },
+    {
+     "era": "bs-residence",
+     "name": "Rudolf August",
+     "names": {
+      "en": "Rudolph Augustus"
+     },
+     "reign": {
+      "en": "1666–1704"
+     },
+     "start": "1671-06",
+     "title": {
+      "de": "Herzog von Braunschweig-Wolfenbüttel",
+      "en": "Duke of Brunswick-Wolfenbüttel"
+     }
+    },
+    {
+     "era": "bs-residence",
+     "name": "Anton Ulrich",
+     "reign": {
+      "en": "1704–1714"
+     },
+     "start": "1704-02",
+     "title": {
+      "de": "Herzog von Braunschweig-Wolfenbüttel",
+      "en": "Duke of Brunswick-Wolfenbüttel"
+     }
+    },
+    {
+     "era": "bs-residence",
+     "name": "August Wilhelm",
+     "names": {
+      "en": "Augustus William"
+     },
+     "reign": {
+      "en": "1714–1731"
+     },
+     "start": "1714-04",
+     "title": {
+      "de": "Herzog von Braunschweig-Wolfenbüttel",
+      "en": "Duke of Brunswick-Wolfenbüttel"
+     }
+    },
+    {
+     "era": "bs-residence",
+     "name": "Ludwig Rudolf",
+     "names": {
+      "en": "Louis Rudolph"
+     },
+     "reign": {
+      "en": "1731–1735"
+     },
+     "start": "1731-04",
+     "title": {
+      "de": "Herzog von Braunschweig-Wolfenbüttel",
+      "en": "Duke of Brunswick-Wolfenbüttel"
+     }
+    },
+    {
+     "era": "bs-residence",
+     "name": "Ferdinand Albrecht II.",
+     "names": {
+      "en": "Ferdinand Albert II"
+     },
+     "reign": {
+      "en": "1735"
+     },
+     "start": "1735-03",
+     "title": {
+      "de": "Herzog von Braunschweig-Wolfenbüttel",
+      "en": "Duke of Brunswick-Wolfenbüttel"
+     }
+    },
+    {
+     "era": "bs-residence",
+     "name": "Karl I.",
+     "names": {
+      "en": "Charles I"
+     },
+     "reign": {
+      "en": "1735–1780"
+     },
+     "start": "1735-09",
+     "title": {
+      "de": "Herzog von Braunschweig-Wolfenbüttel",
+      "en": "Duke of Brunswick-Wolfenbüttel"
+     }
+    },
+    {
+     "era": "bs-residence",
+     "name": "Karl Wilhelm Ferdinand",
+     "names": {
+      "en": "Charles William Ferdinand"
+     },
+     "reign": {
+      "en": "1780–1806"
+     },
+     "start": "1780-04",
+     "title": {
+      "de": "Herzog von Braunschweig-Wolfenbüttel",
+      "en": "Duke of Brunswick-Wolfenbüttel"
+     }
+    },
+    {
+     "era": "bs-french",
+     "name": "Jérôme Bonaparte",
+     "reign": {
+      "en": "1807–1813"
+     },
+     "start": "1806-11",
+     "title": {
+      "de": "König von Westphalen",
+      "en": "King of Westphalia"
+     }
+    },
+    {
+     "era": "bs-duchy",
+     "name": "Friedrich Wilhelm, der Schwarze Herzog",
+     "names": {
+      "en": "Frederick William, the Black Duke"
+     },
+     "reign": {
+      "en": "1813–1815"
+     },
+     "start": "1813-11",
+     "title": {
+      "de": "Herzog von Braunschweig",
+      "en": "Duke of Brunswick"
+     }
+    },
+    {
+     "era": "bs-duchy",
+     "name": "Karl II.",
+     "names": {
+      "en": "Charles II"
+     },
+     "reign": {
+      "en": "1815–1830"
+     },
+     "start": "1815-07",
+     "title": {
+      "de": "Herzog von Braunschweig",
+      "en": "Duke of Brunswick"
+     }
+    },
+    {
+     "era": "bs-duchy",
+     "name": "Wilhelm",
+     "names": {
+      "en": "William"
+     },
+     "reign": {
+      "en": "1830–1884"
+     },
+     "start": "1830-09",
+     "title": {
+      "de": "Herzog von Braunschweig",
+      "en": "Duke of Brunswick"
+     }
+    },
+    {
+     "era": "bs-duchy",
+     "name": "Albrecht von Preußen",
+     "names": {
+      "en": "Albert of Prussia"
+     },
+     "reign": {
+      "en": "1885–1906"
+     },
+     "start": "1885-10",
+     "title": {
+      "de": "Regent des Herzogtums",
+      "en": "Regent of the duchy"
+     }
+    },
+    {
+     "era": "bs-duchy",
+     "name": "Johann Albrecht zu Mecklenburg",
+     "names": {
+      "en": "John Albert of Mecklenburg"
+     },
+     "reign": {
+      "en": "1907–1913"
+     },
+     "start": "1907-06",
+     "title": {
+      "de": "Regent des Herzogtums",
+      "en": "Regent of the duchy"
+     }
+    },
+    {
+     "era": "bs-duchy",
+     "name": "Ernst August",
+     "names": {
+      "en": "Ernest Augustus"
+     },
+     "reign": {
+      "en": "1913–1918"
+     },
+     "start": "1913-11",
+     "title": {
+      "de": "Herzog von Braunschweig",
+      "en": "Duke of Brunswick"
+     }
+    },
+    {
+     "era": "bs-free-state",
+     "name": "Ministerpräsidenten des Freistaats",
+     "names": {
+      "en": "Minister-presidents of the Free State"
+     },
+     "reign": {
+      "en": "1918–1933"
+     },
+     "start": "1918-11",
+     "title": {
+      "de": "Chefs der Landesregierung",
+      "en": "Heads of the state government"
+     }
+    },
+    {
+     "era": "bs-nazi",
+     "name": "Dietrich Klagges",
+     "reign": {
+      "en": "1933–1945"
+     },
+     "start": "1933-05",
+     "title": {
+      "de": "Ministerpräsident des Landes Braunschweig (NSDAP)",
+      "en": "Minister-President of Brunswick (NSDAP)"
+     }
+    },
+    {
+     "era": "bs-occupation",
+     "name": "Britische Militärregierung",
+     "names": {
+      "en": "British military government"
+     },
+     "reign": {
+      "en": "1945–1946"
+     },
+     "start": "1945-05",
+     "title": {
+      "de": "Besatzungsmacht",
+      "en": "Occupying power"
+     }
+    },
+    {
+     "era": "bs-lower-saxony",
+     "name": "Hinrich Wilhelm Kopf",
+     "reign": {
+      "en": "1946–1955"
+     },
+     "start": "1946-11",
+     "title": {
+      "de": "Ministerpräsident von Niedersachsen",
+      "en": "Minister-President of Lower Saxony"
+     }
+    },
+    {
+     "era": "bs-lower-saxony",
+     "name": "Heinrich Hellwege",
+     "reign": {
+      "en": "1955–1959"
+     },
+     "start": "1955-06",
+     "title": {
+      "de": "Ministerpräsident von Niedersachsen",
+      "en": "Minister-President of Lower Saxony"
+     }
+    },
+    {
+     "era": "bs-lower-saxony",
+     "name": "Hinrich Wilhelm Kopf",
+     "reign": {
+      "en": "1959–1961"
+     },
+     "start": "1959-05",
+     "title": {
+      "de": "Ministerpräsident von Niedersachsen",
+      "en": "Minister-President of Lower Saxony"
+     }
+    },
+    {
+     "era": "bs-lower-saxony",
+     "name": "Georg Diederichs",
+     "reign": {
+      "en": "1961–1970"
+     },
+     "start": "1961-12",
+     "title": {
+      "de": "Ministerpräsident von Niedersachsen",
+      "en": "Minister-President of Lower Saxony"
+     }
+    },
+    {
+     "era": "bs-lower-saxony",
+     "name": "Alfred Kubel",
+     "reign": {
+      "en": "1970–1976"
+     },
+     "start": "1970-07",
+     "title": {
+      "de": "Ministerpräsident von Niedersachsen",
+      "en": "Minister-President of Lower Saxony"
+     }
+    },
+    {
+     "era": "bs-lower-saxony",
+     "name": "Ernst Albrecht",
+     "reign": {
+      "en": "1976–1990"
+     },
+     "start": "1976-02",
+     "title": {
+      "de": "Ministerpräsident von Niedersachsen",
+      "en": "Minister-President of Lower Saxony"
+     }
+    },
+    {
+     "era": "bs-lower-saxony",
+     "name": "Gerhard Schröder",
+     "reign": {
+      "en": "1990–1998"
+     },
+     "start": "1990-06",
+     "title": {
+      "de": "Ministerpräsident von Niedersachsen",
+      "en": "Minister-President of Lower Saxony"
+     }
+    },
+    {
+     "era": "bs-lower-saxony",
+     "name": "Gerhard Glogowski",
+     "reign": {
+      "en": "1998–1999"
+     },
+     "start": "1998-10",
+     "title": {
+      "de": "Ministerpräsident von Niedersachsen",
+      "en": "Minister-President of Lower Saxony"
+     }
+    },
+    {
+     "era": "bs-lower-saxony",
+     "name": "Sigmar Gabriel",
+     "reign": {
+      "en": "1999–2003"
+     },
+     "start": "1999-12",
+     "title": {
+      "de": "Ministerpräsident von Niedersachsen",
+      "en": "Minister-President of Lower Saxony"
+     }
+    },
+    {
+     "era": "bs-lower-saxony",
+     "name": "Christian Wulff",
+     "reign": {
+      "en": "2003–2010"
+     },
+     "start": "2003-03",
+     "title": {
+      "de": "Ministerpräsident von Niedersachsen",
+      "en": "Minister-President of Lower Saxony"
+     }
+    },
+    {
+     "era": "bs-lower-saxony",
+     "name": "David McAllister",
+     "reign": {
+      "en": "2010–2013"
+     },
+     "start": "2010-07",
+     "title": {
+      "de": "Ministerpräsident von Niedersachsen",
+      "en": "Minister-President of Lower Saxony"
+     }
+    },
+    {
+     "era": "bs-lower-saxony",
+     "name": "Stephan Weil",
+     "reign": {
+      "en": "2013–2025"
+     },
+     "start": "2013-02",
+     "title": {
+      "de": "Ministerpräsident von Niedersachsen",
+      "en": "Minister-President of Lower Saxony"
+     }
+    },
+    {
+     "era": "bs-lower-saxony",
+     "name": "Olaf Lies",
+     "reign": {
+      "de": "seit 2025",
+      "en": "since 2025"
+     },
+     "start": "2025-05",
+     "title": {
+      "de": "Ministerpräsident von Niedersachsen",
+      "en": "Minister-President of Lower Saxony"
+     }
+    }
+   ]
+  }
+ ],
+ "sights": [
+  {
+   "id": "braunschweiger-dom",
+   "name": "Braunschweiger Dom",
+   "names": {
+    "en": "Brunswick Cathedral"
+   },
+   "category": "church",
+   "latitude": 52.264241,
+   "longitude": 10.523856,
+   "radius": 40,
+   "district": "Mitte",
+   "wikidata": "Q279402",
+   "entry": {
+    "en": {
+     "title": "Brunswick Cathedral",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Brunswick_Cathedral",
+     "text": "Brunswick Cathedral (German: Dom St. Blasii (et Johannis), lit. in English: Collegiate Church of Ss. Blaise and John the Baptist) is a large Lutheran church in the City of Braunschweig (Brunswick), Germany.\n\nThe church is termed Dom, in German a synecdoche - pars pro toto - used for cathedrals and collegiate churches alike, and much like the Italian duomo. It is currently owned and used by a congregation of the Lutheran Church in Brunswick.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/BraunschweigDom.jpg/960px-BraunschweigDom.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:BraunschweigDom.jpg",
+      "artist": "Kassandro",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "http://creativecommons.org/licenses/by-sa/3.0/"
+     }
+    },
+    "de": {
+     "title": "Braunschweiger Dom",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Braunschweiger_Dom",
+     "text": "Der Braunschweiger Dom, offiziell die Domkirche St. Blasii zu Braunschweig, ist die bedeutendste Kirche in Braunschweig. Er wurde 1173 als Kollegiatstiftskirche von Heinrich dem Löwen, Herzog von Bayern und Sachsen, gegenüber seiner Burg Dankwarderode „zur Ehre St. Blasius’ und St. Johannis des Täufers“ gestiftet und von ihm zu seiner Grablege und der seiner zweiten Gemahlin Mathilde von England bestimmt. Die Weihe des romanischen Sakralbaus erfolgte 1226.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/BraunschweigDom.jpg/960px-BraunschweigDom.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:BraunschweigDom.jpg",
+      "artist": "Kassandro",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "http://creativecommons.org/licenses/by-sa/3.0/"
+     }
+    }
+   },
+   "facts": {
+    "year": 1173,
+    "wikidata": "https://www.wikidata.org/wiki/Q279402",
+    "localized": {
+     "en": {
+      "built": "1173–1195",
+      "styles": [
+       "Romanesque",
+       "Gothic"
+      ],
+      "commissionedBy": [
+       "Henry the Lion"
+      ],
+      "history": "Henry the Lion established the original foundation as a collegiate church, built between 1173 and 1195. Among the most important pieces on display in the church are a wooden crucifix by Master Imervard dating from the second half of the 12th century and one of very few huge bronze candlesticks with seven arms, dating from around the 1170s.\n\nThe construction of the church was disrupted several times during the various exiles of Henry the Lion, so that he and his consort Matilda, Duchess of Saxony, were both buried in an unfinished church. The limestone statues of them on their tomb in the nave are an idealised representation made a generation after their death, between 1230 and 1240. The cathedral was consecrated on 29 December 1226, dedicated to Saints Blaise, John the Baptist and Thomas Becket. In 1543, at the time of the Protestant Reformation, the City of Brunswick, in opposition to Duke Henry V of Brunswick-Wolfenbüttel, joined the Schmalkaldic League, and the church came into Lutheran use. Its college was dissolved.\n\nThe cathedral is the burial place of Otto IV, Holy Roman Emperor (1175/76-1218) and Caroline of Brunswick, Queen Consort of George IV of the United Kingdom."
+     },
+     "de": {
+      "built": "1173–1195",
+      "styles": [
+       "Romanik",
+       "Gotik"
+      ],
+      "commissionedBy": [
+       "Heinrich der Löwe"
+      ],
+      "history": "Nach der Rückkehr Heinrichs des Löwen aus dem Heiligen Land, wohin er eine Pilgerreise unternommen hatte, begann im Jahr 1173 der Kirchenbau. Für die Jahre 1182 bis 1185, die Zeit der ersten Verbannung Heinrichs nach England, wird von einer Bauunterbrechung auszugehen sein. Es ist anzunehmen, dass die Ostseite des Gebäudes um 1188 (Jahr der Weihe des noch heute im Dom befindlichen Marienaltars) fertiggestellt war. Obwohl 1195, im Todesjahr Heinrichs des Löwen, das Dach der Kirche abbrannte, dürften ebenfalls die Arbeiten an dem Langhaus sowie Teilen der Turmgeschosse abgeschlossen gewesen sein. Als Heinrich 1195 starb, wurde er neben seiner zweiten Ehefrau Mathilde, die bereits 1189 verstorben war, im noch unfertigen Dom beigesetzt. Das im Dom befindliche gemeinsame Grabmal wurde um 1230 gestiftet und ist an dieser Stelle seit dem Mittelalter bezeugt.\n\nDie Bezeichnung „Dom“ erhielt das Bauwerk höchstwahrscheinlich bereits im 14. oder 15. Jahrhundert. Nach mittelalterlichem Verständnis war damit aber nicht so sehr die Kirche eines Bischofs, als vielmehr die eines Stiftes gemeint. Bis in das 19. Jahrhundert trug der Braunschweiger Dom deshalb die Bezeichnung „Stiftskirche St. Blasii und St. Johannis des Täufer“, kurz „Stiftskirche“, die teilweise auch heute noch verwendet wird. Am 29. Dezember 1226 wurde der Dom geweiht und Thomas Becket zum dritten Schutzpatron des Domes erkoren. Seit 1543 ist der Braunschweiger Dom ein protestantisches Gotteshaus. Heute lautet die offizielle Bezeichnung „Evangelisch-lutherische Domkirche St. Blasii zu Braunschweig“."
+     }
+    }
+   }
+  },
+  {
+   "id": "martinikirche",
+   "name": "St. Martini",
+   "names": {
+    "en": "St. Martin's Church"
+   },
+   "category": "church",
+   "latitude": 52.262547,
+   "longitude": 10.516512,
+   "radius": 40,
+   "district": "Mitte",
+   "wikidata": "Q2321278",
+   "entry": {
+    "en": {
+     "title": "St. Martini (Braunschweig)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/St._Martini_(Braunschweig)",
+     "text": "Die Martinikirche ist eine Pfarrkirche in Braunschweig. Sie wurde ab dem 12. Jahrhundert als Haupt- und Pfarrkirche des Weichbildes Altstadt errichtet. Der Baubeginn erfolgte ungefähr 1190/1195. Als Initiator gilt Heinrich der Löwe. Sie ist die einzige mittelalterliche doppeltürmige Kirche in Braunschweig mit vollendetem Westbau (siehe auch: Sächsischer Westriegel). Sie befindet sich westlich des Altstadtmarktes und ist an drei Seiten umgeben von der Straße An der Martinikirche.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Sankt_Martini_Braunschweig_aerial_view.jpg/960px-Sankt_Martini_Braunschweig_aerial_view.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Sankt_Martini_Braunschweig_aerial_view.jpg",
+      "artist": "Arne Müseler",
+      "license": "CC BY-SA 3.0 de",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0/de/deed.en"
+     }
+    },
+    "de": {
+     "title": "St. Martini (Braunschweig)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/St._Martini_(Braunschweig)",
+     "text": "Die Martinikirche ist eine Pfarrkirche in Braunschweig. Sie wurde ab dem 12. Jahrhundert als Haupt- und Pfarrkirche des Weichbildes Altstadt errichtet. Der Baubeginn erfolgte ungefähr 1190/1195. Als Initiator gilt Heinrich der Löwe. Sie ist die einzige mittelalterliche doppeltürmige Kirche in Braunschweig mit vollendetem Westbau (siehe auch: Sächsischer Westriegel). Sie befindet sich westlich des Altstadtmarktes und ist an drei Seiten umgeben von der Straße An der Martinikirche.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Sankt_Martini_Braunschweig_aerial_view.jpg/960px-Sankt_Martini_Braunschweig_aerial_view.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Sankt_Martini_Braunschweig_aerial_view.jpg",
+      "artist": "Arne Müseler",
+      "license": "CC BY-SA 3.0 de",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0/de/deed.en"
+     }
+    }
+   },
+   "facts": {
+    "year": 1190,
+    "wikidata": "https://www.wikidata.org/wiki/Q2321278",
+    "localized": {
+     "en": {
+      "built": "begun c. 1190",
+      "styles": [
+       "Gothic"
+      ],
+      "history": "Der Bau der ursprünglichen St.-Martini-Kirche dauerte bis etwa 1225/1230. Sie wurde wie der Braunschweiger Dom als romanische Pfeilerbasilika mit kreuzförmigem Grundriss errichtet, die zwischen 1250 und 1400 zu einer gotischen Hallenkirche ausgebaut wurde. Kennzeichnend für die gotischen Erweiterungsbauten sind insbesondere die vielen Jochgiebel an den Außenseiten, die für die Region als typisch angesehen werden.\n\n1400 erfolgte dann der Anbau des Chorabschlusses sowie 1434 der Anbau der Annenkapelle, die der Braunschweiger Wasmod von Kemme gestiftet hatte und die lange von einem Turm mit spitzem, später mit kuppelförmigem Dach bedeckt wurde. Im Innern birgt sie sechs große Statuen (um 1440): Maria, die Heiligen Drei Könige, Joachim und Anna selbdritt. Über den Kielbögen sind Apostel- und Heiligenfiguren zu sehen, in der Mitte die Marienkrönung. Die weiteren, nur von unten erkennbaren Figuren zeigen unter anderem musizierende Gestalten und Köpfe von Braunschweiger Bürgern und Mönchen der damaligen Zeit.\n\nAm südlichen Giebel des vormaligen Querhauses befinden sich mehrere Sandsteinskulpturen aus dem 14. Jahrhundert. Über den Eingängen auf der Nordseite hängen Tympana, die das Lamm Gottes sowie die Grablegung Mariens darstellen. Es handelt sich hierbei um die einzigen erhaltenen originalen Tympana in Braunschweig."
+     },
+     "de": {
+      "built": "begonnen um 1190",
+      "styles": [
+       "Gotik"
+      ],
+      "history": "Der Bau der ursprünglichen St.-Martini-Kirche dauerte bis etwa 1225/1230. Sie wurde wie der Braunschweiger Dom als romanische Pfeilerbasilika mit kreuzförmigem Grundriss errichtet, die zwischen 1250 und 1400 zu einer gotischen Hallenkirche ausgebaut wurde. Kennzeichnend für die gotischen Erweiterungsbauten sind insbesondere die vielen Jochgiebel an den Außenseiten, die für die Region als typisch angesehen werden.\n\n1400 erfolgte dann der Anbau des Chorabschlusses sowie 1434 der Anbau der Annenkapelle, die der Braunschweiger Wasmod von Kemme gestiftet hatte und die lange von einem Turm mit spitzem, später mit kuppelförmigem Dach bedeckt wurde. Im Innern birgt sie sechs große Statuen (um 1440): Maria, die Heiligen Drei Könige, Joachim und Anna selbdritt. Über den Kielbögen sind Apostel- und Heiligenfiguren zu sehen, in der Mitte die Marienkrönung. Die weiteren, nur von unten erkennbaren Figuren zeigen unter anderem musizierende Gestalten und Köpfe von Braunschweiger Bürgern und Mönchen der damaligen Zeit.\n\nAm südlichen Giebel des vormaligen Querhauses befinden sich mehrere Sandsteinskulpturen aus dem 14. Jahrhundert. Über den Eingängen auf der Nordseite hängen Tympana, die das Lamm Gottes sowie die Grablegung Mariens darstellen. Es handelt sich hierbei um die einzigen erhaltenen originalen Tympana in Braunschweig."
+     }
+    }
+   }
+  },
+  {
+   "id": "katharinenkirche",
+   "name": "St. Katharinen",
+   "names": {
+    "en": "St. Catherine's Church"
+   },
+   "category": "church",
+   "latitude": 52.267576,
+   "longitude": 10.525315,
+   "radius": 40,
+   "district": "Mitte",
+   "wikidata": "Q1478455",
+   "entry": {
+    "en": {
+     "title": "St. Katharinen (Braunschweig)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/St._Katharinen_(Braunschweig)",
+     "text": "Die Katharinenkirche in Braunschweig wurde Anfang des 13. Jahrhunderts als Pfarrkirche des Weichbildes Hagen errichtet. Die seit 1528 evangelisch-lutherische Kirche dominiert die Ostseite des Hagenmarktes. Hauptpatronin ist die heilige Katharina von Alexandria, von deren Attributen – Schwert, Rad und Krone – sich das Rad im Wappen des Hagen wiederfindet.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/87/20190707_Braunschweig_StKatharinen_DSC09075_PtrQs.JPG/960px-20190707_Braunschweig_StKatharinen_DSC09075_PtrQs.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:20190707_Braunschweig_StKatharinen_DSC09075_PtrQs.JPG",
+      "artist": "PtrQs",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    },
+    "de": {
+     "title": "St. Katharinen (Braunschweig)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/St._Katharinen_(Braunschweig)",
+     "text": "Die Katharinenkirche in Braunschweig wurde Anfang des 13. Jahrhunderts als Pfarrkirche des Weichbildes Hagen errichtet. Die seit 1528 evangelisch-lutherische Kirche dominiert die Ostseite des Hagenmarktes. Hauptpatronin ist die heilige Katharina von Alexandria, von deren Attributen – Schwert, Rad und Krone – sich das Rad im Wappen des Hagen wiederfindet.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/87/20190707_Braunschweig_StKatharinen_DSC09075_PtrQs.JPG/960px-20190707_Braunschweig_StKatharinen_DSC09075_PtrQs.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:20190707_Braunschweig_StKatharinen_DSC09075_PtrQs.JPG",
+      "artist": "PtrQs",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1200,
+    "wikidata": "https://www.wikidata.org/wiki/Q1478455",
+    "localized": {
+     "en": {
+      "built": "early 13th century",
+      "styles": [
+       "Gothic"
+      ]
+     },
+     "de": {
+      "built": "Anfang des 13. Jahrhunderts",
+      "styles": [
+       "Gotik"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "andreaskirche",
+   "name": "St. Andreas",
+   "names": {
+    "en": "St. Andrew's Church"
+   },
+   "category": "church",
+   "latitude": 52.268016,
+   "longitude": 10.520107,
+   "radius": 40,
+   "district": "Mitte",
+   "wikidata": "Q1664403",
+   "entry": {
+    "en": {
+     "title": "St. Andreas (Braunschweig)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/St._Andreas_(Braunschweig)",
+     "text": "Die Ursprünge von St. Andreas in Braunschweig gehen wahrscheinlich auf einen Saalkirchenbau um das Jahr 1160 zurück. Etwa ab 1230 wurde darüber eine dreischiffige Basilika als Pfarrkirche für die Gemeinde in der Braunschweiger Neustadt errichtet. Erstmals urkundlich erwähnt wurde die Andreaskirche im Jahre 1290. Seit 1528 ist sie protestantisches Gotteshaus.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2c/Braunschweig_Brunswick_St._Andreas_Andreaskirche_%282005%29.JPG/960px-Braunschweig_Brunswick_St._Andreas_Andreaskirche_%282005%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Braunschweig_Brunswick_St._Andreas_Andreaskirche_(2005).JPG",
+      "artist": "User:Brunswyk",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "http://creativecommons.org/licenses/by-sa/3.0/"
+     }
+    },
+    "de": {
+     "title": "St. Andreas (Braunschweig)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/St._Andreas_(Braunschweig)",
+     "text": "Die Ursprünge von St. Andreas in Braunschweig gehen wahrscheinlich auf einen Saalkirchenbau um das Jahr 1160 zurück. Etwa ab 1230 wurde darüber eine dreischiffige Basilika als Pfarrkirche für die Gemeinde in der Braunschweiger Neustadt errichtet. Erstmals urkundlich erwähnt wurde die Andreaskirche im Jahre 1290. Seit 1528 ist sie protestantisches Gotteshaus.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2c/Braunschweig_Brunswick_St._Andreas_Andreaskirche_%282005%29.JPG/960px-Braunschweig_Brunswick_St._Andreas_Andreaskirche_%282005%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Braunschweig_Brunswick_St._Andreas_Andreaskirche_(2005).JPG",
+      "artist": "User:Brunswyk",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "http://creativecommons.org/licenses/by-sa/3.0/"
+     }
+    }
+   },
+   "facts": {
+    "year": 1230,
+    "wikidata": "https://www.wikidata.org/wiki/Q1664403",
+    "localized": {
+     "en": {
+      "built": "begun c. 1230",
+      "styles": [
+       "Gothic"
+      ]
+     },
+     "de": {
+      "built": "begonnen um 1230",
+      "styles": [
+       "Gotik"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "petrikirche",
+   "name": "St. Petri",
+   "names": {
+    "en": "St. Peter's Church"
+   },
+   "category": "church",
+   "latitude": 52.266119,
+   "longitude": 10.515965,
+   "radius": 30,
+   "district": "Mitte",
+   "wikidata": "Q1168226",
+   "entry": {
+    "en": {
+     "title": "St. Petri (Braunschweig)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/St._Petri_(Braunschweig)",
+     "text": "St. Petri, auch Petrikirche genannt, wurde im 12. Jahrhundert als vierte Pfarrkirche des Weichbildes Altstadt in Braunschweig gegründet. Sie befindet sich an der Straße „An der Petrikirche“. Das Gemeindehaus befindet sich an der Langen Straße. Die gotische Kirche mit einem 71 Meter hohen Kirchturm hat seit 1971 einen markanten Hahn aus Kupfer auf der Turmspitze.\n\nZum Jahresbeginn 2023 wurde die Kirchengemeinde mit der Andreaskirche zur Kirchengemeinde St. Andreas-Petri fusioniert.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/BS_Petrikirche.JPG/960px-BS_Petrikirche.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:BS_Petrikirche.JPG",
+      "artist": "TeWeBs",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    },
+    "de": {
+     "title": "St. Petri (Braunschweig)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/St._Petri_(Braunschweig)",
+     "text": "St. Petri, auch Petrikirche genannt, wurde im 12. Jahrhundert als vierte Pfarrkirche des Weichbildes Altstadt in Braunschweig gegründet. Sie befindet sich an der Straße „An der Petrikirche“. Das Gemeindehaus befindet sich an der Langen Straße. Die gotische Kirche mit einem 71 Meter hohen Kirchturm hat seit 1971 einen markanten Hahn aus Kupfer auf der Turmspitze.\n\nZum Jahresbeginn 2023 wurde die Kirchengemeinde mit der Andreaskirche zur Kirchengemeinde St. Andreas-Petri fusioniert.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/BS_Petrikirche.JPG/960px-BS_Petrikirche.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:BS_Petrikirche.JPG",
+      "artist": "TeWeBs",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    }
+   },
+   "facts": {
+    "wikidata": "https://www.wikidata.org/wiki/Q1168226",
+    "localized": {
+     "en": {
+      "styles": [
+       "Gothic"
+      ],
+      "history": "Der erste bescheidene Bau fiel 1256 einem Stadtbrand zum Opfer. Ab 1260 erfolgte ein basilikaler Neubau, von dem nur noch der Westturm erhalten ist. Ende des 13. Jahrhunderts begann der Umbau in eine dreischiffige gotische Hallenkirche mit Chor und 5/8-Chorabschluss, jedoch ohne Querhaus. Gegen 1400 wurde an der Südseite des Chores die Annen- und Liviniuskapelle angefügt. Seit 1528 ist St. Petri evangelisch-lutherische Pfarrkirche. Nach Ende des Dreißigjährigen Krieges, im Jahr 1649, wurde der Kirche ein frühbarocker Hochaltar durch Mette Drösemann gestiftet. 1811 wurde die gotische Kirchturmspitze durch eine barocke Haube ersetzt, nachdem am 13. Februar 1811 der Kirchturm von einem Blitz getroffen worden war und die Spitze ausgebrannt war. Diese schmückte den Turm bis zum Zweiten Weltkrieg. Als Ersatz für die zerstörten Glocken erhielt St. Petri eine Glocke der Aegidienkirche. Diese wurde im selben Jahr als Gotteshaus geschlossen. Eine weitere Glocke kam von der Schlosskirche in Salzdahlum hinzu, nachdem das Schloss Salzdahlum während der französischen Besatzung abgebrochen worden war.\n\nVon 1888 bis 1891 wurde die Kirche durch Stadtbaumeister Max Osterloh im neugotischen Stil renoviert. Dabei wurden 1888 Teile der historischen Ausstattung entfernt. Hofmaler Adolf Quensen bemalte den Innenraum neu."
+     },
+     "de": {
+      "styles": [
+       "Gotik"
+      ],
+      "history": "Der erste bescheidene Bau fiel 1256 einem Stadtbrand zum Opfer. Ab 1260 erfolgte ein basilikaler Neubau, von dem nur noch der Westturm erhalten ist. Ende des 13. Jahrhunderts begann der Umbau in eine dreischiffige gotische Hallenkirche mit Chor und 5/8-Chorabschluss, jedoch ohne Querhaus. Gegen 1400 wurde an der Südseite des Chores die Annen- und Liviniuskapelle angefügt. Seit 1528 ist St. Petri evangelisch-lutherische Pfarrkirche. Nach Ende des Dreißigjährigen Krieges, im Jahr 1649, wurde der Kirche ein frühbarocker Hochaltar durch Mette Drösemann gestiftet. 1811 wurde die gotische Kirchturmspitze durch eine barocke Haube ersetzt, nachdem am 13. Februar 1811 der Kirchturm von einem Blitz getroffen worden war und die Spitze ausgebrannt war. Diese schmückte den Turm bis zum Zweiten Weltkrieg. Als Ersatz für die zerstörten Glocken erhielt St. Petri eine Glocke der Aegidienkirche. Diese wurde im selben Jahr als Gotteshaus geschlossen. Eine weitere Glocke kam von der Schlosskirche in Salzdahlum hinzu, nachdem das Schloss Salzdahlum während der französischen Besatzung abgebrochen worden war.\n\nVon 1888 bis 1891 wurde die Kirche durch Stadtbaumeister Max Osterloh im neugotischen Stil renoviert. Dabei wurden 1888 Teile der historischen Ausstattung entfernt. Hofmaler Adolf Quensen bemalte den Innenraum neu."
+     }
+    }
+   }
+  },
+  {
+   "id": "michaeliskirche",
+   "name": "St. Michaelis",
+   "names": {
+    "en": "St. Michael's Church"
+   },
+   "category": "church",
+   "latitude": 52.260583,
+   "longitude": 10.514908,
+   "radius": 30,
+   "district": "Mitte",
+   "wikidata": "Q2321749",
+   "entry": {
+    "en": {
+     "title": "St. Michaelis (Braunschweig)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/St._Michaelis_(Braunschweig)",
+     "text": "St. Michaelis, auch Michaeliskirche genannt, befindet sich im Weichbild Altstadt in Braunschweig. Zu Michaeli 1157, das heißt am 29. September, wurde sie durch Bischof Bruno von Hildesheim dem Erzengel Michael geweiht und war die kleinste der städtischen Pfarrkirchen. Seit 1528 ist die Michaeliskirche lutherische Pfarrkirche.",
+     "image": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/f1/Braunschweig_Brunswick_St._Michaelis_Suedosten_%282006%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "page": "https://commons.wikimedia.org/wiki/File:Braunschweig_Brunswick_St._Michaelis_Suedosten_(2006).JPG",
+      "artist": "User:Brunswyk",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "http://creativecommons.org/licenses/by-sa/3.0/"
+     }
+    },
+    "de": {
+     "title": "St. Michaelis (Braunschweig)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/St._Michaelis_(Braunschweig)",
+     "text": "St. Michaelis, auch Michaeliskirche genannt, befindet sich im Weichbild Altstadt in Braunschweig. Zu Michaeli 1157, das heißt am 29. September, wurde sie durch Bischof Bruno von Hildesheim dem Erzengel Michael geweiht und war die kleinste der städtischen Pfarrkirchen. Seit 1528 ist die Michaeliskirche lutherische Pfarrkirche.",
+     "image": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/f1/Braunschweig_Brunswick_St._Michaelis_Suedosten_%282006%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "page": "https://commons.wikimedia.org/wiki/File:Braunschweig_Brunswick_St._Michaelis_Suedosten_(2006).JPG",
+      "artist": "User:Brunswyk",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "http://creativecommons.org/licenses/by-sa/3.0/"
+     }
+    }
+   },
+   "facts": {
+    "year": 1157,
+    "wikidata": "https://www.wikidata.org/wiki/Q2321749",
+    "localized": {
+     "en": {
+      "built": "consecrated 1157",
+      "styles": [
+       "Gothic"
+      ]
+     },
+     "de": {
+      "built": "geweiht 1157",
+      "styles": [
+       "Gotik"
+      ],
+      "history": "Die Kirche wurde im Südwesten der heutigen Innenstadt, nahe der alten, heute noch in Resten erhaltenen Stadtmauer erbaut. Der rote Braunschweiger Rogenstein für den Bau stammt aus dem nahe gelegenen Nußberg und der helle Elmkalkstein aus dem Elm. Die Kirche befand sich damals nahe der Fernhandelsstraße von Frankfurt – Hamburg. Heute liegt sie zwischen Echtern- und Güldenstraße.\n\nUrkundlich belegt ist der u. a. durch private Spenden finanzierte Bau der Kirche auf dem Grundstück eines Bürgers namens Bendarz. Die Weihe des Gebäudes fand 1157 statt. Um die Kirche herum wurde ein Friedhof für Fremde, Verbannte und Arme angelegt.\n\nWie das Bauwerk ursprünglich aussah, ist unbekannt und gibt bis heute Anlass zu Spekulationen, da es im Laufe der Jahrhunderte mehrfach baulich verändert wurde. Es handelte sich aber wohl um ein einschiffiges Gebäude, evtl. als Saalkirche im Dorfkirchenschema angelegt, und wurde um 1200 durch einen im romanischen Stil konzipierten quadratischen Westturm erweitert. Der Umbau zu einer dreischiffigen gotischen Hallenkirche erfolgte zwischen dem 13. und 15. Jahrhundert, evtl. in der Folge des Stadtbrandes vom 12. Mai 1278, bei dem die Michaeliskirche beschädigt worden war.\n\nDie Giebel der Nordseite, von denen der nordöstliche die Jahreszahl „1454“ trägt, zeigen spätgotische Skulpturen aus der Mitte des 15. Jahrhunderts und stellen unter anderem den heiligen Lorenz, den zweiten Schutzpatron der Kirche, mit einem Rost und den Erzengel Michael, der mit dem Speer gegen den Drachen kämpft, dar."
+     }
+    }
+   }
+  },
+  {
+   "id": "bruedernkirche",
+   "name": "Brüdernkirche",
+   "names": {
+    "en": "Franciscan Church"
+   },
+   "category": "church",
+   "latitude": 52.265534,
+   "longitude": 10.518985,
+   "radius": 30,
+   "district": "Mitte",
+   "wikidata": "Q996780",
+   "entry": {
+    "en": {
+     "title": "Brüdernkirche (Braunschweig)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Br%C3%BCdernkirche_(Braunschweig)",
+     "text": "Die evangelische Brüdernkirche „St. Ulrici-Brüdern“ in Braunschweig ist eine ehemalige Franziskanerkirche, die ursprünglich den Heiligen Maria, Franziskus und Bernward geweiht war. Sie war Zentrum einer zum Teil erhaltenen Klosteranlage.\n\nHeute gehört sie zur evangelisch-lutherischen Propstei Braunschweig.",
+     "image": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/2/2d/Braunschweig_Brunswick_St_Ulrici_von_Westen_%282006%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "page": "https://commons.wikimedia.org/wiki/File:Braunschweig_Brunswick_St_Ulrici_von_Westen_(2006).JPG",
+      "artist": "User:Brunswyk",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "http://creativecommons.org/licenses/by-sa/3.0/"
+     }
+    },
+    "de": {
+     "title": "Brüdernkirche (Braunschweig)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Br%C3%BCdernkirche_(Braunschweig)",
+     "text": "Die evangelische Brüdernkirche „St. Ulrici-Brüdern“ in Braunschweig ist eine ehemalige Franziskanerkirche, die ursprünglich den Heiligen Maria, Franziskus und Bernward geweiht war. Sie war Zentrum einer zum Teil erhaltenen Klosteranlage.\n\nHeute gehört sie zur evangelisch-lutherischen Propstei Braunschweig.",
+     "image": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/2/2d/Braunschweig_Brunswick_St_Ulrici_von_Westen_%282006%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "page": "https://commons.wikimedia.org/wiki/File:Braunschweig_Brunswick_St_Ulrici_von_Westen_(2006).JPG",
+      "artist": "User:Brunswyk",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "http://creativecommons.org/licenses/by-sa/3.0/"
+     }
+    }
+   },
+   "facts": {
+    "wikidata": "https://www.wikidata.org/wiki/Q996780",
+    "localized": {
+     "en": {
+      "styles": [
+       "Gothic"
+      ]
+     },
+     "de": {
+      "styles": [
+       "Gotik"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "aegidienkirche",
+   "name": "St. Aegidien",
+   "names": {
+    "en": "St. Giles' Church"
+   },
+   "category": "church",
+   "latitude": 52.259739,
+   "longitude": 10.525326,
+   "radius": 40,
+   "district": "Mitte",
+   "wikidata": "Q380597",
+   "entry": {
+    "en": {
+     "title": "Aegidienkirche, Braunschweig",
+     "language": "en",
+     "url": "https://en.wikipedia.org/wiki/Aegidienkirche,_Braunschweig",
+     "text": "The Aegidienkirche or Liebfrauenmünster St. Aegidien is the main Roman Catholic church in the German city of Braunschweig, located in the city centre. It is a hall church in the Gothic style, built to replace a Romanesque building of 1115 which burned down in 1278. It acted as the abbey church to the Benedictine abbey of saints Maria and Aegidius, endowed by Gertrude of Brunswick, and after the monastery's abolition in the Reformation it was used as a Protestant church and for secular use as the Ägidienhalle. Since 1902 part of its former monastic buildings has been used by the Braunschweigisches Landesmuseum. In 1945 it was made a Roman Catholic parish church.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Braunschweig_St._Aegidien_01.jpg/960px-Braunschweig_St._Aegidien_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Braunschweig_St._Aegidien_01.jpg",
+      "artist": "ErwinMeier",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    },
+    "de": {
+     "title": "Aegidienkirche (Braunschweig)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Aegidienkirche_(Braunschweig)",
+     "text": "Die Aegidienkirche ist die katholische Hauptkirche in Braunschweig. Das Baudenkmal ist eine turmlose gotische Hallenkirche am ansteigenden Südrand der Innenstadt und wird auch Liebfrauenmünster St. Aegidien genannt. Wie ihr romanischer Vorgängerbau aus dem Jahr 1115, der 1278 niederbrannte, war sie Abteikirche des von Markgräfin Gertrud der Jüngeren von Braunschweig gestifteten Aegidienklosters (Langform: Benediktinerkloster St. Maria und St. Aegidius). Nach dessen Aufhebung evangelisch-lutherische Pfarrkirche und im 19. Jahrhundert als Ägidienhalle profan genutzt, ist die Aegidienkirche seit 1945 Pfarrkirche der Pfarrgemeinde St. Aegidien und gehört zum Dekanat Braunschweig des Bistums Hildesheim.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Braunschweig_St._Aegidien_01.jpg/960px-Braunschweig_St._Aegidien_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Braunschweig_St._Aegidien_01.jpg",
+      "artist": "ErwinMeier",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0"
+     }
+    }
+   },
+   "facts": {
+    "year": 1278,
+    "wikidata": "https://www.wikidata.org/wiki/Q380597",
+    "localized": {
+     "en": {
+      "built": "rebuilt after 1278",
+      "styles": [
+       "Gothic"
+      ]
+     },
+     "de": {
+      "built": "nach 1278 neu erbaut",
+      "styles": [
+       "Gotik"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "magnikirche",
+   "name": "St. Magni",
+   "names": {
+    "en": "St. Magnus' Church"
+   },
+   "category": "church",
+   "latitude": 52.262405,
+   "longitude": 10.530165,
+   "radius": 30,
+   "district": "Mitte",
+   "wikidata": "Q1264605",
+   "entry": {
+    "en": {
+     "title": "St. Magni (Braunschweig)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/St._Magni_(Braunschweig)",
+     "text": "Die Magnikirche in Braunschweig stammt aus dem frühen 11. Jahrhundert und bildet heute den Mittelpunkt des Magniviertels im alten Weichbild Altewiek.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Braunschweig_Brunswick_Magni-Kirche_Turm_Suedosten_%282006%29.JPG/960px-Braunschweig_Brunswick_Magni-Kirche_Turm_Suedosten_%282006%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Braunschweig_Brunswick_Magni-Kirche_Turm_Suedosten_(2006).JPG",
+      "artist": "User:Brunswyk",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "http://creativecommons.org/licenses/by-sa/3.0/"
+     }
+    },
+    "de": {
+     "title": "St. Magni (Braunschweig)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/St._Magni_(Braunschweig)",
+     "text": "Die Magnikirche in Braunschweig stammt aus dem frühen 11. Jahrhundert und bildet heute den Mittelpunkt des Magniviertels im alten Weichbild Altewiek.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Braunschweig_Brunswick_Magni-Kirche_Turm_Suedosten_%282006%29.JPG/960px-Braunschweig_Brunswick_Magni-Kirche_Turm_Suedosten_%282006%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Braunschweig_Brunswick_Magni-Kirche_Turm_Suedosten_(2006).JPG",
+      "artist": "User:Brunswyk",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "http://creativecommons.org/licenses/by-sa/3.0/"
+     }
+    }
+   },
+   "facts": {
+    "year": 1031,
+    "wikidata": "https://www.wikidata.org/wiki/Q1264605",
+    "localized": {
+     "en": {
+      "built": "consecrated 1031",
+      "styles": [
+       "Gothic"
+      ],
+      "history": "Die Weiheurkunde aus dem Jahr 1031 gilt als erster urkundlicher Beleg der Existenz dessen, was heute die Stadt Braunschweig ist. In der Urkunde wird die Siedlung als Brunesguik bezeichnet. Als Namenspatron wird der apulische Bischof Magnus vermutet, der besonders bei den Friesen verehrt wurde. In diesem Fall hätte die Siedlung schon sehr früh Handelsbeziehungen bis zur Nordsee unterhalten.\n\nDie Weiheurkunde von 1031 ist in der Form eines Protokolls bzw. einer „notitia“ angefertigt. Der Kirche werden die Brunesguik (Braunschweig bzw. Altewiek), Everikesbutli (wüst, im Gebiet von Querum), Thuringesbutli (wüst, Schunteraue), Ibanroth (Bienrode), Velittunun (Veltenhof), Hanroth (wüst, zu Veltenhof gehörend), Guinitthun (Wenden), Riudun (Rühme), Marquarderoth (wüst, Nordstadt), Ottonroth (wüst, am Nußberg), Glismoderoth (Gliesmarode) Huneshem (wüst, am Lünischteich, Riddagshausen), Fritherikesroth (wüst, zwischen Mastbruch und Mittelriede), Ruotnun (Rautheim), Morthorp (wüst, auf dem Braunschweiger Hauptfriedhof am Streitberg, siehe Viewegs Garten-Bebelhof), Reindageroth (wüst, bei Rautheim), Limbeki (wüst, Bebelhof, siehe Viewegs Garten-Bebelhof) und Ekthi (wüst, am Zuckerberg, siehe Viewegs Garten-Bebelhof) zugewiesen. Alle diese Orte liegen oder lagen östlich der Oker, die bis zur Reformation zum Bistum Halberstadt gehörten. Die Orte der westlichen Okerseite gehörten zum Bistum Hildesheim.\n\nDie Pfarrkirche St. Magni wurde ab 1252 neu gebaut, Reste der ursprünglichen Kirche sind in den Fundamenten erhalten geblieben.\n\nZwischen 1873 und 1877 wurde das Gebäude durch Ludwig Winter restauriert und von Max Osterloh und Adolf Quensen im Stil des Historismus ausgemalt."
+     },
+     "de": {
+      "built": "geweiht 1031",
+      "styles": [
+       "Gotik"
+      ],
+      "history": "Die Weiheurkunde aus dem Jahr 1031 gilt als erster urkundlicher Beleg der Existenz dessen, was heute die Stadt Braunschweig ist. In der Urkunde wird die Siedlung als Brunesguik bezeichnet. Als Namenspatron wird der apulische Bischof Magnus vermutet, der besonders bei den Friesen verehrt wurde. In diesem Fall hätte die Siedlung schon sehr früh Handelsbeziehungen bis zur Nordsee unterhalten.\n\nDie Weiheurkunde von 1031 ist in der Form eines Protokolls bzw. einer „notitia“ angefertigt. Der Kirche werden die Brunesguik (Braunschweig bzw. Altewiek), Everikesbutli (wüst, im Gebiet von Querum), Thuringesbutli (wüst, Schunteraue), Ibanroth (Bienrode), Velittunun (Veltenhof), Hanroth (wüst, zu Veltenhof gehörend), Guinitthun (Wenden), Riudun (Rühme), Marquarderoth (wüst, Nordstadt), Ottonroth (wüst, am Nußberg), Glismoderoth (Gliesmarode) Huneshem (wüst, am Lünischteich, Riddagshausen), Fritherikesroth (wüst, zwischen Mastbruch und Mittelriede), Ruotnun (Rautheim), Morthorp (wüst, auf dem Braunschweiger Hauptfriedhof am Streitberg, siehe Viewegs Garten-Bebelhof), Reindageroth (wüst, bei Rautheim), Limbeki (wüst, Bebelhof, siehe Viewegs Garten-Bebelhof) und Ekthi (wüst, am Zuckerberg, siehe Viewegs Garten-Bebelhof) zugewiesen. Alle diese Orte liegen oder lagen östlich der Oker, die bis zur Reformation zum Bistum Halberstadt gehörten. Die Orte der westlichen Okerseite gehörten zum Bistum Hildesheim.\n\nDie Pfarrkirche St. Magni wurde ab 1252 neu gebaut, Reste der ursprünglichen Kirche sind in den Fundamenten erhalten geblieben.\n\nZwischen 1873 und 1877 wurde das Gebäude durch Ludwig Winter restauriert und von Max Osterloh und Adolf Quensen im Stil des Historismus ausgemalt."
+     }
+    }
+   }
+  },
+  {
+   "id": "paulikirche",
+   "name": "St. Pauli",
+   "names": {
+    "en": "St. Paul's Church"
+   },
+   "category": "church",
+   "latitude": 52.26926,
+   "longitude": 10.542551,
+   "radius": 30,
+   "district": "Östliches Ringgebiet",
+   "wikidata": "Q2322363",
+   "entry": {
+    "en": {
+     "title": "St. Pauli (Braunschweig)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/St._Pauli_(Braunschweig)",
+     "text": "Die evangelisch-lutherische Paulikirche bildet den Mittelpunkt des Östlichen Ringgebiets in Braunschweig. Unter dem Stadtbaurat Ludwig Winter wurde sie von 1901 bis 1906 als repräsentativer Sakralbau an der damaligen Kaiser-Wilhelm-Straße (heute Jasperallee) errichtet.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/da/Braunschweig_Brunswick_Pauli-Kirche_von_Suedosten_%282006%29.jpg/960px-Braunschweig_Brunswick_Pauli-Kirche_von_Suedosten_%282006%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Braunschweig_Brunswick_Pauli-Kirche_von_Suedosten_(2006).jpg",
+      "artist": "User:Brunswyk",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "http://creativecommons.org/licenses/by-sa/3.0/"
+     }
+    },
+    "de": {
+     "title": "St. Pauli (Braunschweig)",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/St._Pauli_(Braunschweig)",
+     "text": "Die evangelisch-lutherische Paulikirche bildet den Mittelpunkt des Östlichen Ringgebiets in Braunschweig. Unter dem Stadtbaurat Ludwig Winter wurde sie von 1901 bis 1906 als repräsentativer Sakralbau an der damaligen Kaiser-Wilhelm-Straße (heute Jasperallee) errichtet.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/da/Braunschweig_Brunswick_Pauli-Kirche_von_Suedosten_%282006%29.jpg/960px-Braunschweig_Brunswick_Pauli-Kirche_von_Suedosten_%282006%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:Braunschweig_Brunswick_Pauli-Kirche_von_Suedosten_(2006).jpg",
+      "artist": "User:Brunswyk",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "http://creativecommons.org/licenses/by-sa/3.0/"
+     }
+    }
+   },
+   "facts": {
+    "year": 1901,
+    "wikidata": "https://www.wikidata.org/wiki/Q2322363",
+    "localized": {
+     "en": {
+      "built": "1901–1906",
+      "opened": "1906",
+      "styles": [
+       "Gothic Revival"
+      ],
+      "architects": [
+       "Ludwig Winter"
+      ]
+     },
+     "de": {
+      "built": "1901–1906",
+      "opened": "1906",
+      "styles": [
+       "Neugotik"
+      ],
+      "architects": [
+       "Ludwig Winter"
+      ],
+      "history": "Von 1934 bis zu seiner Pensionierung im Jahre 1966 und darüber hinaus spielte der Pfarrer und Kirchenrat Otto Henneberger eine wichtige Rolle in der Gemeinde.\n\nSeit 2012 bildet sie mit der St. Matthäus-Kirche die St. Pauli-Matthäus-Gemeinde."
+     }
+    }
+   }
+  },
+  {
+   "id": "riddagshausen",
+   "name": "Klosterkirche Riddagshausen",
+   "names": {
+    "en": "Riddagshausen Abbey"
+   },
+   "category": "church",
+   "latitude": 52.267425,
+   "longitude": 10.576959,
+   "radius": 50,
+   "district": "Wabe-Schunter-Beberbach",
+   "wikidata": "Q896558",
+   "entry": {
+    "en": {
+     "title": "Kloster Riddagshausen",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Kloster_Riddagshausen",
+     "text": "Das Kloster Riddagshausen ist eine ehemalige Zisterzienser-Abtei in Braunschweig, zwischen Nußberg und Buchhorst. Hier ließen sich im Jahre 1145 Zisterziensermönche der Abtei Amelungsborn nieder. Das neu gegründete Tochterkloster Marienzelle nahm kurz darauf den Namen des benachbarten Dorfes Riddagshausen an. Die Gründung eines Klosters war seit 1143/44 durch Ludolf von Wenden vorbereitet worden, der in Personalunion Ministerialer Heinrichs des Löwen und Vogt von Braunschweig und Amelungsborn war. Riddagshausen ist heute ein Stadtteil Braunschweigs.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/G26-d-Riddagshause-ZistersienserKloster.JPG/960px-G26-d-Riddagshause-ZistersienserKloster.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:G26-d-Riddagshause-ZistersienserKloster.JPG",
+      "artist": "Silke Sohler, EOS 350D",
+      "license": "CC BY 2.5",
+      "licenseURL": "https://creativecommons.org/licenses/by/2.5"
+     }
+    },
+    "de": {
+     "title": "Kloster Riddagshausen",
+     "language": "de",
+     "url": "https://de.wikipedia.org/wiki/Kloster_Riddagshausen",
+     "text": "Das Kloster Riddagshausen ist eine ehemalige Zisterzienser-Abtei in Braunschweig, zwischen Nußberg und Buchhorst. Hier ließen sich im Jahre 1145 Zisterziensermönche der Abtei Amelungsborn nieder. Das neu gegründete Tochterkloster Marienzelle nahm kurz darauf den Namen des benachbarten Dorfes Riddagshausen an. Die Gründung eines Klosters war seit 1143/44 durch Ludolf von Wenden vorbereitet worden, der in Personalunion Ministerialer Heinrichs des Löwen und Vogt von Braunschweig und Amelungsborn war. Riddagshausen ist heute ein Stadtteil Braunschweigs.",
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/G26-d-Riddagshause-ZistersienserKloster.JPG/960px-G26-d-Riddagshause-ZistersienserKloster.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "page": "https://commons.wikimedia.org/wiki/File:G26-d-Riddagshause-ZistersienserKloster.JPG",
+      "artist": "Silke Sohler, EOS 350D",
+      "license": "CC BY 2.5",
+      "licenseURL": "https://creativecommons.org/licenses/by/2.5"
+     }
+    }
+   },
+   "facts": {
+    "year": 1145,
+    "wikidata": "https://www.wikidata.org/wiki/Q896558",
+    "localized": {
+     "en": {
+      "built": "monastery founded 1145",
+      "styles": [
+       "Gothic"
+      ]
+     },
+     "de": {
+      "built": "Kloster gegründet 1145",
+      "styles": [
+       "Gotik"
+      ]
+     }
+    }
+   }
+  }
+ ],
+ "achievements": [
+  {
+   "id": "bs-churches",
+   "group": "collections",
+   "symbol": "bell.fill",
+   "title": {
+    "en": "Towers of the Five Boroughs",
+    "de": "Türme der fünf Weichbilde"
+   },
+   "description": {
+    "en": "Capture the churches: Henry the Lion's cathedral, the Gothic churches of the five medieval boroughs and the abbey of Riddagshausen.",
+    "de": "Fang die Kirchen ein: den Dom Heinrichs des Löwen, die gotischen Kirchen der fünf mittelalterlichen Weichbilde und das Kloster Riddagshausen."
+   },
+   "rule": {
+    "categories": [
+     "church"
+    ]
+   }
+  }
+ ]
+}

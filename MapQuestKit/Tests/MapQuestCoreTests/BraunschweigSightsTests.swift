@@ -14,10 +14,8 @@ final class BraunschweigSightsTests: XCTestCase {
         super.tearDown()
     }
 
-    func sights() throws -> SightCatalog { try SightCatalog.decode(load("braunschweig-sights.json")) }
-    func histories() throws -> SightHistoryCatalog {
-        try SightHistoryCatalog.decode(load("braunschweig-sight-history.json"), city: "braunschweig")
-    }
+    func sights() throws -> SightCatalog { try TestPackages.braunschweig().catalog }
+    func histories() throws -> SightHistoryCatalog { try TestPackages.braunschweig().histories(.en) }
 
     func testSights() throws {
         let catalog = try sights()
@@ -45,8 +43,8 @@ final class BraunschweigSightsTests: XCTestCase {
 
     func testEntriesInBothLanguages() throws {
         let catalog = try sights()
-        let english = try SightInfoCatalog.decode(load("braunschweig-sight-info.json"))
-        let german = try SightInfoCatalog.decode(load("braunschweig-sight-info-de.json"))
+        let english = try TestPackages.braunschweig().infos(.en)
+        let german = try TestPackages.braunschweig().infos(.de)
         let withEntry = catalog.sights.filter { english[$0.id] != nil }
         XCTAssertGreaterThanOrEqual(withEntry.count, catalog.count - 3, "nearly every sight has an entry")
         for sight in withEntry {
@@ -61,7 +59,7 @@ final class BraunschweigSightsTests: XCTestCase {
     func testHistory() throws {
         let catalog = try sights()
         let histories = try histories()
-        let german = try SightHistoryCatalog.decode(load("braunschweig-sight-history-de.json"), city: "braunschweig")
+        let german = try TestPackages.braunschweig().histories(.de)
         let dated = catalog.sights.filter { histories[$0.id]?.year != nil }
         XCTAssertGreaterThan(dated.count, catalog.count / 2, "most sights are dated")
         for (id, history) in histories.entries {
@@ -85,17 +83,20 @@ final class BraunschweigSightsTests: XCTestCase {
 
     func testAchievements() throws {
         let catalog = try sights()
-        let achievements = try Achievement.decodeList(load("braunschweig-achievements.json"))
-        let book = AchievementBook(achievements: achievements, catalog: catalog, histories: try histories())
+        let library = try TestPackages.braunschweig()
+        let achievements = library.packages.flatMap { $0.achievements ?? [] }
+        let book = library.achievements
         XCTAssertEqual(Set(achievements.map(\.id)).count, achievements.count, "unique IDs")
-        let berlin = try Achievement.decodeList(Data(contentsOf: BraunschweigDataTests.root.appendingPathComponent("Berlin/berlin-achievements.json")))
+        let berlin = try TestPackages.berlin().packages.flatMap { $0.achievements ?? [] }
         XCTAssertTrue(Set(achievements.map(\.id)).isDisjoint(with: berlin.map(\.id)), "IDs are unique across cities")
         XCTAssertEqual(book.skipped, [], "every achievement picks at least two sights")
         XCTAssertGreaterThanOrEqual(achievements.count, 30)
         let remembrance = Set(catalog.sights.filter(\.isPlaceOfRemembrance).map(\.id))
         for entry in book.entries {
             let achievement = entry.achievement
-            XCTAssertNotNil(achievement.de, achievement.id)
+            XCTAssertFalse(achievement.titles(.de).isEmpty, achievement.id)
+            XCTAssertNotNil(achievement.descriptions.text(in: "de"), achievement.id)
+            XCTAssertNotEqual(achievement.descriptions.text(in: "de"), achievement.descriptions.text(in: "en"), achievement.id)
             XCTAssertGreaterThan(achievement.description.count, 30, achievement.id)
             for id in entry.members { XCTAssertNotNil(catalog[id], "\(achievement.id): \(id) is a Braunschweig sight") }
             for id in (achievement.rule.sights ?? []) + (achievement.rule.include ?? []) {
@@ -103,7 +104,7 @@ final class BraunschweigSightsTests: XCTestCase {
             }
             XCTAssertTrue(remembrance.isDisjoint(with: entry.members), "\(achievement.id) asks for no place of remembrance")
             if let era = achievement.rule.era {
-                XCTAssertTrue(BraunschweigHistory.eras.contains { $0.id == era }, "\(achievement.id): \(era)")
+                XCTAssertTrue(try TestPackages.chronicle("braunschweig").eras.contains { $0.id == era }, "\(achievement.id): \(era)")
             }
         }
         XCTAssertEqual(Set(try XCTUnwrap(book["bs-henry-the-lion"]).members),
@@ -119,8 +120,8 @@ final class BraunschweigSightsTests: XCTestCase {
 
     func testRemembranceGuide() throws {
         let catalog = try sights()
-        let guide = try RemembranceGuide.decode(load("braunschweig-remembrance.json"))
-        let german = try RemembranceGuide.decode(load("braunschweig-remembrance-de.json"))
+        let guide = try TestPackages.braunschweig().remembrance(.en)
+        let german = try TestPackages.braunschweig().remembrance(.de)
         let places = guide.chapters.flatMap(\.places).map(\.sight)
         let remembrance = catalog.sights.filter(\.isPlaceOfRemembrance).map(\.id)
         XCTAssertEqual(places.sorted(), remembrance.sorted(), "every place of remembrance in exactly one chapter, nothing else")
