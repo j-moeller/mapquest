@@ -178,6 +178,38 @@ public struct CaptureLog: Codable, Equatable, Sendable {
     public mutating func markCelebrated(_ sightIDs: [String]) {
         for id in sightIDs { records[id]?.celebrated = true }
     }
+
+    /// Sights merged into others (`SightLibrary.aliases`: the same place in two
+    /// packages): what was discovered or captured under the merged ID counts for the
+    /// one it was merged into, where that has none of its own. The merged ID keeps its
+    /// own (the package may be used alone again). Returns whether anything changed.
+    @discardableResult
+    public mutating func adoptAliases(_ aliases: [String: String]) -> Bool {
+        var changed = false
+        for (alias, target) in aliases.sorted(by: { $0.key < $1.key }) where alias != target {
+            if let record = records[alias], records[target] == nil {
+                var adopted = record
+                adopted.sightID = target
+                adopted.celebrated = true
+                records[target] = adopted
+                changed = true
+            }
+            if let photo = photos[alias], photos[target] == nil {
+                var adopted = photo
+                adopted.sightID = target
+                photos[target] = adopted
+                changed = true
+            }
+            if let date = nearby[alias], nearby[target] == nil, records[target] == nil {
+                nearby[target] = date
+                changed = true
+            }
+            if readEntries.contains(alias), readEntries.insert(target).inserted {
+                changed = true
+            }
+        }
+        return changed
+    }
 }
 
 /// The visiting rule: a place is reached when you have been there – when the

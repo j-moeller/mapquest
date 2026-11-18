@@ -18,6 +18,8 @@ which includes them and adds everything else. Written:
   Packages/parts/<id>.sights.json     each package on its own
   App/MapQuest/Resources/Packages/    the bundles the app installs on first launch (--no-app: not)
 
+and checks them against Packages/schema/mapquest-sights-1.schema.json.
+
 Usage: python3 Tools/packages/build_packages.py [--version 2026.11.18] [--no-app]
 """
 import argparse
@@ -113,6 +115,15 @@ def clean(d):
     return {k: v for k, v in d.items() if v not in (None, [], {}, "")}
 
 
+def prune(value):
+    """Without null values, at any depth (an entry without a photo has none)."""
+    if isinstance(value, dict):
+        return {k: prune(v) for k, v in value.items() if v is not None}
+    if isinstance(value, list):
+        return [prune(v) for v in value]
+    return value
+
+
 def facts_texts(record):
     return clean({"built": record.get("built"), "opened": record.get("opened"), "styles": record.get("styles"),
                   "architects": record.get("architects"), "commissionedBy": record.get("commissionedBy"),
@@ -142,7 +153,7 @@ def city_content(city):
         }
         if en and en.get("wikidata"):
             sight["wikidata"] = en["wikidata"].rsplit("/", 1)[-1]
-        entry = {lang: info[lang][s["id"]] for lang in ("en", "de") if s["id"] in info[lang]}
+        entry = {lang: prune(info[lang][s["id"]]) for lang in ("en", "de") if s["id"] in info[lang]}
         if entry:
             sight["entry"] = entry
         if en:
@@ -211,6 +222,26 @@ def write(path, packages):
     path.write_text(json.dumps(document, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
 
 
+def check_schema(paths):
+    """Checks the written files against Packages/schema/mapquest-sights-1.schema.json (if jsonschema is installed)."""
+    try:
+        import jsonschema
+    except ImportError:
+        print("schema: not checked (pip install jsonschema)")
+        return True
+    schema = json.loads((ROOT / "Packages" / "schema" / "mapquest-sights-1.schema.json").read_text(encoding="utf-8"))
+    validator = jsonschema.Draft202012Validator(schema)
+    valid = True
+    for path in paths:
+        error = jsonschema.exceptions.best_match(validator.iter_errors(json.loads(path.read_text(encoding="utf-8"))))
+        if error is not None:
+            valid = False
+            print(f"schema: {path.relative_to(ROOT)}: {'/'.join(map(str, error.absolute_path))}: {error.message}")
+    if valid:
+        print(f"schema: {len(paths)} files valid")
+    return valid
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--version", default=datetime.date.today().strftime("%Y.%m.%d"))
@@ -254,6 +285,9 @@ def main():
         counts = ", ".join(f"{p['id']}: {len(p.get('sights', []))} sights, {len(p.get('achievements', []))} achievements"
                            for p in packages)
         print(f"{city}: {counts}")
+    written = sorted((ROOT / "Packages").glob("*.sights.json")) + sorted((ROOT / "Packages" / "parts").glob("*.sights.json"))
+    if not check_schema(written):
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

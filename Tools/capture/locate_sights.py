@@ -17,7 +17,7 @@ polygons), every sight gets the district it lies in.
 Usage: pip install mapbox-vector-tile
        python3 Tools/capture/locate_sights.py Tools/capture/berlin_sights.csv \
            --cache build-sights --districts App/MapQuest/Resources/Berlin/berlin-districts.geojson \
-           App/MapQuest/Resources/Berlin/berlin-sights.json
+           Packages/sources/berlin/berlin-sights.json
 """
 import argparse
 import csv

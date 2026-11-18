@@ -20,10 +20,10 @@ article and author and licence of every photo for attribution. Polite: an
 identifying User-Agent, one request at a time, batched (about 40 requests for
 119 sights), answers cached in --cache.
 
-Usage: python3 Tools/capture/fetch_sight_info.py App/MapQuest/Resources/Berlin/berlin-sights.json \
-           App/MapQuest/Resources/Berlin/berlin-sight-info.json --cache build-sights/wiki \
+Usage: python3 Tools/capture/fetch_sight_info.py Packages/sources/berlin/berlin-sights.json \
+           Packages/sources/berlin/berlin-sight-info.json --cache build-sights/wiki \
            --aliases Tools/capture/berlin_sights.csv --overrides Tools/capture/berlin_sight_articles.csv \
-           --german App/MapQuest/Resources/Berlin/berlin-sight-info-de.json
+           --german Packages/sources/berlin/berlin-sight-info-de.json
 
 With --german it also writes the German entries: the German articles' introductions.
 

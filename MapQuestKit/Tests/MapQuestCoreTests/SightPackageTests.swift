@@ -194,6 +194,23 @@ final class SightPackageTests: XCTestCase {
         XCTAssertEqual(library.issues.map(\.kind), [.unknownChronicle(chronicle: "atlantis", sight: "t")])
     }
 
+    func testCapturesUnderAMergedIDCountForThePlace() {
+        let date = Date(timeIntervalSince1970: 1_700_000_000)
+        var log = CaptureLog(records: ["walk.dom": CaptureRecord(sightID: "walk.dom", capturedAt: date, recordedAt: date, celebrated: false),
+                                       "tor": CaptureRecord(sightID: "tor", capturedAt: date, recordedAt: date, celebrated: true)],
+                             photos: ["walk.dom": PhotoCapture(sightID: "walk.dom", capturedAt: date, takenAt: date, fileName: "a.jpg")])
+        log.nearby["walk.tor"] = date
+        log.readEntries = ["walk.dom"]
+        XCTAssertTrue(log.adoptAliases(["walk.dom": "dom", "walk.tor": "tor"]))
+        XCTAssertEqual(log.records["dom"]?.sightID, "dom")
+        XCTAssertEqual(log.records["dom"]?.celebrated, true, "no second celebration")
+        XCTAssertTrue(log.isCaptured("dom"))
+        XCTAssertTrue(log.readEntries.contains("dom"))
+        XCTAssertNil(log.nearby["tor"], "tor has its own record: already discovered")
+        XCTAssertTrue(log.isCaptured("walk.dom"), "kept for the package alone")
+        XCTAssertFalse(log.adoptAliases(["walk.dom": "dom", "walk.tor": "tor"]), "nothing more to adopt")
+    }
+
     // MARK: Store
 
     func testStoreInstallsUpdatesAndRemoves() throws {

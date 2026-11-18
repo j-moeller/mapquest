@@ -80,13 +80,13 @@ struct MapIconsView: View {
         }
     }
 
-    /// The categories that have sights, in their order.
+    /// The categories that have sights, in their order (with the categories packages declare under them).
     private func categories(remembrance: Bool) -> [SightCategory] {
         SightCategory.allCases.filter { $0.isRemembrance == remembrance && count(of: $0) > 0 }
     }
 
     private func count(of category: SightCategory) -> Int {
-        captures.catalog.sights.filter { $0.category == category }.count
+        captures.catalog.sights.filter { $0.category.core == category }.count
     }
 
     private func shows(_ system: TransitSystem) -> Binding<Bool> {

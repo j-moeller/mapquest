@@ -59,9 +59,10 @@ where English uses another, the English one:
 * **Stations** keep the German name first, as on the signs; a few have an
   English explanation in English ("Hauptbahnhof" – "Central Station";
   `Tools/transit/berlin_station_names_en.csv` → `nameEn`).
-* **Rulers** (`BerlinHistory`): English first in English with the German
-  original ("Frederick William II", "Friedrich Wilhelm II."), German in German.
-  Eras, titles and reigns are given in both languages (`LocalizedString`).
+* **Rulers** (the chronicles in the sight packages): English first in English
+  with the German original ("Frederick William II", "Friedrich Wilhelm II."),
+  German in German. Eras, titles and reigns are given in both languages
+  (`LocalizedText`).
 * Districts and cities are German proper names in both languages.
 
 ## Data in both languages
@@ -73,8 +74,10 @@ where English uses another, the English one:
 | `berlin-achievements.json` | the same file, `"de": {title, description}` per achievement | by hand |
 | `berlin-remembrance.json` | `berlin-remembrance-de.json` (same chapters, places and walks) | by hand |
 
-`CaptureModel` loads both languages; German falls back to English sight by
-sight. Achievements are decided on the English facts (rules name English
+`Tools/packages/build_packages.py` puts both languages into the sight
+packages – texts as `{"en": …, "de": …}`, entries and facts per language
+(docs/09-sight-packages.md); `SightLibrary` resolves each language, German
+falling back to English sight by sight. Achievements are decided on the English facts (rules name English
 styles and clients), so the language never changes what counts.
 `GermanDataTests` checks that the German files match the English ones (same
 sights, years, sectors, places and stops; no English words left in the dates

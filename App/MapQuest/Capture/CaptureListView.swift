@@ -285,10 +285,13 @@ struct CaptureListView: View {
                 groups.append(EraGroup(era: era, sights: [sight]))
             }
         }
-        let history = CityHistory.of(city: city)
-        return groups.sorted { a, b in
-            (a.era.map { history.order(of: $0) } ?? .max) < (b.era.map { history.order(of: $0) } ?? .max)
+        // By when the era began; parts of a divided place in their chronicle's order.
+        func rank(_ group: EraGroup) -> (Int, Int) {
+            guard let era = group.era else { return (.max, .max) }
+            let chronicle = group.sights.lazy.compactMap { captures.histories[$0.id]?.chronicle }.first
+            return (era.start, chronicle?.order(of: era) ?? 0)
         }
+        return groups.sorted { rank($0) < rank($1) }
     }
 
     private func eraHeader(_ era: HistoricalEra?) -> some View {
@@ -363,7 +366,7 @@ struct SightBadge: View {
     var size: CGFloat = 34
 
     var body: some View {
-        if category.isRemembrance {
+        if category.isPlaceOfRemembrance {
             // Places of remembrance: one quiet look, no game states.
             ZStack {
                 Circle()

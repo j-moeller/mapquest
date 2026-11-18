@@ -18,6 +18,10 @@ struct MapQuestApp: App {
                 .environmentObject(languages)
                 // Dates, numbers and system controls in the app's language.
                 .environment(\.locale, Localization.locale)
+                // Sight package files and `mapquest://install?url=…` links.
+                .onOpenURL { url in
+                    Task { await captures.open(url) }
+                }
         }
         // Also at launch: the system can relaunch the app in the background (significant location change).
         .onChange(of: scenePhase, initial: true) { _, phase in

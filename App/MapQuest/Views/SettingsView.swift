@@ -90,6 +90,14 @@ struct SettingsView: View {
 
                 Section {
                     NavigationLink {
+                        page(SightPackagesView())
+                    } label: {
+                        MenuRow(title: tr("Sight packages"), systemImage: "shippingbox.fill", tint: .purple,
+                                detail: captures.unreadablePackages.isEmpty ? Formatters.number(captures.library.packages.count)
+                                    : tr("Could not be read"),
+                                warns: !captures.unreadablePackages.isEmpty)
+                    }
+                    NavigationLink {
                         page(DiscoveredAreaView())
                     } label: {
                         MenuRow(title: tr("Discovered area"), systemImage: "square.dashed.inset.filled", tint: .orange,

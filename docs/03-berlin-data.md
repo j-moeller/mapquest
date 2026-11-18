@@ -10,13 +10,15 @@ Berlin, where it comes from, and how to regenerate it.
 | Base map | OpenStreetMap vector tiles from OpenFreeMap (OpenMapTiles schema), drawn on the device without labels | ODbL 1.0 (© OpenStreetMap contributors), © OpenMapTiles; OpenFreeMap: free, no key | – (loaded on demand, cached on the device) |
 | District boundaries (12 Bezirke) | Amt für Statistik Berlin-Brandenburg, merged from localities by [m-hoerz/berlin-shapes](https://github.com/m-hoerz/berlin-shapes) | CC BY 3.0 DE | `App/MapQuest/Resources/Berlin/berlin-districts.geojson` |
 | City outline | Union of the districts (slivers closed, simplified to 2 m) | CC BY 3.0 DE | `App/MapQuest/Resources/Berlin/berlin-boundary.geojson` |
-| Sights (184, all 12 districts) | Curated list (`Tools/capture/berlin_sights.csv`); positions from OpenStreetMap points of interest via OpenFreeMap vector tiles (`Tools/capture/locate_sights.py`), about 50 placed by hand or from Wikidata; district from the district polygons | ODbL 1.0 (© OpenStreetMap contributors); Wikidata CC0 | `App/MapQuest/Resources/Berlin/berlin-sights.json` |
-| U-Bahn and S-Bahn stations (343) and lines (25) | OpenStreetMap route relations of the lines (`Tools/transit/build_stations.py`); the U6 north from Wikipedia | ODbL 1.0 (© OpenStreetMap contributors) | `App/MapQuest/Resources/Berlin/berlin-stations.json` |
-| Achievements (102) | Hand-written rules over the sights and their historical facts | – | `App/MapQuest/Resources/Berlin/berlin-achievements.json` |
+| Sights (184, all 12 districts) | Curated list (`Tools/capture/berlin_sights.csv`); positions from OpenStreetMap points of interest via OpenFreeMap vector tiles (`Tools/capture/locate_sights.py`), about 50 placed by hand or from Wikidata; district from the district polygons | ODbL 1.0 (© OpenStreetMap contributors); Wikidata CC0 | `Packages/sources/berlin/berlin-sights.json` |
+| U-Bahn and S-Bahn stations (343) and lines (25) | OpenStreetMap route relations of the lines (`Tools/transit/build_stations.py`); the U6 north from Wikipedia | ODbL 1.0 (© OpenStreetMap contributors) | `Packages/sources/berlin/berlin-stations.json` |
+| Achievements (102) | Hand-written rules over the sights and their historical facts | – | `Packages/sources/berlin/berlin-achievements.json` |
 | German versions | Entries: German Wikipedia introductions; history: German articles and translated facts; achievements and remembrance guide translated by hand; English sight names and station explanations by hand ([docs/08](08-localization.md)) | CC BY-SA 4.0 (texts) | `berlin-sight-info-de.json`, `berlin-sight-history-de.json`, `berlin-remembrance-de.json`, `"de"` in `berlin-achievements.json`, `nameEn` in `berlin-sights.json` and `berlin-stations.json` |
-| Remembrance guide (5 chapters, 2 walks) | Hand-written: what each of the 18 places of remembrance remembers, in chapters of history, and walks between them | – | `App/MapQuest/Resources/Berlin/berlin-remembrance.json` |
-| Sight entries (text and photo) | Wikipedia introductions (English, else German) and lead photos from Wikimedia Commons (`Tools/capture/fetch_sight_info.py`) | Texts CC BY-SA 4.0; photos per entry (author and licence in the file) | `App/MapQuest/Resources/Berlin/berlin-sight-info.json` |
-| Sight history (dates, style, architects, clients, history texts) | Wikidata and the articles' infoboxes, checked by hand (`Tools/capture/berlin_sight_history.csv`); the articles' history sections (`Tools/capture/fetch_sight_history.py`); rulers and eras in `BerlinHistory` | Facts: Wikidata CC0; history texts CC BY-SA 4.0 | `App/MapQuest/Resources/Berlin/berlin-sight-history.json` |
+| Remembrance guide (5 chapters, 2 walks) | Hand-written: what each of the 18 places of remembrance remembers, in chapters of history, and walks between them | – | `Packages/sources/berlin/berlin-remembrance.json` |
+| Sight entries (text and photo) | Wikipedia introductions (English, else German) and lead photos from Wikimedia Commons (`Tools/capture/fetch_sight_info.py`) | Texts CC BY-SA 4.0; photos per entry (author and licence in the file) | `Packages/sources/berlin/berlin-sight-info.json` |
+| Sight history (dates, style, architects, clients, history texts) | Wikidata and the articles' infoboxes, checked by hand (`Tools/capture/berlin_sight_history.csv`); the articles' history sections (`Tools/capture/fetch_sight_history.py`); rulers and eras in `Packages/sources/berlin/berlin-chronicle.json` | Facts: Wikidata CC0; history texts CC BY-SA 4.0 | `Packages/sources/berlin/berlin-sight-history.json` |
+| Eras and rulers (Berlin's chronicle) | Hand-written: Slavic lands to reunified Germany, margraves to chancellors, East and West apart | – | `Packages/sources/berlin/berlin-chronicle.json` |
+| **Sight packages** (what the app reads) | Built from the files above by `Tools/packages/build_packages.py` ([docs/09](09-sight-packages.md)): `mapquest.berlin` with `.churches`, `.remembrance`, `.transit` | as above | `Packages/berlin.sights.json` (copied to `App/MapQuest/Resources/Packages`), `Packages/parts/` |
 | Demo explorer track (1 Hz, TrackCodec) | Generated (`Tools/berlin/make_demo_data.py`) | – | `App/MapQuest/Resources/Berlin/demo-track.mqtrack` |
 | Simulator walk | Generated, Brandenburger Tor → Alexanderplatz | – | `App/Simulation/BerlinWalk.gpx` |
 
@@ -81,7 +83,7 @@ pip install mapbox-vector-tile
 ```
 
 ```bash
-python3 Tools/capture/locate_sights.py Tools/capture/berlin_sights.csv --cache build-sights --districts App/MapQuest/Resources/Berlin/berlin-districts.geojson App/MapQuest/Resources/Berlin/berlin-sights.json
+python3 Tools/capture/locate_sights.py Tools/capture/berlin_sights.csv --cache build-sights --districts App/MapQuest/Resources/Berlin/berlin-districts.geojson Packages/sources/berlin/berlin-sights.json
 ```
 
 Their entries (`berlin-sight-info.json`, all 184, 178 with a photo; logos and other drawings are skipped) are
@@ -94,7 +96,7 @@ batches (about 40 requests), waits on "429" answers and caches every answer,
 so a re-run only fetches what is new.
 
 ```bash
-python3 Tools/capture/fetch_sight_info.py App/MapQuest/Resources/Berlin/berlin-sights.json App/MapQuest/Resources/Berlin/berlin-sight-info.json --cache build-sights/wiki --aliases Tools/capture/berlin_sights.csv --overrides Tools/capture/berlin_sight_articles.csv --german App/MapQuest/Resources/Berlin/berlin-sight-info-de.json
+python3 Tools/capture/fetch_sight_info.py Packages/sources/berlin/berlin-sights.json Packages/sources/berlin/berlin-sight-info.json --cache build-sights/wiki --aliases Tools/capture/berlin_sights.csv --overrides Tools/capture/berlin_sight_articles.csv --german Packages/sources/berlin/berlin-sight-info-de.json
 ```
 
 Their historical facts (`berlin-sight-history.json`: all 184 dated, about 135
@@ -115,7 +117,7 @@ pip install mwparserfromhell
 ```
 
 ```bash
-python3 Tools/capture/fetch_sight_history.py App/MapQuest/Resources/Berlin/berlin-sights.json App/MapQuest/Resources/Berlin/berlin-sight-info.json App/MapQuest/Resources/Berlin/berlin-sight-history.json --cache build-sights/wiki --german-info App/MapQuest/Resources/Berlin/berlin-sight-info-de.json --german App/MapQuest/Resources/Berlin/berlin-sight-history-de.json
+python3 Tools/capture/fetch_sight_history.py Packages/sources/berlin/berlin-sights.json Packages/sources/berlin/berlin-sight-info.json Packages/sources/berlin/berlin-sight-history.json --cache build-sights/wiki --german-info Packages/sources/berlin/berlin-sight-info-de.json --german Packages/sources/berlin/berlin-sight-history-de.json
 ```
 
 ### German versions and English names
@@ -160,7 +162,8 @@ Kurt-Schumacher-Platz, mapped as out of service, is added from
 `Tools/transit/berlin_station_additions.csv` (Wikipedia coordinates).
 
 ```bash
-python3 Tools/transit/build_stations.py --routes build-stations/routes.json --additions Tools/transit/berlin_station_additions.csv --districts App/MapQuest/Resources/Berlin/berlin-districts.geojson App/MapQuest/Resources/Berlin/berlin-stations.json
+python3 Tools/transit/build_stations.py --routes build-stations/routes.json --additions Tools/transit/berlin_station_additions.csv --districts App/MapQuest/Resources/Berlin/berlin-districts.geojson Packages/sources/berlin/berlin-stations.json
+python3 Tools/packages/build_packages.py   # the sight packages from Packages/sources (docs/09)
 ```
 
 ### Simulating a walk

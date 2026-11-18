@@ -484,23 +484,19 @@ struct SightHistoryFacts: View {
                     // "Frederick William II (Friedrich Wilhelm II.)" in English.
                     let name = ruler.otherName.map { "\(ruler.name) (\($0))" } ?? ruler.name
                     fact(history.year.map { tr("Ruling in {0}", $0) } ?? tr("Ruling at the time"),
-                         "\(name), \(ruler.title) (\(ruler.reign))", symbol: Self.isMonarchy(context.era) ? "crown.fill" : "person.fill")
+                         "\(name), \(ruler.title) (\(ruler.reign))", symbol: context.era.isMonarchy ? "crown.fill" : "person.fill")
                 }
                 fact(tr("Era"), "\(context.era.name) (\(context.era.years))", detail: context.era.summary, symbol: "clock.arrow.circlepath")
             }
-            if let sector = history.sectorDuringDivision {
-                fact(tr("While Berlin was divided"), sector.title, symbol: "square.split.2x1.fill")
+            // While the place was divided (Berlin 1949–1990): its side, as its chronicle names it.
+            if let division = history.division {
+                fact(division.title, division.sector, symbol: "square.split.2x1.fill")
             }
         }
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(tint.opacity(0.08), in: RoundedRectangle(cornerRadius: 12))
         .overlay(RoundedRectangle(cornerRadius: 12).stroke(tint.opacity(0.3), lineWidth: 1))
-    }
-
-    static func isMonarchy(_ era: HistoricalEra) -> Bool {
-        ["margraviate", "electorate", "prussia", "empire",
-         "bs-early", "bs-welf", "bs-hanse", "bs-residence", "bs-french", "bs-duchy"].contains(era.id) // not localized: era IDs
     }
 
     private func fact(_ title: String, _ value: String, detail: String? = nil, symbol: String) -> some View {

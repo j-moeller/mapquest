@@ -100,7 +100,9 @@ final class DataArchiveTests: XCTestCase {
             DataArchive.Export(
                 source: .init(id: "me", name: "My discoveries"), app: "MapQuest test",
                 samples: try await store.samples(matching: .all), track: try await store.trackPoints(),
-                captureLog: log, photoDirectory: photos, settings: settings
+                captureLog: log, photoDirectory: photos, settings: settings,
+                sightPackages: [SightPackage(id: "test.sights", version: "1.2", title: "Test",
+                                             sights: [.init(id: "dom", name: "Dom", category: .church, latitude: 52.5, longitude: 13.4)])]
             ),
             to: url, progress: { reported.append($0) }
         )
@@ -113,6 +115,7 @@ final class DataArchiveTests: XCTestCase {
         XCTAssertEqual(manifest.sightsNearby, 1)
         XCTAssertEqual(manifest.sightsCaptured, 2)
         XCTAssertEqual(reported.last, 1)
+        XCTAssertEqual(manifest.sightPackages, ["test.sights 1.2"])
 
         // What a person finds in it.
         let archive = try ZipReader(url: url)
@@ -141,6 +144,8 @@ final class DataArchiveTests: XCTestCase {
         XCTAssertEqual(restoredTrack, points, "every track position exactly")
         XCTAssertEqual(try reader.captureLog(), log)
         XCTAssertEqual(try reader.settings(), settings)
+        let packages = try SightPackageFile.decode(XCTUnwrap(reader.sightPackages()))
+        XCTAssertEqual(packages.map(\.id), ["test.sights"], "the sights the captures are of")
         let photosOut = directory.appendingPathComponent("photos-out")
         XCTAssertEqual(try reader.restorePhotos(to: photosOut), 3)
         XCTAssertEqual(try Data(contentsOf: photosOut.appendingPathComponent("dom-2.jpg")), jpeg)

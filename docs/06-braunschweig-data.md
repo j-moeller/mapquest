@@ -32,31 +32,35 @@ Geoinformation und Landesvermessung Niedersachsen (dl-de/by-2-0).
 
 Braunschweig has its own game, built like Berlin's (docs/03-berlin-data.md) and
 shown when you are in Braunschweig (the list switches by itself; a switch at its
-top shows the other city):
+top shows the other city). The files below are in `Packages/sources/braunschweig/`;
+`Tools/packages/build_packages.py` builds the sight packages the app reads from
+them – `mapquest.braunschweig` with `.churches` and `.remembrance`, in
+`Packages/braunschweig.sights.json` ([docs/09](09-sight-packages.md)):
 
 | Data | Source | Licence | File |
 |---|---|---|---|
 | Sights | Curated list `Tools/capture/braunschweig_sights.csv` (categories, English names), placed on OpenStreetMap points of interest via OpenFreeMap vector tiles by `Tools/capture/locate_sights.py` (the water tower at its Wikipedia coordinates); districts from the Stadtbezirke | ODbL 1.0 | `braunschweig-sights.json` |
 | Entries | Wikipedia introductions and lead photos (`Tools/capture/fetch_sight_info.py`, articles matched by position; `braunschweig_sight_articles.csv` names the articles a name search misses) | CC BY-SA 4.0, photos per entry | `braunschweig-sight-info[-de].json` |
 | History | Hand-checked facts `Tools/capture/braunschweig_sight_history.csv` over Wikidata and infoboxes, German phrases in `braunschweig_sight_history_de.csv` (`Tools/capture/fetch_sight_history.py --facts … --translations …`) | CC0 / CC BY-SA 4.0 | `braunschweig-sight-history[-de].json` |
-| Eras and rulers | `BraunschweigHistory` (MapQuestCore): early Brunswick, Henry the Lion, the Hanseatic town, the ducal residence, Napoleonic rule, the Duchy, the Free State, Nazi Germany, the occupation, Lower Saxony | – | (code) |
+| Eras and rulers | Braunschweig's chronicle: early Brunswick, Henry the Lion, the Hanseatic town, the ducal residence, Napoleonic rule, the Duchy, the Free State, Nazi Germany, the occupation, Lower Saxony | – | `braunschweig-chronicle.json` |
 | Achievements | Curated, English and German (milestones, collections, stories such as the Burgplatz or the five traditional islands, Henry the Lion, styles, districts) | – | `braunschweig-achievements.json` |
 | Remembrance | Curated, English and German: forced labour and the camps, the persecution of the Jews, war and destruction, resting places; a walk | – | `braunschweig-remembrance[-de].json` |
 
 ```bash
 python3 Tools/capture/locate_sights.py Tools/capture/braunschweig_sights.csv --cache build-sights \
     --districts App/MapQuest/Resources/Braunschweig/braunschweig-districts.geojson \
-    App/MapQuest/Resources/Braunschweig/braunschweig-sights.json
-python3 Tools/capture/fetch_sight_info.py App/MapQuest/Resources/Braunschweig/braunschweig-sights.json \
-    App/MapQuest/Resources/Braunschweig/braunschweig-sight-info.json --cache build-sights/wiki \
+    Packages/sources/braunschweig/braunschweig-sights.json
+python3 Tools/capture/fetch_sight_info.py Packages/sources/braunschweig/braunschweig-sights.json \
+    Packages/sources/braunschweig/braunschweig-sight-info.json --cache build-sights/wiki \
     --aliases Tools/capture/braunschweig_sights.csv --overrides Tools/capture/braunschweig_sight_articles.csv \
-    --german App/MapQuest/Resources/Braunschweig/braunschweig-sight-info-de.json
-python3 Tools/capture/fetch_sight_history.py App/MapQuest/Resources/Braunschweig/braunschweig-sights.json \
-    App/MapQuest/Resources/Braunschweig/braunschweig-sight-info.json \
-    App/MapQuest/Resources/Braunschweig/braunschweig-sight-history.json --cache build-sights/wiki \
+    --german Packages/sources/braunschweig/braunschweig-sight-info-de.json
+python3 Tools/capture/fetch_sight_history.py Packages/sources/braunschweig/braunschweig-sights.json \
+    Packages/sources/braunschweig/braunschweig-sight-info.json \
+    Packages/sources/braunschweig/braunschweig-sight-history.json --cache build-sights/wiki \
     --facts Tools/capture/braunschweig_sight_history.csv --translations Tools/capture/braunschweig_sight_history_de.csv \
-    --german-info App/MapQuest/Resources/Braunschweig/braunschweig-sight-info-de.json \
-    --german App/MapQuest/Resources/Braunschweig/braunschweig-sight-history-de.json
+    --german-info Packages/sources/braunschweig/braunschweig-sight-info-de.json \
+    --german Packages/sources/braunschweig/braunschweig-sight-history-de.json
+python3 Tools/packages/build_packages.py   # the sight packages from Packages/sources (docs/09)
 ```
 
 Braunschweig has no U-Bahn or S-Bahn; its trams are not collected (their

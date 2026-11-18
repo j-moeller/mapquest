@@ -58,6 +58,8 @@ public enum DataArchive {
         public var missingPhotos: Int
         public var hasCaptureLog: Bool
         public var hasSettings: Bool
+        /// The sight packages installed when exported ("id version"; older exports: nil).
+        public var sightPackages: [String]?
     }
 
     /// What to put into an archive.
@@ -70,9 +72,12 @@ public enum DataArchive {
         /// Where the capture log's photos are.
         public var photoDirectory: URL?
         public var settings: Data?
+        /// The installed sight packages: the sights the captures are of.
+        public var sightPackages: [SightPackage]
 
         public init(source: Manifest.Source, app: String? = nil, samples: [LocationSample], track: [TrackPoint],
-                    captureLog: CaptureLog? = nil, photoDirectory: URL? = nil, settings: Data? = nil) {
+                    captureLog: CaptureLog? = nil, photoDirectory: URL? = nil, settings: Data? = nil,
+                    sightPackages: [SightPackage] = []) {
             self.source = source
             self.app = app
             self.samples = samples
@@ -80,6 +85,7 @@ public enum DataArchive {
             self.captureLog = captureLog
             self.photoDirectory = photoDirectory
             self.settings = settings
+            self.sightPackages = sightPackages
         }
     }
 
@@ -100,6 +106,7 @@ public enum DataArchive {
     }
 
     static let trackColumns = ["time", "latitude", "longitude", "altitude", "horizontalAccuracy", "verticalAccuracy"]
+    static let sightPackagesFile = "sights/packages.sights.json"
 
     // MARK: Writing
 
@@ -161,6 +168,9 @@ public enum DataArchive {
         if let settings = export.settings {
             try zip.add("settings.json", data: settings, modified: now)
         }
+        if !export.sightPackages.isEmpty {
+            try zip.add(sightPackagesFile, data: SightPackageFile.encode(export.sightPackages), modified: now)
+        }
         let log = export.captureLog
         let manifest = Manifest(
             format: format, version: version, exportedAt: now, app: export.app, source: export.source,
@@ -168,7 +178,8 @@ public enum DataArchive {
             sightsNearby: log.map { log in log.nearby.keys.filter { !log.isDiscovered($0) }.count } ?? 0,
             sightsDiscovered: log?.records.count ?? 0, sightsCaptured: log?.photos.count ?? 0,
             stationsCollected: log?.stations.count ?? 0, photos: photos, missingPhotos: missing,
-            hasCaptureLog: log != nil, hasSettings: export.settings != nil
+            hasCaptureLog: log != nil, hasSettings: export.settings != nil,
+            sightPackages: export.sightPackages.isEmpty ? nil : export.sightPackages.map { "\($0.id) \($0.version)" }
         )
         try zip.add("README.txt", data: Data(readme.utf8), modified: now)
         try zip.add("manifest.json", data: isoEncoder.encode(manifest), modified: now)
@@ -225,6 +236,8 @@ public enum DataArchive {
     captures/log.json           sights near, discovered and captured, stations collected, photo records
     photos/<sha256>.jpg         the photos, named by the SHA-256 of their content
     settings.json               the app's settings
+    sights/packages.sights.json the sight packages installed: the sights the captures are of
+                                (docs/09-sight-packages.md)
 
     Times of positions are seconds since 1970-01-01 UTC, coordinates WGS84 degrees,
     altitudes and accuracies metres (an accuracy of -1 means invalid).
@@ -291,6 +304,11 @@ public enum DataArchive {
 
         public func settings() throws -> Data? {
             zip.contains("settings.json") ? try zip.data("settings.json") : nil
+        }
+
+        /// The sight packages installed when exported, as one bundle file (`SightPackageFile`).
+        public func sightPackages() throws -> Data? {
+            zip.contains(DataArchive.sightPackagesFile) ? try zip.data(DataArchive.sightPackagesFile) : nil
         }
 
         /// Writes the photos under their own file names into `directory`, each checked

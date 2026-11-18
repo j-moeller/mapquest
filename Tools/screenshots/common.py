@@ -11,13 +11,15 @@ REPO = pathlib.Path(__file__).resolve().parents[2]
 RES = REPO / "App/MapQuest/Resources"
 SHOTS = pathlib.Path(os.environ.get("MQ_SHOTS_DIR", REPO / "build-screenshots")).resolve()
 
-SIGHTS = {s["id"]: s for s in json.loads((RES / "Berlin/berlin-sights.json").read_text())["sights"]}
-INFO = json.loads((RES / "Berlin/berlin-sight-info.json").read_text())["entries"]
-HISTORY = json.loads((RES / "Berlin/berlin-sight-history.json").read_text())["entries"]
-HISTORY_DE = json.loads((RES / "Berlin/berlin-sight-history-de.json").read_text())["entries"]
-ACHIEVEMENTS = {a["id"]: a for a in json.loads((RES / "Berlin/berlin-achievements.json").read_text())["achievements"]}
-STATIONS = json.loads((RES / "Berlin/berlin-stations.json").read_text())
-REMEMBRANCE = json.loads((RES / "Berlin/berlin-remembrance.json").read_text())
+# The sight data in the build tools' form (Packages/sources; the app reads the packages built from it).
+SOURCES = REPO / "Packages/sources/berlin"
+SIGHTS = {s["id"]: s for s in json.loads((SOURCES / "berlin-sights.json").read_text())["sights"]}
+INFO = json.loads((SOURCES / "berlin-sight-info.json").read_text())["entries"]
+HISTORY = json.loads((SOURCES / "berlin-sight-history.json").read_text())["entries"]
+HISTORY_DE = json.loads((SOURCES / "berlin-sight-history-de.json").read_text())["entries"]
+ACHIEVEMENTS = {a["id"]: a for a in json.loads((SOURCES / "berlin-achievements.json").read_text())["achievements"]}
+STATIONS = json.loads((SOURCES / "berlin-stations.json").read_text())
+REMEMBRANCE = json.loads((SOURCES / "berlin-remembrance.json").read_text())
 
 def strings(name):
     table = {}

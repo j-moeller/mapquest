@@ -107,12 +107,11 @@ struct ContentView: View {
         }
         .animation(.easeInOut(duration: 0.25), value: model.recordingSummary)
         .task { await model.recordingChanged(isOn: tracker.isTrackingEnabled, captures: captures) }
-        // The list shows the city you are in.
+        // The list shows the city (region) you are in.
         .onReceive(tracker.$lastLocation) { location in
             guard let location else { return }
             let coordinate = GeoCoordinate(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-            guard let area = model.cities.first(where: { $0.contains(coordinate) }) else { return }
-            captures.follow(Cities.all.first { $0.name == area.name }?.id)
+            captures.follow(captures.region(at: coordinate, outlines: model.cities))
         }
         .onChange(of: tracker.isTrackingEnabled) { _, on in
             Task { await model.recordingChanged(isOn: on, captures: captures) }
@@ -152,6 +151,18 @@ struct ContentView: View {
             .presentationDetents([.medium, .large])
         }
         .debugPanel(isPresented: $model.showsDebugPanel, detent: $debugDetent)
+        // A sight package opened from Files, Mail or a website (`mapquest://install?url=…`).
+        .sheet(item: $captures.packageOffer) { offer in
+            PackageOfferView(offer: offer) { captures.packageOffer = nil }
+        }
+        .alert(tr("Sight packages"), isPresented: Binding(
+            get: { captures.packageMessage != nil },
+            set: { if !$0 { captures.packageMessage = nil } }
+        )) {
+            Button(tr("OK"), role: .cancel) {}
+        } message: {
+            Text(captures.packageMessage ?? "")
+        }
         .alert("MapQuest", isPresented: Binding(
             get: { model.errorMessage != nil },
             set: { if !$0 { model.errorMessage = nil } }

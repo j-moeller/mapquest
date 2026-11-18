@@ -6,7 +6,7 @@ import SwiftUI
 import UIKit
 
 /// The capture component (docs/02-architecture.md, "Capture"): sights of the
-/// bundled cities are discovered once the fog of war around them is lifted – the
+/// installed sight packages are discovered once the fog of war around them is lifted – the
 /// radius layer reaches them (their entries unlock) – and captured by
 /// photographing them from where you can see them; U-Bahn and S-Bahn stations
 /// are collected by going there. It only reads the discovered area of
@@ -74,40 +74,53 @@ struct StationPin: Equatable, Identifiable {
     var isCollected: Bool { collectedAt != nil }
 }
 
+/// A region with sights (a city), as the installed packages name it.
+struct SightRegion: Hashable, Identifiable {
+    let id: String
+    let name: String
+}
+
 @MainActor
 final class CaptureModel: ObservableObject {
-    let catalog: SightCatalog
-    /// The sights' entries (unlocked by discovering them), in the app's language.
-    var infos: SightInfoCatalog { infoCatalogs[Localization.language] ?? infoCatalogs[.en] ?? SightInfoCatalog() }
-    /// The sights' historical facts (unlocked with their entries), in the app's language.
-    var histories: SightHistoryCatalog { historyCatalogs[Localization.language] ?? historyCatalogs[.en] ?? SightHistoryCatalog() }
-    /// The entries in each language (German falls back to English sight by sight).
-    private let infoCatalogs: [Language: SightInfoCatalog]
-    /// The facts in each language; achievements are decided on the English ones.
-    private let historyCatalogs: [Language: SightHistoryCatalog]
-    /// The U-Bahn and S-Bahn stations and lines.
-    let stations: StationCatalog
+    /// The installed sight packages, resolved (docs/09-sight-packages.md): the sights,
+    /// their entries and facts, achievements, places of remembrance and stations all
+    /// come from them. Reloaded when packages are added or removed.
+    @Published private(set) var library: SightLibrary
+    /// Package files that could not be read (menu › Sight packages names them).
+    @Published private(set) var unreadablePackages: [String] = []
+    let packageStore: SightPackageStore
+    let bundle: Bundle
+    /// Packages read from a file or link, shown before they are added.
+    @Published var packageOffer: PackageOffer?
+    /// What adding packages did, or why a file could not be read.
+    @Published var packageMessage: String?
+
+    var catalog: SightCatalog { library.catalog }
+    /// The sights' entries (unlocked by discovering them), in the app's language (English where a sight has none in it).
+    var infos: SightInfoCatalog { library.infos(Localization.language) }
+    /// The sights' historical facts (unlocked with their entries), in the app's language;
+    /// achievements are decided on the English ones.
+    var histories: SightHistoryCatalog { library.histories(Localization.language) }
+    /// The stations and lines.
+    var stations: StationCatalog { library.stations }
     /// The sights of the game: all but the places of remembrance, which are not captured.
-    let gameSightCount: Int
-    /// The achievements of the bundled cities, each city's resolved against its own sights and stations.
-    let achievements: AchievementBook
-    /// The cities with sights (Berlin, Braunschweig), in order.
-    let sightCities: [City]
-    /// The city of every sight and every achievement (`City.id`).
-    private let cityOfSight: [String: String]
-    private let cityOfAchievement: [String: String]
-    private let stationCity: [String: String]
-    /// The city whose sights, achievements and places of remembrance the list shows:
+    var gameSightCount: Int { catalog.sights.filter { !$0.isPlaceOfRemembrance }.count }
+    /// The achievements of all packages, each resolved against its package's sights and stations.
+    var achievements: AchievementBook { library.achievements }
+    /// The regions with sights or stations (Berlin, Braunschweig), in the packages' order.
+    var sightCities: [SightRegion] {
+        library.regions
+            .filter { region in library.regionOfSight.values.contains(region.id) || library.regionOfStation.values.contains(region.id) }
+            .map { SightRegion(id: $0.id, name: $0.name()) }
+    }
+    /// The region whose sights, achievements and places of remembrance the list shows:
     /// where you are (`follow(_:)`), else the last one; kept across launches.
     @Published var cityID: String {
         didSet { UserDefaults.standard.set(cityID, forKey: Self.cityKey) }
     }
     private static let cityKey = "CaptureModel.city" // not localized
-    /// Sights in cities with photorealistic 3D buildings (Apple Maps): their entries show them.
-    let photorealistic3D: Set<String>
     /// The places of remembrance as a short history and as walks, outside the game, in the app's language.
-    var remembrance: RemembranceGuide { remembranceGuides[Localization.language] ?? remembranceGuides[.en] ?? RemembranceGuide() }
-    private let remembranceGuides: [Language: RemembranceGuide]
+    var remembrance: RemembranceGuide { library.remembrance(Localization.language) }
     @Published private(set) var log = CaptureLog()
     @Published private(set) var celebration: Celebration?
     @Published private(set) var focus: SightFocus?
@@ -135,6 +148,9 @@ final class CaptureModel: ObservableObject {
     private var sourceID: String?
     /// Only data sources that record this device's positions celebrate captures.
     private var celebrates = false
+    /// Sights of packages just added are checked without celebrations: they were
+    /// reached before, not now.
+    private var checksQuietly = false
     private var pending: [DiscoveredAreaSnapshot]?
     /// How far the radius layer may end from a sight for it to be nearby (`SightCapture.nearbyTolerance`).
     private var nearbyTolerance = SightCapture.nearbyTolerance(circleRadius: 50)
@@ -144,98 +160,88 @@ final class CaptureModel: ObservableObject {
     private var focusCounter = 0
     /// Lines completed by collected stations, waiting for their celebration.
     private var lineCelebrations: [Achievement] = []
+    /// The packages that come with the app, read when first asked for.
+    private var bundledPackages: [SightPackage]?
 
     nonisolated static var directory: URL {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("MapQuest/Captures")
     }
 
-    init(bundle: Bundle = .main) {
-        // Locals: `self` cannot be read before all its properties are set.
-        let catalog = Self.loadCatalog(bundle)
-        let histories = Self.loadHistories(bundle, language: .en)
-        let stations = Self.loadStations(bundle)
-        let catalogs = Cities.all.map { city in (city, Self.loadCatalog(bundle, cities: [city])) }.filter { !$0.1.sights.isEmpty }
-        sightCities = catalogs.map { $0.0 }
-        cityOfSight = Dictionary(catalogs.flatMap { city, catalog in catalog.sights.map { ($0.id, city.id) } }, uniquingKeysWith: { first, _ in first })
-        let books = catalogs.map { city, cityCatalog in
-            (city, AchievementBook(achievements: Self.loadAchievements(bundle, cities: [city]), catalog: cityCatalog,
-                                   histories: histories, stations: stations))
-        }
-        cityOfAchievement = Dictionary(books.flatMap { city, book in book.entries.map { ($0.achievement.id, city.id) } },
-                                       uniquingKeysWith: { first, _ in first })
-        stationCity = Dictionary(Cities.all.flatMap { city in Self.loadStations(bundle, cities: [city]).stations.map { ($0.id, city.id) } },
-                                 uniquingKeysWith: { first, _ in first })
+    /// Where the installed sight packages are kept (one file per package).
+    nonisolated static var packageDirectory: URL {
+        FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("MapQuest/SightPackages")
+    }
+
+    init(bundle: Bundle = .main, packageDirectory: URL = CaptureModel.packageDirectory) {
+        let packageStore = SightPackageStore(directory: packageDirectory)
+        BundledPackages.installNew(from: bundle, into: packageStore)
+        let installed = packageStore.installed()
+        let library = SightLibrary(packages: installed.packages)
+        self.packageStore = packageStore
+        self.bundle = bundle
+        self.library = library
         let savedCity = UserDefaults.standard.string(forKey: Self.cityKey)
-        cityID = catalogs.contains { $0.0.id == savedCity } ? savedCity! : (catalogs.first?.0.id ?? "berlin") // not localized
-        self.catalog = catalog
-        gameSightCount = catalog.sights.filter { !$0.isPlaceOfRemembrance }.count
-        let infos = Self.loadInfos(bundle, language: .en)
-        infoCatalogs = [.en: infos, .de: .merged([Self.loadInfos(bundle, language: .de), infos])]
-        historyCatalogs = [.en: histories, .de: .merged([Self.loadHistories(bundle, language: .de), histories])]
-        self.stations = stations
-        achievements = .merged(books.map { $0.1 })
-        photorealistic3D = Set(Cities.all.filter(\.hasPhotorealistic3D).flatMap { city in
-            Self.loadCatalog(bundle, cities: [city]).sights.map(\.id)
-        })
-        let english = Self.loadRemembrance(bundle, language: .en)
-        let german = Self.loadRemembrance(bundle, language: .de)
-        remembranceGuides = [.en: english, .de: german.chapters.isEmpty ? english : german]
+        let regions = library.regions.map(\.id)
+        cityID = savedCity.flatMap { regions.contains($0) ? $0 : nil } ?? regions.first ?? "berlin" // not localized
+        unreadablePackages = installed.unreadable
+        SightCategory.hierarchy = library.categories
     }
 
-    /// A city's data file in a language: `<city>-<name>.json` in English, `<city>-<name>-de.json` in German.
-    static func data(_ bundle: Bundle, city: City, _ name: String, language: Language) -> Data? {
-        let suffix = language == .en ? "" : "-\(language.rawValue)"
-        guard let url = bundle.url(forResource: "\(city.id)-\(name)\(suffix)", withExtension: "json") else { return nil }
-        return try? Data(contentsOf: url)
+    // MARK: Sight packages
+
+    /// Reads the installed packages again (after adding or removing one) and checks
+    /// the new sights against the area discovered so far – quietly: they were reached
+    /// before. What was captured under a merged ID counts for the place it was merged into.
+    func reloadPackages() {
+        let installed = packageStore.installed()
+        let library = SightLibrary(packages: installed.packages)
+        SightCategory.hierarchy = library.categories
+        unreadablePackages = installed.unreadable
+        self.library = library
+        if !library.regions.contains(where: { $0.id == cityID }), let first = library.regions.first {
+            cityID = first.id
+        }
+        if log.adoptAliases(library.aliases) { persist() }
+        checksQuietly = true
+        pending = lastSnapshots
+        evaluateIfIdle()
     }
 
-    /// The remembrance guides of all bundled cities (`<city>-remembrance[-de].json`).
-    static func loadRemembrance(_ bundle: Bundle, language: Language) -> RemembranceGuide {
-        .merged(Cities.all.compactMap { city -> RemembranceGuide? in
-            data(bundle, city: city, "remembrance", language: language).flatMap { try? RemembranceGuide.decode($0) }
-        })
-    }
-
-    /// The sight entries of all bundled cities (`<city>-sight-info[-de].json`).
-    static func loadInfos(_ bundle: Bundle, language: Language) -> SightInfoCatalog {
-        .merged(Cities.all.compactMap { city -> SightInfoCatalog? in
-            data(bundle, city: city, "sight-info", language: language).flatMap { try? SightInfoCatalog.decode($0) }
-        })
-    }
-
-    /// The historical facts of all bundled cities (`<city>-sight-history[-de].json`), each read in its city's history.
-    static func loadHistories(_ bundle: Bundle, language: Language) -> SightHistoryCatalog {
-        .merged(Cities.all.compactMap { city -> SightHistoryCatalog? in
-            data(bundle, city: city, "sight-history", language: language).flatMap { try? SightHistoryCatalog.decode($0, city: city.id) }
-        })
-    }
-
-    /// The stations and lines of the bundled cities (`<city>-stations.json`).
-    static func loadStations(_ bundle: Bundle, cities: [City] = Cities.all) -> StationCatalog {
-        .merged(cities.compactMap { city -> StationCatalog? in
-            guard let url = bundle.url(forResource: "\(city.id)-stations", withExtension: "json"),
-                  let data = try? Data(contentsOf: url) else { return nil }
-            return try? StationCatalog.decode(data)
-        })
-    }
-
-    /// The achievements of the bundled cities (`<city>-achievements.json`).
-    static func loadAchievements(_ bundle: Bundle, cities: [City] = Cities.all) -> [Achievement] {
-        cities.flatMap { city -> [Achievement] in
-            guard let url = bundle.url(forResource: "\(city.id)-achievements", withExtension: "json"),
-                  let data = try? Data(contentsOf: url) else { return [] }
-            return (try? Achievement.decodeList(data)) ?? []
+    /// Installs the packages of a file (one package or a bundle) and reloads.
+    func installPackages(from data: Data) throws -> [PackageInstallResult] {
+        let packages = try SightPackageFile.decode(data)
+        let outcomes = try packageStore.install(packages)
+        BundledPackages.forgetRemoved(packages.map(\.id))
+        reloadPackages()
+        return outcomes.map { result in
+            PackageInstallResult(id: result.id, title: packages.first { $0.id == result.id }?.title() ?? result.id,
+                                 outcome: result.outcome)
         }
     }
 
-    /// The sight lists of the bundled cities (`<city>-sights.json`).
-    static func loadCatalog(_ bundle: Bundle, cities: [City] = Cities.all) -> SightCatalog {
-        .merged(cities.compactMap { city -> SightCatalog? in
-            guard let url = bundle.url(forResource: "\(city.id)-sights", withExtension: "json"),
-                  let data = try? Data(contentsOf: url) else { return nil }
-            return try? SightCatalog.decode(data)
-        })
+    /// Removes an installed package (one that came with the app is not installed again by itself).
+    func removePackage(_ id: String) {
+        try? packageStore.remove(id)
+        BundledPackages.noteRemoved(id)
+        reloadPackages()
+    }
+
+    /// The packages that come with the app but are not installed (removed, or newer here).
+    var availableBundledPackages: [SightPackage] {
+        let installed = Dictionary(library.packages.map { ($0.id, $0.version) }, uniquingKeysWith: { first, _ in first })
+        if bundledPackages == nil { bundledPackages = BundledPackages.packages(in: bundle) }
+        return (bundledPackages ?? []).filter { package in
+            installed[package.id].map { SightPackage.isVersion(package.version, newerThan: $0) } ?? true
+        }
+    }
+
+    /// Installs packages that come with the app.
+    func installBundled(_ packages: [SightPackage]) {
+        _ = try? packageStore.install(packages)
+        BundledPackages.forgetRemoved(packages.map(\.id))
+        reloadPackages()
     }
 
     // MARK: Inputs
@@ -287,6 +293,7 @@ final class CaptureModel: ObservableObject {
         let store = FileCaptureStore(directory: Self.directory, sourceID: sourceID)
         self.store = store
         log = (try? store.load()) ?? CaptureLog()
+        if log.adoptAliases(library.aliases) { persist() }
         celebration = nil
         remembranceNotice = nil
         pending = nil
@@ -300,7 +307,8 @@ final class CaptureModel: ObservableObject {
         let base = log
         let sights = catalog.sights
         let stationList = self.stations.stations
-        let celebrate = celebrates
+        let celebrate = celebrates && !checksQuietly
+        checksQuietly = false
         // Once, with the radius layer loaded: undo discoveries it does not reach.
         let undoKey = Self.lineOfSightUndoneKey(sourceID)
         let undoesLineOfSight = !UserDefaults.standard.bool(forKey: undoKey) && snapshots.contains { $0.pieceCount > 0 }
@@ -430,59 +438,79 @@ final class CaptureModel: ObservableObject {
 
     // MARK: Views
 
-    /// Photographed sights.
-    var capturedCount: Int { log.photos.count }
+    /// Photographed sights (of the installed packages: captures of removed ones are kept, not counted).
+    var capturedCount: Int { capturedCount(in: nil) }
     /// Visited sights of the game (entries unlocked); places of remembrance do not count.
-    var discoveredCount: Int {
-        log.records.keys.filter { !(catalog[$0]?.isPlaceOfRemembrance ?? false) }.count
-    }
-    var collectedStationCount: Int { log.stations.count }
+    var discoveredCount: Int { discoveredCount(in: nil) }
+    var collectedStationCount: Int { log.stations.keys.filter { stations[$0] != nil }.count }
 
     /// Progress of every achievement.
     var achievementProgress: [AchievementProgress] { achievements.progress(log) }
 
-    // MARK: Cities
+    // MARK: Regions
 
-    /// The city of a sight or achievement (`City.id`).
-    func city(of id: String) -> String? { cityOfSight[id] ?? cityOfAchievement[id] }
+    /// The region of a sight or achievement (`SightRegion.id`).
+    func city(of id: String) -> String? { library.regionOfSight[id] ?? library.regionOfAchievement[id] }
 
-    /// The city the list shows.
-    var currentCity: City? { sightCities.first { $0.id == cityID } }
+    /// The region the list shows.
+    var currentCity: SightRegion? { sightCities.first { $0.id == cityID } }
 
-    /// The city of a station: the one whose stations file it came from (only Berlin has any).
-    func city(ofStation station: Station) -> String? { stationCity[station.id] }
+    /// The region of a station: the one its package names.
+    func city(ofStation station: Station) -> String? { library.regionOfStation[station.id] }
 
-    /// Follows where you are: the list switches to the city you are in (elsewhere it stays).
+    /// Follows where you are: the list switches to the region you are in (elsewhere it stays).
     func follow(_ cityID: String?) {
         guard let cityID, cityID != self.cityID, sightCities.contains(where: { $0.id == cityID }) else { return }
         self.cityID = cityID
     }
 
-    /// The sights of a city (all cities with `nil`).
-    func sights(in city: String?) -> [Sight] {
-        guard let city else { return catalog.sights }
-        return catalog.sights.filter { cityOfSight[$0.id] == city }
+    /// The region at a position: a city whose outline the app has (`outlines`) and
+    /// contains it, else the smallest region whose bounds contain it.
+    func region(at coordinate: GeoCoordinate, outlines: [PlayArea]) -> String? {
+        if let area = outlines.first(where: { $0.contains(coordinate) }),
+           let city = Cities.all.first(where: { $0.name == area.name }),
+           sightCities.contains(where: { $0.id == city.id }) {
+            return city.id
+        }
+        var best: (id: String, size: Double)?
+        for region in library.regions {
+            guard let bounds = region.bounds, bounds.contains(coordinate) else { continue }
+            let size = (bounds.north - bounds.south) * (bounds.east - bounds.west)
+            if best == nil || size < best!.size { best = (region.id, size) }
+        }
+        return best?.id
     }
 
-    /// The sights of the game in a city: places of remembrance do not count.
+    /// The sights of a region (all with `nil`).
+    func sights(in city: String?) -> [Sight] {
+        guard let city else { return catalog.sights }
+        return catalog.sights.filter { library.regionOfSight[$0.id] == city }
+    }
+
+    /// The sights of the game in a region: places of remembrance do not count.
     func gameSightCount(in city: String?) -> Int { sights(in: city).filter { !$0.isPlaceOfRemembrance }.count }
-    /// Photographed sights in a city.
-    func capturedCount(in city: String?) -> Int { log.photos.keys.filter { city == nil || cityOfSight[$0] == city }.count }
-    /// Discovered sights of the game in a city.
+    /// Photographed sights in a region (sights of installed packages only).
+    func capturedCount(in city: String?) -> Int {
+        log.photos.keys.filter { catalog[$0] != nil && (city == nil || library.regionOfSight[$0] == city) }.count
+    }
+    /// Discovered sights of the game in a region.
     func discoveredCount(in city: String?) -> Int {
-        log.records.keys.filter { (city == nil || cityOfSight[$0] == city) && !(catalog[$0]?.isPlaceOfRemembrance ?? false) }.count
+        log.records.keys.filter { id in
+            guard let sight = catalog[id], !sight.isPlaceOfRemembrance else { return false }
+            return city == nil || library.regionOfSight[id] == city
+        }.count
     }
-    /// Progress of the achievements of a city.
+    /// Progress of the achievements of a region.
     func achievementProgress(in city: String?) -> [AchievementProgress] {
-        achievementProgress.filter { city == nil || cityOfAchievement[$0.id] == city }
+        achievementProgress.filter { city == nil || library.regionOfAchievement[$0.id] == city }
     }
-    /// The places of remembrance of a city, as chapters and walks.
+    /// The places of remembrance of a region, as chapters and walks.
     func remembrance(in city: String?) -> RemembranceGuide {
         guard let city else { return remembrance }
         let guide = remembrance
         return RemembranceGuide(
-            chapters: guide.chapters.filter { $0.places.contains { cityOfSight[$0.sight] == city } },
-            tours: guide.tours.filter { $0.stops.contains { cityOfSight[$0] == city } }
+            chapters: guide.chapters.filter { $0.places.contains { library.regionOfSight[$0.sight] == city } },
+            tours: guide.tours.filter { $0.stops.contains { library.regionOfSight[$0] == city } }
         )
     }
 
@@ -724,9 +752,11 @@ final class CaptureModel: ObservableObject {
         entry = sight
     }
 
-    /// Whether the sight's entry shows photorealistic 3D buildings (else its photo).
+    /// Whether the sight's entry shows photorealistic 3D buildings (else its photo): in
+    /// regions where Apple Maps has them (`City.hasPhotorealistic3D`).
     func hasPhotorealistic3D(_ sight: Sight) -> Bool {
-        photorealistic3D.contains(sight.id)
+        guard let region = library.regionOfSight[sight.id] else { return false }
+        return Cities.all.contains { $0.id == region && $0.hasPhotorealistic3D }
     }
 
     /// Discovered sights whose entry has not been opened yet (not places of
@@ -736,7 +766,7 @@ final class CaptureModel: ObservableObject {
     }
 
     var unreadEntryCount: Int {
-        log.records.keys.filter { !log.readEntries.contains($0) && !(catalog[$0]?.isPlaceOfRemembrance ?? false) }.count
+        log.records.keys.filter { !log.readEntries.contains($0) && catalog[$0].map { !$0.isPlaceOfRemembrance } ?? false }.count
     }
 
     /// The entry was opened.
@@ -752,9 +782,32 @@ extension Notification.Name {
     static let discoveredDataDeleted = Notification.Name("MapQuest.discoveredDataDeleted")
 }
 
-/// Icons and names of the sight categories.
+/// Icons and names of the sight categories: the core vocabulary's here, declared
+/// ones' from their packages (`CategoryDefinition`), else their parent's.
 extension SightCategory {
+    /// The categories of the installed packages (set by `CaptureModel`).
+    static var hierarchy = CategoryHierarchy.core
+
+    /// The core category it falls under: what the map filter and the list group by.
+    var core: SightCategory { Self.hierarchy.core(of: self) }
+
+    /// Places of remembrance: declared categories as their package or parent says.
+    var isPlaceOfRemembrance: Bool { Self.hierarchy.isRemembrance(self) }
+
     var symbol: String {
+        for member in Self.hierarchy.ancestry(of: self) {
+            if let symbol = Self.hierarchy.definitions[member]?.symbol { return symbol }
+            if member.isCore { return member.coreSymbol }
+        }
+        return SightCategory.landmark.coreSymbol
+    }
+
+    var title: String {
+        if let definition = Self.hierarchy.definitions[self] { return definition.title() }
+        return core.coreTitle
+    }
+
+    private var coreSymbol: String {
         switch self {
         case .landmark: return "star.fill"
         case .museum: return "building.columns.fill"
@@ -774,10 +827,11 @@ extension SightCategory {
         case .government: return "building.2.fill"
         case .cemetery: return "rectangle.portrait.fill"
         case .club: return "headphones"
+        default: return "star.fill"
         }
     }
 
-    var title: String {
+    private var coreTitle: String {
         switch self {
         case .landmark: return tr("Landmark")
         case .museum: return tr("Museum")
@@ -797,6 +851,7 @@ extension SightCategory {
         case .government: return tr("Seat of government")
         case .cemetery: return tr("Cemetery")
         case .club: return tr("Club")
+        default: return tr("Landmark")
         }
     }
 

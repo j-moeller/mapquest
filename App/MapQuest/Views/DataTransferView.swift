@@ -42,7 +42,7 @@ struct DataTransferView: View {
             } header: {
                 Text(tr("Export"))
             } footer: {
-                Text(tr("One ZIP file with everything that makes up this data source: every recorded position, the positions the map is computed from, sights and stations, all photos and the settings. Save it in Files or send it to yourself; the discovered area is recomputed from it."))
+                Text(tr("One ZIP file with everything that makes up this data source: every recorded position, the positions the map is computed from, sights and stations, all photos, the settings and the sight packages. Save it in Files or send it to yourself; the discovered area is recomputed from it."))
             }
 
             Section {

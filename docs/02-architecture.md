@@ -339,19 +339,37 @@ districts): docs/07-peine-data.md.
 ## Capture (the capture component)
 
 A separate component on top of the discovered area: **sights** – 184 places
-all over Berlin (every district), from a curated list – are *discovered* once
-the fog of war around them is lifted (their entries unlock) and *captured* once
-you photograph them there; **stations** – the 343 U-Bahn and S-Bahn stations –
-are *collected* just by going there. It only reads the discovered area and
-keeps its own data and photos; nothing else depends on it.
+all over Berlin (every district) and 55 in Braunschweig, from curated lists –
+are *discovered* once the fog of war around them is lifted (their entries
+unlock) and *captured* once you photograph them there; **stations** – the 343
+U-Bahn and S-Bahn stations – are *collected* just by going there. It only reads
+the discovered area and keeps its own data and photos; nothing else depends on
+it.
+
+* **Sight packages** (docs/09-sight-packages.md, `MapQuestCore/Packages`): all
+  of it – sights, entries, facts, the chronicles of eras and rulers,
+  achievements, places of remembrance, stations – comes from JSON packages the
+  app installs (`SightPackageStore`, `Application Support/MapQuest/SightPackages`),
+  not from the app's code. Packages compose (`includes`) and may overlap:
+  `SightLibrary` resolves the installed ones into one catalog – newest first,
+  the same ID is the same thing, the same place under another ID (`sameAs`,
+  Wikidata item) is merged, declared categories lie under core ones, each
+  package's achievements pick from its own scope – and notes what does not
+  fit. MapQuest's Berlin and Braunschweig packages come with the app
+  (`Resources/Packages`, `BundledPackages`); *Menu › Sight packages* adds
+  packages from a file or link (also `mapquest://install?url=…` and *Open in
+  MapQuest*), shows and removes them. `CaptureModel.library` is the resolved
+  world; everything below reads it.
 
 * **Sights** (`MapQuestCore/Capture/Sight.swift`): ID, name, category
   (landmark, museum, palace, church, viewpoint, memorial, park, square,
   culture, monument, zoo, bridge, stadium (and arena), fountain, market,
   government, cemetery, club),
-  position, extent (30–150 m; larger for open areas) and district. Bundled per city as
-  `<city>-sights.json` (Berlin: docs/03-berlin-data.md); `SightCatalog`
-  merges them.
+  position, extent (30–150 m; larger for open areas) and district. From the
+  packages' `sights` (Berlin: docs/03-berlin-data.md); `SightCatalog` holds the
+  resolved ones. Packages can declare more categories under a core parent
+  (`CategoryDefinition`, `CategoryHierarchy`): the icon, the map filter and
+  achievement rules then treat them as the parent.
 * **Map icons** (`MapIconFilter`, *Menu › Map icons*, kept in the user
   defaults): stations by system and sights by category can be hidden on the 2D
   and 3D maps (`CaptureModel.pins`, `stationPins`); question marks have their
@@ -395,8 +413,8 @@ keeps its own data and photos; nothing else depends on it.
   of the game" and what the place remembers – no game state, no "NEW". They
   also have a tab of their own, *Remembrance* (below). Their symbol is a
   plain stone (not a flame, not a crescent).
-* **Remembrance guide** (`RemembranceGuide`, `<city>-remembrance.json`,
-  loaded by `CaptureModel.loadRemembrance`): the places of remembrance as a
+* **Remembrance guide** (`RemembranceGuide`, the packages' `remembrance`,
+  `SightLibrary.remembrance(_:)`): the places of remembrance as a
   history lesson and a city walk, outside the game. Chapters (title, years, a
   paragraph) each list their places with a sentence on what each remembers;
   every place of remembrance is in exactly one chapter (tested). Tours are
@@ -429,7 +447,7 @@ keeps its own data and photos; nothing else depends on it.
   anywhere* lifts the distance check (and uses the photo library where there is
   no camera, e.g. the simulator). Discovering no longer counts for achievements;
   capturing does.
-* **Stations** (`Station`, `TransitLine`, `StationCatalog`, `<city>-stations.json`;
+* **Stations** (`Station`, `TransitLine`, `StationCatalog`, the packages' `transit`;
   Berlin: docs/03-berlin-data.md): the U-Bahn and S-Bahn stations of a place are
   two stations (U and S Alexanderplatz), each with its lines; a line lists its
   stations in order. Extent 80 m (the circles must reach within 30 m). They are
@@ -456,7 +474,7 @@ keeps its own data and photos; nothing else depends on it.
   anywhere ends it at once. One capture at a time; more than three waiting
   (e.g. the first check of earlier discoveries) are celebrated together.
   View-only data sources record captures without celebrating.
-* **Entries** (`SightInfo`, `<city>-sight-info.json`): every sight has an
+* **Entries** (`SightInfo`, a sight's `entry` in its package): every sight has an
   encyclopedia entry – the introduction of its Wikipedia article (English, or
   German where there is none: description and history) and its lead photo
   from Wikimedia Commons – locked until the sight is captured. Built by
@@ -468,7 +486,7 @@ keeps its own data and photos; nothing else depends on it.
   and licence kept). Texts are CC BY-SA 4.0; each entry credits its article
   and photo. Photos are loaded when an entry is first opened and kept in
   `Caches/SightPhotos`.
-* **History** (`SightHistory`, `<city>-sight-history.json`; `BerlinHistory`):
+* **History** (`SightHistory`, a sight's `facts` in its package; `Chronicle`):
   each entry has a card *In history* – built (and opened, where that differs:
   e.g. a museum in an older building), architectural style, architects and
   artists, who commissioned it, **who ruled at the time** and the era (with a
@@ -481,28 +499,29 @@ keeps its own data and photos; nothing else depends on it.
   often has the founding year of an institution, not the date of its
   building; the table also gives the East/West sector); the history section
   as plain text (display templates expanded, references dropped), whole
-  paragraphs up to about 1,800 characters. The ruler is not stored:
-  `BerlinHistory` maps a year (read in July: in a year of succession the
+  paragraphs up to about 1,800 characters. The ruler is not stored: the
+  sight's **chronicle** (data in its package: Berlin's, Braunschweig's) maps a year (read in July: in a year of succession the
   ruler of July counts) and the sector to the era – Slavic lands (before
   1157: an oak in Tegel is that old), Margraviate and Electorate of Brandenburg, Kingdom of Prussia, German Empire, Weimar
   Republic, Nazi Germany, Allied occupation, East Berlin (GDR) / West Berlin,
   reunified Germany – and its ruler: margraves, electors, kings and emperors,
   Reich presidents, the dictator, the Allied Kommandatura, the SED leaders in
-  the East, the federal chancellors in the West and after 1990. Every city has
-  its own history (`CityHistory`; a history catalog is read with its city,
-  `SightHistoryCatalog.decode(_:city:)`): `BraunschweigHistory` – early
+  the East, the federal chancellors in the West and after 1990. Every place has
+  its own chronicle (a sight names it, or uses its package's): Braunschweig's – early
   Brunswick under the Brunonen, Henry the Lion's residence, the Hanseatic town,
   the ducal residence, Napoleonic rule (Kingdom of Westphalia), the Duchy of
   Brunswick, the Free State, Nazi Germany, the occupation and Lower Saxony;
   counts, Welf dukes, a king, the free state's governments, Klagges, the British
   military government and Lower Saxony's minister-presidents. Era IDs differ
   between cities (Braunschweig's start with `bs-`).
-* **Cities in the list**: each city's sights, achievements and places of
-  remembrance stay together. The list (and the bottom bar's count) shows the
-  city you are in – `CaptureModel.follow`, from the play area containing your
-  position; elsewhere the last one, kept across launches – with a switch at
-  the top for the other; the timeline orders by that city's eras, the
-  statistics have a section per city. The maps show every city's sights.
+* **Regions in the list**: each region's (city's) sights, achievements and
+  places of remembrance stay together – the region its package names. The list
+  (and the bottom bar's count) shows the region you are in –
+  `CaptureModel.follow`, from the play area containing your position, else the
+  packages' region bounds; elsewhere the last one, kept across launches – with
+  a switch at the top for the others; the timeline orders by when each era
+  began, the statistics have a section per region. The maps show every
+  region's sights.
 * **Photorealistic 3D or photo**: an entry shows 3D only where it is
   photorealistic – Apple's 3D city model (satellite imagery on 3D buildings
   and terrain, `MKImageryMapConfiguration(elevationStyle: .realistic)`) in
@@ -539,10 +558,11 @@ keeps its own data and photos; nothing else depends on it.
 
 ## Achievements
 
-Goals made of sights (`MapQuestCore/Capture/Achievement.swift`,
-`<city>-achievements.json`; Berlin has 102, Braunschweig 33; each city's are
-resolved against its own sights only – `AchievementBook.merged` of one book per
-city – so Berlin's churches never include Braunschweig's). Each has a group, title,
+Goals made of sights (`MapQuestCore/Capture/Achievement.swift`, the packages'
+`achievements`; Berlin has 102, Braunschweig 33; each package's are resolved
+against its own scope only – its sights and those of the packages it includes,
+`AchievementBook.merged` of one book per package – so Berlin's churches never
+include Braunschweig's). Each has a group, title,
 description, SF Symbol and a **rule** that picks its sights from the catalog
 and the historical facts: categories (all churches, fountains, museums…),
 the era of the year built (the city's history, East and West Berlin apart), an

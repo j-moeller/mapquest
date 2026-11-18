@@ -12,8 +12,9 @@ struct MapIconFilter: Codable, Equatable {
     var hiddenCount: Int { hiddenSystems.count + hiddenCategories.count + (hidesQuestionMarks ? 1 : 0) }
 
     /// A question mark does not give away the kind of place: only its own switch hides it.
+    /// Categories a package declares go with the core category they belong to.
     func shows(_ pin: SightPin) -> Bool {
-        pin.isNearby ? !hidesQuestionMarks : !hiddenCategories.contains(pin.sight.category)
+        pin.isNearby ? !hidesQuestionMarks : !hiddenCategories.contains(pin.sight.category.core)
     }
 
     func shows(_ station: Station) -> Bool {

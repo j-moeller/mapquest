@@ -1,0 +1,790 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://github.com/j-moeller/mapquest/Packages/schema/mapquest-sights-1.schema.json",
+ "title": "MapQuest sight package (format mapquest-sights, version 1)",
+ "description": "One package, or several as a bundle (packages). See docs/09-sight-packages.md.",
+ "type": "object",
+ "required": [
+  "format"
+ ],
+ "properties": {
+  "format": {
+   "const": "mapquest-sights"
+  },
+  "formatVersion": {
+   "type": "integer",
+   "minimum": 1
+  }
+ },
+ "oneOf": [
+  {
+   "required": [
+    "packages"
+   ],
+   "properties": {
+    "packages": {
+     "type": "array",
+     "minItems": 1,
+     "items": {
+      "$ref": "#/$defs/package"
+     }
+    }
+   }
+  },
+  {
+   "allOf": [
+    {
+     "$ref": "#/$defs/package"
+    }
+   ],
+   "not": {
+    "required": [
+     "packages"
+    ]
+   }
+  }
+ ],
+ "$defs": {
+  "text": {
+   "oneOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "object",
+     "additionalProperties": {
+      "type": "string"
+     },
+     "minProperties": 1
+    }
+   ],
+   "description": "A text: a string (any language) or language codes to texts."
+  },
+  "bounds": {
+   "type": "object",
+   "required": [
+    "south",
+    "west",
+    "north",
+    "east"
+   ],
+   "properties": {
+    "south": {
+     "type": "number"
+    },
+    "west": {
+     "type": "number"
+    },
+    "north": {
+     "type": "number"
+    },
+    "east": {
+     "type": "number"
+    }
+   }
+  },
+  "package": {
+   "type": "object",
+   "required": [
+    "id",
+    "version",
+    "title"
+   ],
+   "properties": {
+    "id": {
+     "type": "string",
+     "minLength": 1
+    },
+    "version": {
+     "type": "string",
+     "minLength": 1
+    },
+    "title": {
+     "$ref": "#/$defs/text"
+    },
+    "summary": {
+     "$ref": "#/$defs/text"
+    },
+    "publisher": {
+     "type": "string"
+    },
+    "homepage": {
+     "type": "string",
+     "format": "uri"
+    },
+    "license": {
+     "type": "string"
+    },
+    "language": {
+     "type": "string"
+    },
+    "region": {
+     "type": "object",
+     "required": [
+      "id",
+      "name"
+     ],
+     "properties": {
+      "id": {
+       "type": "string",
+       "minLength": 1
+      },
+      "name": {
+       "$ref": "#/$defs/text"
+      },
+      "bounds": {
+       "$ref": "#/$defs/bounds"
+      }
+     }
+    },
+    "includes": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1
+     },
+     "uniqueItems": true
+    },
+    "categories": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/category"
+     }
+    },
+    "chronicles": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/chronicle"
+     }
+    },
+    "sights": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/sight"
+     }
+    },
+    "achievements": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/achievement"
+     }
+    },
+    "remembrance": {
+     "$ref": "#/$defs/remembrance"
+    },
+    "transit": {
+     "$ref": "#/$defs/transit"
+    }
+   }
+  },
+  "category": {
+   "type": "object",
+   "required": [
+    "id",
+    "title"
+   ],
+   "properties": {
+    "id": {
+     "type": "string",
+     "minLength": 1
+    },
+    "title": {
+     "$ref": "#/$defs/text"
+    },
+    "parent": {
+     "type": "string",
+     "minLength": 1
+    },
+    "symbol": {
+     "type": "string"
+    },
+    "remembrance": {
+     "type": "boolean"
+    }
+   }
+  },
+  "sight": {
+   "type": "object",
+   "required": [
+    "id",
+    "name",
+    "category",
+    "latitude",
+    "longitude"
+   ],
+   "properties": {
+    "id": {
+     "type": "string",
+     "minLength": 1
+    },
+    "name": {
+     "type": "string",
+     "minLength": 1
+    },
+    "names": {
+     "type": "object",
+     "additionalProperties": {
+      "type": "string"
+     }
+    },
+    "nameLanguage": {
+     "type": "string"
+    },
+    "category": {
+     "type": "string",
+     "minLength": 1
+    },
+    "latitude": {
+     "type": "number",
+     "minimum": -90,
+     "maximum": 90
+    },
+    "longitude": {
+     "type": "number",
+     "minimum": -180,
+     "maximum": 180
+    },
+    "radius": {
+     "type": "number",
+     "exclusiveMinimum": 0
+    },
+    "district": {
+     "type": "string"
+    },
+    "wikidata": {
+     "type": "string",
+     "pattern": "^[Qq][0-9]+$"
+    },
+    "sameAs": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1
+     }
+    },
+    "chronicle": {
+     "type": "string",
+     "minLength": 1
+    },
+    "entry": {
+     "type": "object",
+     "additionalProperties": {
+      "$ref": "#/$defs/entry"
+     }
+    },
+    "facts": {
+     "$ref": "#/$defs/facts"
+    }
+   }
+  },
+  "entry": {
+   "type": "object",
+   "required": [
+    "title",
+    "url",
+    "text"
+   ],
+   "properties": {
+    "title": {
+     "type": "string"
+    },
+    "language": {
+     "type": "string"
+    },
+    "url": {
+     "type": "string",
+     "format": "uri"
+    },
+    "text": {
+     "type": "string"
+    },
+    "image": {
+     "type": "object",
+     "required": [
+      "url",
+      "page",
+      "artist",
+      "license"
+     ],
+     "properties": {
+      "url": {
+       "type": "string"
+      },
+      "page": {
+       "type": "string"
+      },
+      "artist": {
+       "type": "string"
+      },
+      "license": {
+       "type": "string"
+      },
+      "licenseURL": {
+       "type": [
+        "string",
+        "null"
+       ]
+      }
+     }
+    }
+   }
+  },
+  "facts": {
+   "type": "object",
+   "properties": {
+    "year": {
+     "type": "integer"
+    },
+    "sector": {
+     "type": "string"
+    },
+    "wikidata": {
+     "type": "string"
+    },
+    "localized": {
+     "type": "object",
+     "additionalProperties": {
+      "type": "object",
+      "properties": {
+       "built": {
+        "type": "string"
+       },
+       "opened": {
+        "type": "string"
+       },
+       "styles": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "architects": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "commissionedBy": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "history": {
+        "type": "string"
+       }
+      }
+     }
+    }
+   }
+  },
+  "chronicle": {
+   "type": "object",
+   "required": [
+    "id",
+    "name",
+    "eras",
+    "rulers"
+   ],
+   "properties": {
+    "id": {
+     "type": "string",
+     "minLength": 1
+    },
+    "name": {
+     "$ref": "#/$defs/text"
+    },
+    "eras": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "required": [
+       "id",
+       "name",
+       "start"
+      ],
+      "properties": {
+       "id": {
+        "type": "string",
+        "minLength": 1
+       },
+       "name": {
+        "$ref": "#/$defs/text"
+       },
+       "years": {
+        "$ref": "#/$defs/text"
+       },
+       "summary": {
+        "$ref": "#/$defs/text"
+       },
+       "sector": {
+        "type": "string"
+       },
+       "monarchy": {
+        "type": "boolean"
+       },
+       "start": {
+        "type": "string",
+        "pattern": "^-?\\d{1,4}(-(0[1-9]|1[0-2]))?$",
+        "description": "YYYY or YYYY-MM"
+       }
+      }
+     }
+    },
+    "rulers": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "required": [
+       "name",
+       "era",
+       "start"
+      ],
+      "properties": {
+       "name": {
+        "type": "string"
+       },
+       "names": {
+        "type": "object",
+        "additionalProperties": {
+         "type": "string"
+        }
+       },
+       "nameLanguage": {
+        "type": "string"
+       },
+       "title": {
+        "$ref": "#/$defs/text"
+       },
+       "reign": {
+        "$ref": "#/$defs/text"
+       },
+       "era": {
+        "type": "string",
+        "minLength": 1
+       },
+       "start": {
+        "type": "string",
+        "pattern": "^-?\\d{1,4}(-(0[1-9]|1[0-2]))?$",
+        "description": "YYYY or YYYY-MM"
+       }
+      }
+     }
+    },
+    "division": {
+     "type": "object",
+     "required": [
+      "title",
+      "until",
+      "sectors"
+     ],
+     "properties": {
+      "title": {
+       "$ref": "#/$defs/text"
+      },
+      "until": {
+       "type": "integer"
+      },
+      "sectors": {
+       "type": "object",
+       "additionalProperties": {
+        "$ref": "#/$defs/text"
+       }
+      }
+     }
+    }
+   }
+  },
+  "achievement": {
+   "type": "object",
+   "required": [
+    "id",
+    "title",
+    "rule"
+   ],
+   "properties": {
+    "id": {
+     "type": "string",
+     "minLength": 1
+    },
+    "group": {
+     "type": "string",
+     "description": "milestones, collections, stories, lines, eras, styles, architects, districts (others: stories)"
+    },
+    "title": {
+     "$ref": "#/$defs/text"
+    },
+    "description": {
+     "$ref": "#/$defs/text"
+    },
+    "symbol": {
+     "type": "string"
+    },
+    "rule": {
+     "type": "object",
+     "minProperties": 1,
+     "properties": {
+      "categories": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1
+       }
+      },
+      "era": {
+       "type": "string",
+       "minLength": 1
+      },
+      "architect": {
+       "type": "string"
+      },
+      "commissionedBy": {
+       "type": "string"
+      },
+      "styles": {
+       "type": "array",
+       "items": {
+        "type": "string"
+       }
+      },
+      "district": {
+       "type": "string"
+      },
+      "sights": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1
+       }
+      },
+      "include": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1
+       }
+      },
+      "exclude": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1
+       }
+      },
+      "count": {
+       "type": "integer",
+       "minimum": 1
+      },
+      "all": {
+       "type": "boolean"
+      },
+      "places": {
+       "enum": [
+        "sights",
+        "stations"
+       ]
+      },
+      "line": {
+       "type": "string",
+       "minLength": 1
+      },
+      "system": {
+       "enum": [
+        "U",
+        "S"
+       ]
+      }
+     }
+    }
+   }
+  },
+  "remembrance": {
+   "type": "object",
+   "required": [
+    "chapters"
+   ],
+   "properties": {
+    "chapters": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "required": [
+       "id",
+       "title",
+       "text",
+       "places"
+      ],
+      "properties": {
+       "id": {
+        "type": "string",
+        "minLength": 1
+       },
+       "title": {
+        "$ref": "#/$defs/text"
+       },
+       "years": {
+        "$ref": "#/$defs/text"
+       },
+       "text": {
+        "$ref": "#/$defs/text"
+       },
+       "places": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "required": [
+          "sight",
+          "remembers"
+         ],
+         "properties": {
+          "sight": {
+           "type": "string",
+           "minLength": 1
+          },
+          "remembers": {
+           "$ref": "#/$defs/text"
+          }
+         }
+        }
+       }
+      }
+     }
+    },
+    "tours": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "required": [
+       "id",
+       "title",
+       "text",
+       "stops"
+      ],
+      "properties": {
+       "id": {
+        "type": "string",
+        "minLength": 1
+       },
+       "title": {
+        "$ref": "#/$defs/text"
+       },
+       "text": {
+        "$ref": "#/$defs/text"
+       },
+       "stops": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "minLength": 1
+        },
+        "minItems": 2
+       }
+      }
+     }
+    }
+   }
+  },
+  "transit": {
+   "type": "object",
+   "required": [
+    "stations",
+    "lines"
+   ],
+   "properties": {
+    "stations": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "required": [
+       "id",
+       "name",
+       "system",
+       "lines",
+       "latitude",
+       "longitude"
+      ],
+      "properties": {
+       "id": {
+        "type": "string",
+        "minLength": 1
+       },
+       "name": {
+        "type": "string"
+       },
+       "names": {
+        "type": "object",
+        "additionalProperties": {
+         "type": "string"
+        }
+       },
+       "system": {
+        "enum": [
+         "U",
+         "S"
+        ]
+       },
+       "lines": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "minLength": 1
+        }
+       },
+       "latitude": {
+        "type": "number"
+       },
+       "longitude": {
+        "type": "number"
+       },
+       "radius": {
+        "type": "number",
+        "exclusiveMinimum": 0
+       },
+       "district": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "lines": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "required": [
+       "id",
+       "system",
+       "colour",
+       "name",
+       "stations"
+      ],
+      "properties": {
+       "id": {
+        "type": "string",
+        "minLength": 1
+       },
+       "system": {
+        "enum": [
+         "U",
+         "S"
+        ]
+       },
+       "colour": {
+        "type": "string"
+       },
+       "name": {
+        "type": "string"
+       },
+       "stations": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "minLength": 1
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

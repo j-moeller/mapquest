@@ -25,7 +25,7 @@ gets its district.
 Usage: python3 Tools/transit/build_stations.py --routes build-stations/routes.json \\
            --additions Tools/transit/berlin_station_additions.csv \\
            --districts App/MapQuest/Resources/Berlin/berlin-districts.geojson \\
-           App/MapQuest/Resources/Berlin/berlin-stations.json
+           Packages/sources/berlin/berlin-stations.json
 """
 import argparse
 import csv

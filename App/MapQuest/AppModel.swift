@@ -1019,7 +1019,8 @@ final class AppModel: ObservableObject {
             samples: samples, track: track, captureLog: captures.log(for: profile.id),
             photoDirectory: CaptureModel.photoDirectory(for: profile.id),
             settings: try? JSONEncoder().encode(ExportedSettings(debug: debug, mapIcons: captures.iconFilter,
-                                                                 savesToPhotos: CaptureModel.savesToPhotos))
+                                                                 savesToPhotos: CaptureModel.savesToPhotos)),
+            sightPackages: captures.library.packages
         )
         let folder = FileManager.default.temporaryDirectory.appendingPathComponent("Export", isDirectory: true) // not localized: a folder
         try? FileManager.default.removeItem(at: folder)
@@ -1077,6 +1078,10 @@ final class AppModel: ObservableObject {
             try CaptureModel.restorePhotos(from: reader, sourceID: sourceID)
         }.value
         progress = 0.9
+        // The sight packages the captures are of (a newer installed version is kept).
+        if let packages = try reader.sightPackages() {
+            _ = try? captures.installPackages(from: packages)
+        }
         captures.adopt(log, sourceID: sourceID)
         // Gaps are looked for again in the restored area.
         UserDefaults.standard.removeObject(forKey: Self.gapsFilledKey(for: sourceID))

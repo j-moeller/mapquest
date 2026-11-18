@@ -16,6 +16,7 @@ The app has four major components:
 | **Location tracking** | Records the position about once per second in a compact track (≈ 6 bytes per fix); the positions that reveal new parts of the map drive the fog of war |
 | **Discovered area** | Turns stored positions into discovered-area polygons, merges adjacent areas into regions, keeps disconnected areas apart; it is a cache that can always be rebuilt from the positions |
 | **Capture** | 184 Berlin sights (all districts, the outer ones too) and 55 in Braunschweig – each city with its own entries, history (Braunschweig from the Brunonen and Henry the Lion to Lower Saxony), achievements and places of remembrance, shown where you are – show as a question mark within about 300 m, are discovered once you have been there (the radius view covers them) and captured when you photograph them from where you can see them; 343 U-Bahn and S-Bahn stations are collected just by going there: animations, a list of all sights, badges on the map and gems in 3D; 102 achievements (eras, architects, districts, collections, stories, lines, clubs and stages). Places of remembrance (memorials, memorial sites, cemeteries) are not part of the game: never captured or celebrated, in no achievement, their entries open to all, told in a tab of their own as a short history with walks |
+| **Sight packages** | The sights, their entries and history, achievements, places of remembrance and stations are not part of the app: they come from **sight packages**, JSON files (`.sights.json`) the app installs – from MapQuest or anyone else, added from a file or a link, removed in the menu. Packages compose (Berlin includes Berlin's churches, its places of remembrance and its transit, each also a package of its own) and may overlap: the same place is one sight, captured once; packages can add categories under the shared ones and bring their own achievements ([docs/09](docs/09-sight-packages.md)). MapQuest's Berlin and Braunschweig packages come with the app |
 | **Languages** | English and German (menu › Language: System, English, Deutsch), switched at once; names keep their German original next to the English one ("Brandenburg Gate · Brandenburger Tor", "Hauptbahnhof · Central Station"); entries, history, achievements and the remembrance guide in both languages ([docs/08](docs/08-localization.md)) |
 | **Map display** | 2D: a label-free base map with a black fog (80 %, blurred map underneath) drawn into it, the discovered area cut out; finished map pieces and drawn tiles are cached (memory and disk) and the next zoom levels prepared in the background, so zooming in and out does not wait. 3D: buildings that block the view; seen buildings are revealed |
 
@@ -101,9 +102,11 @@ simulator. `Tools/screenshots/make_screenshots.sh` makes them again.
   cities and districts; distance walked today, this week and all time;
   distance travelled and walked, time recorded and active days of the period shown;
   sights, stations and achievements); then *Recording*, *Data source*,
-  *Discovered area*, *Building data*, *Map data*, *Export and import* (everything
-  of a data source – positions, track, captures, photos, settings – as one ZIP
-  file, and back), the developer's *Debug
+  *Sight packages* (the installed packages by city – what each brings, what it
+  builds on, notes; add one from a file or a link, or one that comes with the
+  app; share or remove it), *Discovered area*, *Building data*, *Map data*,
+  *Export and import* (everything of a data source – positions, track,
+  captures, photos, settings, the sight packages – as one ZIP file, and back), the developer's *Debug
   settings* and deleting all data – each its own page. *Language* switches
   between the system's language, English and German.
 * **Sights**: come within about 300 m of one of 184 Berlin sights – from
@@ -207,7 +210,8 @@ Tools/check_bundle.sh
 The UI smoke test (`App/MapQuestUITests`, iPhone 13 mini) runs from Xcode
 (*Product › Test*); the remote-store tests need a running server
 ([docs/04](docs/04-remote-store.md)). The bundled city data is rebuilt with
-`Tools/berlin/build_buildings.sh` and `Tools/cities/build_city.sh`.
+`Tools/berlin/build_buildings.sh` and `Tools/cities/build_city.sh`; the sight
+packages with `python3 Tools/packages/build_packages.py` (docs/09).
 
 ## Repository layout
 
@@ -216,7 +220,8 @@ The UI smoke test (`App/MapQuestUITests`, iPhone 13 mini) runs from Xcode
 | `MapQuestKit/` | Swift package: data model, SQLite store, Clipper2 polygon engine, discovery |
 | `App/MapQuest/` | The iOS app (SwiftUI, MapKit, Core Location) |
 | `App/Simulation/` | GPX walks for the iOS Simulator |
-| `Tools/` | Data preparation scripts (Berlin and Lower Saxony city data, app icon), App Store mock-ups (`Tools/screenshots`) |
+| `Packages/` | Sight packages: MapQuest's Berlin and Braunschweig packages (`*.sights.json`, each part in `parts/`), their sources (`sources/<city>/`), the JSON Schema (`schema/`) and an example third-party package (`examples/`) |
+| `Tools/` | Data preparation scripts (Berlin and Lower Saxony city data, sights, transit, sight packages – `Tools/packages/build_packages.py` –, app icon), App Store mock-ups (`Tools/screenshots`) |
 | `Server/` | Remote store: PostgreSQL schema and reference REST server |
 | `docs/` | Literature review, architecture, data sources |
 | `project.yml` | XcodeGen project specification |
@@ -231,6 +236,7 @@ The UI smoke test (`App/MapQuestUITests`, iPhone 13 mini) runs from Xcode
 * [Braunschweig data](docs/06-braunschweig-data.md)
 * [Peine data](docs/07-peine-data.md)
 * [Languages: English and German](docs/08-localization.md)
+* [Sight packages: the format, composition and overlap](docs/09-sight-packages.md)
 
 ## Status
 
@@ -248,6 +254,7 @@ The UI smoke test (`App/MapQuestUITests`, iPhone 13 mini) runs from Xcode
 - [x] Fog of war everywhere; 3D data downloads only around the bundled cities
 - [x] Peine as a third city, from official data only (docs/07)
 - [x] Capture component: Berlin sights captured by uncovering them
+- [x] Sight packages: sights and everything about them as installable, composable JSON packages (docs/09)
 
 ## Known limitations and next steps
 

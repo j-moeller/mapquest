@@ -26,11 +26,11 @@ styles, clients, notes on architects) from berlin_sight_history_de.csv – every
 phrase needs a row there – and the history from the German article.
 
 Usage: pip install mwparserfromhell
-       python3 Tools/capture/fetch_sight_history.py App/MapQuest/Resources/Berlin/berlin-sights.json \\
-           App/MapQuest/Resources/Berlin/berlin-sight-info.json \\
-           App/MapQuest/Resources/Berlin/berlin-sight-history.json --cache build-sights/wiki \\
-           --german-info App/MapQuest/Resources/Berlin/berlin-sight-info-de.json \\
-           --german App/MapQuest/Resources/Berlin/berlin-sight-history-de.json
+       python3 Tools/capture/fetch_sight_history.py Packages/sources/berlin/berlin-sights.json \\
+           Packages/sources/berlin/berlin-sight-info.json \\
+           Packages/sources/berlin/berlin-sight-history.json --cache build-sights/wiki \\
+           --german-info Packages/sources/berlin/berlin-sight-info-de.json \\
+           --german Packages/sources/berlin/berlin-sight-history-de.json
 """
 import argparse
 import csv
