@@ -1,0 +1,537 @@
+{
+ "source": "Curated list (Tools/capture/berlin_sights.csv), positions from OpenStreetMap points of interest via OpenFreeMap vector tiles (© OpenStreetMap contributors, ODbL); positions marked @manual from Wikidata (CC0)",
+ "sights": [
+  {
+   "id": "braunschweiger-dom",
+   "name": "Braunschweiger Dom",
+   "nameEn": "Brunswick Cathedral",
+   "category": "church",
+   "latitude": 52.264241,
+   "longitude": 10.523856,
+   "radius": 40,
+   "district": "Mitte"
+  },
+  {
+   "id": "burg-dankwarderode",
+   "name": "Burg Dankwarderode",
+   "nameEn": "Dankwarderode Castle",
+   "category": "palace",
+   "latitude": 52.264779,
+   "longitude": 10.524167,
+   "radius": 40,
+   "district": "Mitte"
+  },
+  {
+   "id": "burgloewe",
+   "name": "Braunschweiger Löwe",
+   "nameEn": "Brunswick Lion",
+   "category": "monument",
+   "latitude": 52.264681,
+   "longitude": 10.523781,
+   "radius": 25,
+   "district": "Mitte"
+  },
+  {
+   "id": "burgplatz",
+   "name": "Burgplatz",
+   "category": "square",
+   "latitude": 52.26452,
+   "longitude": 10.523331,
+   "radius": 60,
+   "district": "Mitte"
+  },
+  {
+   "id": "landesmuseum",
+   "name": "Braunschweigisches Landesmuseum",
+   "nameEn": "Brunswick State Museum",
+   "category": "museum",
+   "latitude": 52.264684,
+   "longitude": 10.522853,
+   "radius": 40,
+   "district": "Mitte"
+  },
+  {
+   "id": "huneborstelsches-haus",
+   "name": "Huneborstelsches Haus",
+   "category": "landmark",
+   "latitude": 52.26496,
+   "longitude": 10.523492,
+   "radius": 25,
+   "district": "Mitte"
+  },
+  {
+   "id": "altstadtmarkt",
+   "name": "Altstadtmarkt",
+   "category": "square",
+   "latitude": 52.262914,
+   "longitude": 10.518009,
+   "radius": 60,
+   "district": "Mitte"
+  },
+  {
+   "id": "altstadtrathaus",
+   "name": "Altstadtrathaus",
+   "nameEn": "Old Town Hall",
+   "category": "government",
+   "latitude": 52.262957,
+   "longitude": 10.516695,
+   "radius": 40,
+   "district": "Mitte"
+  },
+  {
+   "id": "martinikirche",
+   "name": "St. Martini",
+   "nameEn": "St. Martin's Church",
+   "category": "church",
+   "latitude": 52.262547,
+   "longitude": 10.516512,
+   "radius": 40,
+   "district": "Mitte"
+  },
+  {
+   "id": "gewandhaus",
+   "name": "Gewandhaus",
+   "category": "landmark",
+   "latitude": 52.26257,
+   "longitude": 10.517489,
+   "radius": 30,
+   "district": "Mitte"
+  },
+  {
+   "id": "kohlmarkt",
+   "name": "Kohlmarkt",
+   "category": "square",
+   "latitude": 52.262241,
+   "longitude": 10.51993,
+   "radius": 50,
+   "district": "Mitte"
+  },
+  {
+   "id": "eulenspiegelbrunnen",
+   "name": "Eulenspiegelbrunnen",
+   "nameEn": "Till Eulenspiegel Fountain",
+   "category": "fountain",
+   "latitude": 52.265406,
+   "longitude": 10.515246,
+   "radius": 25,
+   "district": "Mitte"
+  },
+  {
+   "id": "heinrichsbrunnen",
+   "name": "Heinrichsbrunnen",
+   "nameEn": "Henry the Lion Fountain",
+   "category": "fountain",
+   "latitude": 52.267156,
+   "longitude": 10.523996,
+   "radius": 25,
+   "district": "Mitte"
+  },
+  {
+   "id": "hagenmarkt",
+   "name": "Hagenmarkt",
+   "category": "square",
+   "latitude": 52.266723,
+   "longitude": 10.524039,
+   "radius": 50,
+   "district": "Mitte"
+  },
+  {
+   "id": "katharinenkirche",
+   "name": "St. Katharinen",
+   "nameEn": "St. Catherine's Church",
+   "category": "church",
+   "latitude": 52.267576,
+   "longitude": 10.525315,
+   "radius": 40,
+   "district": "Mitte"
+  },
+  {
+   "id": "andreaskirche",
+   "name": "St. Andreas",
+   "nameEn": "St. Andrew's Church",
+   "category": "church",
+   "latitude": 52.268016,
+   "longitude": 10.520107,
+   "radius": 40,
+   "district": "Mitte"
+  },
+  {
+   "id": "liberei",
+   "name": "Liberei",
+   "category": "landmark",
+   "latitude": 52.267987,
+   "longitude": 10.520911,
+   "radius": 25,
+   "district": "Mitte"
+  },
+  {
+   "id": "petrikirche",
+   "name": "St. Petri",
+   "nameEn": "St. Peter's Church",
+   "category": "church",
+   "latitude": 52.266119,
+   "longitude": 10.515965,
+   "radius": 30,
+   "district": "Mitte"
+  },
+  {
+   "id": "michaeliskirche",
+   "name": "St. Michaelis",
+   "nameEn": "St. Michael's Church",
+   "category": "church",
+   "latitude": 52.260583,
+   "longitude": 10.514908,
+   "radius": 30,
+   "district": "Mitte"
+  },
+  {
+   "id": "bruedernkirche",
+   "name": "Brüdernkirche",
+   "nameEn": "Franciscan Church",
+   "category": "church",
+   "latitude": 52.265534,
+   "longitude": 10.518985,
+   "radius": 30,
+   "district": "Mitte"
+  },
+  {
+   "id": "aegidienkirche",
+   "name": "St. Aegidien",
+   "nameEn": "St. Giles' Church",
+   "category": "church",
+   "latitude": 52.259739,
+   "longitude": 10.525326,
+   "radius": 40,
+   "district": "Mitte"
+  },
+  {
+   "id": "magnikirche",
+   "name": "St. Magni",
+   "nameEn": "St. Magnus' Church",
+   "category": "church",
+   "latitude": 52.262405,
+   "longitude": 10.530165,
+   "radius": 30,
+   "district": "Mitte"
+  },
+  {
+   "id": "paulikirche",
+   "name": "St. Pauli",
+   "nameEn": "St. Paul's Church",
+   "category": "church",
+   "latitude": 52.26926,
+   "longitude": 10.542551,
+   "radius": 30,
+   "district": "Östliches Ringgebiet"
+  },
+  {
+   "id": "riddagshausen",
+   "name": "Klosterkirche Riddagshausen",
+   "nameEn": "Riddagshausen Abbey",
+   "category": "church",
+   "latitude": 52.267425,
+   "longitude": 10.576959,
+   "radius": 50,
+   "district": "Wabe-Schunter-Beberbach"
+  },
+  {
+   "id": "neues-rathaus",
+   "name": "Neues Rathaus",
+   "nameEn": "New Town Hall",
+   "category": "government",
+   "latitude": 52.264635,
+   "longitude": 10.524983,
+   "radius": 50,
+   "district": "Mitte"
+  },
+  {
+   "id": "residenzschloss",
+   "name": "Residenzschloss",
+   "nameEn": "Brunswick Palace",
+   "category": "palace",
+   "latitude": 52.263325,
+   "longitude": 10.527402,
+   "radius": 60,
+   "district": "Mitte"
+  },
+  {
+   "id": "schloss-richmond",
+   "name": "Schloss Richmond",
+   "nameEn": "Richmond Palace",
+   "category": "palace",
+   "latitude": 52.24007,
+   "longitude": 10.526742,
+   "radius": 40,
+   "district": "Braunschweig-Süd"
+  },
+  {
+   "id": "staatstheater",
+   "name": "Staatstheater Braunschweig",
+   "nameEn": "Brunswick State Theatre",
+   "category": "culture",
+   "latitude": 52.265941,
+   "longitude": 10.532311,
+   "radius": 40,
+   "district": "Mitte"
+  },
+  {
+   "id": "stadthalle",
+   "name": "Stadthalle Braunschweig",
+   "category": "culture",
+   "latitude": 52.257736,
+   "longitude": 10.540159,
+   "radius": 50,
+   "district": "Mitte"
+  },
+  {
+   "id": "brunsviga",
+   "name": "Brunsviga",
+   "category": "culture",
+   "latitude": 52.275146,
+   "longitude": 10.543962,
+   "radius": 30,
+   "district": "Östliches Ringgebiet"
+  },
+  {
+   "id": "herzog-anton-ulrich-museum",
+   "name": "Herzog Anton Ulrich-Museum",
+   "nameEn": "Duke Anton Ulrich Museum",
+   "category": "museum",
+   "latitude": 52.263683,
+   "longitude": 10.532654,
+   "radius": 40,
+   "district": "Mitte"
+  },
+  {
+   "id": "staedtisches-museum",
+   "name": "Städtisches Museum Braunschweig",
+   "nameEn": "Municipal Museum",
+   "category": "museum",
+   "latitude": 52.261338,
+   "longitude": 10.531844,
+   "radius": 40,
+   "district": "Mitte"
+  },
+  {
+   "id": "museum-fuer-photographie",
+   "name": "Museum für Photographie Braunschweig",
+   "nameEn": "Museum of Photography",
+   "category": "museum",
+   "latitude": 52.262665,
+   "longitude": 10.535245,
+   "radius": 30,
+   "district": "Mitte"
+  },
+  {
+   "id": "raabe-haus",
+   "name": "Raabe-Haus",
+   "nameEn": "Raabe House",
+   "category": "museum",
+   "latitude": 52.259395,
+   "longitude": 10.540604,
+   "radius": 30,
+   "district": "Mitte"
+  },
+  {
+   "id": "salve-hospes",
+   "name": "Haus Salve Hospes",
+   "category": "museum",
+   "latitude": 52.257841,
+   "longitude": 10.52516,
+   "radius": 30,
+   "district": "Mitte"
+  },
+  {
+   "id": "gaussdenkmal",
+   "name": "Gaußdenkmal",
+   "nameEn": "Gauss Monument",
+   "category": "monument",
+   "latitude": 52.271873,
+   "longitude": 10.522719,
+   "radius": 25,
+   "district": "Mitte"
+  },
+  {
+   "id": "loewenwall",
+   "name": "Löwenwall",
+   "category": "square",
+   "latitude": 52.259033,
+   "longitude": 10.531023,
+   "radius": 60,
+   "district": "Mitte"
+  },
+  {
+   "id": "rizzi-haus",
+   "name": "Happy Rizzi House",
+   "category": "landmark",
+   "latitude": 52.262402,
+   "longitude": 10.528818,
+   "radius": 25,
+   "district": "Mitte"
+  },
+  {
+   "id": "jakob-kemenate",
+   "name": "Jakob-Kemenate",
+   "nameEn": "Jakob Bower",
+   "category": "landmark",
+   "latitude": 52.261768,
+   "longitude": 10.51766,
+   "radius": 20,
+   "district": "Mitte"
+  },
+  {
+   "id": "wasserturm-giersberg",
+   "name": "Wasserturm auf dem Giersberg",
+   "nameEn": "Giersberg Water Tower",
+   "category": "landmark",
+   "latitude": 52.263611,
+   "longitude": 10.537778,
+   "radius": 30,
+   "district": "Östliches Ringgebiet"
+  },
+  {
+   "id": "tu-altgebaeude",
+   "name": "Altgebäude der TU Braunschweig",
+   "nameEn": "TU Braunschweig Main Building",
+   "category": "landmark",
+   "latitude": 52.273127,
+   "longitude": 10.528073,
+   "radius": 50,
+   "district": "Nordstadt-Schunteraue"
+  },
+  {
+   "id": "braunschweig-hauptbahnhof",
+   "name": "Braunschweig Hauptbahnhof",
+   "nameEn": "Brunswick Central Station",
+   "category": "landmark",
+   "latitude": 52.252144,
+   "longitude": 10.540336,
+   "radius": 60,
+   "district": "Mitte"
+  },
+  {
+   "id": "buergerpark",
+   "name": "Bürgerpark",
+   "category": "park",
+   "latitude": 52.256965,
+   "longitude": 10.52391,
+   "radius": 150,
+   "district": "Mitte"
+  },
+  {
+   "id": "theaterpark",
+   "name": "Theaterpark",
+   "category": "park",
+   "latitude": 52.267425,
+   "longitude": 10.532139,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "museumpark",
+   "name": "Museumpark",
+   "category": "park",
+   "latitude": 52.264687,
+   "longitude": 10.532831,
+   "radius": 60,
+   "district": "Mitte"
+  },
+  {
+   "id": "inselwallpark",
+   "name": "Inselwallpark",
+   "category": "park",
+   "latitude": 52.270958,
+   "longitude": 10.518438,
+   "radius": 80,
+   "district": "Mitte"
+  },
+  {
+   "id": "prinz-albrecht-park",
+   "name": "Prinz-Albrecht-Park",
+   "category": "park",
+   "latitude": 52.267363,
+   "longitude": 10.555168,
+   "radius": 150,
+   "district": "Östliches Ringgebiet"
+  },
+  {
+   "id": "botanischer-garten-braunschweig",
+   "name": "Botanischer Garten Braunschweig",
+   "nameEn": "Botanical Garden",
+   "category": "park",
+   "latitude": 52.270803,
+   "longitude": 10.532863,
+   "radius": 80,
+   "district": "Nordstadt-Schunteraue"
+  },
+  {
+   "id": "arche-noah-zoo",
+   "name": "Arche Noah Zoo",
+   "nameEn": "Noah's Ark Zoo",
+   "category": "zoo",
+   "latitude": 52.22195,
+   "longitude": 10.51522,
+   "radius": 80,
+   "district": "Braunschweig-Süd"
+  },
+  {
+   "id": "volkswagen-halle",
+   "name": "Volkswagen Halle",
+   "category": "stadium",
+   "latitude": 52.258127,
+   "longitude": 10.518363,
+   "radius": 50,
+   "district": "Westliches Ringgebiet"
+  },
+  {
+   "id": "eintracht-stadion",
+   "name": "Eintracht-Stadion",
+   "nameEn": "Eintracht Stadium",
+   "category": "stadium",
+   "latitude": 52.290101,
+   "longitude": 10.521469,
+   "radius": 80,
+   "district": "Nordstadt-Schunteraue"
+  },
+  {
+   "id": "magnifriedhof",
+   "name": "Magnifriedhof",
+   "nameEn": "St. Magnus Cemetery",
+   "category": "cemetery",
+   "latitude": 52.257648,
+   "longitude": 10.536827,
+   "radius": 60,
+   "district": "Mitte"
+  },
+  {
+   "id": "hauptfriedhof",
+   "name": "Hauptfriedhof Braunschweig",
+   "nameEn": "Main Cemetery",
+   "category": "cemetery",
+   "latitude": 52.257388,
+   "longitude": 10.558628,
+   "radius": 150,
+   "district": "Mitte"
+  },
+  {
+   "id": "juedischer-friedhof",
+   "name": "Jüdischer Friedhof Braunschweig",
+   "nameEn": "Jewish Cemetery",
+   "category": "cemetery",
+   "latitude": 52.256012,
+   "longitude": 10.56174,
+   "radius": 40,
+   "district": "Mitte"
+  },
+  {
+   "id": "gedenkstaette-schillstrasse",
+   "name": "Gedenkstätte KZ-Außenlager Schillstraße",
+   "nameEn": "Schillstrasse Concentration Camp Memorial",
+   "category": "memorial",
+   "latitude": 52.256643,
+   "longitude": 10.541682,
+   "radius": 30,
+   "district": "Mitte"
+  }
+ ]
+}

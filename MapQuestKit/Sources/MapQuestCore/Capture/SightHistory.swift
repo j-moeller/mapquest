@@ -15,7 +15,7 @@ public enum BerlinSector: String, Codable, Hashable, Sendable {
 /// A sight's historical facts, unlocked with its entry: when it was built and
 /// opened, its architectural style, who designed and who commissioned it, and the
 /// history of the place. The era and the ruler at the time follow from `year`
-/// (`BerlinHistory`).
+/// and the city's history (`CityHistory`: Berlin's, Braunschweig's).
 public struct SightHistory: Codable, Hashable, Sendable {
     /// The year it was built, laid out or founded – the year its era and ruler are taken from.
     public var year: Int?
@@ -35,6 +35,8 @@ public struct SightHistory: Codable, Hashable, Sendable {
     public var sector: BerlinSector?
     /// The Wikidata item the facts were checked against.
     public var wikidata: URL?
+    /// The city whose history it belongs to (set by `SightHistoryCatalog.decode`; Berlin without one).
+    public var city: String?
 
     public init(year: Int? = nil, built: String? = nil, opened: String? = nil, styles: [String] = [],
                 architects: [String] = [], commissionedBy: [String] = [], history: String? = nil,
@@ -73,9 +75,9 @@ public struct SightHistory: Codable, Hashable, Sendable {
             .filter { !$0.isEmpty }
     }
 
-    /// The era and the ruler when it was built (Berlin).
+    /// The era and the ruler when it was built, in its city's history.
     public var context: HistoricalContext? {
-        year.flatMap { BerlinHistory.context(in: $0, sector: sector) }
+        year.flatMap { CityHistory.of(city: city).context(in: $0, sector: sector) }
     }
 
     /// `built` as a phrase: "Built 1788–1791", "Laid out from 1741" ("Erbaut 1788–1791",
@@ -109,10 +111,15 @@ public struct SightHistoryCatalog: Sendable {
         self.entries = entries
     }
 
-    /// Reads `{"license": …, "entries": {"<sight id>": {year, built, opened, styles, …}}}`.
-    public static func decode(_ data: Data) throws -> SightHistoryCatalog {
+    /// Reads `{"license": …, "entries": {"<sight id>": {year, built, opened, styles, …}}}`;
+    /// `city`: whose history the entries belong to (Berlin's without one).
+    public static func decode(_ data: Data, city: String? = nil) throws -> SightHistoryCatalog {
         struct Document: Decodable { var entries: [String: SightHistory] }
-        return SightHistoryCatalog(entries: try JSONDecoder().decode(Document.self, from: data).entries)
+        var entries = try JSONDecoder().decode(Document.self, from: data).entries
+        if let city {
+            for id in entries.keys { entries[id]?.city = city }
+        }
+        return SightHistoryCatalog(entries: entries)
     }
 
     public static func merged(_ catalogs: [SightHistoryCatalog]) -> SightHistoryCatalog {

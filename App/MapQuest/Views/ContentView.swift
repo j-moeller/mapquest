@@ -107,6 +107,13 @@ struct ContentView: View {
         }
         .animation(.easeInOut(duration: 0.25), value: model.recordingSummary)
         .task { await model.recordingChanged(isOn: tracker.isTrackingEnabled, captures: captures) }
+        // The list shows the city you are in.
+        .onReceive(tracker.$lastLocation) { location in
+            guard let location else { return }
+            let coordinate = GeoCoordinate(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+            guard let area = model.cities.first(where: { $0.contains(coordinate) }) else { return }
+            captures.follow(Cities.all.first { $0.name == area.name }?.id)
+        }
         .onChange(of: tracker.isTrackingEnabled) { _, on in
             Task { await model.recordingChanged(isOn: on, captures: captures) }
         }
@@ -233,9 +240,9 @@ struct BottomBar: View {
                             }
                         }
                     VStack(alignment: .leading, spacing: 0) {
-                        Text(Formatters.number(captures.capturedCount))
+                        Text(Formatters.number(captures.capturedCount(in: captures.cityID)))
                             .font(.title3.monospacedDigit().bold())
-                        Text(trn("capture", "captures", captures.capturedCount))
+                        Text(trn("capture", "captures", captures.capturedCount(in: captures.cityID)))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -243,7 +250,8 @@ struct BottomBar: View {
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(tr("{0} of {1} sights captured", captures.capturedCount, captures.gameSightCount))
+            .accessibilityLabel(tr("{0} of {1} sights captured", captures.capturedCount(in: captures.cityID),
+                                   captures.gameSightCount(in: captures.cityID)))
             .accessibilityHint(tr("Opens the sights and achievements"))
             Spacer(minLength: 8)
             if model.isBusy || model.progress != nil || model.viewProgress != nil || model.dataRefresh != nil {

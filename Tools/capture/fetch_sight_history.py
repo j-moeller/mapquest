@@ -385,7 +385,7 @@ def main():
               f"{('; '.join(record['architects']) or '-')[:30]:30} {('; '.join(record['commissionedBy']) or '-')[:24]:24} "
               f"{len(record['history'] or '')} {record['sector']}")
     document = {
-        "license": "Facts: hand-checked (Tools/capture/berlin_sight_history.csv), Wikidata (CC0) and Wikipedia infoboxes; "
+        "license": f"Facts: hand-checked (Tools/capture/{args.facts.name}), Wikidata (CC0) and Wikipedia infoboxes; "
                    "history texts: Wikipedia (CC BY-SA 4.0), from the article of the sight's entry.",
         "entries": result,
     }
@@ -421,7 +421,7 @@ def write_german(args, result: dict) -> None:
             print(f"no German for {field}: {value}", file=sys.stderr)
         sys.exit(f"{len(missing)} phrases without German in {args.translations}")
     document = {
-        "license": "Fakten: von Hand geprüft (Tools/capture/berlin_sight_history.csv, übersetzt in berlin_sight_history_de.csv), "
+        "license": f"Fakten: von Hand geprüft (Tools/capture/{args.facts.name}, übersetzt in {args.translations.name}), "
                    "Wikidata (CC0) und Wikipedia-Infoboxen; Geschichte: Wikipedia (CC BY-SA 4.0), aus dem deutschen Artikel.",
         "entries": german,
     }

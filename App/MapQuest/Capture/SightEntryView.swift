@@ -365,7 +365,8 @@ struct SightEntryView: View {
                     .font(.subheadline)
                     .foregroundStyle(Color.nearbySight)
             }
-            Text(tr("Go there to discover it: once the circles of the radius view cover the sight, it appears on your map and its entry opens here – with when it was built and by whom, who ruled Berlin then, and the history of the place. Then photograph it from where you can see it to capture it."))
+            Text(tr("Go there to discover it: once the circles of the radius view cover the sight, it appears on your map and its entry opens here – with when it was built and by whom, who ruled {0} then, and the history of the place. Then photograph it from where you can see it to capture it.",
+                    captures.sightCities.first { $0.id == captures.city(of: sight.id) }?.name ?? ""))
                 .foregroundStyle(.secondary)
             if let location = tracker.lastLocation {
                 let meters = location.distance(from: CLLocation(latitude: sight.latitude, longitude: sight.longitude))
@@ -498,7 +499,8 @@ struct SightHistoryFacts: View {
     }
 
     static func isMonarchy(_ era: HistoricalEra) -> Bool {
-        ["margraviate", "electorate", "prussia", "empire"].contains(era.id)
+        ["margraviate", "electorate", "prussia", "empire",
+         "bs-early", "bs-welf", "bs-hanse", "bs-residence", "bs-french", "bs-duchy"].contains(era.id) // not localized: era IDs
     }
 
     private func fact(_ title: String, _ value: String, detail: String? = nil, symbol: String) -> some View {

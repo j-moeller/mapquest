@@ -1,0 +1,66 @@
+{
+  "about": "Places of remembrance in Braunschweig, as a short history and as a walk. They are not part of the game. Each place of remembrance (category memorial or cemetery in braunschweig-sights.json) is in exactly one chapter.",
+  "chapters": [
+    {
+      "id": "bs-camps",
+      "title": "Forced labour and the camps",
+      "years": "1939–1945",
+      "text": "During the war, thousands of men and women from occupied Europe had to do forced labour in Brunswick's factories. In the last years of the war, concentration camp prisoners were brought into the city for the arms industry. At the cemetery on the Hochstraße, a memorial opened in 2001 remembers forced labourers and their infants who died here.",
+      "places": [
+        {
+          "sight": "gedenkstaette-schillstrasse",
+          "remembers": "From 1944 to 1945 a subcamp of the Neuengamme concentration camp stood here; its prisoners had to do forced labour for the Büssing truck works. A memorial on the site tells their story."
+        }
+      ]
+    },
+    {
+      "id": "bs-jewish",
+      "title": "The persecution of the Jews",
+      "years": "1933–1945",
+      "text": "Under the Nazi regime Brunswick's Jews were deprived of their rights, driven out, deported and murdered. Their synagogue, consecrated in 1875, was devastated in the pogrom of November 1938; in 1940 its remains were removed and a bunker built on the site.",
+      "places": [
+        {
+          "sight": "juedischer-friedhof",
+          "remembers": "The cemetery of Brunswick's Jewish community, where generations of its families are buried."
+        }
+      ]
+    },
+    {
+      "id": "bs-war",
+      "title": "War and destruction",
+      "years": "1939–1945",
+      "text": "Air raids struck the city again and again. In the night of 14 to 15 October 1944 a firestorm destroyed most of the medieval centre; many of Brunswick's people were killed.",
+      "places": [
+        {
+          "sight": "hauptfriedhof",
+          "remembers": "Among its graves are those of many who were killed in the air raids on the city, most of them in the night of October 1944."
+        }
+      ]
+    },
+    {
+      "id": "bs-rest",
+      "title": "Resting places",
+      "years": "",
+      "text": "The old cemeteries keep the memory of the city's people – among them one of the great minds of the Enlightenment.",
+      "places": [
+        {
+          "sight": "magnifriedhof",
+          "remembers": "Gotthold Ephraim Lessing, the poet and thinker of the Enlightenment, who died in Brunswick in 1781, is buried here."
+        }
+      ]
+    }
+  ],
+  "tours": [
+    {
+      "id": "bs-south-east",
+      "title": "A walk in the south-east",
+      "text": "From Lessing's grave past the Jewish cemetery and the main cemetery to the memorial in the Schillstraße: the Enlightenment, the persecuted, the dead of the war, the camp.",
+      "stops": [
+        "magnifriedhof",
+        "juedischer-friedhof",
+        "hauptfriedhof",
+        "gedenkstaette-schillstrasse"
+      ]
+    }
+  ]
+}

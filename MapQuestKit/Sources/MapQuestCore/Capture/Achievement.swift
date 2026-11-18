@@ -36,7 +36,7 @@ public enum PlaceKind: String, Codable, Hashable, Sendable {
 /// (`places: stations`, `line`, `system`) pick stations: a line's in its order.
 public struct AchievementRule: Codable, Hashable, Sendable {
     public var categories: [SightCategory]?
-    /// `HistoricalEra.id` of the year it was built (with its sector while Berlin was divided).
+    /// `HistoricalEra.id` of the year it was built, in its city's history (with its sector while Berlin was divided).
     public var era: String?
     public var architect: String?
     public var commissionedBy: String?
@@ -192,6 +192,16 @@ public struct AchievementBook: Sendable {
     public let entries: [Entry]
     /// Achievements left out because their rule picks fewer than two sights.
     public let skipped: [String]
+
+    /// The achievements of several cities, each resolved against its own sights.
+    public static func merged(_ books: [AchievementBook]) -> AchievementBook {
+        AchievementBook(entries: books.flatMap(\.entries), skipped: books.flatMap(\.skipped))
+    }
+
+    private init(entries: [Entry], skipped: [String]) {
+        self.entries = entries
+        self.skipped = skipped
+    }
 
     public init(achievements: [Achievement], catalog: SightCatalog, histories: SightHistoryCatalog,
                 stations: StationCatalog = StationCatalog()) {

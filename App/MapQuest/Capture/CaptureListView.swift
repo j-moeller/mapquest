@@ -53,6 +53,12 @@ struct CaptureListView: View {
     @AppStorage("sightListOrder") private var order: Order = .nearby
     @AppStorage("achievementFilter") private var filter: AchievementFilter = .all
 
+    /// The city shown (`CaptureModel.cityID`).
+    private var city: String { captures.cityID }
+    private var cityName: String { captures.currentCity?.name ?? "" }
+    /// The U-Bahn and S-Bahn stations of the city shown.
+    private var stationsInCity: [Station] { captures.stations.stations.filter { captures.city(ofStation: $0) == city } }
+
     var body: some View {
         NavigationStack {
             List {
@@ -65,6 +71,17 @@ struct CaptureListView: View {
                     .pickerStyle(.segmented)
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets())
+                    // The city you are in, chosen by itself; switch to look at another.
+                    if captures.sightCities.count > 1 {
+                        Picker(tr("City"), selection: $captures.cityID) {
+                            ForEach(captures.sightCities) { city in
+                                Text(city.name).tag(city.id)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        .listRowBackground(Color.clear)
+                        .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0))
+                    }
                 }
                 switch tab {
                 case .sights:
@@ -89,13 +106,15 @@ struct CaptureListView: View {
     private var sightSections: some View {
         Section {
             VStack(alignment: .leading, spacing: 8) {
-                Text(tr("{0} of {1} sights captured", captures.capturedCount, captures.gameSightCount))
+                Text(tr("{0} of {1} sights captured", captures.capturedCount(in: city), captures.gameSightCount(in: city)))
                     .font(.headline)
-                Text(tr("{0} discovered · {1} of {2} stations collected", captures.discoveredCount,
-                        captures.collectedStationCount, captures.stations.count))
+                Text(stationsInCity.isEmpty
+                     ? tr("{0} discovered", captures.discoveredCount(in: city))
+                     : tr("{0} discovered · {1} of {2} stations collected", captures.discoveredCount(in: city),
+                          stationsInCity.filter { captures.log.stations[$0.id] != nil }.count, stationsInCity.count))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
-                ProgressView(value: Double(captures.capturedCount), total: Double(max(captures.gameSightCount, 1)))
+                ProgressView(value: Double(captures.capturedCount(in: city)), total: Double(max(captures.gameSightCount(in: city), 1)))
                     .tint(.orange)
                 Picker(tr("Order"), selection: $order) {
                     ForEach(Order.allCases) { order in
@@ -109,7 +128,7 @@ struct CaptureListView: View {
         } footer: {
             Text(order == .nearby
                  ? tr("Once you come within about 300 m of a sight, a question mark marks it on your map. It is discovered once you have been there – when the circles of the radius view cover it (large parks and squares: when they reach into them) – and its entry opens. Photograph it from where you can see it to capture it. Stations are collected by going there. Places of remembrance are not part of the game: they are under Remembrance.")
-                 : tr("Berlin's history in its sights, by the year they were built. Discover a sight to learn who built it, who ruled at the time, and its story. Places of remembrance stand in their year, in grey: they are not part of the game."))
+                 : tr("The history of {0} in its sights, by the year they were built. Discover a sight to learn who built it, who ruled at the time, and its story. Places of remembrance stand in their year, in grey: they are not part of the game.", cityName))
         }
         switch order {
         case .nearby:
@@ -137,7 +156,7 @@ struct CaptureListView: View {
 
     @ViewBuilder
     private var achievementSections: some View {
-        let progress = captures.achievementProgress
+        let progress = captures.achievementProgress(in: city)
         let completed = progress.filter(\.isComplete).count
         Section {
             VStack(alignment: .leading, spacing: 8) {
@@ -155,9 +174,11 @@ struct CaptureListView: View {
             }
             .padding(.vertical, 4)
         } footer: {
-            Text(tr("Complete collections, eras, districts and the works of Berlin's great architects by capturing (photographing) their sights, and the U-Bahn and S-Bahn lines by collecting their stations. Each sight's entry shows what it counts towards."))
+            Text(stationsInCity.isEmpty
+                 ? tr("Complete collections, eras, districts and the works of the great master builders of {0} by capturing (photographing) their sights. Each sight's entry shows what it counts towards.", cityName)
+                 : tr("Complete collections, eras, districts and the works of the great master builders of {0} by capturing (photographing) their sights, and the U-Bahn and S-Bahn lines by collecting their stations. Each sight's entry shows what it counts towards.", cityName))
         }
-        AchievementSections(filter: filter)
+        AchievementSections(filter: filter, city: city)
     }
 
     /// A sight of the game; in the timeline with the year it was built in front.
@@ -249,7 +270,7 @@ struct CaptureListView: View {
     /// year too, outside the game.
     private var timeline: [EraGroup] {
         func year(_ sight: Sight) -> Int { captures.histories[sight.id]?.year ?? .max }
-        let sorted = captures.catalog.sights.sorted { a, b in
+        let sorted = captures.sights(in: city).sorted { a, b in
             year(a) != year(b) ? year(a) < year(b) : a.name < b.name
         }
         var groups: [EraGroup] = []
@@ -264,8 +285,9 @@ struct CaptureListView: View {
                 groups.append(EraGroup(era: era, sights: [sight]))
             }
         }
+        let history = CityHistory.of(city: city)
         return groups.sorted { a, b in
-            (a.era.map { BerlinHistory.order(of: $0) } ?? .max) < (b.era.map { BerlinHistory.order(of: $0) } ?? .max)
+            (a.era.map { history.order(of: $0) } ?? .max) < (b.era.map { history.order(of: $0) } ?? .max)
         }
     }
 
@@ -303,7 +325,7 @@ struct CaptureListView: View {
 
     /// The sights of the game, nearest first when the position is known, else by name.
     private var sights: [Sight] {
-        let all = captures.catalog.sights.filter { !$0.isPlaceOfRemembrance }
+        let all = captures.sights(in: city).filter { !$0.isPlaceOfRemembrance }
         guard let location = tracker.lastLocation else { return all.sorted { $0.name < $1.name } }
         return all.sorted { distance(to: $0, from: location) < distance(to: $1, from: location) }
     }

@@ -9,10 +9,10 @@ struct RemembranceSections: View {
     @EnvironmentObject private var captures: CaptureModel
 
     var body: some View {
-        let guide = captures.remembrance
+        let guide = captures.remembrance(in: captures.cityID)
         Section {
             VStack(alignment: .leading, spacing: 8) {
-                Text(tr("Berlin remembers"))
+                Text(tr("{0} remembers", captures.currentCity?.name ?? ""))
                     .font(.title3.weight(.semibold))
                 Text(tr("Memorials, memorial sites and cemeteries keep the memory of the people who were persecuted, murdered and killed in war, and of those who resisted. They are not part of the game: there is nothing to capture or collect, and every entry is open. Read about them here, or visit them on a walk – in your own time, and with respect."))
                     .font(.subheadline)
@@ -71,10 +71,10 @@ struct RemembranceSections: View {
         }
     }
 
-    /// Places of remembrance the guide does not tell about (another city's, say).
+    /// Places of remembrance of the city the guide does not tell about.
     private func otherPlaces(besides guide: RemembranceGuide) -> [Sight] {
         let told = Set(guide.chapters.flatMap { $0.places.map(\.sight) })
-        return captures.catalog.sights
+        return captures.sights(in: captures.cityID)
             .filter { $0.isPlaceOfRemembrance && !told.contains($0.id) }
             .sorted { $0.name < $1.name }
     }

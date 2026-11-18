@@ -369,6 +369,56 @@ final class SightHistoryTests: XCTestCase {
                           BerlinHistory.order(of: try XCTUnwrap(BerlinHistory.era(in: 1900))))
     }
 
+    func testBraunschweigErasAndRulers() throws {
+        let history = BraunschweigHistory.history
+        func ruler(_ year: Int) -> String? { history.ruler(in: year)?.name }
+        func era(_ year: Int) -> String? { history.era(in: year)?.id }
+
+        XCTAssertNil(history.context(in: 700))
+        XCTAssertEqual(era(1031), "bs-early", "St. Magni consecrated")
+        XCTAssertEqual(ruler(1031), "Brunonen")
+        XCTAssertEqual(ruler(1130), "Lothair of Supplinburg")
+        XCTAssertEqual(era(1166), "bs-welf", "the lion")
+        XCTAssertEqual(ruler(1173), "Henry the Lion", "the cathedral begun")
+        XCTAssertEqual(ruler(1210), "Otto IV")
+        XCTAssertEqual(era(1300), "bs-hanse")
+        XCTAssertEqual(ruler(1400), "Welf dukes")
+        XCTAssertEqual(era(1671), "bs-residence", "subjugated in June")
+        XCTAssertEqual(ruler(1754), "Charles I")
+        XCTAssertEqual(ruler(1805), "Charles William Ferdinand")
+        XCTAssertEqual(ruler(1810), "Jérôme Bonaparte")
+        XCTAssertEqual(era(1838), "bs-duchy", "the first state railway")
+        XCTAssertEqual(ruler(1838), "William")
+        XCTAssertEqual(ruler(1895), "Albert of Prussia")
+        XCTAssertEqual(era(1918), "bs-duchy", "the revolution came in November")
+        XCTAssertEqual(era(1925), "bs-free-state")
+        XCTAssertEqual(ruler(1936), "Dietrich Klagges")
+        XCTAssertEqual(era(1946), "bs-occupation", "Lower Saxony from November")
+        XCTAssertEqual(ruler(1980), "Ernst Albrecht")
+        XCTAssertEqual(ruler(2026), "Olaf Lies")
+        Localization.language = .de
+        XCTAssertEqual(history.ruler(in: 1173)?.name, "Heinrich der Löwe")
+        XCTAssertEqual(history.era(in: 1300)?.name, "Hansestadt")
+        Localization.language = .en
+
+        // Every era has rulers, all rulers have eras, in order; a sight's history follows its city.
+        let ids = Set(history.eras.map(\.id))
+        XCTAssertEqual(ids.count, history.eras.count)
+        XCTAssertTrue(ids.isDisjoint(with: BerlinHistory.eras.map(\.id)), "achievement rules name eras by ID")
+        for ruler in history.rulers {
+            let era = try XCTUnwrap(history.eras.first { $0.id == ruler.era }, ruler.name)
+            XCTAssertGreaterThanOrEqual(ruler.start, era.start - 1, "\(ruler.name) rules in \(era.name)")
+        }
+        for era in history.eras {
+            let rulers = history.rulers.filter { $0.era == era.id }
+            XCTAssertFalse(rulers.isEmpty, era.name)
+            XCTAssertEqual(rulers.map(\.start), rulers.map(\.start).sorted(), era.name)
+        }
+        let json = Data(#"{"entries": {"dom": {"year": 1173}}}"#.utf8)
+        XCTAssertEqual(try SightHistoryCatalog.decode(json, city: "braunschweig")["dom"]?.context?.ruler?.name, "Henry the Lion")
+        XCTAssertEqual(try SightHistoryCatalog.decode(json)["dom"]?.context?.era.id, "margraviate", "Berlin without a city")
+    }
+
     func testBundledBerlinHistory() throws {
         let sights = try CaptureTests.berlinSights()
         let catalog = try SightHistoryCatalog.decode(Data(contentsOf: BraunschweigDataTests.root.appendingPathComponent("Berlin/berlin-sight-history.json")))

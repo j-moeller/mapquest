@@ -89,17 +89,26 @@ struct StatisticsView: View {
                 }
             }
 
-            Section {
-                LabeledContent(tr("Sights captured"), value: tr("{0} of {1}", captures.capturedCount, captures.gameSightCount))
-                LabeledContent(tr("Sights discovered"), value: tr("{0} of {1}", captures.discoveredCount, captures.gameSightCount))
-                LabeledContent(tr("Question marks on the map"), value: Formatters.number(captures.nearbyCount))
-                LabeledContent(tr("Stations collected"), value: tr("{0} of {1}", captures.collectedStationCount, captures.stations.count))
-                let progress = captures.achievementProgress
-                LabeledContent(tr("Achievements"), value: tr("{0} of {1}", progress.filter(\.isComplete).count, progress.count))
-            } header: {
-                Text(tr("Sights"))
-            } footer: {
-                Text(tr("Within about 300 m a sight shows as a question mark; it is discovered when you go there and captured when you photograph it. Stations are collected by going there. Places of remembrance are not counted."))
+            ForEach(captures.sightCities) { city in
+                Section {
+                    LabeledContent(tr("Sights captured"), value: tr("{0} of {1}", captures.capturedCount(in: city.id), captures.gameSightCount(in: city.id)))
+                    LabeledContent(tr("Sights discovered"), value: tr("{0} of {1}", captures.discoveredCount(in: city.id), captures.gameSightCount(in: city.id)))
+                    LabeledContent(tr("Question marks on the map"),
+                                   value: Formatters.number(captures.sights(in: city.id).filter { captures.log.isNearby($0.id) }.count))
+                    let stations = captures.stations.stations.filter { captures.city(ofStation: $0) == city.id }
+                    if !stations.isEmpty {
+                        LabeledContent(tr("Stations collected"),
+                                       value: tr("{0} of {1}", stations.filter { captures.log.stations[$0.id] != nil }.count, stations.count))
+                    }
+                    let progress = captures.achievementProgress(in: city.id)
+                    LabeledContent(tr("Achievements"), value: tr("{0} of {1}", progress.filter(\.isComplete).count, progress.count))
+                } header: {
+                    Text(tr("Sights in {0}", city.name))
+                } footer: {
+                    if city.id == captures.sightCities.last?.id {
+                        Text(tr("Within about 300 m a sight shows as a question mark; it is discovered when you go there and captured when you photograph it. Stations are collected by going there. Places of remembrance are not counted."))
+                    }
+                }
             }
 
             if hasStatus {

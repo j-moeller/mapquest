@@ -488,7 +488,21 @@ keeps its own data and photos; nothing else depends on it.
   Republic, Nazi Germany, Allied occupation, East Berlin (GDR) / West Berlin,
   reunified Germany – and its ruler: margraves, electors, kings and emperors,
   Reich presidents, the dictator, the Allied Kommandatura, the SED leaders in
-  the East, the federal chancellors in the West and after 1990.
+  the East, the federal chancellors in the West and after 1990. Every city has
+  its own history (`CityHistory`; a history catalog is read with its city,
+  `SightHistoryCatalog.decode(_:city:)`): `BraunschweigHistory` – early
+  Brunswick under the Brunonen, Henry the Lion's residence, the Hanseatic town,
+  the ducal residence, Napoleonic rule (Kingdom of Westphalia), the Duchy of
+  Brunswick, the Free State, Nazi Germany, the occupation and Lower Saxony;
+  counts, Welf dukes, a king, the free state's governments, Klagges, the British
+  military government and Lower Saxony's minister-presidents. Era IDs differ
+  between cities (Braunschweig's start with `bs-`).
+* **Cities in the list**: each city's sights, achievements and places of
+  remembrance stay together. The list (and the bottom bar's count) shows the
+  city you are in – `CaptureModel.follow`, from the play area containing your
+  position; elsewhere the last one, kept across launches – with a switch at
+  the top for the other; the timeline orders by that city's eras, the
+  statistics have a section per city. The maps show every city's sights.
 * **Photorealistic 3D or photo**: an entry shows 3D only where it is
   photorealistic – Apple's 3D city model (satellite imagery on 3D buildings
   and terrain, `MKImageryMapConfiguration(elevationStyle: .realistic)`) in
@@ -526,10 +540,12 @@ keeps its own data and photos; nothing else depends on it.
 ## Achievements
 
 Goals made of sights (`MapQuestCore/Capture/Achievement.swift`,
-`<city>-achievements.json`; Berlin has 102). Each has a group, title,
+`<city>-achievements.json`; Berlin has 102, Braunschweig 30; each city's are
+resolved against its own sights only – `AchievementBook.merged` of one book per
+city – so Berlin's churches never include Braunschweig's). Each has a group, title,
 description, SF Symbol and a **rule** that picks its sights from the catalog
 and the historical facts: categories (all churches, fountains, museums…),
-the era of the year built (`BerlinHistory`, East and West apart), an
+the era of the year built (the city's history, East and West Berlin apart), an
 architect or client (compared without a note in parentheses, so “Hermann
 Blankenstein (towers, 1878)” counts for Blankenstein), architectural styles,
 a district, or an explicit list for themed stories (Museum Island, the Wall,

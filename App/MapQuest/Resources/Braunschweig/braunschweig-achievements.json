@@ -1,0 +1,551 @@
+{
+  "about": "Achievements for Braunschweig's sights (docs/02-architecture.md, \"Achievements\"). Rules as in berlin-achievements.json; eras are BraunschweigHistory's (IDs starting with bs-). Each city's achievements count its own sights.",
+  "achievements": [
+    {
+      "id": "bs-first-capture",
+      "group": "milestones",
+      "title": "The Lion Wakes",
+      "symbol": "pawprint.fill",
+      "description": "Capture your first sight in Braunschweig.",
+      "de": {
+        "title": "Der Löwe erwacht",
+        "description": "Fang deine erste Sehenswürdigkeit in Braunschweig ein."
+      },
+      "rule": {
+        "count": 1
+      }
+    },
+    {
+      "id": "bs-captures-10",
+      "group": "milestones",
+      "title": "Town Stroller",
+      "symbol": "figure.walk",
+      "description": "Capture 10 sights in Braunschweig – through the old town and beyond.",
+      "de": {
+        "title": "Stadtbummler",
+        "description": "Fang 10 Sehenswürdigkeiten in Braunschweig ein – durch die Altstadt und darüber hinaus."
+      },
+      "rule": {
+        "count": 10
+      }
+    },
+    {
+      "id": "bs-captures-25",
+      "group": "milestones",
+      "title": "Lion City Explorer",
+      "symbol": "map.fill",
+      "description": "Capture 25 sights in Braunschweig, well beyond the five traditional islands.",
+      "de": {
+        "title": "Löwenstadt-Entdecker",
+        "description": "Fang 25 Sehenswürdigkeiten in Braunschweig ein, weit über die fünf Traditionsinseln hinaus."
+      },
+      "rule": {
+        "count": 25
+      }
+    },
+    {
+      "id": "bs-captures-40",
+      "group": "milestones",
+      "title": "Brunswick Connoisseur",
+      "symbol": "star.circle.fill",
+      "description": "Capture 40 sights in Braunschweig.",
+      "de": {
+        "title": "Braunschweig-Kenner",
+        "description": "Fang 40 Sehenswürdigkeiten in Braunschweig ein."
+      },
+      "rule": {
+        "count": 40
+      }
+    },
+    {
+      "id": "bs-all-sights",
+      "group": "milestones",
+      "title": "All of Braunschweig",
+      "symbol": "crown.fill",
+      "description": "Capture every sight in Braunschweig.",
+      "de": {
+        "title": "Ganz Braunschweig",
+        "description": "Fang alle Sehenswürdigkeiten in Braunschweig ein."
+      },
+      "rule": {
+        "all": true
+      }
+    },
+    {
+      "id": "bs-churches",
+      "group": "collections",
+      "title": "Towers of the Five Boroughs",
+      "symbol": "bell.fill",
+      "description": "Capture the churches: Henry the Lion's cathedral, the Gothic churches of the five medieval boroughs and the abbey of Riddagshausen.",
+      "de": {
+        "title": "Türme der fünf Weichbilde",
+        "description": "Fang die Kirchen ein: den Dom Heinrichs des Löwen, die gotischen Kirchen der fünf mittelalterlichen Weichbilde und das Kloster Riddagshausen."
+      },
+      "rule": {
+        "categories": [
+          "church"
+        ]
+      }
+    },
+    {
+      "id": "bs-museums",
+      "group": "collections",
+      "title": "Museum Tour",
+      "symbol": "building.columns.fill",
+      "description": "Capture the museums – from one of the oldest museums in the world, the Herzog Anton Ulrich Museum, to the Museum of Photography.",
+      "de": {
+        "title": "Museumsrunde",
+        "description": "Fang die Museen ein – vom Herzog Anton Ulrich-Museum, einem der ältesten Museen der Welt, bis zum Museum für Photographie."
+      },
+      "rule": {
+        "categories": [
+          "museum"
+        ]
+      }
+    },
+    {
+      "id": "bs-palaces",
+      "group": "collections",
+      "title": "Castles and Palaces",
+      "symbol": "crown.fill",
+      "description": "Capture the residences of Brunswick's rulers: Henry the Lion's castle, the ducal palace and Schloss Richmond.",
+      "de": {
+        "title": "Burgen und Schlösser",
+        "description": "Fang die Residenzen der Braunschweiger Herrscher ein: die Burg Heinrichs des Löwen, das Residenzschloss und Schloss Richmond."
+      },
+      "rule": {
+        "categories": [
+          "palace"
+        ]
+      }
+    },
+    {
+      "id": "bs-squares",
+      "group": "collections",
+      "title": "Market Squares",
+      "symbol": "square.grid.2x2.fill",
+      "description": "Capture the squares of the old town, where the five boroughs held their markets.",
+      "de": {
+        "title": "Märkte und Plätze",
+        "description": "Fang die Plätze der Altstadt ein, auf denen die fünf Weichbilde ihre Märkte hielten."
+      },
+      "rule": {
+        "categories": [
+          "square"
+        ]
+      }
+    },
+    {
+      "id": "bs-parks",
+      "group": "collections",
+      "title": "Green Brunswick",
+      "symbol": "tree.fill",
+      "description": "Capture the parks – along the Oker, on the old ramparts and beyond.",
+      "de": {
+        "title": "Grünes Braunschweig",
+        "description": "Fang die Parks ein – an der Oker, auf den alten Wällen und darüber hinaus."
+      },
+      "rule": {
+        "categories": [
+          "park"
+        ]
+      }
+    },
+    {
+      "id": "bs-fountains",
+      "group": "collections",
+      "title": "Fountains of the Old Town",
+      "symbol": "drop.fill",
+      "description": "Capture the fountains – Till Eulenspiegel's and Henry the Lion's.",
+      "de": {
+        "title": "Brunnen der Altstadt",
+        "description": "Fang die Brunnen ein – den Till Eulenspiegels und den Heinrichs des Löwen."
+      },
+      "rule": {
+        "categories": [
+          "fountain"
+        ]
+      }
+    },
+    {
+      "id": "bs-stages",
+      "group": "collections",
+      "title": "Curtain Up",
+      "symbol": "theatermasks.fill",
+      "description": "Capture the stages of Braunschweig – theatre, concert hall and cultural centre.",
+      "de": {
+        "title": "Vorhang auf",
+        "description": "Fang die Bühnen Braunschweigs ein – Theater, Stadthalle und Kulturzentrum."
+      },
+      "rule": {
+        "categories": [
+          "culture"
+        ]
+      }
+    },
+    {
+      "id": "bs-lions-den",
+      "group": "collections",
+      "title": "The Lions' Den",
+      "symbol": "sportscourt.fill",
+      "description": "Capture the stadium of Eintracht Braunschweig, “the Lions”, and the big arena.",
+      "de": {
+        "title": "Die Löwengrube",
+        "description": "Fang das Stadion von Eintracht Braunschweig, den „Löwen“, und die große Halle ein."
+      },
+      "rule": {
+        "categories": [
+          "stadium"
+        ]
+      }
+    },
+    {
+      "id": "bs-burgplatz",
+      "group": "stories",
+      "title": "Around the Lion",
+      "symbol": "shield.fill",
+      "description": "The square of the Welfs: the lion, Henry's castle, his cathedral, and the stone and half-timbered houses around them.",
+      "de": {
+        "title": "Rund um den Löwen",
+        "description": "Der Platz der Welfen: der Löwe, Heinrichs Burg, sein Dom und die Stein- und Fachwerkhäuser ringsum."
+      },
+      "rule": {
+        "sights": [
+          "burgplatz",
+          "burgloewe",
+          "burg-dankwarderode",
+          "braunschweiger-dom",
+          "landesmuseum",
+          "huneborstelsches-haus"
+        ]
+      }
+    },
+    {
+      "id": "bs-altstadtmarkt",
+      "group": "stories",
+      "title": "The Old Town Market",
+      "symbol": "building.2.fill",
+      "description": "The heart of the Altstadt borough: its Gothic town hall, St. Martini and the Gewandhaus of the cloth merchants.",
+      "de": {
+        "title": "Der Altstadtmarkt",
+        "description": "Das Herz des Weichbilds Altstadt: sein gotisches Rathaus, St. Martini und das Gewandhaus der Tuchhändler."
+      },
+      "rule": {
+        "sights": [
+          "altstadtmarkt",
+          "altstadtrathaus",
+          "martinikirche",
+          "gewandhaus"
+        ]
+      }
+    },
+    {
+      "id": "bs-traditional-islands",
+      "group": "stories",
+      "title": "Traditional Islands",
+      "symbol": "square.on.square",
+      "description": "After the war Brunswick kept five islands of its old town: the Burgplatz, the Altstadtmarkt and the quarters around St. Magni, St. Michaelis and St. Aegidien.",
+      "de": {
+        "title": "Traditionsinseln",
+        "description": "Nach dem Krieg bewahrte Braunschweig fünf Inseln seiner Altstadt: den Burgplatz, den Altstadtmarkt und die Viertel um St. Magni, St. Michaelis und St. Aegidien."
+      },
+      "rule": {
+        "sights": [
+          "burgplatz",
+          "altstadtmarkt",
+          "magnikirche",
+          "michaeliskirche",
+          "aegidienkirche"
+        ]
+      }
+    },
+    {
+      "id": "bs-ramparts",
+      "group": "stories",
+      "title": "On the Ramparts",
+      "symbol": "point.topleft.down.to.point.bottomright.curvepath.fill",
+      "description": "Where the town's fortifications stood, a ring of promenades and parks was laid out from 1803: walk the Wallring.",
+      "de": {
+        "title": "Auf den Wällen",
+        "description": "Wo die Befestigungen der Stadt standen, entstand ab 1803 ein Ring aus Promenaden und Parks: Geh den Wallring entlang."
+      },
+      "rule": {
+        "sights": [
+          "inselwallpark",
+          "loewenwall",
+          "theaterpark",
+          "museumpark"
+        ]
+      }
+    },
+    {
+      "id": "bs-science",
+      "group": "stories",
+      "title": "City of Science",
+      "symbol": "function",
+      "description": "Carl Friedrich Gauss was born here in 1777, and the Collegium Carolinum of 1745 became the Technical University. In 2007 Brunswick was Germany's City of Science.",
+      "de": {
+        "title": "Stadt der Wissenschaft",
+        "description": "Carl Friedrich Gauß wurde 1777 hier geboren, aus dem Collegium Carolinum von 1745 wurde die Technische Universität. 2007 war Braunschweig Deutschlands Stadt der Wissenschaft."
+      },
+      "rule": {
+        "sights": [
+          "tu-altgebaeude",
+          "gaussdenkmal",
+          "botanischer-garten-braunschweig"
+        ]
+      }
+    },
+    {
+      "id": "bs-henry-the-lion",
+      "group": "architects",
+      "title": "The Lion's Legacy",
+      "symbol": "crown",
+      "description": "Capture what Duke Henry the Lion built: the bronze lion, the castle of Dankwarderode and the cathedral where he lies buried.",
+      "de": {
+        "title": "Das Erbe des Löwen",
+        "description": "Fang ein, was Herzog Heinrich der Löwe bauen ließ: den bronzenen Löwen, die Burg Dankwarderode und den Dom, in dem er begraben liegt."
+      },
+      "rule": {
+        "commissionedBy": "Henry the Lion"
+      }
+    },
+    {
+      "id": "bs-architect-osterloh",
+      "group": "architects",
+      "title": "Max Osterloh",
+      "symbol": "building.columns",
+      "description": "Capture the buildings of the city architect who gave Brunswick its new town hall and its municipal museum around 1900.",
+      "de": {
+        "title": "Max Osterloh",
+        "description": "Fang die Bauten des Stadtbaurats ein, der Braunschweig um 1900 das Neue Rathaus und das Städtische Museum gab."
+      },
+      "rule": {
+        "architect": "Max Osterloh"
+      }
+    },
+    {
+      "id": "bs-style-romanesque",
+      "group": "styles",
+      "title": "Romanesque",
+      "symbol": "building.columns.circle",
+      "description": "Capture the Romanesque works of Henry the Lion's time: round arches, heavy walls, the bronze lion.",
+      "de": {
+        "title": "Romanik",
+        "description": "Fang die romanischen Werke aus der Zeit Heinrichs des Löwen ein: Rundbögen, schwere Mauern, der bronzene Löwe."
+      },
+      "rule": {
+        "styles": [
+          "Romanesque"
+        ]
+      }
+    },
+    {
+      "id": "bs-style-gothic",
+      "group": "styles",
+      "title": "Gothic Brunswick",
+      "symbol": "arrowtriangle.up.fill",
+      "description": "Capture the Gothic buildings of the Hanseatic town: hall churches, the town hall and the Liberei.",
+      "de": {
+        "title": "Gotisches Braunschweig",
+        "description": "Fang die gotischen Bauten der Hansestadt ein: Hallenkirchen, das Altstadtrathaus und die Liberei."
+      },
+      "rule": {
+        "styles": [
+          "Gothic"
+        ]
+      }
+    },
+    {
+      "id": "bs-style-historicism",
+      "group": "styles",
+      "title": "Historicism",
+      "symbol": "building.fill",
+      "description": "Capture the buildings that 19th-century Brunswick built in the styles of the past: Neo-Romanesque, Neo-Gothic, Neo-Renaissance.",
+      "de": {
+        "title": "Historismus",
+        "description": "Fang die Bauten ein, die das Braunschweig des 19. Jahrhunderts in den Stilen der Vergangenheit errichtete: Neuromanik, Neugotik, Neorenaissance."
+      },
+      "rule": {
+        "styles": [
+          "Neo-Romanesque",
+          "Gothic Revival",
+          "Neo-Renaissance",
+          "Historicism"
+        ]
+      }
+    },
+    {
+      "id": "bs-style-modernism",
+      "group": "styles",
+      "title": "Rebuilt Modern",
+      "symbol": "square.stack.3d.up.fill",
+      "description": "Capture the modern buildings of the rebuilt city.",
+      "de": {
+        "title": "Moderner Wiederaufbau",
+        "description": "Fang die modernen Bauten der wiederaufgebauten Stadt ein."
+      },
+      "rule": {
+        "styles": [
+          "Modernism",
+          "Pop Art",
+          "Contemporary"
+        ]
+      }
+    },
+    {
+      "id": "bs-district-mitte",
+      "group": "districts",
+      "title": "Mitte",
+      "symbol": "mappin.and.ellipse",
+      "description": "Capture every sight in Mitte: the old town inside the ring of the Oker.",
+      "de": {
+        "title": "Mitte",
+        "description": "Fang alle Sehenswürdigkeiten in Mitte ein: die Altstadt im Ring der Oker."
+      },
+      "rule": {
+        "district": "Mitte"
+      }
+    },
+    {
+      "id": "bs-district-oestliches-ringgebiet",
+      "group": "districts",
+      "title": "Eastern Ring",
+      "symbol": "mappin.and.ellipse",
+      "description": "Capture every sight in Östliches Ringgebiet: the 19th-century city east of the old town.",
+      "de": {
+        "title": "Östliches Ringgebiet",
+        "description": "Fang alle Sehenswürdigkeiten in Östliches Ringgebiet ein: die Stadt des 19. Jahrhunderts östlich der Altstadt."
+      },
+      "rule": {
+        "district": "Östliches Ringgebiet"
+      }
+    },
+    {
+      "id": "bs-district-nordstadt-schunteraue",
+      "group": "districts",
+      "title": "Nordstadt",
+      "symbol": "mappin.and.ellipse",
+      "description": "Capture every sight in Nordstadt-Schunteraue: the university and the north.",
+      "de": {
+        "title": "Nordstadt-Schunteraue",
+        "description": "Fang alle Sehenswürdigkeiten in Nordstadt-Schunteraue ein: die Universität und der Norden."
+      },
+      "rule": {
+        "district": "Nordstadt-Schunteraue"
+      }
+    },
+    {
+      "id": "bs-district-wabe-schunter-beberbach",
+      "group": "districts",
+      "title": "Riddagshausen",
+      "symbol": "mappin.and.ellipse",
+      "description": "Capture every sight in Wabe-Schunter-Beberbach: the abbey and the east.",
+      "de": {
+        "title": "Wabe-Schunter-Beberbach",
+        "description": "Fang alle Sehenswürdigkeiten in Wabe-Schunter-Beberbach ein: das Kloster und der Osten."
+      },
+      "rule": {
+        "district": "Wabe-Schunter-Beberbach"
+      }
+    },
+    {
+      "id": "bs-district-braunschweig-sued",
+      "group": "districts",
+      "title": "The South",
+      "symbol": "mappin.and.ellipse",
+      "description": "Capture every sight in Braunschweig-Süd: the south of the city.",
+      "de": {
+        "title": "Braunschweig-Süd",
+        "description": "Fang alle Sehenswürdigkeiten in Braunschweig-Süd ein: der Süden der Stadt."
+      },
+      "rule": {
+        "district": "Braunschweig-Süd"
+      }
+    },
+    {
+      "id": "bs-district-westliches-ringgebiet",
+      "group": "districts",
+      "title": "Western Ring",
+      "symbol": "mappin.and.ellipse",
+      "description": "Capture every sight in Westliches Ringgebiet: the west of the ring.",
+      "de": {
+        "title": "Westliches Ringgebiet",
+        "description": "Fang alle Sehenswürdigkeiten in Westliches Ringgebiet ein: der Westen des Rings."
+      },
+      "rule": {
+        "district": "Westliches Ringgebiet"
+      }
+    },
+    {
+      "id": "bs-era-welf",
+      "group": "eras",
+      "title": "The Lion's Century",
+      "symbol": "shield.lefthalf.filled",
+      "description": "Capture what was built while Henry the Lion and his Welf heirs ruled Brunswick, 1142–1235.",
+      "de": {
+        "title": "Das Jahrhundert des Löwen",
+        "description": "Fang ein, was gebaut wurde, als Heinrich der Löwe und seine welfischen Erben über Braunschweig herrschten, 1142–1235."
+      },
+      "rule": {
+        "era": "bs-welf"
+      }
+    },
+    {
+      "id": "bs-era-hanse",
+      "group": "eras",
+      "title": "Hanseatic Town",
+      "symbol": "ferry.fill",
+      "description": "Capture what the self-governing town of the five boroughs built, 1235–1671.",
+      "de": {
+        "title": "Hansestadt",
+        "description": "Fang ein, was die selbstbewusste Stadt der fünf Weichbilde baute, 1235–1671."
+      },
+      "rule": {
+        "era": "bs-hanse"
+      }
+    },
+    {
+      "id": "bs-era-residence",
+      "group": "eras",
+      "title": "Ducal Residence",
+      "symbol": "crown.fill",
+      "description": "Capture what was built while the dukes made Brunswick their residence, 1671–1806.",
+      "de": {
+        "title": "Residenzstadt",
+        "description": "Fang ein, was gebaut wurde, als die Herzöge in Braunschweig residierten, 1671–1806."
+      },
+      "rule": {
+        "era": "bs-residence"
+      }
+    },
+    {
+      "id": "bs-era-duchy",
+      "group": "eras",
+      "title": "The Duchy",
+      "symbol": "gearshape.2.fill",
+      "description": "Capture what the Duchy of Brunswick built in the age of railways and industry, 1813–1918.",
+      "de": {
+        "title": "Das Herzogtum",
+        "description": "Fang ein, was das Herzogtum Braunschweig im Zeitalter von Eisenbahn und Industrie baute, 1813–1918."
+      },
+      "rule": {
+        "era": "bs-duchy"
+      }
+    },
+    {
+      "id": "bs-era-lower-saxony",
+      "group": "eras",
+      "title": "Brunswick Rebuilt",
+      "symbol": "building.2.crop.circle",
+      "description": "Capture what was built after 1946, in the city rebuilt after the war.",
+      "de": {
+        "title": "Das neue Braunschweig",
+        "description": "Fang ein, was nach 1946 gebaut wurde, in der nach dem Krieg wiederaufgebauten Stadt."
+      },
+      "rule": {
+        "era": "bs-lower-saxony"
+      }
+    }
+  ]
+}

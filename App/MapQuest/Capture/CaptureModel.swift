@@ -89,8 +89,20 @@ final class CaptureModel: ObservableObject {
     let stations: StationCatalog
     /// The sights of the game: all but the places of remembrance, which are not captured.
     let gameSightCount: Int
-    /// The achievements of the bundled cities, resolved against their sights and stations.
+    /// The achievements of the bundled cities, each city's resolved against its own sights and stations.
     let achievements: AchievementBook
+    /// The cities with sights (Berlin, Braunschweig), in order.
+    let sightCities: [City]
+    /// The city of every sight and every achievement (`City.id`).
+    private let cityOfSight: [String: String]
+    private let cityOfAchievement: [String: String]
+    private let stationCity: [String: String]
+    /// The city whose sights, achievements and places of remembrance the list shows:
+    /// where you are (`follow(_:)`), else the last one; kept across launches.
+    @Published var cityID: String {
+        didSet { UserDefaults.standard.set(cityID, forKey: Self.cityKey) }
+    }
+    private static let cityKey = "CaptureModel.city" // not localized
     /// Sights in cities with photorealistic 3D buildings (Apple Maps): their entries show them.
     let photorealistic3D: Set<String>
     /// The places of remembrance as a short history and as walks, outside the game, in the app's language.
@@ -143,14 +155,26 @@ final class CaptureModel: ObservableObject {
         let catalog = Self.loadCatalog(bundle)
         let histories = Self.loadHistories(bundle, language: .en)
         let stations = Self.loadStations(bundle)
+        let catalogs = Cities.all.map { city in (city, Self.loadCatalog(bundle, cities: [city])) }.filter { !$0.1.sights.isEmpty }
+        sightCities = catalogs.map { $0.0 }
+        cityOfSight = Dictionary(catalogs.flatMap { city, catalog in catalog.sights.map { ($0.id, city.id) } }, uniquingKeysWith: { first, _ in first })
+        let books = catalogs.map { city, cityCatalog in
+            (city, AchievementBook(achievements: Self.loadAchievements(bundle, cities: [city]), catalog: cityCatalog,
+                                   histories: histories, stations: stations))
+        }
+        cityOfAchievement = Dictionary(books.flatMap { city, book in book.entries.map { ($0.achievement.id, city.id) } },
+                                       uniquingKeysWith: { first, _ in first })
+        stationCity = Dictionary(Cities.all.flatMap { city in Self.loadStations(bundle, cities: [city]).stations.map { ($0.id, city.id) } },
+                                 uniquingKeysWith: { first, _ in first })
+        let savedCity = UserDefaults.standard.string(forKey: Self.cityKey)
+        cityID = catalogs.contains { $0.0.id == savedCity } ? savedCity! : (catalogs.first?.0.id ?? "berlin") // not localized
         self.catalog = catalog
         gameSightCount = catalog.sights.filter { !$0.isPlaceOfRemembrance }.count
         let infos = Self.loadInfos(bundle, language: .en)
         infoCatalogs = [.en: infos, .de: .merged([Self.loadInfos(bundle, language: .de), infos])]
         historyCatalogs = [.en: histories, .de: .merged([Self.loadHistories(bundle, language: .de), histories])]
         self.stations = stations
-        achievements = AchievementBook(achievements: Self.loadAchievements(bundle), catalog: catalog, histories: histories,
-                                       stations: stations)
+        achievements = .merged(books.map { $0.1 })
         photorealistic3D = Set(Cities.all.filter(\.hasPhotorealistic3D).flatMap { city in
             Self.loadCatalog(bundle, cities: [city]).sights.map(\.id)
         })
@@ -180,25 +204,25 @@ final class CaptureModel: ObservableObject {
         })
     }
 
-    /// The historical facts of all bundled cities (`<city>-sight-history[-de].json`).
+    /// The historical facts of all bundled cities (`<city>-sight-history[-de].json`), each read in its city's history.
     static func loadHistories(_ bundle: Bundle, language: Language) -> SightHistoryCatalog {
         .merged(Cities.all.compactMap { city -> SightHistoryCatalog? in
-            data(bundle, city: city, "sight-history", language: language).flatMap { try? SightHistoryCatalog.decode($0) }
+            data(bundle, city: city, "sight-history", language: language).flatMap { try? SightHistoryCatalog.decode($0, city: city.id) }
         })
     }
 
-    /// The stations and lines of all bundled cities (`<city>-stations.json`).
-    static func loadStations(_ bundle: Bundle) -> StationCatalog {
-        .merged(Cities.all.compactMap { city -> StationCatalog? in
+    /// The stations and lines of the bundled cities (`<city>-stations.json`).
+    static func loadStations(_ bundle: Bundle, cities: [City] = Cities.all) -> StationCatalog {
+        .merged(cities.compactMap { city -> StationCatalog? in
             guard let url = bundle.url(forResource: "\(city.id)-stations", withExtension: "json"),
                   let data = try? Data(contentsOf: url) else { return nil }
             return try? StationCatalog.decode(data)
         })
     }
 
-    /// The achievements of all bundled cities (`<city>-achievements.json`).
-    static func loadAchievements(_ bundle: Bundle) -> [Achievement] {
-        Cities.all.flatMap { city -> [Achievement] in
+    /// The achievements of the bundled cities (`<city>-achievements.json`).
+    static func loadAchievements(_ bundle: Bundle, cities: [City] = Cities.all) -> [Achievement] {
+        cities.flatMap { city -> [Achievement] in
             guard let url = bundle.url(forResource: "\(city.id)-achievements", withExtension: "json"),
                   let data = try? Data(contentsOf: url) else { return [] }
             return (try? Achievement.decodeList(data)) ?? []
@@ -372,8 +396,10 @@ final class CaptureModel: ObservableObject {
             persist()
             return
         }
-        // Discovering unlocks the entries; achievements count captures (photos).
-        celebration = Celebration(kind: .discovered, sights: sights, capturedCount: discoveredCount, totalCount: gameSightCount)
+        // Discovering unlocks the entries; achievements count captures (photos). Counts of the first sight's city.
+        let city = city(of: sights[0].id)
+        celebration = Celebration(kind: .discovered, sights: sights, capturedCount: discoveredCount(in: city),
+                                  totalCount: gameSightCount(in: city))
     }
 
     /// The note on a place of remembrance was read or closed.
@@ -414,6 +440,51 @@ final class CaptureModel: ObservableObject {
 
     /// Progress of every achievement.
     var achievementProgress: [AchievementProgress] { achievements.progress(log) }
+
+    // MARK: Cities
+
+    /// The city of a sight or achievement (`City.id`).
+    func city(of id: String) -> String? { cityOfSight[id] ?? cityOfAchievement[id] }
+
+    /// The city the list shows.
+    var currentCity: City? { sightCities.first { $0.id == cityID } }
+
+    /// The city of a station: the one whose stations file it came from (only Berlin has any).
+    func city(ofStation station: Station) -> String? { stationCity[station.id] }
+
+    /// Follows where you are: the list switches to the city you are in (elsewhere it stays).
+    func follow(_ cityID: String?) {
+        guard let cityID, cityID != self.cityID, sightCities.contains(where: { $0.id == cityID }) else { return }
+        self.cityID = cityID
+    }
+
+    /// The sights of a city (all cities with `nil`).
+    func sights(in city: String?) -> [Sight] {
+        guard let city else { return catalog.sights }
+        return catalog.sights.filter { cityOfSight[$0.id] == city }
+    }
+
+    /// The sights of the game in a city: places of remembrance do not count.
+    func gameSightCount(in city: String?) -> Int { sights(in: city).filter { !$0.isPlaceOfRemembrance }.count }
+    /// Photographed sights in a city.
+    func capturedCount(in city: String?) -> Int { log.photos.keys.filter { city == nil || cityOfSight[$0] == city }.count }
+    /// Discovered sights of the game in a city.
+    func discoveredCount(in city: String?) -> Int {
+        log.records.keys.filter { (city == nil || cityOfSight[$0] == city) && !(catalog[$0]?.isPlaceOfRemembrance ?? false) }.count
+    }
+    /// Progress of the achievements of a city.
+    func achievementProgress(in city: String?) -> [AchievementProgress] {
+        achievementProgress.filter { city == nil || cityOfAchievement[$0.id] == city }
+    }
+    /// The places of remembrance of a city, as chapters and walks.
+    func remembrance(in city: String?) -> RemembranceGuide {
+        guard let city else { return remembrance }
+        let guide = remembrance
+        return RemembranceGuide(
+            chapters: guide.chapters.filter { $0.places.contains { cityOfSight[$0.sight] == city } },
+            tours: guide.tours.filter { $0.stops.contains { cityOfSight[$0] == city } }
+        )
+    }
 
     /// Progress of the achievements a sight counts towards (milestones aside).
     func achievementProgress(containing sight: Sight) -> [AchievementProgress] {
@@ -631,7 +702,8 @@ final class CaptureModel: ObservableObject {
         }
         guard first else { return nil }
         let unlocked = achievements.unlocked(by: [sight.id], captured: Set(log.captureDates.keys))
-        return Celebration(kind: .photographed, sights: [sight], capturedCount: log.photos.count, totalCount: gameSightCount,
+        let city = city(of: sight.id)
+        return Celebration(kind: .photographed, sights: [sight], capturedCount: capturedCount(in: city), totalCount: gameSightCount(in: city),
                            achievements: unlocked)
     }
 

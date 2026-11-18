@@ -1,6 +1,6 @@
 import Foundation
 
-/// A period of Berlin's history, e.g. the Kingdom of Prussia (in both languages).
+/// A period of a city's history, e.g. the Kingdom of Prussia (in both languages).
 public struct HistoricalEra: Hashable, Sendable, Identifiable {
     public let id: String
     let names: LocalizedString
@@ -18,8 +18,10 @@ public struct HistoricalEra: Hashable, Sendable, Identifiable {
     public var summary: String { summaries() }
 }
 
-/// Who ruled Berlin: margraves, electors, kings and emperors, presidents, the
-/// dictator, the occupying powers, the GDR's party leaders and the chancellors.
+/// Who ruled a city: in Berlin margraves, electors, kings and emperors, presidents,
+/// the dictator, the occupying powers, the GDR's party leaders and the chancellors;
+/// in Braunschweig counts, Welf dukes, a king of Westphalia, the free state's and
+/// Lower Saxony's governments.
 public struct Ruler: Hashable, Sendable {
     /// German, the original, and English where it differs ("Friedrich Wilhelm II.", "Frederick William II").
     public let names: BilingualName
@@ -44,9 +46,53 @@ public struct HistoricalContext: Hashable, Sendable {
     public let ruler: Ruler?
 }
 
-/// Berlin's eras and rulers, to tell who ruled when a sight was built. Years are
+/// A city's eras and rulers, to tell who ruled when a sight was built. Years are
 /// read at mid-year: in a year of succession the ruler of July counts.
+public struct CityHistory: Sendable {
+    /// The city (`City.id` in the app: "berlin", "braunschweig").
+    public let city: String
+    public let eras: [HistoricalEra]
+    public let rulers: [Ruler]
+
+    /// The history of a city's sights (Berlin's for sights without a city).
+    public static func of(city: String?) -> CityHistory {
+        city == BraunschweigHistory.history.city ? BraunschweigHistory.history : BerlinHistory.history
+    }
+
+    public static var all: [CityHistory] { [BerlinHistory.history, BraunschweigHistory.history] }
+
+    /// The era of a year. While Berlin was divided, the half given by `sector`
+    /// (without one: "Divided Berlin"). Nil before the first era.
+    public func era(in year: Int, sector: BerlinSector? = nil) -> HistoricalEra? {
+        let time = BerlinHistory.month(year, 7)
+        let begun = eras.filter { $0.start <= time }
+        guard let latest = begun.map(\.start).max() else { return nil }
+        let current = begun.filter { $0.start == latest }
+        return current.first { $0.sector != nil && $0.sector == sector } ?? current.first { $0.sector == nil }
+    }
+
+    /// Who ruled in a year (in July of that year).
+    public func ruler(in year: Int, sector: BerlinSector? = nil) -> Ruler? {
+        context(in: year, sector: sector)?.ruler
+    }
+
+    public func context(in year: Int, sector: BerlinSector? = nil) -> HistoricalContext? {
+        guard let era = era(in: year, sector: sector) else { return nil }
+        let time = BerlinHistory.month(year, 7)
+        let ruler = rulers.filter { $0.era == era.id && $0.start <= time }.max { $0.start < $1.start }
+        return HistoricalContext(era: era, ruler: ruler)
+    }
+
+    /// Position of an era in time (for sorting; East before West).
+    public func order(of era: HistoricalEra) -> Int {
+        eras.firstIndex(of: era) ?? eras.count
+    }
+}
+
+/// Berlin's eras and rulers.
 public enum BerlinHistory {
+    public static let history = CityHistory(city: "berlin", eras: eras, rulers: rulers)
+
     /// Month index of a year and month (1–12).
     static func month(_ year: Int, _ month: Int) -> Int { year * 12 + month - 1 }
 
@@ -169,45 +215,38 @@ public enum BerlinHistory {
         ruler("Friedrich Merz", nil, chancellor, L("since 2025", de: "seit 2025"), "reunified", month(2025, 5)),
     ]
 
-    /// The era of a year. While the city was divided, the half given by `sector`
-    /// (without one: "Divided Berlin"). Nil before the Slavic settlement (700).
+    /// The era of a year in Berlin. While the city was divided, the half given by
+    /// `sector` (without one: "Divided Berlin"). Nil before the Slavic settlement (700).
     public static func era(in year: Int, sector: BerlinSector? = nil) -> HistoricalEra? {
-        let time = month(year, 7)
-        let begun = eras.filter { $0.start <= time }
-        guard let latest = begun.map(\.start).max() else { return nil }
-        let current = begun.filter { $0.start == latest }
-        return current.first { $0.sector != nil && $0.sector == sector } ?? current.first { $0.sector == nil }
+        history.era(in: year, sector: sector)
     }
 
-    /// Who ruled in a year (in July of that year).
+    /// Who ruled Berlin in a year (in July of that year).
     public static func ruler(in year: Int, sector: BerlinSector? = nil) -> Ruler? {
-        context(in: year, sector: sector)?.ruler
+        history.ruler(in: year, sector: sector)
     }
 
     public static func context(in year: Int, sector: BerlinSector? = nil) -> HistoricalContext? {
-        guard let era = era(in: year, sector: sector) else { return nil }
-        let time = month(year, 7)
-        let ruler = rulers.filter { $0.era == era.id && $0.start <= time }.max { $0.start < $1.start }
-        return HistoricalContext(era: era, ruler: ruler)
+        history.context(in: year, sector: sector)
     }
 
-    /// Position of an era in time (for sorting; East before West).
+    /// Position of a Berlin era in time (for sorting; East before West).
     public static func order(of era: HistoricalEra) -> Int {
-        eras.firstIndex(of: era) ?? eras.count
+        history.order(of: era)
     }
 
-    private static func L(_ en: String, de: String? = nil) -> LocalizedString {
+    static func L(_ en: String, de: String? = nil) -> LocalizedString {
         LocalizedString(en, de: de ?? en)
     }
 
-    private static func era(_ id: String, _ name: LocalizedString, _ years: LocalizedString, _ start: Int,
-                            _ summary: LocalizedString, sector: BerlinSector? = nil) -> HistoricalEra {
+    static func era(_ id: String, _ name: LocalizedString, _ years: LocalizedString, _ start: Int,
+                    _ summary: LocalizedString, sector: BerlinSector? = nil) -> HistoricalEra {
         HistoricalEra(id: id, names: name, span: years, summaries: summary, sector: sector, start: start)
     }
 
     /// A ruler: the German name, the English one where it differs.
-    private static func ruler(_ german: String, _ english: String?, _ title: LocalizedString, _ reign: LocalizedString,
-                              _ era: String, _ start: Int) -> Ruler {
+    static func ruler(_ german: String, _ english: String?, _ title: LocalizedString, _ reign: LocalizedString,
+                      _ era: String, _ start: Int) -> Ruler {
         Ruler(names: BilingualName(german: german, english: english), titles: title, reigns: reign, era: era, start: start)
     }
 }

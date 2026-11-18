@@ -1,0 +1,66 @@
+{
+  "about": "Gedenkorte in Braunschweig, als kurze Geschichte und als Spaziergang. Sie sind nicht Teil des Spiels.",
+  "chapters": [
+    {
+      "id": "bs-camps",
+      "title": "Zwangsarbeit und Lager",
+      "years": "1939–1945",
+      "text": "Während des Krieges mussten Tausende Männer und Frauen aus dem besetzten Europa in Braunschweigs Fabriken Zwangsarbeit leisten. In den letzten Kriegsjahren wurden KZ-Häftlinge für die Rüstungsindustrie in die Stadt gebracht. Auf dem Friedhof an der Hochstraße erinnert seit 2001 eine Gedenkstätte an Zwangsarbeiter und ihre Säuglinge, die hier starben.",
+      "places": [
+        {
+          "sight": "gedenkstaette-schillstrasse",
+          "remembers": "Von 1944 bis 1945 bestand hier ein Außenlager des KZ Neuengamme; seine Häftlinge mussten für die Büssing-Lastwagenwerke Zwangsarbeit leisten. Eine Gedenkstätte am Ort erzählt ihre Geschichte."
+        }
+      ]
+    },
+    {
+      "id": "bs-jewish",
+      "title": "Die Verfolgung der Juden",
+      "years": "1933–1945",
+      "text": "Unter dem NS-Regime wurden Braunschweigs Juden entrechtet, vertrieben, deportiert und ermordet. Ihre 1875 geweihte Synagoge wurde beim Pogrom im November 1938 verwüstet; 1940 wurden ihre Reste beseitigt und an ihrer Stelle ein Bunker gebaut.",
+      "places": [
+        {
+          "sight": "juedischer-friedhof",
+          "remembers": "Der Friedhof der jüdischen Gemeinde Braunschweigs, auf dem Generationen ihrer Familien begraben sind."
+        }
+      ]
+    },
+    {
+      "id": "bs-war",
+      "title": "Krieg und Zerstörung",
+      "years": "1939–1945",
+      "text": "Luftangriffe trafen die Stadt immer wieder. In der Nacht vom 14. auf den 15. Oktober 1944 zerstörte ein Feuersturm den größten Teil der mittelalterlichen Innenstadt; viele Braunschweiger kamen ums Leben.",
+      "places": [
+        {
+          "sight": "hauptfriedhof",
+          "remembers": "Unter seinen Gräbern sind die vieler Menschen, die bei den Luftangriffen auf die Stadt getötet wurden, die meisten in der Nacht im Oktober 1944."
+        }
+      ]
+    },
+    {
+      "id": "bs-rest",
+      "title": "Ruhestätten",
+      "years": "",
+      "text": "Die alten Friedhöfe bewahren die Erinnerung an die Menschen der Stadt – unter ihnen einer der großen Köpfe der Aufklärung.",
+      "places": [
+        {
+          "sight": "magnifriedhof",
+          "remembers": "Hier ist Gotthold Ephraim Lessing begraben, Dichter und Denker der Aufklärung, der 1781 in Braunschweig starb."
+        }
+      ]
+    }
+  ],
+  "tours": [
+    {
+      "id": "bs-south-east",
+      "title": "Ein Spaziergang im Südosten",
+      "text": "Von Lessings Grab vorbei am jüdischen Friedhof und am Hauptfriedhof zur Gedenkstätte in der Schillstraße: die Aufklärung, die Verfolgten, die Toten des Krieges, das Lager.",
+      "stops": [
+        "magnifriedhof",
+        "juedischer-friedhof",
+        "hauptfriedhof",
+        "gedenkstaette-schillstrasse"
+      ]
+    }
+  ]
+}

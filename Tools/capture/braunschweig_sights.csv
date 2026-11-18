@@ -1,0 +1,60 @@
+id;name;category;lat;lon;radius;aliases;name_en
+braunschweiger-dom;Braunschweiger Dom;church;52.2641;10.5245;40;Braunschweiger Dom|Dom St. Blasii|Stiftskirche St. Blasii;Brunswick Cathedral
+burg-dankwarderode;Burg Dankwarderode;palace;52.2636;10.5236;40;Burg Dankwarderode;Dankwarderode Castle
+burgloewe;Braunschweiger Löwe;monument;52.2635;10.5241;25;Braunschweiger Löwe|Burglöwe|Löwe|Löwendenkmal;Brunswick Lion
+burgplatz;Burgplatz;square;52.2635;10.5244;60;Burgplatz;
+landesmuseum;Braunschweigisches Landesmuseum;museum;52.2632;10.5251;40;Braunschweigisches Landesmuseum|Landesmuseum|Vieweghaus;Brunswick State Museum
+huneborstelsches-haus;Huneborstelsches Haus;landmark;52.2638;10.5251;25;Huneborstelsches Haus|Huneborstel'sches Haus;
+altstadtmarkt;Altstadtmarkt;square;52.2617;10.5188;60;Altstadtmarkt;
+altstadtrathaus;Altstadtrathaus;government;52.2620;10.5184;40;Altstadtrathaus|Altes Rathaus;Old Town Hall
+martinikirche;St. Martini;church;52.2622;10.5192;40;St. Martini|Martinikirche|Sankt Martini;St. Martin's Church
+gewandhaus;Gewandhaus;landmark;52.2612;10.5193;30;Gewandhaus;
+marienbrunnen;Marienbrunnen;fountain;52.2617;10.5186;25;Marienbrunnen;St. Mary's Fountain
+kohlmarkt;Kohlmarkt;square;52.2622;10.5214;50;Kohlmarkt;
+eulenspiegelbrunnen;Eulenspiegelbrunnen;fountain;52.2648;10.5186;25;Eulenspiegelbrunnen|Till-Eulenspiegel-Brunnen|Till Eulenspiegel;Till Eulenspiegel Fountain
+heinrichsbrunnen;Heinrichsbrunnen;fountain;52.2654;10.5233;25;Heinrichsbrunnen;Henry the Lion Fountain
+hagenmarkt;Hagenmarkt;square;52.2655;10.5236;50;Hagenmarkt;
+katharinenkirche;St. Katharinen;church;52.2655;10.5226;40;St. Katharinen|Katharinenkirche|Sankt Katharinen;St. Catherine's Church
+andreaskirche;St. Andreas;church;52.2657;10.5165;40;St. Andreas|Andreaskirche|Sankt Andreas;St. Andrew's Church
+liberei;Liberei;landmark;52.2653;10.5160;25;Liberei;
+petrikirche;St. Petri;church;52.2670;10.5165;30;St. Petri|Petrikirche|Sankt Petri;St. Peter's Church
+michaeliskirche;St. Michaelis;church;52.2597;10.5163;30;St. Michaelis|Michaeliskirche|Sankt Michaelis;St. Michael's Church
+bruedernkirche;Brüdernkirche;church;52.2611;10.5226;30;Brüdernkirche|St. Ulrici-Brüdern|St. Ulrici;Franciscan Church
+aegidienkirche;St. Aegidien;church;52.2590;10.5243;40;St. Aegidien|Aegidienkirche|Sankt Aegidien;St. Giles' Church
+magnikirche;St. Magni;church;52.2598;10.5283;30;St. Magni|Magnikirche|Sankt Magni;St. Magnus' Church
+paulikirche;St. Pauli;church;52.2706;10.5434;30;St. Pauli|Paulikirche|Sankt Pauli;St. Paul's Church
+riddagshausen;Klosterkirche Riddagshausen;church;52.2654;10.5838;50;Klosterkirche Riddagshausen|Kloster Riddagshausen|Klosterkirche;Riddagshausen Abbey
+neues-rathaus;Neues Rathaus;government;52.2650;10.5265;50;Rathaus|Neues Rathaus|Rathaus Braunschweig;New Town Hall
+residenzschloss;Residenzschloss;palace;52.2637;10.5303;60;Residenzschloss|Schloss Braunschweig|Residenzschloss Braunschweig|Schlossmuseum|Schloss-Arkaden;Brunswick Palace
+schloss-richmond;Schloss Richmond;palace;52.2468;10.5274;40;Schloss Richmond|Richmond;Richmond Palace
+staatstheater;Staatstheater Braunschweig;culture;52.2632;10.5345;40;Staatstheater Braunschweig|Staatstheater|Großes Haus;Brunswick State Theatre
+stadthalle;Stadthalle Braunschweig;culture;52.2557;10.5418;50;Stadthalle|Stadthalle Braunschweig;
+brunsviga;Brunsviga;culture;52.2685;10.5375;30;Brunsviga|Brunsviga Kulturzentrum;
+lot-theater;LOT-Theater;culture;52.2626;10.5243;20;LOT-Theater|LOT Theater;LOT Theatre
+herzog-anton-ulrich-museum;Herzog Anton Ulrich-Museum;museum;52.2643;10.5378;40;Herzog Anton Ulrich-Museum|Herzog-Anton-Ulrich-Museum;Duke Anton Ulrich Museum
+staedtisches-museum;Städtisches Museum Braunschweig;museum;52.2617;10.5313;40;Städtisches Museum|Städtisches Museum Braunschweig;Municipal Museum
+museum-fuer-photographie;Museum für Photographie Braunschweig;museum;52.2611;10.5396;30;Museum für Photographie|Museum für Photographie Braunschweig;Museum of Photography
+raabe-haus;Raabe-Haus;museum;52.2593;10.5380;30;Raabe-Haus|Raabe-Haus: Literaturzentrum|Literaturzentrum;Raabe House
+salve-hospes;Haus Salve Hospes;museum;52.2589;10.5265;30;Salve Hospes|Haus Salve Hospes|Kunstverein Braunschweig;
+lessingdenkmal;Lessingdenkmal;monument;52.2590;10.5258;25;Lessingdenkmal|Lessing-Denkmal|Lessing;Lessing Monument
+gaussdenkmal;Gaußdenkmal;monument;52.2690;10.5185;25;Gaußdenkmal|Gauß-Denkmal|Gauss-Denkmal|Carl Friedrich Gauß;Gauss Monument
+loewenwall;Löwenwall;square;52.2581;10.5291;60;Löwenwall|Obelisk;
+rizzi-haus;Happy Rizzi House;landmark;52.2629;10.5260;25;Happy Rizzi House|Happy-Rizzi-House|Rizzi-Haus;
+jakob-kemenate;Jakob-Kemenate;landmark;52.2606;10.5158;20;Jakob-Kemenate|Jakobs-Kemenate|Jakobkemenate;Jakob Bower
+wasserturm-giersberg;Wasserturm auf dem Giersberg;landmark;52.263611;10.537778;30;@manual;Giersberg Water Tower
+tu-altgebaeude;Altgebäude der TU Braunschweig;landmark;52.2737;10.5296;50;Altgebäude|Technische Universität Braunschweig|TU Braunschweig;TU Braunschweig Main Building
+braunschweig-hauptbahnhof;Braunschweig Hauptbahnhof;landmark;52.2524;10.5398;60;Braunschweig Hauptbahnhof|Hauptbahnhof|Braunschweig Hbf;Brunswick Central Station
+buergerpark;Bürgerpark;park;52.2548;10.5182;150;Bürgerpark;
+theaterpark;Theaterpark;park;52.2620;10.5357;80;Theaterpark;
+museumpark;Museumpark;park;52.2643;10.5395;60;Museumpark;
+inselwallpark;Inselwallpark;park;52.2672;10.5155;80;Inselwallpark;
+prinz-albrecht-park;Prinz-Albrecht-Park;park;52.2738;10.5545;150;Prinz-Albrecht-Park;
+botanischer-garten-braunschweig;Botanischer Garten Braunschweig;park;52.2731;10.5296;80;Botanischer Garten|Botanischer Garten der TU Braunschweig|Botanischer Garten Braunschweig;Botanical Garden
+arche-noah-zoo;Arche Noah Zoo;zoo;52.2200;10.5300;80;Arche Noah Zoo|Arche Noah Zoo Braunschweig|Zoo Braunschweig;Noah's Ark Zoo
+volkswagen-halle;Volkswagen Halle;stadium;52.2583;10.5148;50;Volkswagen Halle|Volkswagenhalle;
+eintracht-stadion;Eintracht-Stadion;stadium;52.2903;10.5213;80;Eintracht-Stadion|Eintracht Stadion;Eintracht Stadium
+magnifriedhof;Magnifriedhof;cemetery;52.2568;10.5355;60;Magnifriedhof|Magnifriedhof Braunschweig;St. Magnus Cemetery
+hauptfriedhof;Hauptfriedhof Braunschweig;cemetery;52.2480;10.5560;150;Hauptfriedhof|Hauptfriedhof Braunschweig;Main Cemetery
+juedischer-friedhof;Jüdischer Friedhof Braunschweig;cemetery;52.2525;10.5510;40;Jüdischer Friedhof|Neuer Jüdischer Friedhof|Jüdischer Friedhof Braunschweig;Jewish Cemetery
+gedenkstaette-schillstrasse;Gedenkstätte KZ-Außenlager Schillstraße;memorial;52.2535;10.5330;30;Gedenkstätte KZ-Außenlager Schillstraße|KZ-Außenlager Schillstraße|Gedenkstätte Schillstraße|Gedenkstätte KZ-Außenlager Braunschweig Schillstraße;Schillstrasse Concentration Camp Memorial
+friedhof-hochstrasse;Friedhof Hochstraße;memorial;52.2700;10.5050;40;Friedhof Hochstraße|Friedhof an der Hochstraße|Gedenkstätte Friedhof Hochstraße;Hochstrasse Cemetery Memorial

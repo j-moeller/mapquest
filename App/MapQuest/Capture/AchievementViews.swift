@@ -107,9 +107,11 @@ enum AchievementFilter: String, CaseIterable, Identifiable {
 struct AchievementSections: View {
     @EnvironmentObject private var captures: CaptureModel
     var filter: AchievementFilter = .all
+    /// The city whose achievements are shown (all with `nil`).
+    var city: String?
 
     var body: some View {
-        let all = captures.achievementProgress
+        let all = captures.achievementProgress(in: city)
         let shown = all.filter { self.filter.includes($0) }
         // Started, not milestones, fewest sights to go first.
         let almost = all

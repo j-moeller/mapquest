@@ -347,3 +347,6 @@
 "Sights found" = "Entdeckt";
 "Tap anywhere to close" = "Tippe irgendwo, um zu schließen";
 "Closes the summary" = "Schließt die Zusammenfassung";
+
+/* StatisticsView.swift: per city */
+"Sights in {0}" = "Sehenswertes in {0}";
